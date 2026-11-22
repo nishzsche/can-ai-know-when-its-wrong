@@ -19,9 +19,11 @@ To be fair to readers, this is the information visible before writing:
   | Laya | 0.23 | 0.27 |
   | GPT-6.2 Sol | 0.32 | 0.31 |
   | Jev | 0.55 | 0.46 |
+  | Kev-4B | 0.55 | 0.30 |
+  | Kev-0.8B | 0.36 | 0.52 |
+  | Qwen3.5-4B | 0.42 | 0.26 |
 
 - **Memorization:** GPT-6.2 Sol (and Astra) reproduced the first rows of the data file verbatim; Qwen3.5-4B showed no memorization (`data/contamination.md`).
-- Kev-0.8B, Kev-4B and Qwen3.5-4B hadn't been run on any customer yet.
 
 ## My guesses
 

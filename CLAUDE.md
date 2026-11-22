@@ -15,6 +15,9 @@ Full spec: see `PLAN.md`. Work milestone by milestone; don't start a milestone b
 
 Current status, open items and decisions already made: `STATUS.md`.
 
+## Working with the author
+- **Times in IST.** Whenever you tell the author a time (ETAs, timestamps, "finished at"), give it in IST (UTC+5:30). Logs and records stay in UTC; convert when reporting. The L4 box's clock is UTC.
+
 ## Stack
 - Python 3.12, `uv` for environments, `ruff` for lint, `pytest` for tests. scikit-learn, LightGBM or XGBoost, pandas, matplotlib.
 - Open models served on a rented NVIDIA L4 (24 GB). GPU time is billed per minute: develop and test on CPU/APIs first, use the GPU only for the open-model runs, then shut it down.

@@ -2,7 +2,85 @@
 
 Banks are audited on whether their risk scores are honest: if a model says "30% chance of default", about 30% of those customers should default. This project holds AI decision models to the same standard on 2,000 real credit card customers, and compares them with a logistic-regression scorecard and gradient boosting.
 
-Status: **M1 (data) in progress.** Results, charts and the full method will be added here when the runs are done. See [PLAN.md](PLAN.md).
+Status: **the runs, the analysis and the checks are done. The write-up is in draft:** [`writeup/blog.md`](writeup/blog.md). The full plan is in [PLAN.md](PLAN.md).
+
+![Promised vs actual default rate for each AI model, with the scorecard for reference](results/figures/1_promised_vs_actual.png)
+
+## In short
+
+- **Most AI models overstate default risk out of the box.** Jev and Kev-4B predict about 48% on average; 22.1% of these customers defaulted.
+- **One sentence stating the portfolio's default rate improves calibration for five of the six.** It makes Kev-0.8B worse (ECE 0.090 → 0.269).
+- **GPT-6.2 Sol and Laya are the best calibrated out of the box** (ECE 0.052). But Sol recognises this dataset and knows its exact default rate, so its result isn't zero-shot honesty (see [Checks](#checks-on-these-results)).
+- **No AI contestant beats the trained scorecard at ranking.** The scorecard's AUC is 0.777; the best AI contestants reach 0.757 and 0.754, inside the scorecard's interval.
+- **Recalibrating on 2,000 labelled customers** brings every AI contestant to an ECE between 0.003 and 0.041. The scorecard's is 0.014.
+
+## Results
+
+Test set: 2,000 customers, 22.1% of whom defaulted. **The baselines learned from 20,000 labelled customers. The AI contestants are zero-shot:** each sees one customer's summary, with no labelled examples.
+
+**Baselines (trained):**
+
+| Contestant | Mean predicted | AUC | ECE |
+|---|---:|---:|---:|
+| Scorecard (WoE + logistic regression) | 21.8% | 0.777 | 0.014 |
+| Gradient boosting (LightGBM) | 21.8% | 0.789 | 0.017 |
+
+**AI contestants (zero-shot):**
+
+| Contestant | Model | Mean predicted, out of the box | AUC: out of the box / told the base rate | ECE: out of the box | ECE: told the base rate | ECE: recalibrated |
+|---|---|---:|---:|---:|---:|---:|
+| `jev` | TypeSafe Jev 1.14 (API) | 48.1% | 0.712 / 0.749 | 0.265 | 0.155 | 0.019 |
+| `kev-4b` | Kev-4B v1.0 (open weights) | 48.6% | 0.594 / 0.757 | 0.267 | 0.034 | 0.003 |
+| `kev-0.8b` | Kev-0.8B v1.0 (open weights) | 30.5% | 0.750 / 0.752 | 0.090 | 0.269 | 0.023 |
+| `laya` | Laya, 421M encoder (open weights) | 20.4% | 0.666 / 0.669 | 0.052 | 0.040 | 0.041 |
+| `qwen-logprobs` | Qwen3.5-4B, P(yes) from token probabilities (open weights) | 35.5% | 0.744 / 0.710 | 0.140 | 0.074 | 0.039 |
+| `frontier-verbal` | GPT-6.2 Sol, asked for a percentage (API) | 26.0% | 0.754 / 0.755 | 0.052 | 0.032 | 0.017 |
+
+- **ECE** (expected calibration error) is the average gap between predicted and actual default rates across bins of predicted risk. Lower is better; 0.05 means 5 percentage points.
+- **AUC** measures ranking only: whether defaulters get higher scores than non-defaulters.
+- **"Told the base rate"** adds one sentence before the question: "In this portfolio, about 22.1% of customers miss next month's payment."
+- **"Recalibrated"** maps each contestant's out-of-the-box probabilities through Platt scaling or isotonic regression. The calibrator is fitted on the separate 2,000-customer tune split and applied to test unchanged.
+- **GPT-6.2 Sol has seen this dataset.** It names every account summary as the UCI data and gives its exact default rate (22.12%), even with the currency, dates and repayment codes removed. Read its out-of-the-box calibration as that of a model that knows the population, not zero-shot honesty. It also reproduced 31 customers verbatim. Three are in the test set, and leaving them out moves no metric by more than 0.0006. See [`data/contamination.md`](data/contamination.md).
+
+`results/summary.csv` has every metric for every contestant and condition, with 95% bootstrap intervals (about ±0.03 for AUC), plus cost and latency. Every prediction is saved in `results/predictions/` with its probability, model version, condition, latency and cost. Pinned model revisions and library versions are in `results/run_manifest.json`.
+
+[`PREDICTIONS.md`](PREDICTIONS.md) holds the author's guesses, committed before any run. One of four held: the base rate did help most contestants. Jev wasn't the most honest, Laya wasn't the least, and no AI contestant beat the scorecard at ranking.
+
+**Charts** (`results/figures/`):
+
+1. [Promised vs actual default rate](results/figures/1_promised_vs_actual.png), by decile of predicted risk (shown above).
+2. [The honesty arc](results/figures/2_honesty_arc.png): ECE out of the box, told the base rate, and recalibrated.
+3. [Ranking](results/figures/3_ranking_auc_ks.png): AUC with 95% intervals, and KS.
+4. [What a bank would see](results/figures/4_risk_bands.png): promised vs actual default rates by risk band.
+5. [Cost vs ranking](results/figures/5_cost_vs_auc.png).
+
+### Cost and speed
+
+Out of the box, per 1,000 decisions. API costs are what OpenRouter billed. The open models' costs are their L4 GPU time at $0.44/hour, run one request at a time.
+
+| Contestant | Cost per 1,000 decisions | Median latency |
+|---|---:|---:|
+| GPT-6.2 Sol | $0.74 (told the base rate: $1.02) | 1,984 ms |
+| Jev | $0.021 | 432 ms |
+| Qwen3.5-4B | $0.018 | 142 ms |
+| Kev-4B | $0.017 | 139 ms |
+| Kev-0.8B | $0.005 | 39 ms |
+| Laya | $0.002 | 16 ms |
+| Scorecard, gradient boosting | ~$0 once trained | <1 ms |
+
+The whole project, every check included, cost $14.20 in API calls plus a few dollars of GPU time.
+
+### Checks on these results
+
+| Check | What it found | Where |
+|---|---|---|
+| Memorization (tabmemcheck, plus a longer deterministic version) | Sol reproduces 31 customers from the data file verbatim, dense through customer 33. Qwen3.5-4B shows none. The decision models can't be probed. | [`data/contamination.md`](data/contamination.md) §1 |
+| Results without the memorized customers | Leaving out Sol's 3 memorized test customers moves no metric for any contestant by more than 0.0006 | `results/summary_excluding_memorized.csv` |
+| Recognition | Sol names the dataset for 53 of 53 account summaries and gives its default rate as 22.12% | `contamination.md` §3 |
+| Disguise | With NT$, the 2005 dates and the raw codes removed, Sol still names it: 50 of 50 | `contamination.md` §4 |
+| False base rate | Told "about 10%" instead of 22.1%, Sol moves 69% of the way (95% interval 64–73%), with its ranking unchanged. It listens to stated rates, so its own estimate was already near the true one. | `contamination.md` §5 |
+| Qwen option order | Swapping which letter means "yes" leaves its mean P(yes) almost unchanged (−0.004) | `results/checks/qwen_order_swap.jsonl` |
+| Qwen probability readout | jevper 0.7.12 lets a low-ranked spelling of an option overwrite a high-ranked one (0.32 read as 0.00004). The runner computes P(yes) itself, and the bug is [reported upstream](https://github.com/zhulinchng/jevper/issues/1). | `runners/qwen_logprobs.py` |
 
 ## Data
 
@@ -85,11 +163,51 @@ This is a famous dataset, so `data/contamination.md` records what each contestan
 
 ## Reproduce
 
+**Re-score from the saved predictions.** This needs no API key or GPU, and reproduces `results/summary.csv` and the figures exactly:
+
 ```bash
 uv sync
+uv run python analysis/summarize.py   # results/summary.csv, summary_detail.json, summary_excluding_memorized.csv
+uv run python analysis/figures.py     # results/figures/
+```
+
+**Rebuild from the raw data:**
+
+```bash
 uv run python data/load.py && uv run python data/splits.py   # fetch data, build splits
 uv run python data/render.py --split tune --split test       # render account summaries
 uv run python data/render.py --token-report                  # token counts per contestant tokenizer
-uv run pytest                                                 # render and split tests
+uv run python baselines/scorecard.py && uv run python baselines/gbm.py   # train the baselines (CPU, seconds)
+uv run pytest
 uv run --group memcheck python data/memcheck.py --model <id>  # LLM memorization tests (needs an API key)
 ```
+
+**Re-run the checks on Sol** (an OpenRouter key; under $2 in total):
+
+```bash
+uv run --group memcheck --group runners python data/memdepth.py --model openai/gpt-6.2-sol   # how deep its memory goes
+uv run --group runners python data/recognition.py --model openai/gpt-6.2-sol                 # does it recognise the data?
+uv run --group runners python runners/checks/sol_disguise.py --probe 50                      # ...without NT$, dates or codes?
+uv run --group runners python runners/checks/sol_false_rate.py --workers 4                   # told a false base rate
+uv run --group runners python runners/checks/sol_false_rate.py --report
+```
+
+**Re-run the AI contestants.** Jev and Sol need an OpenRouter key, and the open models need a GPU. The per-contestant commands are in [`CLAUDE.md`](CLAUDE.md), and the GPU setup is in [`L4_RUNBOOK.md`](L4_RUNBOOK.md). Afterwards, run `analysis/recalibrate.py`, then the two scoring commands above.
+
+## Repository layout
+
+| Path | What's there |
+|---|---|
+| `data/` | Loading, splits, the text template (`render.py`), memorization tests, `contamination.md` |
+| `baselines/` | The scorecard and gradient boosting |
+| `runners/` | One script per AI contestant, the shared harness, and `checks/` (robustness checks) |
+| `analysis/` | Metrics, recalibration, the summary tables and the figures |
+| `results/` | Predictions, raw responses, summary tables, figures, checks and the run manifest |
+| `writeup/` | The blog post, the LinkedIn carousel and the X post (drafts), plus their style brief |
+| `tests/` | Tests for rendering, splits, records, runners, baselines, metrics and the checks |
+| `PREDICTIONS.md` | The author's guesses, committed before any run |
+
+## Licence
+
+- **Code and the project's own files:** MIT; see [`LICENSE`](LICENSE).
+- **The data:** the UCI dataset is CC BY 4.0, and so are the copies and subsets of it in `data/raw/`, `data/splits/` and `data/rendered/`. Cite it as shown under [Data](#data). The prediction files in `results/` include each customer's actual outcome from that data, so credit the dataset when you reuse them too.

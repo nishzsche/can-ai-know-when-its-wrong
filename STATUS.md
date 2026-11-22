@@ -62,7 +62,9 @@ export OPENROUTER_API_KEY=...     # never commit keys; repeat in each new shell
 
 ### After every resume or new shell
 
-Run `source /home/env.sh`, then redo anything that lived outside `/home`, such as the `gh` login or `OPENROUTER_API_KEY`.
+Run `source /home/env.sh`, then redo anything that lived outside `/home`, such as `OPENROUTER_API_KEY`.
+
+**GitHub:** `gh` 2.105.0 is installed at `/home/bin/gh`. `env.sh` sets `GH_CONFIG_DIR=/home/gh-config`, so the `gh` login (and its token) survives pauses, and this repo's local git config uses `gh` as the credential helper for github.com. `git push` works only in a shell that has sourced `env.sh`. Log in again with `gh auth login -h github.com -p https -w` if you delete `/home/gh-config`.
 
 ### Running models on the GPU
 

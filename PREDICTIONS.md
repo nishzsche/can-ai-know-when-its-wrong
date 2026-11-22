@@ -1,6 +1,6 @@
 # Predictions (written before any full run)
 
-**Status: NOT FILLED IN YET.** The author writes this before any M3 run. When it's done, replace this line with the date it was written. The L4 runbook's gate checks for that.
+**Written 2026-11-22, before any M3 run.** The author answered these questions in a Q&A with Claude Code; the answers are recorded verbatim, with no reasons given. The commit that adds them comes before every M3 prediction file.
 
 PLAN.md section 7: which contestant I expect to be most and least honest, and whether telling the base rate will help. Write the reasoning too: the point is to compare it with what actually happens.
 
@@ -29,25 +29,25 @@ To be fair to readers, this is the information visible before writing:
 
 **Most honest AI contestant** (best calibrated out of the box), and why:
 
-> _TODO_
+> **Jev.**
 
 **Least honest AI contestant**, and why:
 
-> _TODO_
+> **Laya.**
 
 **Will telling the base rate help?** For which contestants, and by how much:
 
-> _TODO_
+> **Yes, for most of them.**
 
 **Ranking (AUC):** will any AI contestant beat the 20-line scorecard (AUC 0.777)?
 
-> _TODO_
+> **Yes, at least one.**
 
 **The "confident and wrong" risk:** which contestant will put the most customers in a confident band that turns out wrong?
 
-> _TODO_
+> (not given)
 
-**Optional: one number per contestant.** Out-of-the-box ECE guess (lower is better; the baselines get ~0.015):
+**Optional: one number per contestant** (not given). Out-of-the-box ECE guess (lower is better; the baselines get ~0.015):
 
 | Contestant | ECE guess | Base rate helps? (yes/no) |
 |---|---|---|

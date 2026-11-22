@@ -104,11 +104,11 @@ The catch: labelled outcomes are exactly what zero-shot AI was supposed to free 
 
 ### 6. What it costs
 
-- **Sol:** about $0.74 per 1,000 decisions, at around two seconds each.
+- **Sol:** about 74 cents per 1,000 decisions, at around two seconds each.
 - **Jev, through its API:** about 2 cents per 1,000.
 - **The open models, on one rented GPU:** under 2 cents per 1,000, with answers in milliseconds.
 - **The scorecard:** essentially free to run.
-- **The whole experiment,** every check included, cost about $14 in API calls plus a few dollars of GPU time.
+- **The whole experiment,** every check included, cost about 14 dollars in API calls plus a few more for GPU time.
 
 ![Cost vs ranking ability](../results/figures/5_cost_vs_auc.png)
 

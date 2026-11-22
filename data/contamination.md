@@ -15,7 +15,7 @@ What limits the risk here:
 | Contestant | Can it be probed with tabmemcheck? | What's known about its training data | Could it have seen this dataset? |
 |---|---|---|---|
 | `scorecard`, `gbm` | Not needed | Trained only on our `train` split | Only `train`, by design |
-| `qwen-logprobs` | Yes, header and row-completion tests: **pending** | Qwen's pretraining data isn't disclosed | **Possibly**: public web data |
+| `qwen-logprobs` (Qwen3.5-4B) | Yes: **no memorization detected** (2026-11-22, see below) | Qwen's pretraining data isn't disclosed | **Possibly**: public web data, though the tests found no trace of the file |
 | `frontier-verbal` | Yes: **pending** (model not chosen yet) | Not disclosed | **Possibly**: public web data |
 | `jev` | No: decision model, doesn't generate text | Not disclosed. Third-party write-ups say TypeSafe describes its data only as built in-house; no model card | **Unknown** |
 | `kev-0.8b`, `kev-4b` | No: decision models | Listed in the model cards (see below). Bases are Qwen3.5-0.8B-Base and Qwen3.5-4B-Base, whose pretraining data isn't disclosed | **Not in Kev's fine-tuning data; possibly in the Qwen3.5 base pretraining** |
@@ -39,7 +39,7 @@ Card at huggingface.co/convaiinnovations/laya, revision `fd4f9dbc` (2026-11-19).
 
 ## LLM memorization tests (tabmemcheck)
 
-**Status: not yet run.** No API key is set in this environment, and the frontier model hasn't been chosen. The script is ready (`data/memcheck.py`), and an offline `--dry-run` has checked it end to end.
+**Status:** Qwen3.5-4B done (2026-11-22). The frontier model is still pending: it hasn't been chosen yet and needs `OPENROUTER_API_KEY`.
 
 What runs, for each LLM contestant, on two versions of the file:
 
@@ -60,14 +60,25 @@ How to run:
 - Through OpenRouter: `uv run --group memcheck python data/memcheck.py --model <openrouter-id>`
 - The Qwen contestant: OpenRouter doesn't list a ~4B Qwen, so test it on the L4 against the vLLM server, as the first job of the GPU session and before any Qwen prediction runs. No API key is needed on localhost: `--base-url http://127.0.0.1:8000/v1 --model <served-name>`.
 
-Results go in `data/memcheck/results/<model>.json`.
+Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model>__completion.json`).
 
-| Model | File version | Header: exact prefix (chars of 500) | Rows: exact matches, non-trivial | Verdict |
-|---|---|---|---|---|
-| *pending* | | | | |
+| Model | Mode | File version | Header: exact prefix (chars of 500) | Rows: exact matches (non-trivial / non-trivial rows) | Verdict |
+|---|---|---|---|---|---|
+| Qwen3.5-4B | chat | uci | 6 | 0 (0/24) | No memorization detected |
+| Qwen3.5-4B | chat | kaggle_style | 0 | 0 (0/24) | No memorization detected |
+| Qwen3.5-4B | raw completion | uci | 2 | 0 (0/25) | No memorization detected |
+| Qwen3.5-4B | raw completion | kaggle_style | 15 (a run of `0.0` fields) | 0 (0/25) | No memorization detected |
+| frontier model | | | *pending* | | |
+
+**Qwen3.5-4B run details:** `Qwen/Qwen3.5-4B` at revision `851bf6e8`, served by vLLM 0.34.0 on the L4 with `--language-model-only` and thinking turned off (`enable_thinking=false`, the same setting the contestant uses). tabmemcheck 0.1.6. We ran both modes: chat, which is how the contestant is prompted, and raw `/completions` with no chat template, which is the stronger probe because the model can't reformat or refuse.
+
+**What the responses look like:** in both modes the model writes well-formed CSV rows with the right number of fields and copies the row ID from the prompt. The values are invented: round limits such as 100000 and 150000, bills repeated across months, repayment codes mostly 0. That shows the model knows the format, not the rows. In the raw-completion Kaggle-style header test it repeated customer 1's values (`20000.0,2,2,1,24,2,2,-1,-1,-2,-2,3913.0,3102.0`) under ID 2. Customer 1 was in the prompt (the test cut the file partway through row 1), so this is copying from the prompt, not recall; the real row 2 never appeared.
+
+**Relevance to Kev:** Kev's bases are Qwen3.5-0.8B-Base and Qwen3.5-4B-Base. A clean result on the instruct Qwen3.5-4B is weak, indirect evidence that the shared pretraining didn't fix this file in memory. It doesn't test the base checkpoints or Kev itself.
 
 ## What the write-up will say
 
 - The scorecard and GBM were trained only on our `train` split.
 - Jev, Kev and Laya can't be probed for memorization because they don't generate text. Kev's disclosed fine-tuning data doesn't include this dataset. The pretraining data of every base model is undisclosed, so exposure can't be ruled out for any AI contestant.
 - The LLM contestants' tabmemcheck results get reported as measured. If a contestant shows memorization, its results are flagged wherever they appear.
+- Qwen3.5-4B showed no memorization in either chat or raw-completion mode: 0 of 98 rows reproduced across both file versions, and no header continuation beyond trivial runs of zeros. This is absence of evidence, not proof.

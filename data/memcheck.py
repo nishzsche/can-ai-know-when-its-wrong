@@ -217,6 +217,8 @@ def main() -> None:
     result = run(args)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     slug = re.sub(r"[^A-Za-z0-9._-]+", "_", result["model"])
+    if args.completion:
+        slug += "__completion"  # keep chat and raw-completion runs of one model apart
     out = RESULTS_DIR / f"{slug}.json"
     out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(f"Saved -> {out}")

@@ -12,11 +12,10 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - `README.md` has the licence, citation and data quirks; `data/contamination.md` has the per-contestant contamination analysis.
 - Tests: `uv run pytest`, 41 passing. The parked insurance work has its own 67 tests: `uv run pytest parked/insurance`.
 
-**Still open for M1:**
-1. **Frontier-model memorization test.** Needs `OPENROUTER_API_KEY` and a choice of frontier model (the user hasn't picked one yet). Run `uv run --group memcheck python data/memcheck.py --model <openrouter-id>`.
-2. **Qwen memorization test.** OpenRouter has no ~4B Qwen, so this runs on the L4 against vLLM, as the first GPU job and before any Qwen predictions. No API key is needed on localhost: `--base-url http://127.0.0.1:8000/v1 --model <served-name>`.
+- **Qwen memorization test: done (2026-11-22).** Qwen3.5-4B, chat and raw-completion modes, both file versions: 0/98 rows reproduced and no non-trivial header continuation. Details and the results table are in `data/contamination.md`.
 
-When the results come in, fill the results table in `data/contamination.md`.
+**Still open for M1:**
+1. **Frontier-model memorization test.** Needs `OPENROUTER_API_KEY` and a choice of frontier model (the user hasn't picked one yet). Run `uv run --group memcheck python data/memcheck.py --model <openrouter-id>`, then add its rows to the table in `data/contamination.md`. It needs no GPU.
 
 ## Decisions already made (don't revisit without the user)
 
@@ -24,6 +23,7 @@ When the results come in, fill the results table in `data/contamination.md`.
 - **Never disadvantage the AI contestants.** Template v2 dropped the "common interpretation" of repayment codes because the data contradicts it (e.g. 40.6% of "−2 = no balance" months carry a positive bill). Labels now say only what's documented and always show the raw code, for example "not late (code -2)" and "paid on time (code -1)". Use train data only for checks like this.
 - **Base-rate condition:** the sentence "In this portfolio, about 22.1% of customers miss next month's payment." goes in front of the question instructions. The `state` stays identical across conditions.
 - **Recalibrated condition** is computed from the saved `out_of_box` probabilities, so it needs no new API calls.
+- **`qwen-logprobs` contestant = `Qwen/Qwen3.5-4B` @ `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`** (user chose it over Qwen3-4B-Instruct-2507, 2026-11-22). It's the newest ~4B Qwen, Apache-2.0. Run it text-only with thinking off (`enable_thinking=false`) so P(yes) comes from the first answer token's logprobs.
 
 ## Things to know for M2 (runners)
 
@@ -77,7 +77,16 @@ Run `source /home/env.sh`, then redo anything that lived outside `/home`, such a
   | Qwen ~4B chat model on vLLM | ~8 GB of weights plus cache |
 
 - **Kev-4B speed:** Kev's README calls the L4 "too slow for Kev-4B" when serving production traffic. Our job is ~8,000 short requests (4,000 customers × 2 conditions), which is fine. Fall back to OpenRouter only if it actually fails.
-- **First GPU job:** the Qwen memorization test (see "Still open for M1" above).
+- **vLLM lives in its own venv, `/home/vllm-env`** (vLLM 0.34.0, torch 2.14.0+cu130). It's kept out of the project lockfile so CPU development stays light. To recreate it: `uv venv /home/vllm-env --python 3.12 && VIRTUAL_ENV=/home/vllm-env uv pip install vllm`. Qwen3.5-4B weights are in `/home/hf-cache` (8.8 GB).
+- **Serving Qwen3.5-4B** (~18.5 GB used at 0.85 utilization, up in ~1–2 min). This is the exact command used for the memcheck; use the same one for predictions:
+  ```bash
+  /home/vllm-env/bin/vllm serve Qwen/Qwen3.5-4B --revision 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a \
+    --served-model-name qwen3.5-4b --host 127.0.0.1 --port 8000 --max-model-len 16384 \
+    --language-model-only --default-chat-template-kwargs '{"enable_thinking": false}' \
+    --gpu-memory-utilization 0.85 --seed 0 > /home/logs/vllm-qwen.log 2>&1
+  ```
+  Stop it with `pkill -f "vllm serve"`; run that on its own, because inside a compound command it also kills the calling shell.
+- **The Qwen memcheck (the first GPU job) is done.** No GPU work is pending until the M2 runners are written and tested on CPU/APIs.
 
 ### Money
 

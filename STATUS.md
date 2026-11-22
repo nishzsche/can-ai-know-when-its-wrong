@@ -33,13 +33,53 @@ When the results come in, fill the results table in `data/contamination.md`.
 - Jev on OpenRouter: on 2026-11-22 the model list showed `typesafe/jev-router`, not a versioned `jev-1.x` ID. Check which ID to use and record the resolved version from each response.
 - GPU time on the L4 is billed per minute. Do CPU work (baselines, runner code, API runs) wherever it's cheapest and keep the GPU for serving open models.
 
-## Setting up on the L4
+## The L4 instance (JarvisLabs, launched 2026-11-22)
+
+1× NVIDIA L4 (24 GB), PyTorch template (a container), region IN2, 28 cores and 124 GB RAM. Compute bills per second; storage keeps billing while the instance is paused.
+
+**Only `/home` survives a pause.** Anything installed elsewhere is gone after a resume: system packages, `~/.cache`, a `gh` login. So keep the repo, uv, its Python builds and every model cache under `/home`.
+
+### First-time setup
 
 ```bash
-git clone https://github.com/nishzsche/can-ai-know-when-its-wrong.git
+cat > /home/env.sh <<'EOF'
+export HF_HOME=/home/hf-cache                  # model weights (~25 GB), survive pauses
+export UV_CACHE_DIR=/home/uv-cache
+export UV_PYTHON_INSTALL_DIR=/home/uv-python   # venvs link to this Python, so it must persist
+export PATH=/home/bin:$PATH
+EOF
+source /home/env.sh
+curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/home/bin sh
+
+# The repo is private: authenticate first (`gh auth login`, installing gh if missing,
+# or use a GitHub personal access token), then clone it under /home.
+cd /home && git clone https://github.com/nishzsche/can-ai-know-when-its-wrong.git
 cd can-ai-know-when-its-wrong
-curl -LsSf https://astral.sh/uv/install.sh | sh    # if uv isn't installed
 uv sync --group memcheck
-uv run pytest                                       # 41 passing; the token test downloads two tokenizers
-export OPENROUTER_API_KEY=...                       # never commit keys
+uv run pytest                     # 41 passing; the token test downloads two tokenizers
+export OPENROUTER_API_KEY=...     # never commit keys; repeat in each new shell
 ```
+
+### After every resume or new shell
+
+Run `source /home/env.sh`, then redo anything that lived outside `/home`, such as the `gh` login or `OPENROUTER_API_KEY`.
+
+### Running models on the GPU
+
+- **One model at a time.** vLLM takes ~90% of GPU memory by default, so stop it (or start it with `--gpu-memory-utilization`) before starting a Kev server.
+- **Memory fits:**
+
+  | Model | GPU memory |
+  |---|---|
+  | Kev-4B | 14.3 GB resident, ~16 GB peak while its adapter loads |
+  | Kev-0.8B | 3.8 GB |
+  | Laya | well under 2 GB |
+  | Qwen ~4B chat model on vLLM | ~8 GB of weights plus cache |
+
+- **Kev-4B speed:** Kev's README calls the L4 "too slow for Kev-4B" when serving production traffic. Our job is ~8,000 short requests (4,000 customers × 2 conditions), which is fine. Fall back to OpenRouter only if it actually fails.
+- **First GPU job:** the Qwen memorization test (see "Still open for M1" above).
+
+### Money
+
+- **Wallet:** if the JarvisLabs wallet runs out of funds, all resources are released, **storage included** (per JarvisLabs' FAQ). Keep it topped up.
+- **Autopause:** it works on a timer or a balance threshold, not on idle detection. Set it, and pause whenever you step away.

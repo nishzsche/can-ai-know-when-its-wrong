@@ -58,6 +58,13 @@ All runners share `runners/harness.py`. It:
 
 **jevper logprob bug (found in the Qwen smoke test, worked around):** jevper 0.7.12's readout strips whitespace from the top-20 tokens and lets the *last* match overwrite the rival label's logprob. A low-ranked `" A"` (−10.5) replaced `"A"` (−1.2), so every Qwen probability came out near 0 or 1 (e.g. 4e-5 where the model's own P(yes) was 0.32), and which extreme depended on the letter sampled at temperature 1.0. `runners/qwen_logprobs.py` now computes P(yes) itself from the recorded first-token top-20: each label's logprob is the logsumexp of all its variants, and the softmax is taken over the two labels, with the Yes letter read from the prompt's options. jevper's value is kept as `jevper_noul` in the raw record, and unit tests cover the exact case. The model version string now ends in `readout: label-variant logsumexp over first-token top-20`. Worth reporting upstream to jevper.
 
+**Qwen option-order check (2026-11-22, `runners/checks/qwen_order_swap.py`):** 200 tune customers, out of box, with jevper's exact request replayed as "A: No / B: Yes". Mean P(yes) shift −0.004, mean |shift| 0.048, correlation 0.91 (Spearman 0.91), no labels missing from the top 20; in the swapped order 2/200 answers were a word, not a letter. No letter bias, so the contestant stays single-order. The check is label-free and writes to `results/checks/`, not `results/predictions/`.
+
+**Alternatives to jevper (researched 2026-11-22):** none is widely used or official for local models.
+- **TypeSafe's official `typesafe-sdk`** (MIT, ~316 stars) only calls hosted Jev or gateways that speak TypeSafe's API (OpenRouter, Vercel, Pydantic). It has no local-model or logprob mode. **Use it for the Jev runner:** pin `model="jev-1.14.0"` (the versioned ID is `jev-1.14.0`, not `jev-1.14`); each response's `model` field names the version that answered.
+- **Other adapters:** `ryanbeales/decision-proxy` (1 star, a proof of concept) sums variants the way our readout does, but floors missing labels at 1e-4. `ziyu/system-one-sdk` (2 stars) uses the model's self-reported probabilities, not logprobs. jevper (21 stars) is the best documented, and its docs don't describe the overwrite we hit.
+- **Decision:** keep jevper for the prompt and transport and our own unit-tested readout for P(yes).
+
 **Checks for the L4 smoke runs:**
 - **Kev:** if `/v1/models` names the checkpoint without the revision, look at it and use `--skip-version-check` only after confirming it's the v1.0 weights.
 - **Qwen logprobs:** the harness warns when more than 10% of probabilities are exactly 0 or 1. That would mean vLLM is returning processed rather than raw logprobs; check vLLM's `--logprobs-mode` (want raw).

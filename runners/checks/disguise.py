@@ -90,9 +90,43 @@ def disguise(state: str) -> str:
     return text
 
 
-def wrap(base: type, control: bool) -> type:
-    """A contestant's predictor on disguised summaries (control: on the original ones)."""
-    suffix, transform = ("control", None) if control else ("disguised", disguise)
+LAYOUT_VERSION = "a1"
+ALIGNED_HEADER = (
+    "Month (most recent first) | Bill amount | Paid in the following month | Repayment status"
+)
+
+
+def align(state: str) -> str:
+    """The same summary with each bill shown next to the payment made the following month.
+
+    In this data a month's payment usually settles the previous month's bill (README, data
+    quirk 3), but template v2 shows each payment beside the same month's bill, which can look
+    like underpayment. Here each bill row shows the payment made the next month. The most recent
+    bill's payment isn't in the data yet, and the earliest payment gets its own line, so every
+    number in the original summary appears exactly once.
+    """
+    lines = state.split("\n")
+    head = next(k for k, line in enumerate(lines) if line.startswith("Month (most recent first)"))
+    rows = [line.split(" | ") for line in lines[head + 1 :] if " | " in line]
+    out = [*lines[:head], ALIGNED_HEADER]
+    for k, (month, bill, _paid, status) in enumerate(rows):
+        following = f"{rows[k - 1][2]} (paid in {rows[k - 1][0]})" if k else "not in the data yet"
+        out.append(f"{month} | {bill} | {following} | {status}")
+    out.append(f"Earliest payment in the data: {rows[-1][2]} paid in {rows[-1][0]}")
+    return "\n".join(out)
+
+
+VARIANTS = {  # suffix -> (transform, model_version tag)
+    "disguised": (disguise, f"disguise {DISGUISE_VERSION}"),
+    "aligned": (align, f"layout aligned {LAYOUT_VERSION}"),
+    "control": (None, "control: original summaries"),
+}
+
+
+def wrap(base: type, control: bool = False, variant: str = "disguised") -> type:
+    """A contestant's predictor on transformed summaries (control: on the original ones)."""
+    suffix = "control" if control else variant
+    transform, tag = VARIANTS[suffix]
 
     class Wrapped(base):
         def __init__(self, *args, **kwargs):
@@ -100,10 +134,8 @@ def wrap(base: type, control: bool) -> type:
             # Kev sets its name per size in __init__; the others name it on the class.
             name = self.__dict__.get("contestant") or base.contestant
             self.contestant = f"{name}-{suffix}"
-            tag = "control: original summaries" if control else f"disguise {DISGUISE_VERSION}"
             self.model_version = f"{self.model_version}; {tag}"
-            self.meta = {**getattr(self, "meta", {}), "check": suffix,
-                         "disguise": None if control else DISGUISE_VERSION}  # fmt: skip
+            self.meta = {**getattr(self, "meta", {}), "check": suffix}
 
         def predict(self, request: dict):
             if transform:
@@ -114,30 +146,30 @@ def wrap(base: type, control: bool) -> type:
     return Wrapped
 
 
-def make_predictor(contestant: str, args, control: bool):
+def make_predictor(contestant: str, args, control: bool, variant: str = "disguised"):
     if contestant == "frontier-verbal":
         from frontier_verbal import FrontierVerbalPredictor
 
-        return wrap(FrontierVerbalPredictor, control)(rpm=args.rpm)
+        return wrap(FrontierVerbalPredictor, control, variant)(rpm=args.rpm)
     if contestant == "jev":
         from jev import JevPredictor
 
-        return wrap(JevPredictor, control)()
+        return wrap(JevPredictor, control, variant)()
     if contestant == "laya":
         from laya_classic import LayaPredictor
 
         cost = L4_USD_PER_HOUR if args.device == "cuda" else 0.0
-        return wrap(LayaPredictor, control)(args.device, cost)
+        return wrap(LayaPredictor, control, variant)(args.device, cost)
     if contestant in ("kev-4b", "kev-0.8b"):
         from kev import KevPredictor
 
         url = args.base_url or "http://127.0.0.1:8009"
-        return wrap(KevPredictor, control)(contestant.split("-")[1], url, L4_USD_PER_HOUR)
+        return wrap(KevPredictor, control, variant)(contestant.split("-")[1], url, L4_USD_PER_HOUR)
     if contestant == "qwen-logprobs":
         from qwen_logprobs import SERVED_NAME, QwenPredictor
 
         url = args.base_url or "http://127.0.0.1:8000/v1"
-        return wrap(QwenPredictor, control)(url, SERVED_NAME, L4_USD_PER_HOUR)
+        return wrap(QwenPredictor, control, variant)(url, SERVED_NAME, L4_USD_PER_HOUR)
     raise SystemExit(f"unknown contestant {contestant!r}; choose from {CONTESTANTS}")
 
 
@@ -172,14 +204,14 @@ def probe(n: int) -> None:
     print(json.dumps(result["summary"], indent=1))
 
 
-def _records(name: str, directory: Path | None = None) -> dict[str, dict]:
+def _records(name: str, directory: Path | None = None, split: str = "test") -> dict[str, dict]:
     from records import read_records
 
     path = (directory or ROOT / "results" / "predictions") / f"{name}.jsonl"
     if not path.exists():
         return {}
     recs = read_records(name, directory) if directory else read_records(name)
-    return {r["id"]: r for r in recs if r["split"] == "test" and r["condition"] == "out_of_box"}
+    return {r["id"]: r for r in recs if r["split"] == split and r["condition"] == "out_of_box"}
 
 
 def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dict | None:
@@ -230,9 +262,65 @@ def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dic
     return result
 
 
+def report_aligned(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dict | None:
+    """Original vs aligned layout on the tune customers, overall and by latest repayment status."""
+    import metrics as m
+    import pandas as pd
+
+    orig = _records(contestant, split="tune")
+    alig = _records(f"{contestant}-aligned", CHECK_DIR, split="tune")
+    ids = sorted(set(orig) & set(alig))
+    if not ids:
+        return None
+    y = np.array([orig[i]["label"] for i in ids], dtype=float)
+    p0 = np.array([orig[i]["p_default"] for i in ids])
+    p1 = np.array([alig[i]["p_default"] for i in ids])
+    rng = np.random.default_rng(seed)
+    shifts = [float((p1[idx] - p0[idx]).mean())
+              for idx in (rng.integers(0, len(ids), len(ids)) for _ in range(n_boot))]  # fmt: skip
+    status = pd.read_parquet(ROOT / "data" / "splits" / "tune.parquet").set_index("id")["PAY_0"]
+    codes = np.array([status[i] for i in ids])
+    groups = {}
+    for code, label in ((-2, "not late (code -2)"), (-1, "paid on time (code -1)"),
+                        (0, "not late (code 0)")):  # fmt: skip
+        g = codes == code
+        groups[label] = {
+            "n": int(g.sum()),
+            "actual": float(y[g].mean()),
+            "original": float(p0[g].mean()),
+            "aligned": float(p1[g].mean()),
+        }
+    return {
+        "split": "tune",
+        "n": len(ids),
+        "observed_rate": float(y.mean()),
+        "mean_predicted": {"original": float(p0.mean()), "aligned": float(p1.mean())},
+        "mean_shift": {
+            "estimate": float((p1 - p0).mean()),
+            "lo": float(np.percentile(shifts, 2.5)),
+            "hi": float(np.percentile(shifts, 97.5)),
+        },  # fmt: skip
+        "mean_abs_change": float(np.abs(p1 - p0).mean()),
+        "ece": {"original": m.ece(y, p0), "aligned": m.ece(y, p1)},
+        "auc": {"original": m.auc(y, p0), "aligned": m.auc(y, p1)},
+        "by_status": groups,
+        "cost_usd": float(sum(alig[i]["cost_usd"] for i in ids)),
+    }
+
+
 def report() -> dict:
     results = {c: r for c in CONTESTANTS if (r := report_one(c))}
-    SUMMARY_JSON.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
+    aligned = {c: r for c in CONTESTANTS if (r := report_aligned(c))}
+    SUMMARY_JSON.write_text(json.dumps({"disguise": results, "aligned_layout": aligned}, indent=2)
+                            + "\n", encoding="utf-8")  # fmt: skip
+    for c, r in aligned.items():
+        s, st = r["mean_shift"], r["by_status"]["paid on time (code -1)"]
+        print(f"aligned {c} (tune): mean p {r['mean_predicted']['original']:.3f} -> "
+              f"{r['mean_predicted']['aligned']:.3f}  shift {s['estimate']:+.3f} "
+              f"[{s['lo']:+.3f}, {s['hi']:+.3f}]  ECE {r['ece']['original']:.3f} -> "
+              f"{r['ece']['aligned']:.3f}  AUC {r['auc']['original']:.3f} -> "
+              f"{r['auc']['aligned']:.3f}  | paid on time: actual {st['actual']:.2f}, "
+              f"{st['original']:.2f} -> {st['aligned']:.2f}")  # fmt: skip
     for c, r in results.items():
         s = r["mean_shift"]
         print(f"{c}: n={r['n']}  mean p {r['mean_predicted']['original']:.3f} -> "
@@ -254,6 +342,9 @@ def main() -> None:
     ap = build_parser(__doc__)
     ap.set_defaults(split="test", condition="out_of_box")
     ap.add_argument("--contestant", choices=CONTESTANTS, default="frontier-verbal")
+    ap.add_argument("--variant", choices=("disguised", "aligned"), default="disguised",
+                    help="disguised: no NT$/dates/codes (test); aligned: each bill next to "
+                         "the next month's payment (run on --split tune)")  # fmt: skip
     ap.add_argument("--control", action="store_true",
                     help=f"original summaries, {CONTROL_N} customers")  # fmt: skip
     ap.add_argument("--rpm", type=float, default=18.0, help="Sol's requests-per-minute cap")
@@ -269,17 +360,23 @@ def main() -> None:
     if args.report:
         report()
         return
-    if args.condition != "out_of_box" or args.split != "test":
-        ap.error("the disguise check runs on test, out_of_box requests only")
+    if args.condition != "out_of_box":
+        ap.error("these checks run on out_of_box requests only")
+    if args.variant == "disguised" and args.split != "test":
+        ap.error("the disguise check runs on test (use --variant aligned for tune)")
+    if args.variant == "aligned" and args.control:
+        ap.error(
+            "--control is for the disguise check; the aligned layout uses its test noise floor"
+        )
     if args.out_dir is None and not args.smoke:
         args.out_dir = CHECK_DIR
     args = resolve_args(args)
     from env import load_env
 
     load_env()
-    rows = load_requests("test")
+    rows = load_requests(args.split)
     requests = control_sample(rows) if args.control else rows
-    run(make_predictor(args.contestant, args, args.control), args,
+    run(make_predictor(args.contestant, args, args.control, args.variant), args,
         requests=requests[: args.limit or None])  # fmt: skip
 
 

@@ -115,14 +115,16 @@ git commit -m "M3: GPU contestants' tune and test predictions" && git push
 - **The manifest script:** `runners/manifest.py` checks coverage and writes `results/run_manifest.json`. `--allow-incomplete` is needed here because Jev and Sol run on the laptop; the final manifest without that flag is written once every contestant is in.
 - **Pause the instance.** Keep it paused, not deleted, until M4's metrics confirm nothing needs re-running. Then delete it, since storage bills while paused.
 
-## 5. Disguise check: Kev-4B, Kev-0.8B, Qwen (2026-11-23)
+## 5. Disguise and layout checks: Kev-4B, Kev-0.8B, Qwen, Laya (2026-11-23)
 
 **Why:** every summary shows "Sep 2005"…"Apr 2005", NT$ amounts and raw repayment codes.
 - **The question:** this step checks whether removing those cues changes each model's answers. For example, does knowing it's Taiwan in 2005, during a card-debt crisis, push its risk up or down?
 - **Already done:** Jev, Laya and Sol ran on the laptop. Jev's average went *up* 4 points when disguised, against 0.3 points of run-to-run noise.
 - **Details:** `runners/checks/disguise.py`, `data/contamination.md` §4.
 
-**What runs:** for each model, 2,000 disguised test summaries, then a 200-customer control on the *original* summaries, which measures run-to-run noise. Both are out of the box only. At ~0.1–0.15 s per request, that's a few minutes per model. Output goes to `results/checks/disguise/`. Every command resumes if interrupted.
+**What runs:** for each model, 2,000 disguised test summaries, then a 200-customer control on the *original* summaries, which measures run-to-run noise. Both are out of the box only.
+
+**Layout check (added 2026-11-23, after the review panel):** template v2 shows each payment beside the same month's bill, but payments usually settle the *previous* month's bill (README, data quirk 3). `--variant aligned --split tune` re-asks the 2,000 tune customers with each bill shown next to the payment made the following month. Every number is unchanged and the test set isn't touched. Jev and Sol run it on the laptop; Kev, Qwen and Laya run it here. At ~0.1–0.15 s per request, that's a few minutes per model. Output goes to `results/checks/disguise/`. Every command resumes if interrupted.
 
 **Setup (new instance):**
 1. **Base setup:** `STATUS.md` → "The L4 instance" → "First-time setup": env.sh, uv, `gh auth login`, clone. Then `uv sync --group runners`. No API key is needed.
@@ -137,25 +139,32 @@ source /home/env.sh && cd /home/can-ai-know-when-its-wrong && git pull
 #   curl -s 127.0.0.1:8009/v1/models   then, in window 2:
 uv run --group runners python runners/checks/disguise.py --contestant kev-4b
 uv run --group runners python runners/checks/disguise.py --contestant kev-4b --control
+uv run --group runners python runners/checks/disguise.py --contestant kev-4b --variant aligned --split tune
 #   stop the server (Ctrl-C in window 1)
 
 # Kev-0.8B: same, with the 0.8b --run commit from step 1
 uv run --group runners python runners/checks/disguise.py --contestant kev-0.8b
 uv run --group runners python runners/checks/disguise.py --contestant kev-0.8b --control
+uv run --group runners python runners/checks/disguise.py --contestant kev-0.8b --variant aligned --split tune
 #   stop the server
 
 # Qwen3.5-4B: start vLLM with the exact command in STATUS.md ("Serving Qwen3.5-4B"), wait for
 #   curl -s 127.0.0.1:8000/v1/models   then:
 uv run --group runners python runners/checks/disguise.py --contestant qwen-logprobs
 uv run --group runners python runners/checks/disguise.py --contestant qwen-logprobs --control
+uv run --group runners python runners/checks/disguise.py --contestant qwen-logprobs --variant aligned --split tune
 #   then, on its own line:  pkill -f "vllm serve"
+
+# Laya: layout check only (its disguise run was done on the laptop), on the GPU like its M3 run
+uv run --group runners --group laya python runners/checks/disguise.py --contestant laya --variant aligned --split tune --device cuda
 ```
 
 **Check, then push:**
 ```bash
 wc -l results/checks/disguise/{kev-4b,kev-0.8b,qwen-logprobs}-{disguised,control}.jsonl   # 2000 / 200 each
+wc -l results/checks/disguise/{kev-4b,kev-0.8b,qwen-logprobs,laya}-aligned.jsonl           # 2000 each
 uv run --group runners python runners/checks/disguise.py --report
-git add results/checks/disguise && git commit -m "Disguise check: Kev-4B, Kev-0.8B, Qwen (L4)" && git push
+git add results/checks/disguise && git commit -m "Disguise and layout checks: Kev-4B, Kev-0.8B, Qwen, Laya (L4)" && git push
 ```
 
 **Then delete the instance.** Nothing else needs the GPU, and storage bills while paused. Also revoke its `gh` token.

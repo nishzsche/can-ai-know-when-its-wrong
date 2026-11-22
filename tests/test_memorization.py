@@ -278,3 +278,34 @@ def test_control_sample_is_fixed():
     rows = [{"id": f"cust_{i:05d}"} for i in range(1, 2001)]
     a, b = sd.control_sample(rows), sd.control_sample(rows)
     assert [r["id"] for r in a] == [r["id"] for r in b] and len(a) == sd.CONTROL_N
+
+
+def test_aligned_layout_moves_payments_and_keeps_every_number():
+    import re
+
+    sd = _sol_disguise()
+    state = (
+        "Credit card account summary\nCredit limit: NT$50,000\n\n"
+        "Month (most recent first) | Bill amount | Amount paid | Repayment status\n"
+        "Sep 2005 | NT$8,617 | NT$2,000 | paid on time (code -1)\n"
+        "Aug 2005 | NT$5,670 | NT$36,681 | not late (code 0)\n"
+        "Jul 2005 | NT$35,835 | NT$10,000 | paid on time (code -1)"
+    )
+    out = sd.align(state)
+    assert "Sep 2005 | NT$8,617 | not in the data yet | paid on time (code -1)" in out
+    assert "Aug 2005 | NT$5,670 | NT$2,000 (paid in Sep 2005) | not late (code 0)" in out
+    assert "Jul 2005 | NT$35,835 | NT$36,681 (paid in Aug 2005) | paid on time (code -1)" in out
+    assert out.endswith("Earliest payment in the data: NT$10,000 paid in Jul 2005")
+    nums = lambda t: sorted(re.findall(r"-?NT\$[\d,]+", t))  # noqa: E731
+    assert nums(out) == nums(state)
+    assert (
+        sd.wrap(
+            type(
+                "B",
+                (),
+                {"contestant": "x", "__init__": lambda self: setattr(self, "model_version", "m")},
+            ),
+            variant="aligned",
+        )().contestant
+        == "x-aligned"
+    )

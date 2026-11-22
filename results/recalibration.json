@@ -1,0 +1,76 @@
+{
+  "jev": {
+    "cv_log_loss": {
+      "platt": 0.48873613766642043,
+      "isotonic": 0.4666383269555462
+    },
+    "chosen": "isotonic",
+    "params": {
+      "n_thresholds": 16
+    },
+    "source_model_versions": [
+      "typesafe/jev-1.14-20261014"
+    ],
+    "fitted_at": "2026-11-22T10:59:05Z"
+  },
+  "kev-0.8b": {
+    "cv_log_loss": {
+      "platt": 0.45942518678229016,
+      "isotonic": 0.4741595749595165
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.31745726920869377,
+      "slope": 1.2894131550366208
+    },
+    "source_model_versions": [
+      "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e)"
+    ],
+    "fitted_at": "2026-11-22T10:59:05Z"
+  },
+  "kev-4b": {
+    "cv_log_loss": {
+      "platt": 0.5199747617604508,
+      "isotonic": 0.5277054549254042
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -1.2537901113197423,
+      "slope": 0.619197132941569
+    },
+    "source_model_versions": [
+      "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)"
+    ],
+    "fitted_at": "2026-11-22T10:59:05Z"
+  },
+  "laya": {
+    "cv_log_loss": {
+      "platt": 0.5102084542094296,
+      "isotonic": 0.5137949449465598
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.4948941524604139,
+      "slope": 0.5383168529119813
+    },
+    "source_model_versions": [
+      "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1"
+    ],
+    "fitted_at": "2026-11-22T10:59:05Z"
+  },
+  "qwen-logprobs": {
+    "cv_log_loss": {
+      "platt": 0.46473645019348025,
+      "isotonic": 0.4678587209758868
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.5895298019727566,
+      "slope": 1.3428539789878606
+    },
+    "source_model_versions": [
+      "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20"
+    ],
+    "fitted_at": "2026-11-22T10:59:05Z"
+  }
+}

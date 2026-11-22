@@ -1,9 +1,9 @@
 {
-  "written_at": "2026-11-22T10:36:49Z",
+  "written_at": "2026-11-22T11:04:10Z",
   "complete": false,
   "git": {
-    "commit": "01269228b4525ca2b68976ef7e7b08a3ad2a774e",
-    "dirty": false
+    "commit": "7b94088f97e9f646be8c4aefe1954a60b513f7ff",
+    "dirty": true
   },
   "data": {
     "source_sha256": "fc08fd639888b4f83b3d816f04c18bf943012124807cc6197e654d3b31d7851a",
@@ -20,9 +20,10 @@
       "present": true,
       "complete": true,
       "model_versions": [
-        "typesafe/jev-1.14-20261014"
+        "typesafe/jev-1.14-20261014",
+        "typesafe/jev-1.14-20261014; recalibrated: isotonic fit on tune out_of_box (5-fold CV choice)"
       ],
-      "records": 8000,
+      "records": 10000,
       "groups": {
         "out_of_box/tune": {
           "records": 2000,
@@ -52,7 +53,7 @@
       "cost_usd_total": 0.169575,
       "latency_ms_median": 432.5,
       "first_ts": "2026-11-22T09:42:11Z",
-      "last_ts": "2026-11-22T09:49:32Z",
+      "last_ts": "2026-11-22T10:59:05Z",
       "runs": [
         {
           "model_version": "typesafe/jev-1.14-20261014",
@@ -120,9 +121,10 @@
       "present": true,
       "complete": true,
       "model_versions": [
-        "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e)"
+        "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e)",
+        "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e); recalibrated: platt fit on tune out_of_box (5-fold CV choice)"
       ],
-      "records": 8000,
+      "records": 10000,
       "groups": {
         "out_of_box/tune": {
           "records": 2000,
@@ -152,7 +154,7 @@
       "cost_usd_total": 0.038216,
       "latency_ms_median": 39.2,
       "first_ts": "2026-11-22T10:30:53Z",
-      "last_ts": "2026-11-22T10:36:06Z",
+      "last_ts": "2026-11-22T10:59:05Z",
       "runs": [
         {
           "model_version": "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e)",
@@ -358,9 +360,10 @@
       "present": true,
       "complete": true,
       "model_versions": [
-        "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)"
+        "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)",
+        "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94); recalibrated: platt fit on tune out_of_box (5-fold CV choice)"
       ],
-      "records": 8000,
+      "records": 10000,
       "groups": {
         "out_of_box/tune": {
           "records": 2000,
@@ -390,7 +393,7 @@
       "cost_usd_total": 0.13484,
       "latency_ms_median": 138.7,
       "first_ts": "2026-11-22T10:12:09Z",
-      "last_ts": "2026-11-22T10:30:33Z",
+      "last_ts": "2026-11-22T10:59:05Z",
       "runs": [
         {
           "model_version": "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)",
@@ -596,9 +599,10 @@
       "present": true,
       "complete": true,
       "model_versions": [
-        "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1"
+        "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1",
+        "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1; recalibrated: platt fit on tune out_of_box (5-fold CV choice)"
       ],
-      "records": 8000,
+      "records": 10000,
       "groups": {
         "out_of_box/tune": {
           "records": 2000,
@@ -628,7 +632,7 @@
       "cost_usd_total": 0.01637,
       "latency_ms_median": 16.5,
       "first_ts": "2026-11-22T09:46:22Z",
-      "last_ts": "2026-11-22T09:48:42Z",
+      "last_ts": "2026-11-22T10:59:05Z",
       "runs": [
         {
           "model_version": "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1",
@@ -694,9 +698,10 @@
       "present": true,
       "complete": true,
       "model_versions": [
-        "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20"
+        "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20",
+        "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20; recalibrated: platt fit on tune out_of_box (5-fold CV choice)"
       ],
-      "records": 8000,
+      "records": 10000,
       "groups": {
         "out_of_box/tune": {
           "records": 2000,
@@ -726,7 +731,7 @@
       "cost_usd_total": 0.157085,
       "latency_ms_median": 142.5,
       "first_ts": "2026-11-22T09:49:59Z",
-      "last_ts": "2026-11-22T10:11:27Z",
+      "last_ts": "2026-11-22T10:59:05Z",
       "runs": [
         {
           "model_version": "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20",

@@ -1,0 +1,2626 @@
+{
+ "scorecard": {
+  "trained": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.06117146921224245,
+     "actual": 0.07,
+     "p_min": 0.034442099339405015,
+     "p_max": 0.07809794978244843
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.08860101637233257,
+     "actual": 0.055,
+     "p_min": 0.07809794978244843,
+     "p_max": 0.09688527516545088
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.10491766844336968,
+     "actual": 0.07,
+     "p_min": 0.09697060682618013,
+     "p_max": 0.11395478524578546
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.12164968750461852,
+     "actual": 0.1,
+     "p_min": 0.11403752310261554,
+     "p_max": 0.13029318341133264
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.13700602309028742,
+     "actual": 0.16,
+     "p_min": 0.13032527362591115,
+     "p_max": 0.14490098189902578
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.15275184740685213,
+     "actual": 0.18,
+     "p_min": 0.14498076099930127,
+     "p_max": 0.16376611861826565
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.17773180449333317,
+     "actual": 0.205,
+     "p_min": 0.163802526157249,
+     "p_max": 0.19595397364864947
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.2379997619246695,
+     "actual": 0.25,
+     "p_min": 0.19613956600705032,
+     "p_max": 0.2945831910940166
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.39482555566869737,
+     "actual": 0.425,
+     "p_min": 0.296141146228,
+     "p_max": 0.5592671984030986
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.7015579274449888,
+     "actual": 0.695,
+     "p_min": 0.5599360128197709,
+     "p_max": 0.9110474456926796
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 436,
+     "share": 0.218,
+     "promised": 0.0768206684148437,
+     "actual": 0.06422018348623854
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 983,
+     "share": 0.4915,
+     "promised": 0.141443131360846,
+     "actual": 0.14445574771108852
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 303,
+     "share": 0.1515,
+     "promised": 0.2816967279001943,
+     "actual": 0.3102310231023102
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 278,
+     "share": 0.139,
+     "promised": 0.6394101949709928,
+     "actual": 0.6402877697841727
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.218,
+     "default_rate_approved": 0.06422018348623854,
+     "promised_approved": 0.0768206684148437,
+     "n_approved": 436
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.5345,
+     "default_rate_approved": 0.09915809167446211,
+     "promised_approved": 0.10556629548360527,
+     "n_approved": 1069
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.7095,
+     "default_rate_approved": 0.11980267794221283,
+     "promised_approved": 0.12158732174530196,
+     "n_approved": 1419
+    }
+   ]
+  }
+ },
+ "gbm": {
+  "trained": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.050111433128640775,
+     "actual": 0.03,
+     "p_min": 0.030807898339691664,
+     "p_max": 0.0622133123264535
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.07209470396947706,
+     "actual": 0.075,
+     "p_min": 0.062253168436320463,
+     "p_max": 0.0838376492192601
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.09403455593601417,
+     "actual": 0.085,
+     "p_min": 0.0838466152276555,
+     "p_max": 0.10552163765418167
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.11676076626812902,
+     "actual": 0.115,
+     "p_min": 0.10555726972124153,
+     "p_max": 0.12778380800181083
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.1385840199977146,
+     "actual": 0.155,
+     "p_min": 0.12780259682201633,
+     "p_max": 0.14810273415438696
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.15807601965708226,
+     "actual": 0.155,
+     "p_min": 0.14813193240678363,
+     "p_max": 0.16966839215229917
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.18991427584089307,
+     "actual": 0.19,
+     "p_min": 0.16984474991560142,
+     "p_max": 0.21937947730697208
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.25879064710005845,
+     "actual": 0.23,
+     "p_min": 0.22023548304241725,
+     "p_max": 0.3124203315522008
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.4108903417322823,
+     "actual": 0.435,
+     "p_min": 0.31247459600830974,
+     "p_max": 0.5765964834127418
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6858563222103647,
+     "actual": 0.74,
+     "p_min": 0.5776069350622568,
+     "p_max": 0.8337719237388033
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 562,
+     "share": 0.281,
+     "promised": 0.0699854296247488,
+     "actual": 0.06227758007117438
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 784,
+     "share": 0.392,
+     "promised": 0.14454536515831357,
+     "actual": 0.1441326530612245
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 361,
+     "share": 0.1805,
+     "promised": 0.2795873543516648,
+     "actual": 0.3047091412742382
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 293,
+     "share": 0.1465,
+     "promised": 0.6192361928803878,
+     "actual": 0.6279863481228669
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.281,
+     "default_rate_approved": 0.06227758007117438,
+     "promised_approved": 0.0699854296247488,
+     "n_approved": 562
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.5115,
+     "default_rate_approved": 0.09188660801564028,
+     "promised_approved": 0.09554533793613024,
+     "n_approved": 1023
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.673,
+     "default_rate_approved": 0.1099554234769688,
+     "promised_approved": 0.11341409935603763,
+     "n_approved": 1346
+    }
+   ]
+  },
+  "trained_calibrated": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.035221238938053095,
+     "actual": 0.09,
+     "p_min": 0.0,
+     "p_max": 0.035398230088495575
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.035398230088495575,
+     "actual": 0.03,
+     "p_min": 0.035398230088495575,
+     "p_max": 0.035398230088495575
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.055160467080920525,
+     "actual": 0.08,
+     "p_min": 0.035398230088495575,
+     "p_max": 0.10240963855421686
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.1137468624497992,
+     "actual": 0.09,
+     "p_min": 0.10240963855421686,
+     "p_max": 0.1284722222222222
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.12847222222222224,
+     "actual": 0.15,
+     "p_min": 0.1284722222222222,
+     "p_max": 0.1284722222222222
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.1890495537495349,
+     "actual": 0.19,
+     "p_min": 0.1284722222222222,
+     "p_max": 0.19886363636363635
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.20747489429175472,
+     "actual": 0.165,
+     "p_min": 0.19886363636363635,
+     "p_max": 0.2441860465116279
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.2813805667141005,
+     "actual": 0.275,
+     "p_min": 0.2441860465116279,
+     "p_max": 0.35074626865671643
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.4081020899729681,
+     "actual": 0.415,
+     "p_min": 0.35074626865671643,
+     "p_max": 0.46464646464646464
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6862310677741124,
+     "actual": 0.725,
+     "p_min": 0.46464646464646464,
+     "p_max": 1.0
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 567,
+     "share": 0.2835,
+     "promised": 0.038406471162618486,
+     "actual": 0.06172839506172839
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 795,
+     "share": 0.3975,
+     "promised": 0.15326937716667863,
+     "actual": 0.1459119496855346
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 360,
+     "share": 0.18,
+     "promised": 0.30814771350675374,
+     "actual": 0.3111111111111111
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 278,
+     "share": 0.139,
+     "promised": 0.6240598481915349,
+     "actual": 0.6438848920863309
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.2835,
+     "default_rate_approved": 0.06172839506172839,
+     "promised_approved": 0.038406471162618486,
+     "n_approved": 567
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.514,
+     "default_rate_approved": 0.09241245136186771,
+     "promised_approved": 0.0751289178396138,
+     "n_approved": 1028
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.681,
+     "default_rate_approved": 0.11086637298091043,
+     "promised_approved": 0.1054519999975875,
+     "n_approved": 1362
+    }
+   ]
+  }
+ },
+ "jev": {
+  "out_of_box": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.15024999999999997,
+     "actual": 0.16,
+     "p_min": 0.06,
+     "p_max": 0.21
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.2614,
+     "actual": 0.105,
+     "p_min": 0.21,
+     "p_max": 0.31
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.3616499999999999,
+     "actual": 0.15,
+     "p_min": 0.31,
+     "p_max": 0.39
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.41870000000000007,
+     "actual": 0.095,
+     "p_min": 0.39,
+     "p_max": 0.45
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.4697,
+     "actual": 0.105,
+     "p_min": 0.45,
+     "p_max": 0.49
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.51225,
+     "actual": 0.145,
+     "p_min": 0.49,
+     "p_max": 0.53
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.5495500000000001,
+     "actual": 0.165,
+     "p_min": 0.53,
+     "p_max": 0.57
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.5945,
+     "actual": 0.21,
+     "p_min": 0.57,
+     "p_max": 0.62
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.6937000000000001,
+     "actual": 0.445,
+     "p_min": 0.62,
+     "p_max": 0.75
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.79875,
+     "actual": 0.63,
+     "p_min": 0.75,
+     "p_max": 0.89
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 26,
+     "share": 0.013,
+     "promised": 0.07576923076923078,
+     "actual": 0.19230769230769232
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 131,
+     "share": 0.0655,
+     "promised": 0.14755725190839694,
+     "actual": 0.16030534351145037
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 451,
+     "share": 0.2255,
+     "promised": 0.3026164079822617,
+     "actual": 0.13082039911308205
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 1392,
+     "share": 0.696,
+     "promised": 0.577808908045977,
+     "actual": 0.25646551724137934
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.013,
+     "default_rate_approved": 0.19230769230769232,
+     "promised_approved": 0.07576923076923078,
+     "n_approved": 26
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.041,
+     "default_rate_approved": 0.1951219512195122,
+     "promised_approved": 0.10268292682926827,
+     "n_approved": 82
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.0785,
+     "default_rate_approved": 0.16560509554140126,
+     "promised_approved": 0.13566878980891717,
+     "n_approved": 157
+    }
+   ]
+  },
+  "base_rate": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.17915,
+     "actual": 0.14,
+     "p_min": 0.11,
+     "p_max": 0.22
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.23409999999999997,
+     "actual": 0.07,
+     "p_min": 0.22,
+     "p_max": 0.25
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.26099999999999995,
+     "actual": 0.075,
+     "p_min": 0.25,
+     "p_max": 0.27
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.2858,
+     "actual": 0.12,
+     "p_min": 0.27,
+     "p_max": 0.3
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.3087,
+     "actual": 0.115,
+     "p_min": 0.3,
+     "p_max": 0.32
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.33710000000000007,
+     "actual": 0.13,
+     "p_min": 0.32,
+     "p_max": 0.36
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.37504999999999994,
+     "actual": 0.185,
+     "p_min": 0.36,
+     "p_max": 0.4
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.4241000000000001,
+     "actual": 0.255,
+     "p_min": 0.4,
+     "p_max": 0.46
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.58875,
+     "actual": 0.485,
+     "p_min": 0.47,
+     "p_max": 0.69
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.7628,
+     "actual": 0.635,
+     "p_min": 0.69,
+     "p_max": 0.87
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 0,
+     "share": 0.0,
+     "promised": null,
+     "actual": null
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 119,
+     "share": 0.0595,
+     "promised": 0.16016806722689075,
+     "actual": 0.14285714285714285
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 1273,
+     "share": 0.6365,
+     "promised": 0.2937313432835821,
+     "actual": 0.11547525530243519
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 608,
+     "share": 0.304,
+     "promised": 0.5893585526315789,
+     "actual": 0.45723684210526316
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.0155,
+     "default_rate_approved": 0.22580645161290322,
+     "promised_approved": 0.12741935483870967,
+     "n_approved": 31
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.0595,
+     "default_rate_approved": 0.14285714285714285,
+     "promised_approved": 0.16016806722689075,
+     "n_approved": 119
+    }
+   ]
+  },
+  "recalibrated": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.1331496786042241,
+     "actual": 0.155,
+     "p_min": 0.13314967860422405,
+     "p_max": 0.13314967860422405
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.1331496786042241,
+     "actual": 0.11,
+     "p_min": 0.13314967860422405,
+     "p_max": 0.13314967860422405
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.1331496786042241,
+     "actual": 0.165,
+     "p_min": 0.13314967860422405,
+     "p_max": 0.13314967860422405
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.1331496786042241,
+     "actual": 0.075,
+     "p_min": 0.13314967860422405,
+     "p_max": 0.13314967860422405
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.1331496786042241,
+     "actual": 0.1,
+     "p_min": 0.13314967860422405,
+     "p_max": 0.13314967860422405
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.14305551054214155,
+     "actual": 0.125,
+     "p_min": 0.13314967860422405,
+     "p_max": 0.15468409586056645
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.15468409586056645,
+     "actual": 0.205,
+     "p_min": 0.15468409586056645,
+     "p_max": 0.15468409586056645
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.1732723311546841,
+     "actual": 0.21,
+     "p_min": 0.15468409586056645,
+     "p_max": 0.2235294117647059
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.44977807486631,
+     "actual": 0.46,
+     "p_min": 0.2235294117647059,
+     "p_max": 0.5227272727272727
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6559090909090908,
+     "actual": 0.605,
+     "p_min": 0.5227272727272727,
+     "p_max": 1.0
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 0,
+     "share": 0.0,
+     "promised": null,
+     "actual": null
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 1546,
+     "share": 0.773,
+     "promised": 0.13925063252290323,
+     "actual": 0.14165588615782665
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 108,
+     "share": 0.054,
+     "promised": 0.24561299267181627,
+     "actual": 0.1574074074074074
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 346,
+     "share": 0.173,
+     "promised": 0.5973462953231737,
+     "actual": 0.5953757225433526
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.554,
+     "default_rate_approved": 0.12184115523465704,
+     "promised_approved": 0.13314967860422408,
+     "n_approved": 1108
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.773,
+     "default_rate_approved": 0.14165588615782665,
+     "promised_approved": 0.13925063252290323,
+     "n_approved": 1546
+    }
+   ]
+  }
+ },
+ "kev-4b": {
+  "out_of_box": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.24134749999999996,
+     "actual": 0.14,
+     "p_min": 0.0876,
+     "p_max": 0.295
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.33675200000000005,
+     "actual": 0.16,
+     "p_min": 0.2952,
+     "p_max": 0.3682
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.393093,
+     "actual": 0.2,
+     "p_min": 0.3687,
+     "p_max": 0.4199
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.446973,
+     "actual": 0.14,
+     "p_min": 0.42,
+     "p_max": 0.4701
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.48680999999999996,
+     "actual": 0.195,
+     "p_min": 0.4703,
+     "p_max": 0.5052
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.523618,
+     "actual": 0.27,
+     "p_min": 0.5052,
+     "p_max": 0.5428
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.5582285,
+     "actual": 0.23,
+     "p_min": 0.5429,
+     "p_max": 0.5725
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.587525,
+     "actual": 0.3,
+     "p_min": 0.5727,
+     "p_max": 0.6013
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.6195155,
+     "actual": 0.28,
+     "p_min": 0.6015,
+     "p_max": 0.642
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6700050000000001,
+     "actual": 0.295,
+     "p_min": 0.6422,
+     "p_max": 0.7311
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 9,
+     "share": 0.0045,
+     "promised": 0.09428888888888888,
+     "actual": 0.2222222222222222
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 21,
+     "share": 0.0105,
+     "promised": 0.1605238095238095,
+     "actual": 0.14285714285714285
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 499,
+     "share": 0.2495,
+     "promised": 0.32254589178356713,
+     "actual": 0.16032064128256512
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 1471,
+     "share": 0.7355,
+     "promised": 0.5490166553365058,
+     "actual": 0.24269204622705642
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.0045,
+     "default_rate_approved": 0.2222222222222222,
+     "promised_approved": 0.09428888888888888,
+     "n_approved": 9
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.0085,
+     "default_rate_approved": 0.17647058823529413,
+     "promised_approved": 0.11088823529411765,
+     "n_approved": 17
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.015,
+     "default_rate_approved": 0.16666666666666666,
+     "promised_approved": 0.14065333333333335,
+     "n_approved": 30
+    }
+   ]
+  },
+  "base_rate": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.0318,
+     "actual": 0.105,
+     "p_min": 0.0212,
+     "p_max": 0.0365
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.040409,
+     "actual": 0.07,
+     "p_min": 0.0365,
+     "p_max": 0.0437
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.047785,
+     "actual": 0.075,
+     "p_min": 0.0437,
+     "p_max": 0.0532
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.0610435,
+     "actual": 0.12,
+     "p_min": 0.0533,
+     "p_max": 0.0709
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.0880465,
+     "actual": 0.13,
+     "p_min": 0.071,
+     "p_max": 0.1077
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.132587,
+     "actual": 0.135,
+     "p_min": 0.1077,
+     "p_max": 0.1592
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.1960635,
+     "actual": 0.175,
+     "p_min": 0.1595,
+     "p_max": 0.2467
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.325732,
+     "actual": 0.32,
+     "p_min": 0.2468,
+     "p_max": 0.4089
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.4722775,
+     "actual": 0.48,
+     "p_min": 0.409,
+     "p_max": 0.5375
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6049485000000001,
+     "actual": 0.6,
+     "p_min": 0.5391,
+     "p_max": 0.7146
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 967,
+     "share": 0.4835,
+     "promised": 0.05211799379524302,
+     "actual": 0.09927611168562564
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 346,
+     "share": 0.173,
+     "promised": 0.14470895953757226,
+     "actual": 0.12716763005780346
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 278,
+     "share": 0.139,
+     "promised": 0.28985503597122303,
+     "actual": 0.29856115107913667
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 409,
+     "share": 0.2045,
+     "promised": 0.5356757946210269,
+     "actual": 0.5354523227383863
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.4835,
+     "default_rate_approved": 0.09927611168562564,
+     "promised_approved": 0.05211799379524302,
+     "n_approved": 967
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.5855,
+     "default_rate_approved": 0.1067463706233988,
+     "promised_approved": 0.06478565328778822,
+     "n_approved": 1171
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.6565,
+     "default_rate_approved": 0.10662604722010663,
+     "promised_approved": 0.07651744097486672,
+     "n_approved": 1313
+    }
+   ]
+  },
+  "recalibrated": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.12286001386323106,
+     "actual": 0.14,
+     "p_min": 0.06269346252405235,
+     "p_max": 0.14267490310238531
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.15798998745082443,
+     "actual": 0.16,
+     "p_min": 0.14274773937827617,
+     "p_max": 0.16964806972817334
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.17909029456783493,
+     "actual": 0.2,
+     "p_min": 0.16983557551569964,
+     "p_max": 0.18940136159075752
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.20014995564057642,
+     "actual": 0.14,
+     "p_min": 0.18944039074821106,
+     "p_max": 0.20950121943092273
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.2164804559131126,
+     "actual": 0.195,
+     "p_min": 0.20958356018364027,
+     "p_max": 0.22427756648360903
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.23236091501923822,
+     "actual": 0.27,
+     "p_min": 0.22427756648360903,
+     "p_max": 0.24094171622431232
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.24810490394507675,
+     "actual": 0.23,
+     "p_min": 0.24098735201360463,
+     "p_max": 0.25484279242384655
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.262197823607899,
+     "actual": 0.3,
+     "p_min": 0.25493889769535744,
+     "p_max": 0.26906501611626393
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.2785736079643087,
+     "actual": 0.28,
+     "p_min": 0.26916662835266586,
+     "p_max": 0.29066742812497187
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.30710363924433975,
+     "actual": 0.295,
+     "p_min": 0.2907785475092958,
+     "p_max": 0.34649936421706296
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 24,
+     "share": 0.012,
+     "promised": 0.07951392309795187,
+     "actual": 0.125
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 677,
+     "share": 0.3385,
+     "promised": 0.16219074334087014,
+     "actual": 0.16100443131462333
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 1299,
+     "share": 0.6495,
+     "promised": 0.2534802556175277,
+     "actual": 0.2540415704387991
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 0,
+     "share": 0.0,
+     "promised": null,
+     "actual": null
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.012,
+     "default_rate_approved": 0.125,
+     "promised_approved": 0.07951392309795187,
+     "n_approved": 24
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.1155,
+     "default_rate_approved": 0.1341991341991342,
+     "promised_approved": 0.12603215453785455,
+     "n_approved": 231
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.3505,
+     "default_rate_approved": 0.15977175463623394,
+     "promised_approved": 0.15936015320416538,
+     "n_approved": 701
+    }
+   ]
+  }
+ },
+ "kev-0.8b": {
+  "out_of_box": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.17911200000000002,
+     "actual": 0.1,
+     "p_min": 0.1547,
+     "p_max": 0.1886
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.193584,
+     "actual": 0.135,
+     "p_min": 0.1886,
+     "p_max": 0.1981
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.20275900000000002,
+     "actual": 0.075,
+     "p_min": 0.1981,
+     "p_max": 0.2073
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.2124315,
+     "actual": 0.095,
+     "p_min": 0.2073,
+     "p_max": 0.2168
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.22121300000000002,
+     "actual": 0.11,
+     "p_min": 0.2168,
+     "p_max": 0.2259
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.232457,
+     "actual": 0.12,
+     "p_min": 0.226,
+     "p_max": 0.2407
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.28231000000000006,
+     "actual": 0.165,
+     "p_min": 0.2407,
+     "p_max": 0.3695
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.4041225,
+     "actual": 0.29,
+     "p_min": 0.3702,
+     "p_max": 0.4414
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.5008065,
+     "actual": 0.52,
+     "p_min": 0.4444,
+     "p_max": 0.5578
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6259985,
+     "actual": 0.6,
+     "p_min": 0.5589,
+     "p_max": 0.7188
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 0,
+     "share": 0.0,
+     "promised": null,
+     "actual": null
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 438,
+     "share": 0.219,
+     "promised": 0.18744703196347035,
+     "actual": 0.1095890410958904
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 1059,
+     "share": 0.5295,
+     "promised": 0.24585864022662884,
+     "actual": 0.13503305004721436
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 503,
+     "share": 0.2515,
+     "promised": 0.533782703777336,
+     "actual": 0.4990059642147117
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.219,
+     "default_rate_approved": 0.1095890410958904,
+     "promised_approved": 0.18744703196347035,
+     "n_approved": 438
+    }
+   ]
+  },
+  "base_rate": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.36976600000000004,
+     "actual": 0.14,
+     "p_min": 0.3196,
+     "p_max": 0.3877
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.39562250000000004,
+     "actual": 0.06,
+     "p_min": 0.3878,
+     "p_max": 0.4025
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.407708,
+     "actual": 0.105,
+     "p_min": 0.4025,
+     "p_max": 0.413
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.41765299999999994,
+     "actual": 0.08,
+     "p_min": 0.413,
+     "p_max": 0.4222
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.42692550000000007,
+     "actual": 0.125,
+     "p_min": 0.4222,
+     "p_max": 0.4325
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.4391945,
+     "actual": 0.095,
+     "p_min": 0.4326,
+     "p_max": 0.448
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.4820195,
+     "actual": 0.205,
+     "p_min": 0.4481,
+     "p_max": 0.5393
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.5793755,
+     "actual": 0.31,
+     "p_min": 0.5395,
+     "p_max": 0.6131
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.6510819999999999,
+     "actual": 0.495,
+     "p_min": 0.6132,
+     "p_max": 0.6868
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.7273925,
+     "actual": 0.595,
+     "p_min": 0.6868,
+     "p_max": 0.8008
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 0,
+     "share": 0.0,
+     "promised": null,
+     "actual": null
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 0,
+     "share": 0.0,
+     "promised": null,
+     "actual": null
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 360,
+     "share": 0.18,
+     "promised": 0.38063305555555554,
+     "actual": 0.10555555555555556
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 1640,
+     "share": 0.82,
+     "promised": 0.5136096951219512,
+     "actual": 0.24634146341463414
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.0,
+     "default_rate_approved": null,
+     "promised_approved": null,
+     "n_approved": 0
+    }
+   ]
+  },
+  "recalibrated": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.09281798590569598,
+     "actual": 0.1,
+     "p_min": 0.07535889950685747,
+     "p_max": 0.09985090642679524
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.1036578689979404,
+     "actual": 0.135,
+     "p_min": 0.09985090642679524,
+     "p_max": 0.107136483713711
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.1107823925915637,
+     "actual": 0.075,
+     "p_min": 0.107136483713711,
+     "p_max": 0.11436411662699843
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.11847528367213524,
+     "actual": 0.095,
+     "p_min": 0.11436411662699843,
+     "p_max": 0.12200315898876916
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.1256182004756811,
+     "actual": 0.11,
+     "p_min": 0.12200315898876916,
+     "p_max": 0.1294861603063393
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.13499441812497964,
+     "actual": 0.12,
+     "p_min": 0.12956928468315762,
+     "p_max": 0.141997944419044
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.18109518503945435,
+     "actual": 0.165,
+     "p_min": 0.141997944419044,
+     "p_max": 0.26767101086225015
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.3064029006419724,
+     "actual": 0.29,
+     "p_min": 0.26843084469520057,
+     "p_max": 0.3495333467130051
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.4229247314215117,
+     "actual": 0.52,
+     "p_min": 0.3531061271021649,
+     "p_max": 0.49549855404875287
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.5859787250134184,
+     "actual": 0.6,
+     "p_min": 0.49693640896946467,
+     "p_max": 0.7094426919740354
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 202,
+     "share": 0.101,
+     "promised": 0.09288761878214254,
+     "actual": 0.10396039603960396
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 1134,
+     "share": 0.567,
+     "promised": 0.12296362552482133,
+     "actual": 0.10934744268077601
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 332,
+     "share": 0.166,
+     "promised": 0.30713096212924,
+     "actual": 0.31626506024096385
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 332,
+     "share": 0.166,
+     "promised": 0.5312590620807912,
+     "actual": 0.5783132530120482
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.101,
+     "default_rate_approved": 0.10396039603960396,
+     "promised_approved": 0.09288761878214254,
+     "n_approved": 202
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.6345,
+     "default_rate_approved": 0.10480693459416864,
+     "promised_approved": 0.11609175458630899,
+     "n_approved": 1269
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.668,
+     "default_rate_approved": 0.10853293413173652,
+     "promised_approved": 0.11841620534366781,
+     "n_approved": 1336
+    }
+   ]
+  }
+ },
+ "laya": {
+  "out_of_box": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.059188,
+     "actual": 0.115,
+     "p_min": 0.0019,
+     "p_max": 0.08
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.092777,
+     "actual": 0.1,
+     "p_min": 0.08,
+     "p_max": 0.104
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.11397550000000001,
+     "actual": 0.16,
+     "p_min": 0.1041,
+     "p_max": 0.1234
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.1322865,
+     "actual": 0.115,
+     "p_min": 0.1235,
+     "p_max": 0.1414
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.149346,
+     "actual": 0.19,
+     "p_min": 0.1414,
+     "p_max": 0.1574
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.16694599999999998,
+     "actual": 0.215,
+     "p_min": 0.1576,
+     "p_max": 0.1774
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.19007150000000003,
+     "actual": 0.215,
+     "p_min": 0.1777,
+     "p_max": 0.2047
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.23196800000000004,
+     "actual": 0.305,
+     "p_min": 0.2054,
+     "p_max": 0.2665
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.32586600000000004,
+     "actual": 0.395,
+     "p_min": 0.2669,
+     "p_max": 0.4142
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.5798349999999999,
+     "actual": 0.4,
+     "p_min": 0.4156,
+     "p_max": 0.8483
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 361,
+     "share": 0.1805,
+     "promised": 0.07319307479224377,
+     "actual": 0.10803324099722991
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 1010,
+     "share": 0.505,
+     "promised": 0.14713603960396038,
+     "actual": 0.17425742574257425
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 415,
+     "share": 0.2075,
+     "promised": 0.26926506024096386,
+     "actual": 0.3397590361445783
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 214,
+     "share": 0.107,
+     "promised": 0.5685831775700935,
+     "actual": 0.40186915887850466
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.1805,
+     "default_rate_approved": 0.10803324099722991,
+     "promised_approved": 0.07319307479224377,
+     "n_approved": 361
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.452,
+     "default_rate_approved": 0.1338495575221239,
+     "promised_approved": 0.1048349557522124,
+     "n_approved": 904
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.6855,
+     "default_rate_approved": 0.15681983953318746,
+     "promised_approved": 0.12766601021152443,
+     "n_approved": 1371
+    }
+   ]
+  },
+  "base_rate": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.136402,
+     "actual": 0.16,
+     "p_min": 0.0891,
+     "p_max": 0.1578
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.1692385,
+     "actual": 0.115,
+     "p_min": 0.1578,
+     "p_max": 0.1798
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.18963850000000002,
+     "actual": 0.125,
+     "p_min": 0.18,
+     "p_max": 0.1997
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.20768599999999998,
+     "actual": 0.11,
+     "p_min": 0.1997,
+     "p_max": 0.2159
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.2245815,
+     "actual": 0.195,
+     "p_min": 0.216,
+     "p_max": 0.2323
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.24363700000000002,
+     "actual": 0.14,
+     "p_min": 0.233,
+     "p_max": 0.2559
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.267138,
+     "actual": 0.255,
+     "p_min": 0.2559,
+     "p_max": 0.2794
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.29615499999999995,
+     "actual": 0.265,
+     "p_min": 0.2794,
+     "p_max": 0.3148
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.34302999999999995,
+     "actual": 0.33,
+     "p_min": 0.3148,
+     "p_max": 0.3738
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.4408205,
+     "actual": 0.515,
+     "p_min": 0.3742,
+     "p_max": 0.6966
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 6,
+     "share": 0.003,
+     "promised": 0.09291666666666666,
+     "actual": 0.16666666666666666
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 598,
+     "share": 0.299,
+     "promised": 0.16604916387959864,
+     "actual": 0.13377926421404682
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 1268,
+     "share": 0.634,
+     "promised": 0.2709288643533123,
+     "actual": 0.2302839116719243
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 128,
+     "share": 0.064,
+     "promised": 0.47088046875,
+     "actual": 0.5390625
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.003,
+     "default_rate_approved": 0.16666666666666666,
+     "promised_approved": 0.09291666666666666,
+     "n_approved": 6
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.076,
+     "default_rate_approved": 0.15789473684210525,
+     "promised_approved": 0.13093486842105262,
+     "n_approved": 152
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.302,
+     "default_rate_approved": 0.13410596026490065,
+     "promised_approved": 0.1653226821192053,
+     "n_approved": 604
+    }
+   ]
+  },
+  "recalibrated": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.11958522027455461,
+     "actual": 0.115,
+     "p_min": 0.020494110539416917,
+     "p_max": 0.14068034440646932
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.15147217462995488,
+     "actual": 0.1,
+     "p_min": 0.14068034440646932,
+     "p_max": 0.16054398185390123
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.16809307699112427,
+     "actual": 0.16,
+     "p_min": 0.16062181942061576,
+     "p_max": 0.17503878914298354
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.18129286800867342,
+     "actual": 0.115,
+     "p_min": 0.17511063607746166,
+     "p_max": 0.18757240587025736
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.19285555223098666,
+     "actual": 0.19,
+     "p_min": 0.18757240587025736,
+     "p_max": 0.19812899885954272
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.20418248108715858,
+     "actual": 0.215,
+     "p_min": 0.19825793553470117,
+     "p_max": 0.21070083896165506
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.21832904625794966,
+     "actual": 0.215,
+     "p_min": 0.21088482123040617,
+     "p_max": 0.22697285419296787
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.24230341804331842,
+     "actual": 0.305,
+     "p_min": 0.22737871717159167,
+     "p_max": 0.26116642290121683
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.29167709350388893,
+     "actual": 0.395,
+     "p_min": 0.2613789290337213,
+     "p_max": 0.3359286870570527
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.42412411822444823,
+     "actual": 0.4,
+     "p_min": 0.3366215949976503,
+     "p_max": 0.6062858665589465
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 30,
+     "share": 0.015,
+     "promised": 0.08776771124090303,
+     "actual": 0.1
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 1000,
+     "share": 0.5,
+     "promised": 0.1659959671316905,
+     "actual": 0.135
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 853,
+     "share": 0.4265,
+     "promised": 0.25303363650507155,
+     "actual": 0.30246189917936694
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 117,
+     "share": 0.0585,
+     "promised": 0.4642420465185291,
+     "actual": 0.39316239316239315
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.015,
+     "default_rate_approved": 0.1,
+     "promised_approved": 0.08776771124090303,
+     "n_approved": 30
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.1415,
+     "default_rate_approved": 0.12367491166077739,
+     "promised_approved": 0.1273234649798747,
+     "n_approved": 283
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.515,
+     "default_rate_approved": 0.13398058252427184,
+     "promised_approved": 0.16371747424166755,
+     "n_approved": 1030
+    }
+   ]
+  }
+ },
+ "qwen-logprobs": {
+  "out_of_box": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.18045180681970063,
+     "actual": 0.13,
+     "p_min": 0.07585489066736686,
+     "p_max": 0.22269552465475706
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.23623845940795898,
+     "actual": 0.115,
+     "p_min": 0.22269552789197258,
+     "p_max": 0.24508099165506417
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.2635684524601518,
+     "actual": 0.045,
+     "p_min": 0.24508100042601,
+     "p_max": 0.26893676039193043
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.28473161403844527,
+     "actual": 0.105,
+     "p_min": 0.26893682545545095,
+     "p_max": 0.29420914467116394
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.3019249683566769,
+     "actual": 0.16,
+     "p_min": 0.2942091850244985,
+     "p_max": 0.32081400464013105
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.32415435297169565,
+     "actual": 0.16,
+     "p_min": 0.32081400679330435,
+     "p_max": 0.34863632452683924
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.3574512500907837,
+     "actual": 0.17,
+     "p_min": 0.34863633722682125,
+     "p_max": 0.37753380745214454
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.40253899245801406,
+     "actual": 0.225,
+     "p_min": 0.3775338074529632,
+     "p_max": 0.4378146575603088
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.515196694858481,
+     "actual": 0.38,
+     "p_min": 0.4378146575603088,
+     "p_max": 0.5926572843913704
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6852247853499992,
+     "actual": 0.72,
+     "p_min": 0.592657848520602,
+     "p_max": 0.8807902472086621
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 8,
+     "share": 0.004,
+     "promised": 0.08662953579750675,
+     "actual": 0.125
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 96,
+     "share": 0.048,
+     "promised": 0.1590804373364725,
+     "actual": 0.13541666666666666
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 1366,
+     "share": 0.683,
+     "promised": 0.2929479600054731,
+     "actual": 0.13030746705710103
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 530,
+     "share": 0.265,
+     "promised": 0.5550275541966487,
+     "actual": 0.4716981132075472
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.004,
+     "default_rate_approved": 0.125,
+     "promised_approved": 0.08662953579750675,
+     "n_approved": 8
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.0215,
+     "default_rate_approved": 0.11627906976744186,
+     "promised_approved": 0.12040135452972722,
+     "n_approved": 43
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.052,
+     "default_rate_approved": 0.1346153846153846,
+     "promised_approved": 0.15350729106424438,
+     "n_approved": 104
+    }
+   ]
+  },
+  "base_rate": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.1375969282615902,
+     "actual": 0.125,
+     "p_min": 0.06754242719521557,
+     "p_max": 0.16450577554332463
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.1729250196879122,
+     "actual": 0.095,
+     "p_min": 0.1645057796429666,
+     "p_max": 0.18241971474105237
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.19463236075959905,
+     "actual": 0.095,
+     "p_min": 0.18241985191862195,
+     "p_max": 0.20180731645714875
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.21266660055387315,
+     "actual": 0.145,
+     "p_min": 0.20180733507091525,
+     "p_max": 0.22269294963645336
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.2323170432943711,
+     "actual": 0.09,
+     "p_min": 0.222692955455102,
+     "p_max": 0.245076317175864
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.2508020522181141,
+     "actual": 0.185,
+     "p_min": 0.24507632997870732,
+     "p_max": 0.26893092164644744
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.2724707106765469,
+     "actual": 0.225,
+     "p_min": 0.2689309320643217,
+     "p_max": 0.2942031286712691
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.29952606580496655,
+     "actual": 0.315,
+     "p_min": 0.2942031611165947,
+     "p_max": 0.32080891367324704
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.32693235423945843,
+     "actual": 0.43,
+     "p_min": 0.3208089256464785,
+     "p_max": 0.34863400635680625
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.3891766322006511,
+     "actual": 0.505,
+     "p_min": 0.34863400655971205,
+     "p_max": 0.5621726391188053
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 9,
+     "share": 0.0045,
+     "promised": 0.08895012624925892,
+     "actual": 0.1111111111111111
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 465,
+     "share": 0.2325,
+     "promised": 0.16086663087806136,
+     "actual": 0.10752688172043011
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 1460,
+     "share": 0.73,
+     "promised": 0.269332661342346,
+     "actual": 0.25
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 66,
+     "share": 0.033,
+     "promised": 0.4390899012886292,
+     "actual": 0.3939393939393939
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.0045,
+     "default_rate_approved": 0.1111111111111111,
+     "promised_approved": 0.08895012624925892,
+     "n_approved": 9
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.09,
+     "default_rate_approved": 0.1388888888888889,
+     "promised_approved": 0.13460718372018413,
+     "n_approved": 180
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.237,
+     "default_rate_approved": 0.10759493670886076,
+     "promised_approved": 0.15950112762561575,
+     "n_approved": 474
+    }
+   ]
+  },
+  "recalibrated": {
+   "deciles": [
+    {
+     "decile": 1,
+     "n": 200,
+     "promised": 0.06913767975278978,
+     "actual": 0.13,
+     "p_min": 0.01895170553088809,
+     "p_max": 0.09379677899973408
+    },
+    {
+     "decile": 2,
+     "n": 200,
+     "promised": 0.10303723741705373,
+     "actual": 0.115,
+     "p_min": 0.0937967811343084,
+     "p_max": 0.10907060897509004
+    },
+    {
+     "decile": 3,
+     "n": 200,
+     "promised": 0.1225649818818773,
+     "actual": 0.045,
+     "p_min": 0.10907061516118044,
+     "p_max": 0.1264834490174819
+    },
+    {
+     "decile": 4,
+     "n": 200,
+     "promised": 0.138818190433906,
+     "actual": 0.105,
+     "p_min": 0.1264834981157429,
+     "p_max": 0.14621956222253493
+    },
+    {
+     "decile": 5,
+     "n": 200,
+     "promised": 0.15266415243736003,
+     "actual": 0.16,
+     "p_min": 0.146219594800783,
+     "p_max": 0.16844120454836065
+    },
+    {
+     "decile": 6,
+     "n": 200,
+     "promised": 0.17142275217767916,
+     "actual": 0.16,
+     "p_min": 0.16844120640705093,
+     "p_max": 0.1932754922246173
+    },
+    {
+     "decile": 7,
+     "n": 200,
+     "promised": 0.20167228407833235,
+     "actual": 0.17,
+     "p_min": 0.19327550393410162,
+     "p_max": 0.2208024842601347
+    },
+    {
+     "decile": 8,
+     "n": 200,
+     "promised": 0.24652628833187815,
+     "actual": 0.225,
+     "p_min": 0.22080248426093957,
+     "p_max": 0.2838809356744457
+    },
+    {
+     "decile": 9,
+     "n": 200,
+     "promised": 0.37761581322631627,
+     "actual": 0.38,
+     "p_min": 0.2838809356744457,
+     "p_max": 0.4785104023066402
+    },
+    {
+     "decile": 10,
+     "n": 200,
+     "promised": 0.6125164515262174,
+     "actual": 0.72,
+     "p_min": 0.4785111853412713,
+     "p_max": 0.8905226436170518
+    }
+   ],
+   "risk_bands": [
+    {
+     "band": "0%\u201310%",
+     "lo": 0.0,
+     "hi": 0.1,
+     "n": 279,
+     "share": 0.1395,
+     "promised": 0.07612017346368695,
+     "actual": 0.13261648745519714
+    },
+    {
+     "band": "10%\u201320%",
+     "lo": 0.1,
+     "hi": 0.2,
+     "n": 1060,
+     "share": 0.53,
+     "promised": 0.1482614220648606,
+     "actual": 0.12169811320754717
+    },
+    {
+     "band": "20%\u201340%",
+     "lo": 0.2,
+     "hi": 0.4,
+     "n": 404,
+     "share": 0.202,
+     "promised": 0.2792392883411922,
+     "actual": 0.25495049504950495
+    },
+    {
+     "band": "\u226540%",
+     "lo": 0.4,
+     "hi": 1.0,
+     "n": 257,
+     "share": 0.1285,
+     "promised": 0.5758282411584417,
+     "actual": 0.6731517509727627
+    }
+   ],
+   "approval": [
+    {
+     "threshold": 0.1,
+     "approval_rate": 0.1395,
+     "default_rate_approved": 0.13261648745519714,
+     "promised_approved": 0.07612017346368695,
+     "n_approved": 279
+    },
+    {
+     "threshold": 0.15,
+     "approval_rate": 0.471,
+     "default_rate_approved": 0.10509554140127389,
+     "promised_approved": 0.11409227380531224,
+     "n_approved": 942
+    },
+    {
+     "threshold": 0.2,
+     "approval_rate": 0.6695,
+     "default_rate_approved": 0.1239731142643764,
+     "promised_approved": 0.13322975039964216,
+     "n_approved": 1339
+    }
+   ]
+  }
+ }
+}

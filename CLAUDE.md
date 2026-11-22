@@ -51,4 +51,6 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run --group memcheck python data/memcheck.py --model <id>` — LLM memorization tests (needs `OPENROUTER_API_KEY`; `--dry-run` works offline)
 - `uv run python runners/<name>.py --split test --condition out_of_box` — run one contestant (`--smoke` = 20 tune customers into `results/smoke/`; Laya needs `--group laya`, Qwen/API runners `--group runners`; keys come from a git-ignored `.env`)
 - `uv run --group runners python runners/manifest.py` — check every contestant's coverage and write `results/run_manifest.json` (`--allow-incomplete` to write a partial one)
-- `uv run python analysis/figures.py` — regenerate all charts
+- `uv run python analysis/recalibrate.py` — the `recalibrated` condition: Platt vs isotonic chosen per AI contestant by 5-fold CV on tune, applied to test (re-run when a contestant completes)
+- `uv run python analysis/summarize.py` — score every contestant x condition on test -> `results/summary.csv`, `results/summary_detail.json`
+- `uv run python analysis/figures.py` — regenerate all five charts into `results/figures/` (run the two above first)

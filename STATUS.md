@@ -4,6 +4,20 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 ## Where things stand
 
+**M4 started early (2026-11-22, while Sol runs), at the user's request.** Everything is built and run for the seven complete contestants; Sol drops in with one re-run.
+- **Built:**
+  - `analysis/metrics.py`: every PLAN §4 metric, 19 tests including cross-checks against scikit-learn.
+  - `analysis/recalibrate.py`: the `recalibrated` condition.
+  - `analysis/summarize.py`: writes `results/summary.csv` and `results/summary_detail.json`.
+  - `analysis/figures.py`: the five figures, in `results/figures/`.
+- **Recalibration method (flagged choice):** Platt vs isotonic, picked per AI contestant by 5-fold CV log loss on **tune only**. Platt won for Kev-4B, Kev-0.8B, Laya and Qwen; isotonic for Jev. The choice and CV scores are in `results/recalibration.json` and in each record's `model_version`.
+- **Calibration intercept** is the slope-fixed-at-1 ("calibration-in-the-large") intercept (Van Calster et al. 2019); the slope comes from the joint logistic fit.
+- **Manifest fix:** the cost and latency totals now count model calls only. Recalibrated records copy their source call's cost per decision, which is right per record but was double-counting run spend.
+- **Checks done:** labels agree across every predictions file and match the split parquet. Kev-4B's AUC jump with the base-rate sentence (0.59 → 0.76 on test) reproduces on tune (0.59 → 0.73); its two conditions' rankings correlate at only 0.23. That's real model behaviour, worth a line in the write-up.
+- **When Sol finishes:** `uv run python analysis/recalibrate.py && uv run python analysis/summarize.py && uv run python analysis/figures.py`, then look at the figures again (Sol's label positions), and write the final manifest without `--allow-incomplete`.
+- **Still to do for M4:** Sol, and handling Sol's memorized customers (open item below). Bootstrap intervals for AUC, ECE and calibration-in-the-large are already in `summary.csv`.
+
+
 **M3 is in progress (started 2026-11-22).** The gate is passed: M2 is done and `PREDICTIONS.md` was committed (`24aebdd`) before any M3 prediction.
 - **API runs (laptop): running.** Re-running the same commands resumes them.
   - **Jev:** tune and test, both conditions, `--workers 8`. About 18 predictions per second, no rate limit.

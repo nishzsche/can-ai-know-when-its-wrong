@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 from harness import RUN_CONDITIONS, load_requests
-from records import PREDICTIONS_DIR, read_records, utc_now
+from records import PREDICTIONS_DIR, TEST_ONLY_CONDITIONS, read_records, utc_now
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "results" / "run_manifest.json"
@@ -61,14 +61,17 @@ def summarize(
     versions = sorted(set().union(*by_condition.values())) if by_condition else []
     meta_path = directory / "raw" / f"{contestant}.meta.json"
     runs = json.loads(meta_path.read_text("utf-8")) if meta_path.exists() else []
-    latencies = [r["latency_ms"] for r in recs]
+    # Spend and latency count model calls only: derived conditions (recalibrated,
+    # trained_calibrated) copy their source record's cost and latency but make no new call.
+    calls = [r for r in recs if r["condition"] not in TEST_ONLY_CONDITIONS]
+    latencies = [r["latency_ms"] for r in calls]
     return {
         "present": True,
         "complete": complete,
         "model_versions": versions,
         "records": len(recs),
         "groups": out_groups,
-        "cost_usd_total": round(sum(r["cost_usd"] for r in recs), 6),
+        "cost_usd_total": round(sum(r["cost_usd"] for r in calls), 6),
         "latency_ms_median": round(statistics.median(latencies), 1) if latencies else None,
         "first_ts": min(r["ts"] for r in recs) if recs else None,
         "last_ts": max(r["ts"] for r in recs) if recs else None,

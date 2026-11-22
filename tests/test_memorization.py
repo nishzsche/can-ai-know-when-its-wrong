@@ -174,7 +174,7 @@ def _sol_disguise():
     checks = str(Path(__file__).resolve().parents[1] / "runners" / "checks")
     if checks not in sys.path:
         sys.path.insert(0, checks)
-    return importlib.import_module("sol_disguise")
+    return importlib.import_module("disguise")
 
 
 def test_disguise_removes_the_cues_and_keeps_the_numbers():
@@ -244,3 +244,37 @@ def test_false_rate_sample_is_fixed():
     rows = [{"id": f"cust_{i:05d}"} for i in range(1, 2001)]
     a, b = fr.sample(rows), fr.sample(rows)
     assert [r["id"] for r in a] == [r["id"] for r in b] and len(a) == fr.N_CUSTOMERS
+
+
+def test_disguise_wrapper_and_control():
+    sd = _sol_disguise()
+
+    class Base:
+        contestant = "fake"
+
+        def __init__(self):
+            self.model_version = "fake@1"
+            self.meta = {"x": 1}
+            self.seen = []
+
+        def predict(self, request):
+            self.seen.append(request["state"])
+            return request["state"]
+
+    state = (
+        "Credit card account summary\nCredit limit: NT$10,000\n\n"
+        "Sep 2005 | NT$1 | NT$0 | not late (code 0)"
+    )
+    disguised, control = sd.wrap(Base, control=False)(), sd.wrap(Base, control=True)()
+    assert disguised.contestant == "fake-disguised" and control.contestant == "fake-control"
+    assert "disguise d1" in disguised.model_version and "control" in control.model_version
+    assert "NT$" not in disguised.predict({"state": state, "questions": {}})
+    assert control.predict({"state": state, "questions": {}}) == state
+    assert disguised.meta["x"] == 1 and disguised.meta["check"] == "disguised"
+
+
+def test_control_sample_is_fixed():
+    sd = _sol_disguise()
+    rows = [{"id": f"cust_{i:05d}"} for i in range(1, 2001)]
+    a, b = sd.control_sample(rows), sd.control_sample(rows)
+    assert [r["id"] for r in a] == [r["id"] for r in b] and len(a) == sd.CONTROL_N

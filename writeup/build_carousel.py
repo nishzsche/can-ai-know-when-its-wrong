@@ -21,13 +21,24 @@ sys.path.insert(0, str(HERE.parent / "analysis"))
 import figures as F  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.backends.backend_pdf import PdfPages  # noqa: E402
+from matplotlib.ticker import FuncFormatter  # noqa: E402
 
 CAROUSEL_MD = HERE / "carousel.md"
 OUT_PDF = HERE / "carousel.pdf"
 SIZE_IN, DPI = 7.5, 144  # 7.5 in x 144 dpi = 1080 px
 M = 0.075  # side margin, figure fraction
 PT = 1 / (SIZE_IN * 72)  # one point, as a figure fraction
-FAIRNESS = "AI models answered cold; the classic models learned from 20,000 labelled customers."
+FAIRNESS = (
+    "The AI models got no examples; the traditional models learned from 20,000 past customers."
+)
+# A few plain words on what each contestant is, for readers outside tech (slide 2).
+WHAT = {"jev": "built for yes/no decisions", "kev-4b": "free, open-source",
+        "kev-0.8b": "free, open-source, smaller", "laya": "open-source, tiny",
+        "qwen-logprobs": "free, general-purpose", "frontier-verbal": "ChatGPT's model",
+        "scorecard": "banks' classic", "gbm": "today's standard"}  # fmt: skip
+# Plain-language legend for the three conditions (slide 6).
+STAGE_LABEL = {"out_of_box": "Out of the box", "base_rate": "Told the overall rate",
+               "recalibrated": "Corrected with past outcomes"}  # fmt: skip
 
 
 def parse(md: str) -> dict[int, dict]:
@@ -35,7 +46,7 @@ def parse(md: str) -> dict[int, dict]:
     slides = {}
     for block in re.split(r"^### ", md.split("## Slides", 1)[1], flags=re.M)[1:]:
         number = int(block.split(".", 1)[0])
-        fields = {}
+        fields = {"title": block.split("\n", 1)[0].split(".", 1)[1].strip()}
         for name in ("Headline", "Body", "Footer"):
             m = re.search(rf"\*\*{name}:\*\*(.*?)(?=\n\*\*\w+:\*\*|\Z)", block, re.S)
             fields[name.lower()] = m.group(1).strip() if m else ""
@@ -123,19 +134,23 @@ def slide_setup(fig, s, n, total):
     lead = [b for b in lead if not b.startswith("No ")]
     for b in lead:
         y = text_block(fig, y, b, 15.5, bullet=True, color=F.INK_2)
-    cols = [("6 AI models, answering cold", F.AI),
-            ("2 classic models, trained on\n20,000 customers", F.BASELINES)]  # fmt: skip
+    cols = [
+        ("6 AI models", "given no examples", F.AI),
+        ("2 traditional models", "learned from 20,000 past customers", F.BASELINES),
+    ]
     top = y - 0.03
-    for i, (title, keys) in enumerate(cols):
+    for i, (title, subtitle, keys) in enumerate(cols):
         x = M + i * 0.46
         fig.text(x, top, title, fontsize=14, fontweight="bold", color=F.INK, va="top")
+        fig.text(x, top - 0.036, subtitle, fontsize=11, color=F.INK_2, va="top")
         for j, key in enumerate(keys):
-            yy = top - 0.105 - j * 0.058
+            yy = top - 0.11 - j * 0.056
             fig.patches.append(plt.Circle((x + 0.012, yy + 0.008), 0.011, color=F.COLOR[key],
                                           transform=fig.transFigure, figure=fig))  # fmt: skip
-            fig.text(x + 0.035, yy, F.NAME[key], fontsize=15, color=F.INK, va="bottom")
-    fig.text(M, 0.11, next(b for b in s["bullets"] if b.startswith("No ")), fontsize=14,
-             color=F.INK_2)  # fmt: skip
+            fig.text(x + 0.035, yy, F.NAME[key], fontsize=14.5, color=F.INK, va="bottom")
+            fig.text(x + 0.035, yy - 0.004, WHAT[key], fontsize=10.5, color=F.MUTED, va="top")
+    no = next(b for b in s["bullets"] if b.startswith("No "))
+    text_block(fig, 0.10, no, 13, color=F.INK_2)
 
 
 def slide_honest(fig, s, n, total, detail):
@@ -218,17 +233,19 @@ def slide_arc(fig, s, n, total, rows):
     ax.grid(axis="y", visible=False)
     ax.set_ylim(-0.6, len(order) - 0.1)
     ax.set_xlim(-0.01, 0.3)
-    ax.set_xlabel("Calibration error: lower is more honest", fontsize=13)
+    ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v * 100:.0f}"))
+    ax.set_xlabel("Percentage points off, on average: lower is more honest", fontsize=13)
     handles = [plt.Line2D([], [], marker=mk, ls="none", ms=10, color=F.INK_2, mfc=f or F.INK_2,
-                          mew=2, mec=F.INK_2, label=lab) for _, lab, mk, f in F.STAGES]  # fmt: skip
+                          mew=2, mec=F.INK_2, label=STAGE_LABEL[st])
+               for st, _, mk, f in F.STAGES]  # fmt: skip
     fig.legend(handles=handles, loc="upper left", bbox_to_anchor=(M, y - 0.01), ncol=3,
                fontsize=11, frameon=False, handletextpad=0.3, columnspacing=1.0)  # fmt: skip
 
 
 def slide_twist(fig, s, n, total):
     y = frame(fig, n, total, s, headline_size=25)
-    stats = [("53/53", "summaries it named\nas this dataset"),
-             ("22.12%", "its default rate,\nrecalled exactly"),
+    stats = [("53/53", "times it recognised\nthe public dataset"),
+             ("22.12%", "its rate of missed\npayments, recalled exactly"),
              ("70%", "of the way it moved\ntoward a false 10%")]  # fmt: skip
     for i, (big, small) in enumerate(stats):
         yy = y - 0.04 - i * 0.125
@@ -263,8 +280,9 @@ def slide_ranking(fig, s, n, total, rows):
     ax.tick_params(axis="x", labelsize=12)
     ax.grid(axis="y", visible=False)
     ax.set_xlim(0.5, 0.86)
-    ax.set_xlabel("AUC, out of the box (0.5 = coin flip), with 95% interval", fontsize=12)
-    note(fig, "* Trained on 20,000 labelled customers. The AI models answered cold.")
+    ax.set_xlabel("Ranking score (AUC): 0.5 = coin flip, 1 = perfect", fontsize=12)
+    note(fig, "* Learned from 20,000 past customers; the AI models got no examples. "
+         "Black line: likely range.")  # fmt: skip
 
 
 def slide_takeaways(fig, s, n, total):
@@ -275,27 +293,85 @@ def slide_takeaways(fig, s, n, total):
     fig.text(M, 0.13, s["footer"], fontsize=17, fontweight="bold", color=F.COLOR["jev"])
 
 
+def slide_safest(fig, s, n, total, explain):
+    """The 'not late (code 0)' group: actual default rate vs each model's mean prediction."""
+    y = frame(fig, n, total, s)
+    group = next(r for r in explain["by_status"] if r["status"].startswith("not late (code 0)"))
+    keys = sorted([*F.AI, "scorecard"], key=lambda k: group[k])
+    ax = fig.add_axes([M + 0.24, 0.17, 0.62, y - 0.25])
+    for i, k in enumerate(keys):
+        ax.barh(i, group[k], height=0.62, color=F.COLOR[k])
+        ax.text(group[k] + 0.012, i, f"{group[k]:.0%}", va="center", fontsize=13, color=F.INK)
+    ax.axvline(group["actual"], color=F.INK, lw=1.5, ls="--")
+    ax.text(group["actual"] + 0.008, len(keys) - 0.35, f"actually defaulted: {group['actual']:.0%}",
+            fontsize=12, color=F.INK)  # fmt: skip
+    names = [F.NAME[k] + ("*" if k in F.BASELINES else "") for k in keys]
+    ax.set_yticks(range(len(keys)), names)
+    ax.tick_params(axis="y", length=0, labelsize=13, labelcolor=F.INK)
+    ax.tick_params(axis="x", labelsize=12)
+    ax.xaxis.set_major_formatter(F.PCT)
+    ax.grid(axis="y", visible=False)
+    ax.set_xlim(0, 0.65)
+    ax.set_ylim(-0.6, len(keys) - 0.1)
+    ax.set_xlabel(f"Average predicted risk for these {group['n']:,} customers", fontsize=12)
+    note(fig, "* Learned from 20,000 past customers; the AI models got no examples.")
+
+
+def slide_portfolio(fig, s, n, total, explain):
+    """Calibration error at 5%, 22% and 50% default rates; the most honest per column in bold."""
+    y = frame(fig, n, total, s)
+    rates = {r["default_rate"]: r for r in explain["base_rate_sensitivity"]}
+    cols = [(0.05, "5%"), (0.221, "22%\n(actual)"), (0.50, "50%")]
+    keys = [*F.AI, "scorecard"]
+    best = {rate: min(keys, key=lambda k: rates[rate][k]["ece"]) for rate, _ in cols}
+    x0, xs, top, step = M, [0.52, 0.69, 0.86], y - 0.04, 0.058
+    fig.text(x0, top, "Points off, if this share\nmissed payments:", fontsize=12,
+             color=F.MUTED, va="top", linespacing=1.2)  # fmt: skip
+    for x, (_, label) in zip(xs, cols, strict=True):
+        fig.text(x, top, label, fontsize=14, fontweight="bold", color=F.INK, ha="center",
+                 va="top", linespacing=1.1)  # fmt: skip
+    for i, k in enumerate(keys):
+        yy = top - 0.10 - i * step
+        fig.patches.append(plt.Circle((x0 + 0.012, yy + 0.008), 0.010, color=F.COLOR[k],
+                                      transform=fig.transFigure, figure=fig))  # fmt: skip
+        fig.text(x0 + 0.035, yy, F.NAME[k] + ("*" if k in F.BASELINES else ""), fontsize=14,
+                 color=F.INK, va="bottom")  # fmt: skip
+        for x, (rate, _) in zip(xs, cols, strict=True):
+            v = rates[rate][k]["ece"] * 100
+            text = f"{v:.1f}" if v < 2 else f"{v:.0f}"
+            bold = k == best[rate]
+            fig.text(x, yy, text, fontsize=15, ha="center", va="bottom",
+                     fontweight="bold" if bold else "normal",
+                     color=F.COLOR["jev"] if bold else F.INK_2)  # fmt: skip
+    note(fig, "* The scorecard learned at 22%. Bold blue: the most honest model at that rate.")
+
+
 def build(png_dir: Path | None = None) -> Path:
+    import json
+
     F.style()
     rows, detail = F.load()
+    explain = json.loads((HERE.parent / "results" / "explain.json").read_text("utf-8"))
     slides = parse(CAROUSEL_MD.read_text(encoding="utf-8"))
     total = len(slides)
-    makers = {
-        1: lambda fig, s: slide_hook(fig, s, 1, total),
-        2: lambda fig, s: slide_setup(fig, s, 2, total),
-        3: lambda fig, s: slide_honest(fig, s, 3, total, detail),
-        4: lambda fig, s: slide_promised(fig, s, 4, total, rows, detail),
-        5: lambda fig, s: slide_arc(fig, s, 5, total, rows),
-        6: lambda fig, s: slide_twist(fig, s, 6, total),
-        7: lambda fig, s: slide_ranking(fig, s, 7, total, rows),
-        8: lambda fig, s: slide_takeaways(fig, s, 8, total),
+    makers = {  # by slide title in carousel.md, so slides can be reordered or inserted there
+        "Hook": lambda fig, s, n: slide_hook(fig, s, n, total),
+        "The setup": lambda fig, s, n: slide_setup(fig, s, n, total),
+        'What "honest" looks like': lambda fig, s, n: slide_honest(fig, s, n, total, detail),
+        "Promised vs actual": lambda fig, s, n: slide_promised(fig, s, n, total, rows, detail),
+        "Where it goes wrong": lambda fig, s, n: slide_safest(fig, s, n, total, explain),
+        "The honesty arc": lambda fig, s, n: slide_arc(fig, s, n, total, rows),
+        "The twist": lambda fig, s, n: slide_twist(fig, s, n, total),
+        "The punchline": lambda fig, s, n: slide_ranking(fig, s, n, total, rows),
+        "It depends on the portfolio": lambda fig, s, n: slide_portfolio(fig, s, n, total, explain),
+        "What to take away": lambda fig, s, n: slide_takeaways(fig, s, n, total),
     }
     if png_dir:
         png_dir.mkdir(parents=True, exist_ok=True)
     with PdfPages(OUT_PDF, metadata={"Title": "Can AI actually know when it's wrong?"}) as pdf:
         for n in sorted(slides):
             fig = new_slide()
-            makers[n](fig, slides[n])
+            makers[slides[n]["title"]](fig, slides[n], n)
             pdf.savefig(fig)
             if png_dir:
                 fig.savefig(png_dir / f"slide_{n:02d}.png", dpi=DPI)

@@ -187,7 +187,7 @@ uv run --group memcheck python data/memcheck.py --model <id>  # LLM memorization
 ```bash
 uv run --group memcheck --group runners python data/memdepth.py --model openai/gpt-6.2-sol   # how deep its memory goes
 uv run --group runners python data/recognition.py --model openai/gpt-6.2-sol                 # does it recognise the data?
-uv run --group runners python runners/checks/sol_disguise.py --probe 50                      # ...without NT$, dates or codes?
+uv run --group runners python runners/checks/disguise.py --probe 50                          # ...without NT$, dates or codes?
 uv run --group runners python runners/checks/sol_false_rate.py --workers 4                   # told a false base rate
 uv run --group runners python runners/checks/sol_false_rate.py --report
 ```

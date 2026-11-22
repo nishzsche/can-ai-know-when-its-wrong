@@ -2,7 +2,7 @@
 
 Everything in this project that needs the GPU, in order. Read `STATUS.md` first (setup, `/home` persistence, money). The L4 bills per second, so don't leave it idle.
 
-**Done (2026-11-22):** every step below ran, the results are committed, and the instance was deleted. A rerun needs a new instance and the first-time setup in `STATUS.md`.
+**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Pending (2026-11-23): step 5, the disguise check for Kev-4B, Kev-0.8B and Qwen,** on a new instance.
 
 - **API contestants** (Jev, GPT-6.2 Sol) run on the laptop, not here.
 - **No API key needed:** this runbook uses no API key, so the L4 needs no `.env`.
@@ -114,3 +114,54 @@ git commit -m "M3: GPU contestants' tune and test predictions" && git push
 
 - **The manifest script:** `runners/manifest.py` checks coverage and writes `results/run_manifest.json`. `--allow-incomplete` is needed here because Jev and Sol run on the laptop; the final manifest without that flag is written once every contestant is in.
 - **Pause the instance.** Keep it paused, not deleted, until M4's metrics confirm nothing needs re-running. Then delete it, since storage bills while paused.
+
+## 5. Disguise check: Kev-4B, Kev-0.8B, Qwen (2026-11-23)
+
+**Why:** every summary shows "Sep 2005"…"Apr 2005", NT$ amounts and raw repayment codes.
+- **The question:** this step checks whether removing those cues changes each model's answers. For example, does knowing it's Taiwan in 2005, during a card-debt crisis, push its risk up or down?
+- **Already done:** Jev, Laya and Sol ran on the laptop. Jev's average went *up* 4 points when disguised, against 0.3 points of run-to-run noise.
+- **Details:** `runners/checks/disguise.py`, `data/contamination.md` §4.
+
+**What runs:** for each model, 2,000 disguised test summaries, then a 200-customer control on the *original* summaries, which measures run-to-run noise. Both are out of the box only. At ~0.1–0.15 s per request, that's a few minutes per model. Output goes to `results/checks/disguise/`. Every command resumes if interrupted.
+
+**Setup (new instance):**
+1. **Base setup:** `STATUS.md` → "The L4 instance" → "First-time setup": env.sh, uv, `gh auth login`, clone. Then `uv sync --group runners`. No API key is needed.
+2. **Kev server environment:** step 1 above. The first Kev start downloads the base models into `/home/hf-cache`.
+3. **vLLM venv for Qwen:** `uv venv /home/vllm-env --python 3.12 && VIRTUAL_ENV=/home/vllm-env uv pip install vllm`. Pin vLLM 0.34.0 if a newer one fails.
+4. **Logs folder:** `mkdir -p /home/logs`.
+
+```bash
+source /home/env.sh && cd /home/can-ai-know-when-its-wrong && git pull
+
+# Kev-4B: start its server in window 1 (the exact command in step 2), wait for
+#   curl -s 127.0.0.1:8009/v1/models   then, in window 2:
+uv run --group runners python runners/checks/disguise.py --contestant kev-4b
+uv run --group runners python runners/checks/disguise.py --contestant kev-4b --control
+#   stop the server (Ctrl-C in window 1)
+
+# Kev-0.8B: same, with the 0.8b --run commit from step 1
+uv run --group runners python runners/checks/disguise.py --contestant kev-0.8b
+uv run --group runners python runners/checks/disguise.py --contestant kev-0.8b --control
+#   stop the server
+
+# Qwen3.5-4B: start vLLM with the exact command in STATUS.md ("Serving Qwen3.5-4B"), wait for
+#   curl -s 127.0.0.1:8000/v1/models   then:
+uv run --group runners python runners/checks/disguise.py --contestant qwen-logprobs
+uv run --group runners python runners/checks/disguise.py --contestant qwen-logprobs --control
+#   then, on its own line:  pkill -f "vllm serve"
+```
+
+**Check, then push:**
+```bash
+wc -l results/checks/disguise/{kev-4b,kev-0.8b,qwen-logprobs}-{disguised,control}.jsonl   # 2000 / 200 each
+uv run --group runners python runners/checks/disguise.py --report
+git add results/checks/disguise && git commit -m "Disguise check: Kev-4B, Kev-0.8B, Qwen (L4)" && git push
+```
+
+**Then delete the instance.** Nothing else needs the GPU, and storage bills while paused. Also revoke its `gh` token.
+
+**Same weights and revisions as M3:**
+- **Kev:** v1.0 commits as in step 1. The runner refuses any other version.
+- **Qwen:** `851bf6e8`, with thinking off.
+
+The control run on the original summaries makes any change from the disguise visible against noise.

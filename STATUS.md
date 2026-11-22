@@ -26,7 +26,7 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
   - **With/without:** without the 3 memorized test customers, no contestant's AUC, ECE or calibration-in-the-large moves by more than 0.0006.
   - **Recognition** (`data/recognition.py`, $0.07): Sol named the dataset for 53 of 53 summaries at 99% confidence and gave its exact default rate (22.12%) every time.
   - **For the write-up:** its out-of-the-box calibration must be read as that of a model that knows the population, not zero-shot honesty.
-  - **Disguise check** (`runners/checks/sol_disguise.py`, user asked 2026-11-23): removing NT$, the 2005 months and the raw repayment codes doesn't hide the dataset. Sol still named it for 50 of 50 disguised summaries (22.12%, 99% confidence), now citing the six-month bill/payment/status structure itself.
+  - **Disguise check** (`runners/checks/disguise.py`, user asked 2026-11-23): removing NT$, the 2005 months and the raw repayment codes doesn't hide the dataset. Sol still named it for 50 of 50 disguised summaries (22.12%, 99% confidence), now citing the six-month bill/payment/status structure itself.
     - **Full run stopped:** the 2,000-customer disguised run (~$1.50) was stopped before spending, since it can't isolate recognition. It can still be run with `--workers 4`, then `--report`.
   - **False-base-rate check** (`runners/checks/sol_false_rate.py`, user asked 2026-11-23, $0.46): 500 test customers, the base-rate sentence saying 10.0% instead of 22.1%.
     - **Sol follows it:** mean 0.258 → 0.175, a pass-through of 0.69 [0.64, 0.73]. 98% of customers went lower, and AUC was unchanged.

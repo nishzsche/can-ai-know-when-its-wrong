@@ -156,7 +156,7 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - **The disguise check tried to separate them and couldn't** (next section): Sol recognizes the dataset even without the cues.
 - **For the write-up:** Sol's out-of-the-box calibration has to be read as "a model that recognizes this dataset and knows its default rate", not as zero-shot honesty. Its ranking (AUC) is less affected: knowing the overall rate doesn't rank individual customers, and the leaked rows don't change its AUC.
 
-### 4. Disguise check (`runners/checks/sol_disguise.py`, recognition step done 2026-11-23)
+### 4. Disguise check (`runners/checks/disguise.py`, recognition step done 2026-11-23)
 
 **Idea:** remove the cues Sol cited, then compare its out-of-the-box predictions with the original run on the same test customers. If recognition drives its calibration, the disguised run should be worse calibrated.
 

@@ -1,0 +1,287 @@
+"""Disguise check: do the summaries' identifying cues (NT$, 2005 dates, raw codes) change the
+AI contestants' answers?
+
+The summaries name the period ("Sep 2005" ... "Apr 2005") and the currency (NT$), and show the
+raw repayment codes. GPT-6.2 Sol recognises the dataset from them, and any model could read the
+year and country as context (Taiwan's 2005-06 card-debt crisis). This check removes those cues
+and asks the same model again, out of the box, on the same test customers:
+
+- Currency: "NT$" is dropped and one line says "Amounts are in local currency units."
+- Months: "Sep 2005" ... "Apr 2005" become "Month 6" ... "Month 1" (the header still says
+  "most recent first").
+- Repayment codes: the raw numbers go. Codes -2 and 0, both "not late", stay distinct as
+  "type A" and "type B"; "paid on time" and "N months late" keep their words.
+
+Everything else (the question, model settings, pacing) is the contestant's own. A control run
+asks the original summaries again for a fixed sample, which measures run-to-run noise (and, for
+Laya, the switch from the L4 GPU to this laptop's CPU), so a disguise effect can be told apart
+from noise. A diagnostic, not a contestant condition: output goes to results/checks/disguise/,
+and the headline results are unchanged.
+
+    # does Sol still recognise the disguised summaries? (same 50 customers as the original probe)
+    uv run --group runners python runners/checks/disguise.py --probe 50
+    # 2,000 test customers, disguised (resumable); then the 200-customer control
+    uv run --group runners python runners/checks/disguise.py --contestant jev --workers 8
+    uv run --group runners python runners/checks/disguise.py --contestant jev --control --workers 8
+    uv run --group runners --group laya python runners/checks/disguise.py --contestant laya
+    uv run --group runners python runners/checks/disguise.py --workers 4   # Sol (the default)
+    # compare with the original runs
+    uv run --group runners python runners/checks/disguise.py --report
+"""
+
+from __future__ import annotations
+
+import json
+import random
+import re
+import sys
+from pathlib import Path
+
+import numpy as np
+
+HERE = Path(__file__).resolve()
+sys.path.insert(0, str(HERE.parents[1]))
+sys.path.insert(0, str(HERE.parents[2] / "data"))
+sys.path.insert(0, str(HERE.parents[2] / "analysis"))
+
+from harness import L4_USD_PER_HOUR, ROOT, build_parser, load_requests, resolve_args, run  # noqa: E402
+from render import MONTHS, STATUS_TEXT  # noqa: E402
+
+DISGUISE_VERSION = "d1"
+CHECK_DIR = ROOT / "results" / "checks" / "disguise"
+PROBE_JSON = ROOT / "results" / "checks" / "sol_disguise_recognition.json"
+SUMMARY_JSON = ROOT / "results" / "checks" / "disguise_summary.json"
+CONTESTANTS = ("jev", "laya", "frontier-verbal", "kev-4b", "kev-0.8b", "qwen-logprobs")
+CONTROL_N, CONTROL_SEED = 200, 20261124
+HEADER = "Credit card account summary"
+UNITS_LINE = "Amounts are in local currency units."
+MONTH_LABELS = {m: f"Month {len(MONTHS) - i}" for i, m in enumerate(MONTHS)}
+
+
+def _plain_status(code: int, label: str) -> str:
+    if code == -2:
+        return "not late (type A)"
+    if code == 0:
+        return "not late (type B)"
+    return re.sub(r" \(code -?\d+\)$", "", label)
+
+
+STATUS_MAP = {label: _plain_status(code, label) for code, label in STATUS_TEXT.items()}
+
+
+def disguise(state: str) -> str:
+    """The same summary without the currency, the dates or the raw repayment codes."""
+    out = []
+    for line in state.split("\n"):
+        line = line.replace("NT$", "")
+        for month, label in MONTH_LABELS.items():
+            if line.startswith(f"{month} |"):
+                line = label + line[len(month) :]
+        head, sep, status = line.rpartition(" | ")
+        if sep and status in STATUS_MAP:
+            line = f"{head} | {STATUS_MAP[status]}"
+        out.append(line)
+        if line == HEADER:
+            out.append(UNITS_LINE)
+    text = "\n".join(out)
+    for cue in ("NT$", "2005", "(code"):
+        if cue in text:
+            raise ValueError(f"disguise left {cue!r} in the summary")
+    return text
+
+
+def wrap(base: type, control: bool) -> type:
+    """A contestant's predictor on disguised summaries (control: on the original ones)."""
+    suffix, transform = ("control", None) if control else ("disguised", disguise)
+
+    class Wrapped(base):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # Kev sets its name per size in __init__; the others name it on the class.
+            name = self.__dict__.get("contestant") or base.contestant
+            self.contestant = f"{name}-{suffix}"
+            tag = "control: original summaries" if control else f"disguise {DISGUISE_VERSION}"
+            self.model_version = f"{self.model_version}; {tag}"
+            self.meta = {**getattr(self, "meta", {}), "check": suffix,
+                         "disguise": None if control else DISGUISE_VERSION}  # fmt: skip
+
+        def predict(self, request: dict):
+            if transform:
+                request = {**request, "state": transform(request["state"])}
+            return super().predict(request)
+
+    Wrapped.__name__ = f"{base.__name__}{suffix.title()}"
+    return Wrapped
+
+
+def make_predictor(contestant: str, args, control: bool):
+    if contestant == "frontier-verbal":
+        from frontier_verbal import FrontierVerbalPredictor
+
+        return wrap(FrontierVerbalPredictor, control)(rpm=args.rpm)
+    if contestant == "jev":
+        from jev import JevPredictor
+
+        return wrap(JevPredictor, control)()
+    if contestant == "laya":
+        from laya_classic import LayaPredictor
+
+        cost = L4_USD_PER_HOUR if args.device == "cuda" else 0.0
+        return wrap(LayaPredictor, control)(args.device, cost)
+    if contestant in ("kev-4b", "kev-0.8b"):
+        from kev import KevPredictor
+
+        url = args.base_url or "http://127.0.0.1:8009"
+        return wrap(KevPredictor, control)(contestant.split("-")[1], url, L4_USD_PER_HOUR)
+    if contestant == "qwen-logprobs":
+        from qwen_logprobs import SERVED_NAME, QwenPredictor
+
+        url = args.base_url or "http://127.0.0.1:8000/v1"
+        return wrap(QwenPredictor, control)(url, SERVED_NAME, L4_USD_PER_HOUR)
+    raise SystemExit(f"unknown contestant {contestant!r}; choose from {CONTESTANTS}")
+
+
+def control_sample(rows: list[dict]) -> list[dict]:
+    return sorted(random.Random(CONTROL_SEED).sample(rows, CONTROL_N), key=lambda r: r["id"])
+
+
+def probe(n: int) -> None:
+    """The recognition question on disguised summaries (same customers as the original probe)."""
+    import recognition as rg
+    from env import load_env
+    from frontier_verbal import MODEL
+
+    load_env()
+    ask = rg.Asker(MODEL, "https://openrouter.ai/api/v1", dry_run=False)
+    customers = rg.sample_customers(load_requests("test"), n, [])
+    rows = []
+    for r in customers:
+        state = disguise(r["requests"]["out_of_box"]["state"])
+        got = ask(f"{state}\n\n{rg.RECOGNITION_QUESTION}", rg.RECOGNITION_SCHEMA, "source_guess")
+        rows.append({"id": r["id"], "group": "random", **got})
+    result = {
+        "model": MODEL,
+        "disguise": DISGUISE_VERSION,
+        "example_state": disguise(customers[0]["requests"]["out_of_box"]["state"]),
+        "recognition_question": rg.RECOGNITION_QUESTION,
+        "summary": rg.summarize(rows),
+        "cost_usd": round(sum(float(x["usage"].get("cost") or 0) for x in rows), 4),
+        "recognition": rows,
+    }
+    PROBE_JSON.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(result["summary"], indent=1))
+
+
+def _records(name: str, directory: Path | None = None) -> dict[str, dict]:
+    from records import read_records
+
+    path = (directory or ROOT / "results" / "predictions") / f"{name}.jsonl"
+    if not path.exists():
+        return {}
+    recs = read_records(name, directory) if directory else read_records(name)
+    return {r["id"]: r for r in recs if r["split"] == "test" and r["condition"] == "out_of_box"}
+
+
+def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dict | None:
+    """Original vs disguised on the same customers, with the control's noise floor."""
+    import metrics as m
+
+    orig = _records(contestant)
+    disg = _records(f"{contestant}-disguised", CHECK_DIR)
+    ctrl = _records(f"{contestant}-control", CHECK_DIR)
+    ids = sorted(set(orig) & set(disg))
+    if not ids:
+        return None
+    y = np.array([orig[i]["label"] for i in ids], dtype=float)
+    p0 = np.array([orig[i]["p_default"] for i in ids])
+    p1 = np.array([disg[i]["p_default"] for i in ids])
+    rng = np.random.default_rng(seed)
+    shifts = [float((p1[idx] - p0[idx]).mean())
+              for idx in (rng.integers(0, len(ids), len(ids)) for _ in range(n_boot))]  # fmt: skip
+    result = {
+        "n": len(ids),
+        "observed_rate": float(y.mean()),
+        "mean_predicted": {"original": float(p0.mean()), "disguised": float(p1.mean())},
+        "mean_shift": {
+            "estimate": float((p1 - p0).mean()),
+            "lo": float(np.percentile(shifts, 2.5)),
+            "hi": float(np.percentile(shifts, 97.5)),
+        },  # fmt: skip
+        "mean_abs_change": float(np.abs(p1 - p0).mean()),
+        "ece": {"original": m.ece(y, p0), "disguised": m.ece(y, p1)},
+        "auc": {"original": m.auc(y, p0), "disguised": m.auc(y, p1)},
+        "spearman": float(
+            np.corrcoef(np.argsort(np.argsort(p0)), np.argsort(np.argsort(p1)))[0, 1]
+        ),  # fmt: skip
+        "cost_usd": float(sum(disg[i]["cost_usd"] for i in ids)),
+    }
+    cids = sorted(set(orig) & set(ctrl) & set(disg))
+    if cids:
+        c0 = np.array([orig[i]["p_default"] for i in cids])
+        cc = np.array([ctrl[i]["p_default"] for i in cids])
+        cd = np.array([disg[i]["p_default"] for i in cids])
+        result["control"] = {
+            "n": len(cids),
+            "noise_mean_shift": float((cc - c0).mean()),
+            "noise_mean_abs_change": float(np.abs(cc - c0).mean()),
+            "disguise_mean_shift_same_customers": float((cd - c0).mean()),
+            "disguise_mean_abs_change_same_customers": float(np.abs(cd - c0).mean()),
+        }
+    return result
+
+
+def report() -> dict:
+    results = {c: r for c in CONTESTANTS if (r := report_one(c))}
+    SUMMARY_JSON.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
+    for c, r in results.items():
+        s = r["mean_shift"]
+        print(f"{c}: n={r['n']}  mean p {r['mean_predicted']['original']:.3f} -> "
+              f"{r['mean_predicted']['disguised']:.3f}  shift {s['estimate']:+.3f} "
+              f"[{s['lo']:+.3f}, {s['hi']:+.3f}]  ECE {r['ece']['original']:.3f} -> "
+              f"{r['ece']['disguised']:.3f}  AUC {r['auc']['original']:.3f} -> "
+              f"{r['auc']['disguised']:.3f}  rank corr {r['spearman']:.2f}")  # fmt: skip
+        if "control" in r:
+            k = r["control"]
+            print(f"   control (n={k['n']}): noise shift {k['noise_mean_shift']:+.3f}, "
+                  f"|change| {k['noise_mean_abs_change']:.3f} vs disguise shift "
+                  f"{k['disguise_mean_shift_same_customers']:+.3f}, |change| "
+                  f"{k['disguise_mean_abs_change_same_customers']:.3f}")  # fmt: skip
+    print(f"Saved -> {SUMMARY_JSON}")
+    return results
+
+
+def main() -> None:
+    ap = build_parser(__doc__)
+    ap.set_defaults(split="test", condition="out_of_box")
+    ap.add_argument("--contestant", choices=CONTESTANTS, default="frontier-verbal")
+    ap.add_argument("--control", action="store_true",
+                    help=f"original summaries, {CONTROL_N} customers")  # fmt: skip
+    ap.add_argument("--rpm", type=float, default=18.0, help="Sol's requests-per-minute cap")
+    ap.add_argument("--device", default="cpu", help="Laya's device (default: cpu)")
+    ap.add_argument("--base-url", help="Kev or Qwen server (defaults: :8009 for Kev, :8000/v1)")
+    ap.add_argument(
+        "--probe", type=int, metavar="N", help="Sol recognition question on N summaries"
+    )
+    ap.add_argument("--report", action="store_true", help="compare with the original runs")
+    args = ap.parse_args()
+    if args.probe:
+        return probe(args.probe)
+    if args.report:
+        report()
+        return
+    if args.condition != "out_of_box" or args.split != "test":
+        ap.error("the disguise check runs on test, out_of_box requests only")
+    if args.out_dir is None and not args.smoke:
+        args.out_dir = CHECK_DIR
+    args = resolve_args(args)
+    from env import load_env
+
+    load_env()
+    rows = load_requests("test")
+    requests = control_sample(rows) if args.control else rows
+    run(make_predictor(args.contestant, args, args.control), args,
+        requests=requests[: args.limit or None])  # fmt: skip
+
+
+if __name__ == "__main__":
+    main()

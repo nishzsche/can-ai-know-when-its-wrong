@@ -18,6 +18,7 @@ import json
 import sys
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
@@ -98,6 +99,10 @@ def build_parser(description: str) -> argparse.ArgumentParser:
     ap.add_argument(
         "--out-dir", type=Path, help="default: results/predictions (smoke: results/smoke)"
     )
+    ap.add_argument(
+        "--workers", type=int, default=1,
+        help="parallel requests; API runners only (on one GPU they'd queue and skew latency)",
+    )  # fmt: skip
     return ap
 
 
@@ -147,6 +152,17 @@ def environment() -> dict:
             "gpu": gpu, "packages": packages}  # fmt: skip
 
 
+def _parallel(fn, items, workers):
+    """Yield fn(item) results as they finish; on any error, cancel everything still queued."""
+    pool = ThreadPoolExecutor(max_workers=workers)
+    futures = [pool.submit(fn, item) for item in items]
+    try:
+        for future in as_completed(futures):
+            yield future.result()
+    finally:
+        pool.shutdown(wait=True, cancel_futures=True)
+
+
 def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], None] = print) -> Path:
     """Predict every (condition, customer) not already in the output file; append as we go."""
     load_env()
@@ -170,6 +186,7 @@ def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], Non
         runs = [runs]
     runs.append({"model_version": predictor.model_version, "started": utc_now(),
                  "split": args.split, "conditions": list(args.conditions), "limit": args.limit,
+                 "workers": getattr(args, "workers", 1),
                  "environment": environment(), **predictor.meta})  # fmt: skip
     meta_path.write_text(json.dumps(runs, indent=2) + "\n", "utf-8")
     log(f"{predictor.contestant}: {predictor.model_version}")
@@ -182,12 +199,21 @@ def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], Non
     ):
         for condition in args.conditions:
             ps, ys, start, n_new, cost, failed = [], [], time.perf_counter(), 0, 0.0, 0
-            for row in requests:
-                if (condition, args.split, row["id"]) in done:
-                    continue
+            pending = [r for r in requests if (condition, args.split, r["id"]) not in done]
+
+            def attempt(row, condition=condition):
                 try:
-                    pred = predictor.predict(row["requests"][condition])
-                except PredictionFailed as exc:
+                    return row, predictor.predict(row["requests"][condition]), None
+                except PredictionFailed as failure:
+                    return row, None, failure
+
+            workers = getattr(args, "workers", 1) or 1
+            if workers == 1:
+                results = map(attempt, pending)
+            else:  # API runners only: each request's latency is still measured on its own
+                results = _parallel(attempt, pending, workers)
+            for row, pred, exc in results:
+                if exc is not None:
                     failed += 1
                     log(f"  {condition} {row['id']}: no usable answer ({exc}); will retry next run")
                     raw.write(json.dumps({"id": row["id"], "split": args.split,

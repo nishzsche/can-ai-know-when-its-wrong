@@ -568,3 +568,34 @@ def test_manifest_rejects_two_versions_within_one_condition(tmp_path):
     ]
     rc.write_records("jev", recs, directory=tmp_path)
     assert not manifest.summarize("jev", groups, ids, tmp_path)["complete"]
+
+
+# ---- parallel requests (API runners) ---------------------------------------------------------
+
+
+def test_parallel_run_writes_the_same_records_as_a_sequential_one(tmp_path):
+    seq, par = tmp_path / "seq", tmp_path / "par"
+    harness.run(FakePredictor(), _args(seq, limit=12), log=lambda _: None)
+    pred = FakePredictor()
+    harness.run(pred, _args(par, limit=12, workers=4), log=lambda _: None)
+    assert pred.calls == 24
+
+    def keyed(d):
+        recs = map(json.loads, (d / "fake-model.jsonl").read_text("utf-8").splitlines())
+        return {(r["condition"], r["id"]): r["p_default"] for r in recs}
+
+    assert keyed(seq) == keyed(par)
+    runs = json.loads((par / "raw" / "fake-model.meta.json").read_text("utf-8"))
+    assert runs[-1]["workers"] == 4
+
+
+def test_parallel_run_stops_and_cancels_on_a_hard_failure(tmp_path):
+    class Exploding(FakePredictor):
+        def predict(self, request):
+            self.calls += 1
+            raise SystemExit("version changed mid-run")
+
+    pred = Exploding()
+    with pytest.raises(SystemExit, match="version changed"):
+        harness.run(pred, _args(tmp_path, limit=50, workers=2), log=lambda _: None)
+    assert pred.calls < 100  # queued requests were cancelled, not all sent

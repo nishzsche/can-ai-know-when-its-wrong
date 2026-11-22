@@ -1,8 +1,10 @@
 """Kev-0.8B / Kev-4B through a local Kev server (System One API).
 
-Start the server on the L4 first (in a clone of github.com/jaredpalmer/kev, bf16 on CUDA):
+Start the server on the L4 first (in a clone of github.com/jaredpalmer/kev, bf16 on CUDA), at the
+exact v1.0 commit (see CHECKPOINTS and L4_RUNBOOK.md):
 
-    uv run --extra serve python -m kev.serve --run jaredpalmer/kev-4b@v1.0 --port 8009
+    uv run --extra serve python -m kev.serve \
+        --run jaredpalmer/kev-4b@591dcb5bd6d05eb0b5131ea6608f93f10243335c --port 8009
 
 then run, from this repo:
 
@@ -21,10 +23,12 @@ import urllib.request
 
 from harness import L4_USD_PER_HOUR, Prediction, build_parser, gpu_cost, resolve_args, run
 
-# Kev 1.0 weights (README "Kev 1.0" table; each Hub repo has a v1.0 tag).
+# Kev 1.0: (Hub repo, commit the v1.0 tag points at, weights revision in the README's Kev 1.0
+# table). The tag sits on a later model-card commit; on 2026-11-22 we checked that the adapter,
+# head and tokenizer files (LFS hashes) are identical at both commits.
 CHECKPOINTS = {
-    "0.8b": ("jaredpalmer/kev-0.8b", "9a45d25e"),
-    "4b": ("jaredpalmer/kev-4b", "139fdd94"),
+    "0.8b": ("jaredpalmer/kev-0.8b", "788ddbdd65715bb03a56788c822f6c632c9a551d", "9a45d25e"),
+    "4b": ("jaredpalmer/kev-4b", "591dcb5bd6d05eb0b5131ea6608f93f10243335c", "139fdd94"),
 }
 QUESTION_ID = "will_default"
 
@@ -45,18 +49,20 @@ def _http_json(url: str, body: dict | None = None, timeout: float = 120, tries: 
 
 class KevPredictor:
     def __init__(self, size: str, base_url: str, usd_per_hour: float, check_version: bool = True):
-        repo, revision = CHECKPOINTS[size]
+        repo, tag_commit, weights_rev = CHECKPOINTS[size]
         self.contestant = f"kev-{size}"
-        self.model_version = f"{repo}@{revision}"
+        self.model_version = f"{repo}@v1.0 ({tag_commit[:8]}; weights {weights_rev})"
         self.base_url = base_url.rstrip("/")
         self.usd_per_hour = usd_per_hour
         models = _http_json(f"{self.base_url}/v1/models")
         served = json.dumps(models)
-        if check_version and revision not in served:
+        accepted = (tag_commit[:8], weights_rev, f"{repo}@v1.0")
+        if check_version and not any(ident in served for ident in accepted):
             raise SystemExit(
-                f"The server at {self.base_url} doesn't report {repo}@{revision} in /v1/models. "
-                f"Start it with --run {repo}@v1.0, or check /v1/models and pass "
-                f"--skip-version-check if it identifies the checkpoint differently."
+                f"The server at {self.base_url} doesn't report {repo} v1.0 in /v1/models "
+                f"(looked for any of {accepted}). Start it with --run {repo}@{tag_commit}, or "
+                f"check /v1/models and pass --skip-version-check if it names the checkpoint "
+                f"differently."
             )
         self.meta = {"server_models": models, "base_url": self.base_url,
                      "usd_per_hour": usd_per_hour}  # fmt: skip

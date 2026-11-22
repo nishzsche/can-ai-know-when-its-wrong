@@ -141,6 +141,25 @@ def _fake_kev_server(models_payload):
     return server
 
 
+@pytest.mark.parametrize(
+    "served",
+    [
+        "jaredpalmer/kev-4b@591dcb5bd6d05eb0b5131ea6608f93f10243335c",  # v1.0 tag commit
+        "jaredpalmer/kev-4b@139fdd94",  # weights revision from the README table
+        "jaredpalmer/kev-4b@v1.0",  # the tag name itself
+    ],
+)
+def test_kev_predictor_accepts_every_name_for_v1_0(served):
+    import kev
+
+    server = _fake_kev_server({"data": [{"id": "kev-latest", "run": served}]})
+    try:
+        pred = kev.KevPredictor("4b", f"http://127.0.0.1:{server.server_port}", usd_per_hour=0.44)
+        assert pred.model_version == "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)"
+    finally:
+        server.shutdown()
+
+
 def test_kev_predictor_reads_noul_from_the_system_one_response():
     import kev
 
@@ -150,7 +169,7 @@ def test_kev_predictor_reads_noul_from_the_system_one_response():
     try:
         url = f"http://127.0.0.1:{server.server_port}"
         pred = kev.KevPredictor("4b", url, usd_per_hour=0.44)
-        assert pred.contestant == "kev-4b" and pred.model_version == "jaredpalmer/kev-4b@139fdd94"
+        assert pred.contestant == "kev-4b"
         request = harness.load_requests("tune", 1)[0]["requests"]["out_of_box"]
         out = pred.predict(request)
         assert out.p_default == 0.42 and out.raw["server_latency_ms"] == 17

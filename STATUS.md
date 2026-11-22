@@ -27,10 +27,9 @@ All runners share `runners/harness.py`. It:
 | `laya` | `runners/laya_classic.py` (`uv run --group laya`) | in-process `laya.Agent(..., vegaml=False).predict` | `convaiinnovations/laya@fd4f9dbc` | **smoke passed** (CPU, ~1.1 s/request; 40 valid records) |
 | `qwen-logprobs` | `runners/qwen_logprobs.py` (`uv run --group runners`) | vLLM + `jevper` `method="logprobs"` | `Qwen/Qwen3.5-4B@851bf6e8`, thinking off | **needs L4 smoke** |
 
-**Commands on the L4:**
-- **Kev:** start the server from a clone of github.com/jaredpalmer/kev: `uv run --extra serve python -m kev.serve --run jaredpalmer/kev-4b@v1.0 --port 8009` (bf16). Then `uv run python runners/kev.py --size 4b --smoke`. Repeat with `kev-0.8b@v1.0` and `--size 0.8b`. Run one model at a time.
-- **Qwen:** start vLLM with the command under "Running models on the GPU", then `uv run --group runners python runners/qwen_logprobs.py --smoke`.
-- **Laya:** `uv run --group laya python runners/laya_classic.py --split test --device cuda` (~33 ms/request on GPU, against ~1.1 s on CPU).
+**Commands on the L4: follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md).** It covers the Kev server setup, the M2 smoke tests, the gate before M3 (Jev smoke done and `PREDICTIONS.md` committed), the M3 GPU runs and the wrap-up, all as copy-paste commands.
+
+**Kev v1.0 commits:** the `v1.0` tags point at `591dcb5b` (4B) and `788ddbdd` (0.8B), not at the README's `139fdd94` / `9a45d25e`. The weight files are byte-identical at both (checked 2026-11-22). `runners/kev.py` accepts any of the names.
 
 **Checks for the L4 smoke runs:**
 - **Kev:** if `/v1/models` names the checkpoint without the revision, look at it and use `--skip-version-check` only after confirming it's the v1.0 weights.

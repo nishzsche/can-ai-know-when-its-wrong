@@ -7,7 +7,16 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 **M3 is in progress (started 2026-11-22).** The gate is passed: M2 is done and `PREDICTIONS.md` was committed (`24aebdd`) before any M3 prediction.
 - **API runs (laptop): running.** Re-running the same commands resumes them.
   - **Jev:** tune and test, both conditions, `--workers 8`. About 18 predictions per second, no rate limit.
-  - **GPT-6.2 Sol:** OpenRouter caps new accounts at **20 requests/minute** for this model (the first attempt stopped on a 429 after 20 records). The runner now paces requests at 18/min (`--rpm`), retries 429s with backoff, and keeps all waiting out of the recorded latency (it's in raw as `waited_for_rate_limit_s`). At that pace the 8,000 requests take ~7.5 h. It runs the essential parts first: out-of-box test, then out-of-box tune, base-rate test, base-rate tune. If OpenRouter lifts the cap, re-run with a higher `--rpm`; the run resumes.
+  - **Jev: done.** 8,000 records, committed in `ee7afa9`.
+  - **GPT-6.2 Sol: running unattended on the laptop** as a one-off Windows scheduled task, `can-ai-sol-run`, started 2026-11-22 09:58Z; ETA ~17:20Z.
+    - **Independent of the session:** it doesn't depend on VS Code or Claude Code.
+    - **How it runs:** a driver script runs the four parts in priority order, retries a part if it stops on an error, and blocks idle sleep only while it runs (no power settings changed).
+    - **Driver and log** live in the session scratchpad: `C:\Users\nisha\AppData\Local\Temp\claude\425ae268435ce76b\93657737-be5d-4844-a8c5-580f916f66d8\scratchpad\sol_m3_driver.py` and `...\sol_m3.log`.
+    - **Needs:** the PC on, plugged in, user logged in (locking is fine), and no restart. The L4 wouldn't be faster: the cap is per OpenRouter account.
+    - **Progress:** `wc -l results/predictions/frontier-verbal.jsonl` (target 8,000).
+    - **If the PC restarted:** `Start-ScheduledTask -TaskName can-ai-sol-run`, which resumes. If the scratchpad was cleaned, run the four `runners/frontier_verbal.py --workers 4 --split <test|tune> --condition <out_of_box|base_rate>` commands in that order instead.
+    - **When done:** check with `runners/manifest.py`, commit the Sol files, then `Unregister-ScheduledTask -TaskName can-ai-sol-run -Confirm:$false`.
+  - **Sol's rate limit:** OpenRouter caps new accounts at **20 requests/minute** for this model (the first attempt stopped on a 429 after 20 records). The runner now paces requests at 18/min (`--rpm`), retries 429s with backoff, and keeps all waiting out of the recorded latency (it's in raw as `waited_for_rate_limit_s`). At that pace the 8,000 requests take ~7.5 h. It runs the essential parts first: out-of-box test, then out-of-box tune, base-rate test, base-rate tune. If OpenRouter lifts the cap, re-run with a higher `--rpm`; the run resumes.
 - **GPU runs (L4): to do.** Follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md) section 3 (Laya, Qwen, Kev-4B, Kev-0.8B), then section 4.
 - **Done when:** `uv run --group runners python runners/manifest.py` passes without `--allow-incomplete`, meaning all eight contestants are complete, and `results/run_manifest.json` is committed.
 

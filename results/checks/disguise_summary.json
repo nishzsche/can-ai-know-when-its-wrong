@@ -1,126 +1,306 @@
 {
-  "jev": {
-    "n": 2000,
-    "observed_rate": 0.221,
-    "mean_predicted": {
-      "original": 0.481045,
-      "disguised": 0.521685
+  "disguise": {
+    "jev": {
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.481045,
+        "disguised": 0.521685
+      },
+      "mean_shift": {
+        "estimate": 0.04064,
+        "lo": 0.038129375,
+        "hi": 0.04291
+      },
+      "mean_abs_change": 0.052969999999999996,
+      "ece": {
+        "original": 0.264745,
+        "disguised": 0.308135
+      },
+      "auc": {
+        "original": 0.7116052602536028,
+        "disguised": 0.7062954884728652
+      },
+      "spearman": 0.9480926265231566,
+      "cost_usd": 0.038724756,
+      "control": {
+        "n": 200,
+        "noise_mean_shift": 0.002700000000000002,
+        "noise_mean_abs_change": 0.018,
+        "disguise_mean_shift_same_customers": 0.04195,
+        "disguise_mean_abs_change_same_customers": 0.05184999999999999
+      }
     },
-    "mean_shift": {
-      "estimate": 0.04064,
-      "lo": 0.038129375,
-      "hi": 0.04291
+    "kev-4b": {
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.48638675,
+        "disguised": 0.5016138
+      },
+      "mean_shift": {
+        "estimate": 0.015227049999999999,
+        "lo": 0.012832931249999999,
+        "hi": 0.01750249375
+      },
+      "mean_abs_change": 0.04507965,
+      "ece": {
+        "original": 0.26653815,
+        "disguised": 0.28297060000000007
+      },
+      "auc": {
+        "original": 0.5935145708327767,
+        "disguised": 0.6511255583501299
+      },
+      "spearman": 0.9062649090662274,
+      "cost_usd": 0.031047560468605823,
+      "control": {
+        "n": 200,
+        "noise_mean_shift": 0.0,
+        "noise_mean_abs_change": 0.0,
+        "disguise_mean_shift_same_customers": 0.0277065,
+        "disguise_mean_abs_change_same_customers": 0.0472615
+      }
     },
-    "mean_abs_change": 0.052969999999999996,
-    "ece": {
-      "original": 0.264745,
-      "disguised": 0.308135
+    "kev-0.8b": {
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.3054794,
+        "disguised": 0.29219320000000004
+      },
+      "mean_shift": {
+        "estimate": -0.0132862,
+        "lo": -0.014977376249999999,
+        "hi": -0.011642348750000002
+      },
+      "mean_abs_change": 0.0287823,
+      "ece": {
+        "original": 0.08965060000000001,
+        "disguised": 0.0843966
+      },
+      "auc": {
+        "original": 0.7501945875614984,
+        "disguised": 0.7473244210293972
+      },
+      "spearman": 0.8896897474224368,
+      "cost_usd": 0.00864600984002981,
+      "control": {
+        "n": 200,
+        "noise_mean_shift": 0.0,
+        "noise_mean_abs_change": 0.0,
+        "disguise_mean_shift_same_customers": -0.014301000000000001,
+        "disguise_mean_abs_change_same_customers": 0.029623999999999998
+      }
     },
-    "auc": {
-      "original": 0.7116052602536028,
-      "disguised": 0.7062954884728652
-    },
-    "spearman": 0.9480926265231566,
-    "cost_usd": 0.038724756,
-    "control": {
-      "n": 200,
-      "noise_mean_shift": 0.002700000000000002,
-      "noise_mean_abs_change": 0.018,
-      "disguise_mean_shift_same_customers": 0.04195,
-      "disguise_mean_abs_change_same_customers": 0.05184999999999999
+    "qwen-logprobs": {
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.35514813768119075,
+        "disguised": 0.3889837142879087
+      },
+      "mean_shift": {
+        "estimate": 0.033835576606717925,
+        "lo": 0.029946952794258918,
+        "hi": 0.03799076128707573
+      },
+      "mean_abs_change": 0.0664597289413794,
+      "ece": {
+        "original": 0.14022663962409926,
+        "disguised": 0.17117756275706716
+      },
+      "auc": {
+        "original": 0.7443874557821548,
+        "disguised": 0.7384096968500049
+      },
+      "spearman": 0.799968571992143,
+      "cost_usd": 0.03579838477246877,
+      "control": {
+        "n": 200,
+        "noise_mean_shift": -0.0008479656602688656,
+        "noise_mean_abs_change": 0.004717018351908117,
+        "disguise_mean_shift_same_customers": 0.04697072291291935,
+        "disguise_mean_abs_change_same_customers": 0.07267483073014516
+      }
     }
   },
-  "kev-4b": {
-    "n": 2000,
-    "observed_rate": 0.221,
-    "mean_predicted": {
-      "original": 0.48638675,
-      "disguised": 0.5016138
+  "aligned_layout": {
+    "laya": {
+      "split": "tune",
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.2059373,
+        "aligned": 0.2648089
+      },
+      "mean_shift": {
+        "estimate": 0.058871599999999996,
+        "lo": 0.050310278750000006,
+        "hi": 0.06623759624999999
+      },
+      "mean_abs_change": 0.1302821,
+      "ece": {
+        "original": 0.0453837,
+        "aligned": 0.0666779
+      },
+      "auc": {
+        "original": 0.638409842064603,
+        "aligned": 0.5812337722686586
+      },
+      "by_status": {
+        "not late (code -2)": {
+          "n": 171,
+          "actual": 0.14035087719298245,
+          "original": 0.19421754385964912,
+          "aligned": 0.21976549707602341
+        },
+        "paid on time (code -1)": {
+          "n": 389,
+          "actual": 0.17994858611825193,
+          "original": 0.12593161953727505,
+          "aligned": 0.2345241645244216
+        },
+        "not late (code 0)": {
+          "n": 977,
+          "actual": 0.12589559877175024,
+          "original": 0.20051750255885362,
+          "aligned": 0.2811346980552712
+        }
+      },
+      "cost_usd": 0.004514315399237805
     },
-    "mean_shift": {
-      "estimate": 0.015227049999999999,
-      "lo": 0.012832931249999999,
-      "hi": 0.01750249375
+    "kev-4b": {
+      "split": "tune",
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.48793965,
+        "aligned": 0.3566087
+      },
+      "mean_shift": {
+        "estimate": -0.13133095,
+        "lo": -0.135831945,
+        "hi": -0.12679907875000002
+      },
+      "mean_abs_change": 0.13841865,
+      "ece": {
+        "original": 0.26765355,
+        "aligned": 0.1465459
+      },
+      "auc": {
+        "original": 0.5943575415749395,
+        "aligned": 0.7107521244895707
+      },
+      "by_status": {
+        "not late (code -2)": {
+          "n": 171,
+          "actual": 0.14035087719298245,
+          "original": 0.3409701754385965,
+          "aligned": 0.20647602339181284
+        },
+        "paid on time (code -1)": {
+          "n": 389,
+          "actual": 0.17994858611825193,
+          "original": 0.3667017994858612,
+          "aligned": 0.23661131105398456
+        },
+        "not late (code 0)": {
+          "n": 977,
+          "actual": 0.12589559877175024,
+          "original": 0.5383725690890481,
+          "aligned": 0.3595704196519959
+        }
+      },
+      "cost_usd": 0.037164696029325324
     },
-    "mean_abs_change": 0.04507965,
-    "ece": {
-      "original": 0.26653815,
-      "disguised": 0.28297060000000007
+    "kev-0.8b": {
+      "split": "tune",
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.30800585,
+        "aligned": 0.3048435
+      },
+      "mean_shift": {
+        "estimate": -0.00316235,
+        "lo": -0.0054338287499999995,
+        "hi": -0.0011269275000000006
+      },
+      "mean_abs_change": 0.03917955000000001,
+      "ece": {
+        "original": 0.09040715000000003,
+        "aligned": 0.09592370000000003
+      },
+      "auc": {
+        "original": 0.7181116003229573,
+        "aligned": 0.714866054054682
+      },
+      "by_status": {
+        "not late (code -2)": {
+          "n": 171,
+          "actual": 0.14035087719298245,
+          "original": 0.21287426900584794,
+          "aligned": 0.22653216374269003
+        },
+        "paid on time (code -1)": {
+          "n": 389,
+          "actual": 0.17994858611825193,
+          "original": 0.2610223650385604,
+          "aligned": 0.26451748071979436
+        },
+        "not late (code 0)": {
+          "n": 977,
+          "actual": 0.12589559877175024,
+          "original": 0.24408341862845442,
+          "aligned": 0.27038290685772776
+        }
+      },
+      "cost_usd": 0.01085555026119368
     },
-    "auc": {
-      "original": 0.5935145708327767,
-      "disguised": 0.6511255583501299
-    },
-    "spearman": 0.9062649090662274,
-    "cost_usd": 0.031047560468605823,
-    "control": {
-      "n": 200,
-      "noise_mean_shift": 0.0,
-      "noise_mean_abs_change": 0.0,
-      "disguise_mean_shift_same_customers": 0.0277065,
-      "disguise_mean_abs_change_same_customers": 0.0472615
-    }
-  },
-  "kev-0.8b": {
-    "n": 2000,
-    "observed_rate": 0.221,
-    "mean_predicted": {
-      "original": 0.3054794,
-      "disguised": 0.29219320000000004
-    },
-    "mean_shift": {
-      "estimate": -0.0132862,
-      "lo": -0.014977376249999999,
-      "hi": -0.011642348750000002
-    },
-    "mean_abs_change": 0.0287823,
-    "ece": {
-      "original": 0.08965060000000001,
-      "disguised": 0.0843966
-    },
-    "auc": {
-      "original": 0.7501945875614984,
-      "disguised": 0.7473244210293972
-    },
-    "spearman": 0.8896897474224368,
-    "cost_usd": 0.00864600984002981,
-    "control": {
-      "n": 200,
-      "noise_mean_shift": 0.0,
-      "noise_mean_abs_change": 0.0,
-      "disguise_mean_shift_same_customers": -0.014301000000000001,
-      "disguise_mean_abs_change_same_customers": 0.029623999999999998
-    }
-  },
-  "qwen-logprobs": {
-    "n": 2000,
-    "observed_rate": 0.221,
-    "mean_predicted": {
-      "original": 0.35514813768119075,
-      "disguised": 0.3889837142879087
-    },
-    "mean_shift": {
-      "estimate": 0.033835576606717925,
-      "lo": 0.029946952794258918,
-      "hi": 0.03799076128707573
-    },
-    "mean_abs_change": 0.0664597289413794,
-    "ece": {
-      "original": 0.14022663962409926,
-      "disguised": 0.17117756275706716
-    },
-    "auc": {
-      "original": 0.7443874557821548,
-      "disguised": 0.7384096968500049
-    },
-    "spearman": 0.799968571992143,
-    "cost_usd": 0.03579838477246877,
-    "control": {
-      "n": 200,
-      "noise_mean_shift": -0.0008479656602688656,
-      "noise_mean_abs_change": 0.004717018351908117,
-      "disguise_mean_shift_same_customers": 0.04697072291291935,
-      "disguise_mean_abs_change_same_customers": 0.07267483073014516
+    "qwen-logprobs": {
+      "split": "tune",
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.3572609584823039,
+        "aligned": 0.35534780275228833
+      },
+      "mean_shift": {
+        "estimate": -0.0019131557300155592,
+        "lo": -0.005930237565393638,
+        "hi": 0.002254734603592769
+      },
+      "mean_abs_change": 0.07288839385658483,
+      "ece": {
+        "original": 0.13691032973587552,
+        "aligned": 0.14178038186884886
+      },
+      "auc": {
+        "original": 0.7081251924093426,
+        "aligned": 0.6970322492579534
+      },
+      "by_status": {
+        "not late (code -2)": {
+          "n": 171,
+          "actual": 0.14035087719298245,
+          "original": 0.24992602440408856,
+          "aligned": 0.23001170203957724
+        },
+        "paid on time (code -1)": {
+          "n": 389,
+          "actual": 0.17994858611825193,
+          "original": 0.28521658706569736,
+          "aligned": 0.29056436310246964
+        },
+        "not late (code 0)": {
+          "n": 977,
+          "actual": 0.12589559877175024,
+          "original": 0.3069156304961542,
+          "aligned": 0.3264604157757638
+        }
+      },
+      "cost_usd": 0.0409190923490458
     }
   }
 }

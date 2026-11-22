@@ -32,6 +32,11 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
       - **Kev-0.8B:** mean p 0.305 → 0.292, ECE 0.090 → 0.084, AUC 0.750 → 0.747. Slightly better calibrated when disguised.
       - **Qwen:** mean p 0.355 → 0.389, ECE 0.140 → 0.171, AUC 0.744 → 0.738, rank correlation 0.80.
       - **Jev** (laptop, for comparison): mean p +0.041, ECE 0.265 → 0.308.
+    - **Layout check on the GPU contestants** (`--variant aligned --split tune`, L4 2026-11-22 23:10–23:31Z, about $0.09): each bill shown next to the payment made the following month, 2,000 tune customers, numbers unchanged. No control on tune, but Kev's and Qwen's test controls reproduced to within 0.005.
+      - **Kev-4B changes a lot:** mean p 0.488 → 0.357, **ECE 0.268 → 0.147, AUC 0.594 → 0.711**. For "paid on time (code -1)" customers (actual 0.18) it goes 0.37 → 0.24. Template v2's same-month layout seems to read as underpayment to it.
+      - **Laya goes the other way:** mean p 0.206 → 0.265, ECE 0.045 → 0.067, AUC 0.638 → 0.581.
+      - **Kev-0.8B and Qwen:** essentially unchanged (shift −0.003 and −0.002; AUC −0.003 and −0.011).
+      - **Fairness flag for the author:** under the "never disadvantage the AI contestants" rule, the v2 layout costs Kev-4B a lot and helps Laya. No template change made; that's the author's call, and any change would mean re-running every AI contestant on test.
       - **Laya and Sol's disguised runs are not in git** (the report lists only the four above). If they ran on the laptop, commit them from there.
     - **Full run stopped:** the 2,000-customer disguised run (~$1.50) was stopped before spending, since it can't isolate recognition. It can still be run with `--workers 4`, then `--report`.
   - **False-base-rate check** (`runners/checks/sol_false_rate.py`, user asked 2026-11-23, $0.46): 500 test customers, the base-rate sentence saying 10.0% instead of 22.1%.

@@ -2,7 +2,7 @@
 
 Everything in this project that needs the GPU, in order. Read `STATUS.md` first (setup, `/home` persistence, money). The L4 bills per second, so don't leave it idle.
 
-**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Step 5 done (2026-11-22, 22:35–23:10Z)** on a new instance (`jl-584335`): the disguise check for Kev-4B, Kev-0.8B and Qwen, at the same weights and setup as M3 (Kev without flash-linear-attention, vLLM 0.34.0). Results are in `results/checks/disguise/` and `results/checks/disguise_summary.json`. Nothing else needs the GPU.
+**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Step 5 done (2026-11-22, 22:35–23:31Z)** on a new instance (`jl-584335`): the disguise check for Kev-4B, Kev-0.8B and Qwen, and the layout check (`--variant aligned`, tune) for Kev-4B, Kev-0.8B, Qwen and Laya, at the same weights and setup as M3 (Kev without flash-linear-attention, vLLM 0.34.0). Results are in `results/checks/disguise/` and `results/checks/disguise_summary.json`. Nothing else in the runbook needs the GPU.
 
 - **API contestants** (Jev, GPT-6.2 Sol) run on the laptop, not here.
 - **No API key needed:** this runbook uses no API key, so the L4 needs no `.env`.

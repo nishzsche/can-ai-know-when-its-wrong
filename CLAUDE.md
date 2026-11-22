@@ -46,5 +46,5 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run python baselines/scorecard.py` / `uv run python baselines/gbm.py` — train the baselines on `train` and write their `tune`/`test` predictions (CPU, seconds)
 - `uv run pytest` — render, split, record, baseline and metric tests
 - `uv run --group memcheck python data/memcheck.py --model <id>` — LLM memorization tests (needs `OPENROUTER_API_KEY`; `--dry-run` works offline)
-- `uv run python runners/<name>.py --split test --condition out_of_box` — run one contestant
+- `uv run python runners/<name>.py --split test --condition out_of_box` — run one contestant (`--smoke` = 20 tune customers into `results/smoke/`; Laya needs `--group laya`, Qwen/API runners `--group runners`; keys come from a git-ignored `.env`)
 - `uv run python analysis/figures.py` — regenerate all charts

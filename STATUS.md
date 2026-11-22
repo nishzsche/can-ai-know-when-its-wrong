@@ -4,7 +4,48 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 ## Where things stand
 
-**M2 is in progress: the baselines are done; the AI runners are next.** M1 is done except the frontier-model memorization test, which the user chose not to wait for.
+**M2 is in progress.**
+- **Done:** the baselines and the three open-model runners.
+- **Smoke-tested:** Laya, here on CPU.
+- **Next:** smoke-test Kev and Qwen on the L4, then write the API runners (Jev, frontier model).
+
+M1 is done. The frontier-model memorization test (GPT-6.2 Astra, 2026-11-22) found that Astra has memorized the start of the data file; see the M1 section and `data/contamination.md`.
+
+### Open-model runners (written 2026-11-22, on CPU)
+
+All runners share `runners/harness.py`. It:
+- feeds each model the identical rendered System One request,
+- writes records through `analysis/records.py`,
+- keeps raw responses in `<out>/raw/`,
+- resumes where it stopped.
+
+`--smoke` means 20 tune customers × both conditions, written to `results/smoke/`; that's the M2 check, and `tests/test_runners.py` validates it. `--split test` writes to `results/predictions/`. `cost_usd` for local models is the amortized GPU time (latency × $0.44/h L4 rate; $0 for Laya on a laptop CPU).
+
+| Contestant | Script | Interface | Pinned to | Status |
+|---|---|---|---|---|
+| `kev-0.8b`, `kev-4b` | `runners/kev.py --size 0.8b\|4b` | local Kev server, `POST /v1/systemone` | v1.0 (`9a45d25e` / `139fdd94`); refuses to run if `/v1/models` doesn't show it | tested against a fake server; **needs L4 smoke** |
+| `laya` | `runners/laya_classic.py` (`uv run --group laya`) | in-process `laya.Agent(..., vegaml=False).predict` | `convaiinnovations/laya@fd4f9dbc` | **smoke passed** (CPU, ~1.1 s/request; 40 valid records) |
+| `qwen-logprobs` | `runners/qwen_logprobs.py` (`uv run --group runners`) | vLLM + `jevper` `method="logprobs"` | `Qwen/Qwen3.5-4B@851bf6e8`, thinking off | **needs L4 smoke** |
+
+**Commands on the L4:**
+- **Kev:** start the server from a clone of github.com/jaredpalmer/kev: `uv run --extra serve python -m kev.serve --run jaredpalmer/kev-4b@v1.0 --port 8009` (bf16). Then `uv run python runners/kev.py --size 4b --smoke`. Repeat with `kev-0.8b@v1.0` and `--size 0.8b`. Run one model at a time.
+- **Qwen:** start vLLM with the command under "Running models on the GPU", then `uv run --group runners python runners/qwen_logprobs.py --smoke`.
+- **Laya:** `uv run --group laya python runners/laya_classic.py --split test --device cuda` (~33 ms/request on GPU, against ~1.1 s on CPU).
+
+**Checks for the L4 smoke runs:**
+- **Kev:** if `/v1/models` names the checkpoint without the revision, look at it and use `--skip-version-check` only after confirming it's the v1.0 weights.
+- **Qwen logprobs:** the harness warns when more than 10% of probabilities are exactly 0 or 1. That would mean vLLM is returning processed rather than raw logprobs; check vLLM's `--logprobs-mode` (want raw).
+
+**Laya engine:** since laya 0.5, `laya.Agent()` defaults to a different engine (vegaml, a frozen-LLM reader). The plan's contestant is the 421M classic encoder, so the runner asks for it with `vegaml=False` and refuses anything else.
+
+**OpenRouter key:** it lives in the git-ignored `.env` in the repo root (`OPENROUTER_API_KEY=...`), loaded by `analysis/env.py` in every runner and in `memcheck.py`. On 2026-11-22 OpenRouter accepted it, with a $100 limit. On the L4, create the same `.env` in `/home/can-ai-know-when-its-wrong`.
+
+**Frontier model: `openai/gpt-6.2-astra`** (user, 2026-11-22), OpenAI's flagship, through OpenRouter. An earlier recommendation here was `openai/gpt-6.2-sol` (snapshot `gpt-6.2-sol-20261117`), what ChatGPT starts new chats on, at about ¼ the price; the user chose Astra.
+- **On OpenRouter:** reasoning is mandatory (effort low to max, default medium). No logprobs, and `temperature` isn't listed as supported. It accepts `seed` and `response_format`.
+- **Versioning:** responses name the model only as `openai/gpt-6.2-astra`, with no dated snapshot, so record the run date.
+- **Cost:** in the memcheck at default effort it used only 7–9 reasoning tokens per query. A risk judgment may use more, so measure on the smoke run before the full 8,000 requests.
+- **Still to decide:** reasoning effort for the runner (default medium, or low to save cost).
+- **Memorization:** its memcheck is done and found that it memorized the start of the file (see the M1 section). Settle the open items there before its full runs.
 
 ### M2 so far (2026-11-22, on CPU)
 
@@ -36,8 +77,15 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 - **Qwen memorization test: done (2026-11-22).** Qwen3.5-4B, chat and raw-completion modes, both file versions: 0 of 100 rows reproduced (98 of them non-trivial) and no non-trivial header continuation. Details and the results table are in `data/contamination.md`.
 
-**Still open for M1:**
-1. **Frontier-model memorization test.** Needs `OPENROUTER_API_KEY` and a choice of frontier model (the user hasn't picked one yet). Run `uv run --group memcheck python data/memcheck.py --model <openrouter-id>`, then add its rows to the table in `data/contamination.md`. It needs no GPU.
+- **Frontier memorization test: done (2026-11-22), memorization found.** GPT-6.2 Astra through OpenRouter, chat mode, default reasoning effort, both file versions, about $3. Details are in `data/contamination.md`.
+  - **Header test:** it continued the file verbatim for every character it wrote: the rest of customer 3, then customers 4–10 (`uci`) and 4–8 (`kaggle_style`), labels included. It has seen this file.
+  - **Row completion:** 0 of 50 exact. It refused 19, and its other answers match the true rows less often than always guessing each column's most common value (25–28% of fields vs 32%). No sign of recall for rows deeper in the file.
+  - **Reproduced customers we use:** `cust_00004` (test) and `cust_00005`–`cust_00007` (tune).
+
+**Open (needs the user):** how to handle Astra's memorization beyond flagging its results. Options, each cheap:
+1. **Longer header test:** Astra stopped after 701 characters, still matching, so how deep its memory goes is unknown. Test customers `cust_00016` and `cust_00018` lie beyond what the test reached.
+2. **Results with and without** the memorized customers.
+3. **Recognition probe:** ask Astra whether it recognizes a rendered summary as this dataset. This matters more than the leaked rows: the summaries show NT$ and Apr–Sep 2005, and a model that recognizes the dataset could recall its ~22% default rate, which would flatter its out-of-the-box calibration.
 
 ## Decisions already made (don't revisit without the user)
 
@@ -47,13 +95,14 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Recalibrated condition** is computed from the saved `out_of_box` probabilities, so it needs no new API calls.
 - **Scorecard keeps all 19 fields** despite 4 negative WoE coefficients (user, 2026-11-22). The textbook sign rule's premises don't hold here, a sign-consistent version performs the same within noise, and all 19 fields keep its inputs identical to every other contestant's. The write-up gets one line: "A production-style scorecard with consistent signs would drop all six bill amounts; it ranks and calibrates the same within noise."
 - **`qwen-logprobs` contestant = `Qwen/Qwen3.5-4B` @ `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`** (user chose it over Qwen3-4B-Instruct-2507, 2026-11-22). It's the newest ~4B Qwen, Apache-2.0. Run it text-only with thinking off (`enable_thinking=false`) so P(yes) comes from the first answer token's logprobs.
+- **`frontier-verbal` contestant = `openai/gpt-6.2-astra`** through OpenRouter (user, 2026-11-22). Its results are flagged wherever they appear, because it reproduced the start of the data file verbatim (`data/contamination.md`).
 
 ## Things to know for M2 (runners)
 
 - System One `noul` answers already give P(yes); use that as `p_default`. The rescaled `confidence` formula only applies to `choice` questions.
 - English Laya (`convaiinnovations/laya` @ `fd4f9dbc`) has a 512-token context, with about 320 tokens left for the state. Summaries are 192 tokens at most. The card says base Laya is near chance zero-shot on its own benchmark.
 - Kev: model cards at github.com/jaredpalmer/kev (checked at commit `65b1e763`). Kev-4B in bf16 is about 12.5 GB; the README only lists L40S/H100 as tested, so fall back to OpenRouter if the L4 runs out of memory.
-- Jev on OpenRouter: on 2026-11-22 the model list showed `typesafe/jev-router`, not a versioned `jev-1.x` ID. Check which ID to use and record the resolved version from each response.
+- Jev on OpenRouter: on 2026-11-22 the model list showed only `typesafe/jev-router`, which picks a model and reasoning effort per request. Don't use the router. Pin a version (e.g. `jev-1.14`) through OpenRouter's System One endpoint (`POST /api/v1/systemone`, which maps bare `jev-*` IDs onto `typesafe/`), and record the resolved version from each response.
 - GPU time on the L4 is billed per minute. Do CPU work (baselines, runner code, API runs) wherever it's cheapest and keep the GPU for serving open models.
 
 ## The L4 instance (JarvisLabs, launched 2026-11-22)

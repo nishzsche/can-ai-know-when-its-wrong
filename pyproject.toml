@@ -24,6 +24,15 @@ dev = [
 memcheck = [
     "tabmemcheck==0.1.6",
 ]
+# API and vLLM runners (jevper reads P(yes) from logprobs; openai is the HTTP client).
+runners = [
+    "jevper==0.7.12",
+    "openai>=1.92",
+]
+# Laya's classic encoder runs in-process and pulls in torch, so it gets its own group.
+laya = [
+    "laya==0.5.2",
+]
 
 [tool.uv]
 package = false
@@ -37,4 +46,4 @@ select = ["E", "F", "W", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["data", "analysis", "baselines"]
+pythonpath = ["data", "analysis", "baselines", "runners"]

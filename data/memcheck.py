@@ -26,12 +26,16 @@ import importlib.metadata
 import json
 import os
 import re
+import sys
 import urllib.request
 from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "analysis"))
+from env import load_env  # noqa: E402  (reads OPENROUTER_API_KEY from a git-ignored .env)
 
 HERE = Path(__file__).resolve().parent / "memcheck"
 CSV_DIR = HERE / "csv"
@@ -152,9 +156,11 @@ def run(args) -> dict:
             # tabmemcheck 0.1.6 never sets its result when every response is empty.
             prompt, expected, response = "", "", ""
         # tabmemcheck trims `expected` to the response's length, which flatters short answers.
-        # Score against the file's true continuation of the full requested length instead.
+        # Score against the file's true continuation instead: at least the requested length, and
+        # as long as the response, so a long verbatim answer isn't capped at completion_length.
         data = tabmemcheck.utils.load_csv_string(csv_path, header=True)
-        expected = data[len(prompt) : len(prompt) + args.completion_length] if prompt else ""
+        window = max(args.completion_length, len(response))
+        expected = data[len(prompt) : len(prompt) + window] if prompt else ""
         rows, responses = tabmemcheck.row_completion_test(
             csv_path, llm, num_queries=args.num_queries, print_levenshtein=False
         )
@@ -211,6 +217,7 @@ def main() -> None:
     ap.add_argument("--completion-length", type=int, default=500)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
+    load_env()
     if not args.dry_run and not args.model:
         ap.error("--model is required unless --dry-run")
 

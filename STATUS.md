@@ -5,11 +5,11 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 ## Where things stand
 
 **M2 is in progress.**
-- **Done:** the baselines and the three open-model runners.
-- **Smoke-tested:** Laya, here on CPU.
-- **Next:** smoke-test Kev and Qwen on the L4, then write the API runners (Jev, frontier model).
+- **Done:** the baselines, the three open-model runners, and the frontier-verbal runner (GPT-6.2 Sol).
+- **Smoke-tested:** Laya, here on CPU; frontier-verbal (Sol) through OpenRouter.
+- **Next:** smoke-test Kev and Qwen on the L4, then write the Jev runner.
 
-M1 is done. The frontier-model memorization test (GPT-6.2 Astra, 2026-11-22) found that Astra has memorized the start of the data file; see the M1 section and `data/contamination.md`.
+M1 is done. The frontier-model memorization test found that GPT-6.2 Sol (the contestant) has memorized the start of the data file, as had Astra, tested before the switch. See the M1 section and `data/contamination.md`.
 
 ### Open-model runners (written 2026-11-22, on CPU)
 
@@ -40,12 +40,17 @@ All runners share `runners/harness.py`. It:
 
 **OpenRouter key:** it lives in the git-ignored `.env` in the repo root (`OPENROUTER_API_KEY=...`), loaded by `analysis/env.py` in every runner and in `memcheck.py`. On 2026-11-22 OpenRouter accepted it, with a $100 limit. On the L4, create the same `.env` in `/home/can-ai-know-when-its-wrong`.
 
-**Frontier model: `openai/gpt-6.2-astra`** (user, 2026-11-22), OpenAI's flagship, through OpenRouter. An earlier recommendation here was `openai/gpt-6.2-sol` (snapshot `gpt-6.2-sol-20261117`), what ChatGPT starts new chats on, at about ¼ the price; the user chose Astra.
-- **On OpenRouter:** reasoning is mandatory (effort low to max, default medium). No logprobs, and `temperature` isn't listed as supported. It accepts `seed` and `response_format`.
-- **Versioning:** responses name the model only as `openai/gpt-6.2-astra`, with no dated snapshot, so record the run date.
-- **Cost:** in the memcheck at default effort it used only 7–9 reasoning tokens per query. A risk judgment may use more, so measure on the smoke run before the full 8,000 requests.
-- **Still to decide:** reasoning effort for the runner (default medium, or low to save cost).
-- **Memorization:** its memcheck is done and found that it memorized the start of the file (see the M1 section). Settle the open items there before its full runs.
+**Frontier model: `openai/gpt-6.2-sol` at its default reasoning effort (medium)** (user, 2026-11-22). Switched from GPT-6.2 Astra for cost: Astra at default effort was estimated at $165–350, beyond the $100 key limit. Sol is also what ChatGPT starts new chats on, which matches the plan's "ask ChatGPT" framing.
+- **Runner:** `runners/frontier_verbal.py` (`uv run --group runners`).
+  - Prompt: the shared summary and question, plus one answer line: probability 0–100 as JSON (prompt v1).
+  - Settings: strict JSON schema, `reasoning.effort="medium"` sent explicitly (equal to the default), `seed=0`. Sol accepts no temperature and no logprobs.
+  - Records OpenRouter's real per-request cost (`usage.cost`). Retries malformed answers twice, then skips the customer for a later run rather than inventing a value.
+- **Versioning:** responses name the model only as `openai/gpt-6.2-sol`, with no dated snapshot, so `model_version` includes the run date.
+- **Smoke test (2026-11-22):** 40 valid records, $0.04 in total, no retries.
+  - Usage: prompts 262 tokens on average; reasoning only 31 tokens on average (max 210).
+  - Projection: about **$0.001 per request, ~$8 for all 8,000**.
+  - First impression (20 customers, too few to judge): mean p 0.32 vs actual 0.20; the base-rate line barely moved it (0.31).
+- **Prompt caching doesn't apply.** OpenAI caches only prompts of 1,024+ tokens, ours are ~262, and on GPT-5.6+ cache writes cost 1.25× input. The harness already skips finished customers, so re-runs never pay twice.
 
 ### M2 so far (2026-11-22, on CPU)
 
@@ -77,15 +82,15 @@ All runners share `runners/harness.py`. It:
 
 - **Qwen memorization test: done (2026-11-22).** Qwen3.5-4B, chat and raw-completion modes, both file versions: 0 of 100 rows reproduced (98 of them non-trivial) and no non-trivial header continuation. Details and the results table are in `data/contamination.md`.
 
-- **Frontier memorization test: done (2026-11-22), memorization found.** GPT-6.2 Astra through OpenRouter, chat mode, default reasoning effort, both file versions, about $3. Details are in `data/contamination.md`.
-  - **Header test:** it continued the file verbatim for every character it wrote: the rest of customer 3, then customers 4–10 (`uci`) and 4–8 (`kaggle_style`), labels included. It has seen this file.
-  - **Row completion:** 0 of 50 exact. It refused 19, and its other answers match the true rows less often than always guessing each column's most common value (25–28% of fields vs 32%). No sign of recall for rows deeper in the file.
-  - **Reproduced customers we use:** `cust_00004` (test) and `cust_00005`–`cust_00007` (tune).
+- **Frontier memorization test: done (2026-11-22), memorization found.** Details are in `data/contamination.md`.
+  - **GPT-6.2 Sol (the contestant):** chat mode, default effort, about $1. It continued the file verbatim for every character it wrote: customers 8–13 (`uci`) and 2–6 (`kaggle_style`), labels included. Row completion: 0 of 50 exact, with 42 refusals.
+  - **GPT-6.2 Astra (tested before the switch; not a contestant):** customers 3–10 verbatim. Row completion: 0 of 50 exact, with 19 refusals; its other answers match no better than guessing each column's most common value.
+  - **Reproduced customers we use:** `cust_00004` (test) and `cust_00005`–`cust_00007` (tune). Sol reproduced 4–6, Astra 4–7.
 
-**Open (needs the user):** how to handle Astra's memorization beyond flagging its results. Options, each cheap:
-1. **Longer header test:** Astra stopped after 701 characters, still matching, so how deep its memory goes is unknown. Test customers `cust_00016` and `cust_00018` lie beyond what the test reached.
+**Open (needs the user):** how to handle Sol's memorization beyond flagging its results. Options, each cheap:
+1. **Longer header test:** Sol stopped after 622 / 764 characters, still matching, so how deep its memory goes is unknown. Test customers `cust_00016` and `cust_00018` lie beyond what the test reached.
 2. **Results with and without** the memorized customers.
-3. **Recognition probe:** ask Astra whether it recognizes a rendered summary as this dataset. This matters more than the leaked rows: the summaries show NT$ and Apr–Sep 2005, and a model that recognizes the dataset could recall its ~22% default rate, which would flatter its out-of-the-box calibration.
+3. **Recognition probe:** ask Sol whether it recognizes a rendered summary as this dataset. This matters more than the leaked rows: the summaries show NT$ and Apr–Sep 2005, and a model that recognizes the dataset could recall its ~22% default rate, which would flatter its out-of-the-box calibration.
 
 ## Decisions already made (don't revisit without the user)
 
@@ -95,7 +100,7 @@ All runners share `runners/harness.py`. It:
 - **Recalibrated condition** is computed from the saved `out_of_box` probabilities, so it needs no new API calls.
 - **Scorecard keeps all 19 fields** despite 4 negative WoE coefficients (user, 2026-11-22). The textbook sign rule's premises don't hold here, a sign-consistent version performs the same within noise, and all 19 fields keep its inputs identical to every other contestant's. The write-up gets one line: "A production-style scorecard with consistent signs would drop all six bill amounts; it ranks and calibrates the same within noise."
 - **`qwen-logprobs` contestant = `Qwen/Qwen3.5-4B` @ `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`** (user chose it over Qwen3-4B-Instruct-2507, 2026-11-22). It's the newest ~4B Qwen, Apache-2.0. Run it text-only with thinking off (`enable_thinking=false`) so P(yes) comes from the first answer token's logprobs.
-- **`frontier-verbal` contestant = `openai/gpt-6.2-astra`** through OpenRouter (user, 2026-11-22). Its results are flagged wherever they appear, because it reproduced the start of the data file verbatim (`data/contamination.md`).
+- **`frontier-verbal` contestant = `openai/gpt-6.2-sol` at default reasoning effort (medium)** through OpenRouter (user, 2026-11-22; switched from Astra for cost). Astra's memorization result stays in `data/contamination.md` as context about the OpenAI family.
 
 ## Things to know for M2 (runners)
 

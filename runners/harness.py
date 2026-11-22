@@ -44,6 +44,17 @@ class Prediction:
     raw: dict = field(default_factory=dict)
 
 
+class PredictionFailed(Exception):
+    """No usable probability for this customer (refusal, malformed answer after retries).
+
+    The harness logs it, writes nothing for that customer, and a later run retries it.
+    """
+
+    def __init__(self, reason: str, raw: dict | None = None):
+        super().__init__(reason)
+        self.raw = raw or {}
+
+
 class Predictor(Protocol):
     contestant: str
     model_version: str
@@ -121,11 +132,21 @@ def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], Non
         raw_path.open("a", encoding="utf-8", newline="\n") as raw,
     ):
         for condition in args.conditions:
-            ps, ys, start, n_new = [], [], time.perf_counter(), 0
+            ps, ys, start, n_new, cost, failed = [], [], time.perf_counter(), 0, 0.0, 0
             for row in requests:
                 if (condition, args.split, row["id"]) in done:
                     continue
-                pred = predictor.predict(row["requests"][condition])
+                try:
+                    pred = predictor.predict(row["requests"][condition])
+                except PredictionFailed as exc:
+                    failed += 1
+                    log(f"  {condition} {row['id']}: no usable answer ({exc}); will retry next run")
+                    raw.write(json.dumps({"id": row["id"], "split": args.split,
+                                          "condition": condition, "failed": str(exc),
+                                          "raw": exc.raw}) + "\n")  # fmt: skip
+                    raw.flush()
+                    continue
+                cost += pred.cost_usd
                 rec = make_record(
                     id=row["id"], split=args.split, contestant=predictor.contestant,
                     condition=condition, model_version=predictor.model_version,
@@ -144,9 +165,12 @@ def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], Non
                 secs = time.perf_counter() - start
                 extremes = sum(p in (0.0, 1.0) for p in ps)
                 log(f"  {condition}: {n_new} new in {secs:.1f}s | mean p {sum(ps) / n_new:.3f} "
-                    f"vs actual {sum(ys) / n_new:.3f} | exactly 0 or 1: {extremes}")  # fmt: skip
+                    f"vs actual {sum(ys) / n_new:.3f} | exactly 0 or 1: {extremes} | "
+                    f"cost ${cost:.4f}")  # fmt: skip
                 if extremes > 0.1 * n_new:
                     log("  WARNING: many probabilities are exactly 0 or 1; check the readout.")
             else:
                 log(f"  {condition}: nothing new")
+            if failed:
+                log(f"  {condition}: {failed} customer(s) without a usable answer; re-run to retry")
     return out_path

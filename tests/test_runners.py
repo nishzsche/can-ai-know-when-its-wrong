@@ -190,3 +190,110 @@ def test_smoke_output_is_20_valid_tune_records_per_condition(contestant):
         assert [r["label"] for r in part] == [row["label"] for row in first20]
         assert all(r["split"] == "tune" and r["contestant"] == contestant for r in part)
         assert len({r["model_version"] for r in part}) == 1
+
+
+# ---- frontier-verbal client against a fake OpenRouter --------------------------------------
+
+
+def _fake_openrouter(contents):
+    """Chat Completions server that answers with the queued `contents`, one per request."""
+    queue, prompts = list(contents), []
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_POST(self):
+            req = json.loads(self.rfile.read(int(self.headers["content-length"])))
+            assert req["model"] == "openai/gpt-6.2-sol"
+            assert req["reasoning"] == {"effort": "medium"} and req["seed"] == 0
+            assert req["response_format"]["json_schema"]["strict"] is True
+            prompts.append(req["messages"][0]["content"])
+            body = json.dumps({
+                "id": "gen-1", "object": "chat.completion", "created": 0,
+                "model": "openai/gpt-6.2-sol", "provider": "OpenAI",
+                "choices": [{"index": 0, "finish_reason": "stop",
+                             "message": {"role": "assistant", "content": queue.pop(0)}}],
+                "usage": {"prompt_tokens": 400, "completion_tokens": 300, "total_tokens": 700,
+                          "cost": 0.0038},
+            }).encode()  # fmt: skip
+            self.send_response(200)
+            self.send_header("content-type", "application/json")
+            self.send_header("content-length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    return server, prompts
+
+
+def _verbal(server, retries=2):
+    import frontier_verbal as fv
+
+    url = f"http://127.0.0.1:{server.server_port}"
+    return fv, fv.FrontierVerbalPredictor(base_url=url, api_key="test-key", retries=retries)
+
+
+def test_frontier_prompt_is_the_shared_request_plus_one_answer_line():
+    server, prompts = _fake_openrouter(['{"probability": 23}'])
+    try:
+        fv, pred = _verbal(server)
+        request = harness.load_requests("tune", 1)[0]["requests"]["base_rate"]
+        out = pred.predict(request)
+        assert out.p_default == pytest.approx(0.23) and out.cost_usd == pytest.approx(0.0038)
+        q = request["questions"]["will_default"]["instructions"]
+        assert prompts[0] == f"{request['state']}\n\n{q}\n\n{fv.ANSWER_LINE}"
+        assert "22.1%" in prompts[0]  # the base-rate sentence reaches the model
+    finally:
+        server.shutdown()
+
+
+def test_frontier_retries_a_malformed_answer_and_counts_both_costs():
+    server, _ = _fake_openrouter(["not json", '{"probability": 140}', '{"probability": 7.5}'])
+    try:
+        _, pred = _verbal(server, retries=2)
+        out = pred.predict(harness.load_requests("tune", 1)[0]["requests"]["out_of_box"])
+        assert out.p_default == pytest.approx(0.075)
+        assert out.cost_usd == pytest.approx(3 * 0.0038)
+        assert len(out.raw["attempts"]) == 3
+    finally:
+        server.shutdown()
+
+
+def test_frontier_gives_up_without_inventing_a_probability(tmp_path):
+    server, _ = _fake_openrouter(["I can't help with that."] * 3 + ['{"probability": 40}'] * 3)
+    try:
+        _, pred = _verbal(server, retries=2)
+        logs = []
+        args = _args(tmp_path, limit=2, condition="out_of_box")
+        path = harness.run(pred, args, log=logs.append)
+        recs = [json.loads(line) for line in path.read_text("utf-8").splitlines()]
+        first, second = (r["id"] for r in harness.load_requests("tune", 2))
+        assert [r["id"] for r in recs] == [second]  # the refused customer is skipped
+        assert any(first in line and "will retry" in line for line in logs)
+        raw = [json.loads(line) for line in (tmp_path / "raw" / "frontier-verbal.jsonl")
+               .read_text("utf-8").splitlines()]  # fmt: skip
+        assert raw[0]["id"] == first and "failed" in raw[0]
+    finally:
+        server.shutdown()
+
+
+@pytest.mark.parametrize(
+    ("content", "expected"),
+    [('{"probability": 0}', 0.0), ('{"probability": 100}', 1.0), ('{"probability": 22.5}', 0.225)],
+)
+def test_parse_probability_accepts_the_full_range(content, expected):
+    import frontier_verbal as fv
+
+    assert fv.parse_probability(content) == pytest.approx(expected)
+
+
+@pytest.mark.parametrize(
+    "content", ["", "{}", '{"probability": "high"}', '{"probability": -1}', '{"probability": true}']
+)
+def test_parse_probability_rejects_bad_answers(content):
+    import frontier_verbal as fv
+
+    with pytest.raises((ValueError, KeyError)):
+        fv.parse_probability(content)

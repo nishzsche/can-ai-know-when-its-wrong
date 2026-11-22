@@ -16,7 +16,7 @@ What limits the risk here:
 |---|---|---|---|
 | `scorecard`, `gbm` | Not needed | Trained only on our `train` split | Only `train`, by design |
 | `qwen-logprobs` (Qwen3.5-4B) | Yes: **no memorization detected** (2026-11-22, see below) | Qwen's pretraining data isn't disclosed | **Possibly**: public web data, though the tests found no trace of the file |
-| `frontier-verbal` (GPT-6.2 Astra) | Yes: **memorized the start of the file** (2026-11-22, see below) | Not disclosed | **Yes**: it reproduced the start of the published file verbatim (the rest of customer 3, then customers 4–10), labels included |
+| `frontier-verbal` (GPT-6.2 Sol) | Yes: **memorized the start of the file** (2026-11-22, see below) | Not disclosed | **Yes**: it reproduced the start of the published file verbatim (customers 2–6 and 8–13 across the two file versions), labels included. GPT-6.2 Astra, tested before the switch to Sol, did the same (customers 3–10) |
 | `jev` | No: decision model, doesn't generate text | Not disclosed. Third-party write-ups say TypeSafe describes its data only as built in-house; no model card | **Unknown** |
 | `kev-0.8b`, `kev-4b` | No: decision models | Listed in the model cards (see below). Bases are Qwen3.5-0.8B-Base and Qwen3.5-4B-Base, whose pretraining data isn't disclosed | **Not in Kev's fine-tuning data; possibly in the Qwen3.5 base pretraining** |
 | `laya` | No: decision model | The card describes the training method (RLCD) but not the training data. Backbone is ModernBERT-large, pretrained on a large web and code corpus | **Unknown**: possibly via backbone pretraining |
@@ -41,7 +41,8 @@ Card at huggingface.co/convaiinnovations/laya, revision `fd4f9dbc` (2026-11-19).
 
 **Status:**
 - **Qwen3.5-4B:** done (2026-11-22). No memorization detected.
-- **GPT-6.2 Astra** (the frontier contestant, chosen by the user 2026-11-22): done (2026-11-22). Memorized the start of the file; no recall of rows deeper in the file.
+- **GPT-6.2 Sol** (the frontier contestant since the user switched from Astra for cost, 2026-11-22): done (2026-11-22). Memorized the start of the file; no recall of rows deeper in the file.
+- **GPT-6.2 Astra** (the user's first choice, tested before the switch; not a contestant): done (2026-11-22). Same pattern. Kept as context about the OpenAI family.
 
 What runs, for each LLM contestant, on two versions of the file:
 
@@ -70,8 +71,10 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 | Qwen3.5-4B | chat | kaggle_style | 0 | 0 (0/24) | No memorization detected |
 | Qwen3.5-4B | raw completion | uci | 2 | 0 (0/25) | No memorization detected |
 | Qwen3.5-4B | raw completion | kaggle_style | 15 (a run of `0.0` fields) | 0 (0/25) | No memorization detected |
-| GPT-6.2 Astra | chat | uci | **701 / 701**: everything it wrote matches (the rest of customer 3, then customers 4–10) | 0 (0/25); 9 refusals | **Memorized the start of the file**, not random rows |
-| GPT-6.2 Astra | chat | kaggle_style | **669 / 669**: everything it wrote matches (the rest of customer 3, then customers 4–8) | 0 (0/25); 10 refusals | **Memorized the start of the file**, not random rows |
+| GPT-6.2 Sol | chat | uci | **622 / 622**: everything it wrote matches (customers 8–13) | 0 (0/25); 20 refusals | **Memorized the start of the file**, not random rows |
+| GPT-6.2 Sol | chat | kaggle_style | **764 / 764**: everything it wrote matches (customers 2–6) | 0 (0/24); 22 refusals | **Memorized the start of the file**, not random rows |
+| GPT-6.2 Astra (not a contestant) | chat | uci | **701 / 701**: everything it wrote matches (the rest of customer 3, then customers 4–10) | 0 (0/25); 9 refusals | **Memorized the start of the file**, not random rows |
+| GPT-6.2 Astra (not a contestant) | chat | kaggle_style | **669 / 669**: everything it wrote matches (the rest of customer 3, then customers 4–8) | 0 (0/25); 10 refusals | **Memorized the start of the file**, not random rows |
 
 **Qwen3.5-4B run details:** `Qwen/Qwen3.5-4B` at revision `851bf6e8`, served by vLLM 0.34.0 on the L4 with `--language-model-only` and thinking turned off (`enable_thinking=false`, the same setting the contestant uses). tabmemcheck 0.1.6. We ran both modes: chat, which is how the contestant is prompted, and raw `/completions` with no chat template, which is the stronger probe because the model can't reformat or refuse.
 
@@ -79,18 +82,23 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 
 **Relevance to Kev:** Kev's bases are Qwen3.5-0.8B-Base and Qwen3.5-4B-Base. A clean result on the instruct Qwen3.5-4B is weak, indirect evidence that the shared pretraining didn't fix this file in memory. It doesn't test the base checkpoints or Kev itself.
 
-**GPT-6.2 Astra run details:** `openai/gpt-6.2-astra` through OpenRouter on 2026-11-22. Responses name no dated snapshot. Chat mode only, since there's no raw-completion endpoint. Reasoning can't be turned off, so it ran at the default effort (medium). tabmemcheck 0.1.6 sends `temperature=0`, which Astra doesn't list as supported. A 3-query probe first checked that reasoning wouldn't use up tabmemcheck's 1,000-token answer cap: it used 7–9 reasoning tokens per query and no answer came back empty. Cost about $3 (about 5,400 prompt tokens per query, mostly tabmemcheck's few-shot examples).
+**GPT-6.2 Sol run details:** `openai/gpt-6.2-sol` through OpenRouter on 2026-11-22T08:51Z, chat mode, default reasoning effort (medium), tabmemcheck 0.1.6, scored with the fixed reference window (no 500-character cap). Cost about $1.
+- **Header test:** tabmemcheck cuts the file at a random row and keeps the best of four attempts, so the two file versions started at different places. In both, Sol's continuation matched the real file for every character it wrote: 622 characters (customers 8–13, `uci`) and 764 characters (customers 2–6, `kaggle_style`), default labels included.
+- **Row completion:** none of 50 exact. 42 of the 50 answers weren't CSV rows (refusals), so this test says little about deeper rows for Sol.
+- **Customers we use:** `cust_00004` (test) and `cust_00005`, `cust_00006` (tune) were reproduced by Sol. Astra also reproduced `cust_00007` (tune). Customers 2, 3, 8 and 10 are in reserve; 9 and 11–13 in train.
+
+**GPT-6.2 Astra run details** (tested before the switch to Sol; not a contestant): `openai/gpt-6.2-astra` through OpenRouter on 2026-11-22. Responses name no dated snapshot. Chat mode only, since there's no raw-completion endpoint. Reasoning can't be turned off, so it ran at the default effort (medium). tabmemcheck 0.1.6 sends `temperature=0`, which Astra doesn't list as supported. A 3-query probe first checked that reasoning wouldn't use up tabmemcheck's 1,000-token answer cap: it used 7–9 reasoning tokens per query and no answer came back empty. Cost about $3 (about 5,400 prompt tokens per query, mostly tabmemcheck's few-shot examples).
 
 **What Astra's responses show:**
 - **Header test:** the prompt holds the file header and customers 1–2, cut partway through customer 3. Astra's continuation matches the real file for every character it wrote, default labels included. None of that text is in the prompt, so this is recall, not copying. Bordt et al. treat it as evidence that the model saw the file in training. The first rows are also the most widely copied part of the file (every `df.head()` in a tutorial shows them), so this shows exposure to the file, not knowledge of all 30,000 rows.
 - **Row-completion test:** it refused 9 of 25 (`uci`) and 10 of 25 (`kaggle_style`) queries, giving the next ID and saying it "can't determine its remaining values". Its 31 attempted rows match 25–28% of the 24 non-ID fields on average (max 58%). Always guessing each column's most common value matches 32%, so these answers are no better than guessing typical values. There's no sign of recall for rows deeper in the file, but with 38% refusals this test is weaker for Astra than it was for Qwen.
 
 **What it means for the experiment:**
-- **Direct leaks look tiny.** Of the customers it reproduced, `cust_00004` is in test and `cust_00005`–`cust_00007` are in tune (3, 8 and 10 are in reserve, 9 in train). One test customer out of 2,000 can't move the metrics.
-- **How far the memorized start goes is untested.** Astra stopped on its own after 701 / 669 characters, still matching. Other low-numbered customers in test (`cust_00016`, `cust_00018`) are beyond what the test reached. A header test with a longer window would measure the depth.
+- **Direct leaks look tiny.** Of the customers Sol and Astra reproduced, `cust_00004` is in test and `cust_00005`–`cust_00007` are in tune (2, 3, 8 and 10 are in reserve; 9 and 11–13 in train). One test customer out of 2,000 can't move the metrics.
+- **How far the memorized start goes is untested.** Sol stopped on its own after 622 / 764 characters and Astra after 701 / 669, all still matching. Other low-numbered customers in test (`cust_00016`, `cust_00018`) are beyond what the test reached. A header test with a longer window would measure the depth.
 - **The model never sees customer IDs**, only our rendered summaries. Still, rows it knows by heart could be recognizable from their numbers.
-- **Recognition is the bigger risk.** The summaries show NT$ amounts and April–September 2005, so a model that knows this dataset could recognize it and recall facts about it, such as its ~22% default rate. That would flatter Astra's out-of-the-box calibration in particular. The base-rate condition gives every contestant that number, so if Astra is well calibrated out of the box while the others need the base-rate sentence, the write-up must point this out. Not tested yet: we haven't asked Astra whether it recognizes a summary.
-- **Not decided yet (user):** whether to run a longer header test, report Astra's results with and without the memorized customers, and probe whether it recognizes a summary. Per the rule below, its results are flagged wherever they appear either way.
+- **Recognition is the bigger risk.** The summaries show NT$ amounts and April–September 2005, so a model that knows this dataset could recognize it and recall facts about it, such as its ~22% default rate. That would flatter Sol's out-of-the-box calibration in particular. The base-rate condition gives every contestant that number, so if Sol is well calibrated out of the box while the others need the base-rate sentence, the write-up must point this out. Not tested yet: we haven't asked Sol whether it recognizes a summary. (In its 20-customer smoke test Sol averaged p = 0.32 against an actual 0.20, so it isn't obviously reciting 22%.)
+- **Not decided yet (user):** whether to run a longer header test, report Sol's results with and without the memorized customers, and probe whether it recognizes a summary. Per the rule below, its results are flagged wherever they appear either way.
 
 ## What the write-up will say
 
@@ -98,4 +106,5 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - Jev, Kev and Laya can't be probed for memorization because they don't generate text. Kev's disclosed fine-tuning data doesn't include this dataset. The pretraining data of every base model is undisclosed, so exposure can't be ruled out for any AI contestant.
 - The LLM contestants' tabmemcheck results get reported as measured. If a contestant shows memorization, its results are flagged wherever they appear.
 - Qwen3.5-4B showed no memorization in either chat or raw-completion mode: 0 of 100 rows reproduced across both file versions (98 of them non-trivial), and no header continuation beyond trivial runs of zeros. This is absence of evidence, not proof.
-- GPT-6.2 Astra reproduced the start of the data file verbatim (customers 3–10) in the header test, so it has seen this dataset in training. It reproduced none of 50 rows from deeper in the file, though it refused 19 of those queries. Its results are flagged as coming from a model that has seen this data.
+- GPT-6.2 Sol, the frontier contestant, reproduced the start of the data file verbatim in the header test (customers 2–6 and 8–13), so it has seen this dataset in training. It reproduced none of 50 rows from deeper in the file, though it refused 42 of those queries. Its results are flagged as coming from a model that has seen this data.
+- GPT-6.2 Astra, OpenAI's flagship, which we tested before switching to Sol for cost, showed the same: customers 3–10 verbatim, none of 50 deeper rows (19 refused).

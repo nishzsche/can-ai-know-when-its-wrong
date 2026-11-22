@@ -1,0 +1,10 @@
+{
+  "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1; 2026-11-22)",
+  "started": "2026-11-22T08:51:14Z",
+  "model": "openai/gpt-6.2-sol",
+  "reasoning_effort": "medium",
+  "seed": 0,
+  "prompt_version": "v1",
+  "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+  "base_url": "https://openrouter.ai/api/v1"
+}

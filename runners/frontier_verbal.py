@@ -20,9 +20,15 @@ import json
 import math
 import os
 import time
-from datetime import UTC, datetime
 
-from harness import Prediction, PredictionFailed, build_parser, resolve_args, run
+from harness import (
+    Prediction,
+    PredictionFailed,
+    build_parser,
+    http_client,
+    resolve_args,
+    run,
+)
 
 MODEL = "openai/gpt-6.2-sol"
 REASONING_EFFORT = "medium"  # Sol's default_effort in OpenRouter's model metadata (2026-11-22)
@@ -70,11 +76,13 @@ class FrontierVerbalPredictor:
         key = api_key or os.environ.get("OPENROUTER_API_KEY")
         if not key:
             raise SystemExit("Set OPENROUTER_API_KEY (environment or the git-ignored .env).")
-        self.client = OpenAI(base_url=base_url, api_key=key, max_retries=5, timeout=300)
+        self.client = OpenAI(
+            base_url=base_url, api_key=key, max_retries=5, timeout=300,
+            http_client=http_client(timeout=300),  # kept alive, IPv4 (see harness.http_client)
+        )  # fmt: skip
         self.retries = retries
-        day = datetime.now(UTC).strftime("%Y-%m-%d")
-        # OpenRouter serves Sol without a dated snapshot in responses, so the run date pins it.
-        self.model_version = f"{MODEL} (effort {REASONING_EFFORT}; prompt {PROMPT_VERSION}; {day})"
+        # OpenRouter serves Sol without a dated snapshot; every record's `ts` carries the date.
+        self.model_version = f"{MODEL} (effort {REASONING_EFFORT}; prompt {PROMPT_VERSION})"
         self.meta = {"model": MODEL, "reasoning_effort": REASONING_EFFORT, "seed": SEED,
                      "prompt_version": PROMPT_VERSION, "answer_line": ANSWER_LINE,
                      "base_url": base_url}  # fmt: skip

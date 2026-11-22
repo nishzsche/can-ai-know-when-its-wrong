@@ -28,6 +28,7 @@ memcheck = [
 runners = [
     "jevper==0.7.12",
     "openai>=1.92",
+    "httpx2>=2.12",  # the HTTP client openai 3.x is built on; runners force IPv4 through it
 ]
 # Laya's classic encoder runs in-process and pulls in torch, so it gets its own group.
 laya = [

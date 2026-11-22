@@ -66,6 +66,7 @@ memcheck = [
     { name = "tabmemcheck" },
 ]
 runners = [
+    { name = "httpx2" },
     { name = "jevper" },
     { name = "openai" },
 ]
@@ -91,6 +92,7 @@ dev = [
 laya = [{ name = "laya", specifier = "==0.5.2" }]
 memcheck = [{ name = "tabmemcheck", specifier = "==0.1.6" }]
 runners = [
+    { name = "httpx2", specifier = ">=2.12" },
     { name = "jevper", specifier = "==0.7.12" },
     { name = "openai", specifier = ">=1.92" },
 ]

@@ -74,7 +74,7 @@ The pytest smoke checks for `kev-0.8b`, `kev-4b` and `qwen-logprobs` now pass in
 
 Continue only if both hold; otherwise stop here and **pause the instance**.
 1. **M2 is complete:** after `git pull`, `results/smoke/` has all six AI contestants, `jev.jsonl` included (that one comes from the laptop), and `uv run --group runners --group laya pytest -q` passes.
-2. **`PREDICTIONS.md` is committed.** The plan requires the user's guesses to be written before any full run.
+2. **`PREDICTIONS.md` is filled in and committed.** The plan requires the user's guesses to be written before any full run. Check with `grep -c "NOT FILLED IN" PREDICTIONS.md`, which must print 0.
 
 ## 3. M3: GPU runs (tune and test, both conditions)
 

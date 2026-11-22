@@ -63,6 +63,19 @@ class Predictor(Protocol):
     def predict(self, request: dict) -> Prediction: ...
 
 
+def http_client(timeout: float = 300):
+    """One kept-alive HTTP client that connects over IPv4 only.
+
+    On the laptop network, OpenRouter's IPv6 addresses time out (21 s each, then IPv4 works in
+    20 ms), which added ~42 s to every fresh connection and would have been recorded as the
+    model's latency. Forcing IPv4 and reusing the connection keeps latency honest everywhere.
+    """
+    import httpx2
+
+    transport = httpx2.HTTPTransport(local_address="0.0.0.0", retries=2)
+    return httpx2.Client(transport=transport, timeout=timeout)
+
+
 def gpu_cost(latency_ms: float, usd_per_hour: float) -> float:
     """Amortized GPU cost of one request when requests run one after another."""
     return latency_ms / 3_600_000 * usd_per_hour
@@ -97,16 +110,41 @@ def resolve_args(args: argparse.Namespace) -> argparse.Namespace:
     return args
 
 
-def _done_keys(path: Path) -> set[tuple[str, str, str]]:
+def _existing(path: Path) -> tuple[set[tuple[str, str, str]], set[str]]:
+    """(condition, split, id) keys already written, and the model versions that wrote them."""
     if not path.exists():
-        return set()
-    keys = set()
+        return set(), set()
+    keys, versions = set(), set()
     for line in path.read_text("utf-8").splitlines():
         if line:
             rec = json.loads(line)
             validate_record(rec)
             keys.add((rec["condition"], rec["split"], rec["id"]))
-    return keys
+            versions.add(rec["model_version"])
+    return keys, versions
+
+
+def environment() -> dict:
+    """Software and hardware this run used (recorded in the run's metadata)."""
+    import importlib.metadata
+    import platform
+    import subprocess
+
+    packages = {}
+    for name in ("torch", "transformers", "laya", "vegaml", "jevper", "openai", "numpy"):
+        try:
+            packages[name] = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            pass
+    try:
+        gpu = subprocess.run(
+            ["nvidia-smi", "--query-gpu=name,driver_version", "--format=csv,noheader"],
+            capture_output=True, text=True, timeout=10, check=True,
+        ).stdout.strip()  # fmt: skip
+    except (OSError, subprocess.SubprocessError):
+        gpu = None
+    return {"python": platform.python_version(), "platform": platform.platform(),
+            "gpu": gpu, "packages": packages}  # fmt: skip
 
 
 def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], None] = print) -> Path:
@@ -119,10 +157,21 @@ def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], Non
     out_path = out_dir / f"{predictor.contestant}.jsonl"
     raw_path = out_dir / "raw" / f"{predictor.contestant}.jsonl"
     meta_path = out_dir / "raw" / f"{predictor.contestant}.meta.json"
-    meta_path.write_text(
-        json.dumps({"model_version": predictor.model_version, "started": utc_now(),
-                    **predictor.meta}, indent=2) + "\n", "utf-8")  # fmt: skip
-    done = _done_keys(out_path)
+    done, versions = _existing(out_path)
+    if versions - {predictor.model_version}:
+        raise SystemExit(
+            f"{out_path} already holds records from {sorted(versions)}, but this run is "
+            f"{predictor.model_version!r}. One file must not mix model versions: move the old "
+            f"file aside (or delete it) to start over with the new version."
+        )
+    # One metadata entry per run, so a later run doesn't erase an earlier one's details.
+    runs = json.loads(meta_path.read_text("utf-8")) if meta_path.exists() else []
+    if isinstance(runs, dict):  # older single-run format
+        runs = [runs]
+    runs.append({"model_version": predictor.model_version, "started": utc_now(),
+                 "split": args.split, "conditions": list(args.conditions), "limit": args.limit,
+                 "environment": environment(), **predictor.meta})  # fmt: skip
+    meta_path.write_text(json.dumps(runs, indent=2) + "\n", "utf-8")
     log(f"{predictor.contestant}: {predictor.model_version}")
     log(f"{len(requests)} {args.split} customers x {len(args.conditions)} condition(s); "
         f"{len(done)} records already in {out_path}")  # fmt: skip

@@ -4,10 +4,24 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 ## Where things stand
 
-**M2 is in progress.**
-- **Done:** the baselines, the three open-model runners, and the frontier-verbal runner (GPT-6.2 Sol).
-- **Smoke-tested:** Laya (CPU), frontier-verbal (Sol, OpenRouter), and Kev-4B, Kev-0.8B and Qwen on the L4 (2026-11-22).
-- **Next:** write and smoke-test the Jev runner (laptop), and write `PREDICTIONS.md`. Both are the gate before any M3 run (`L4_RUNBOOK.md`); the L4 has nothing to do until then.
+**M2 is done (2026-11-22).** Baselines are scored on test, and all six AI runners passed their 20-customer smoke tests.
+- **Built:** the baselines, all six AI runners, and `runners/manifest.py`, which checks coverage and writes `results/run_manifest.json`.
+- **Smoke-tested (passed):**
+  - Laya (CPU).
+  - GPT-6.2 Sol and Jev (OpenRouter).
+  - Kev-4B, Kev-0.8B and Qwen (L4).
+- **Next: the gate before M3.** The user fills in `PREDICTIONS.md`; a template is there, recording what was already visible. Then M3 starts: the GPU runs follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md) section 3, and the API runs (Jev, Sol) run on the laptop.
+
+### API runners (2026-11-22, CPU)
+
+| Contestant | Script | Pinned to | Smoke test |
+|---|---|---|---|
+| `jev` | `runners/jev.py` (`uv run --group runners`) | asks once for `jev-latest`, then pins what it resolved to: `typesafe/jev-1.14-20261014`. Stops if a response comes from another version | 40 records, median latency 432 ms, $0.00085 total (~$0.17 for 8,000) |
+| `frontier-verbal` | `runners/frontier_verbal.py` | `openai/gpt-6.2-sol`, effort medium, prompt v1 | 40 records, $0.04 total (~$8 for 8,000) |
+
+- **IPv4 fix:** on the laptop network, OpenRouter's IPv6 addresses time out (21 s each), which added ~42 s to every fresh connection and would have been recorded as model latency. `harness.http_client()` forces IPv4 and keeps connections alive. It uses `httpx2`, the HTTP client `openai` 3.x is built on. The Sol smoke latencies predate the fix, so a few requests show 44–60 s; they aren't used anywhere.
+- **Harness safeguards:** a predictions file can't mix model versions (the run refuses to start), and the run metadata keeps one entry per run, with its software environment and GPU.
+- **Sol's version string** no longer contains the run date (each record's `ts` does). Its smoke file still has the old string, which is fine: smoke files aren't analysed.
 
 M1 is done. The frontier-model memorization test found that GPT-6.2 Sol (the contestant) has memorized the start of the data file, as had Astra, tested before the switch. See the M1 section and `data/contamination.md`.
 

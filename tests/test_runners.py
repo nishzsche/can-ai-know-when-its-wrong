@@ -76,8 +76,25 @@ def test_run_writes_valid_records_for_both_conditions(tmp_path):
     assert {r["p_default"] for r in recs if r["condition"] == "base_rate"} == {0.3}
     raw = (tmp_path / "raw" / "fake-model.jsonl").read_text("utf-8").splitlines()
     assert len(raw) == 10
-    meta = json.loads((tmp_path / "raw" / "fake-model.meta.json").read_text("utf-8"))
-    assert meta["model_version"] == "fake@1" and meta["kind"] == "test"
+    runs = json.loads((tmp_path / "raw" / "fake-model.meta.json").read_text("utf-8"))
+    assert len(runs) == 1 and runs[0]["model_version"] == "fake@1" and runs[0]["kind"] == "test"
+    assert runs[0]["split"] == "tune" and "python" in runs[0]["environment"]
+
+
+def test_each_run_adds_a_metadata_entry(tmp_path):
+    harness.run(FakePredictor(), _args(tmp_path, limit=2), log=lambda _: None)
+    harness.run(FakePredictor(), _args(tmp_path, limit=2, split="test"), log=lambda _: None)
+    runs = json.loads((tmp_path / "raw" / "fake-model.meta.json").read_text("utf-8"))
+    assert [r["split"] for r in runs] == ["tune", "test"]
+
+
+def test_a_file_never_mixes_model_versions(tmp_path):
+    harness.run(FakePredictor(), _args(tmp_path, limit=2), log=lambda _: None)
+    newer = FakePredictor()
+    newer.model_version = "fake@2"
+    with pytest.raises(SystemExit, match="mix model versions"):
+        harness.run(newer, _args(tmp_path, limit=3), log=lambda _: None)
+    assert newer.calls == 0
 
 
 def test_run_resumes_without_repeating_work(tmp_path):
@@ -389,3 +406,165 @@ def test_readout_from_raw_reads_letters_from_the_request():
 def test_readout_from_raw_rejects_non_label_answer():
     with pytest.raises(ValueError):
         ql.p_yes_from_raw(_raw("A: Yes\nB: No", "The", CUST_00005_TOP), "will_default")
+
+
+# ---- Jev client against a fake OpenRouter System One endpoint ------------------------------
+
+RESOLVED = "typesafe/jev-1.14-20261105"
+
+
+def _fake_systemone(accept_dated=True, drift_after=None):
+    seen = []
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def _send(self, status, payload):
+            body = json.dumps(payload).encode()
+            self.send_response(status)
+            self.send_header("content-type", "application/json")
+            self.send_header("content-length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_POST(self):
+            assert self.path == "/systemone"
+            assert self.headers["authorization"] == "Bearer test-key"
+            req = json.loads(self.rfile.read(int(self.headers["content-length"])))
+            seen.append(req["model"])
+            if req["model"] == RESOLVED and not accept_dated:
+                return self._send(400, {"error": {"code": 400, "message": "unknown model"}})
+            model = RESOLVED
+            if drift_after is not None and len(seen) > drift_after:
+                model = "typesafe/jev-1.15-20261201"
+            qid = next(iter(req["questions"]))
+            self._send(200, {"id": "gen-dec-1", "model": model, "provider": "TypeSafe",
+                             "answers": {qid: {"type": "noul", "noul": 0.37}},
+                             "usage": {"cost": 0.00002, "input_tokens": 300,
+                                       "output_tokens": 5}})  # fmt: skip
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    return server, seen
+
+
+def test_jev_resolves_latest_once_then_pins_that_exact_version():
+    import jev
+
+    server, seen = _fake_systemone()
+    try:
+        pred = jev.JevPredictor(
+            base_url=f"http://127.0.0.1:{server.server_port}", api_key="test-key"
+        )
+        assert pred.model_version == RESOLVED and pred.request_model == RESOLVED
+        out = pred.predict(harness.load_requests("tune", 1)[0]["requests"]["out_of_box"])
+        assert out.p_default == 0.37 and out.cost_usd == pytest.approx(0.00002)
+        assert seen == ["jev-latest", RESOLVED, RESOLVED]
+    finally:
+        server.shutdown()
+
+
+def test_jev_falls_back_to_the_version_family_if_dated_ids_are_refused():
+    import jev
+
+    server, seen = _fake_systemone(accept_dated=False)
+    try:
+        pred = jev.JevPredictor(
+            base_url=f"http://127.0.0.1:{server.server_port}", api_key="test-key"
+        )
+        assert pred.request_model == "typesafe/jev-1.14" and pred.model_version == RESOLVED
+    finally:
+        server.shutdown()
+
+
+def test_jev_stops_if_the_version_changes_mid_run():
+    import jev
+
+    server, _ = _fake_systemone(drift_after=3)
+    try:
+        pred = jev.JevPredictor(
+            base_url=f"http://127.0.0.1:{server.server_port}", api_key="test-key"
+        )
+        request = harness.load_requests("tune", 1)[0]["requests"]["out_of_box"]
+        pred.predict(request)  # third call: still 1.14
+        with pytest.raises(SystemExit, match="changed version"):
+            pred.predict(request)
+    finally:
+        server.shutdown()
+
+
+# ---- run manifest ----------------------------------------------------------------------------
+
+
+def _write_fake(directory, contestant, groups, ids, version="fake@1"):
+    recs = [
+        rc.make_record(
+            id=i,
+            split=split,
+            contestant=contestant,
+            condition=cond,
+            model_version=version,
+            p_default=0.2,
+            label=0,
+            latency_ms=10.0,
+            cost_usd=0.001,
+            ts="2026-11-22T10:00:00Z",
+        )  # fmt: skip
+        for cond, split in groups
+        for i in ids[split]
+    ]
+    rc.write_records(contestant, recs, directory=directory)
+
+
+def test_manifest_marks_complete_and_incomplete_contestants(tmp_path):
+    import manifest
+
+    ids = {"tune": ["cust_00001", "cust_00002"], "test": ["cust_00003"]}
+    groups = manifest.GROUPS["jev"]
+    _write_fake(tmp_path, "jev", groups, ids)
+    done = manifest.summarize("jev", groups, ids, tmp_path)
+    assert done["complete"] and done["records"] == 6 and done["cost_usd_total"] == 0.006
+    short = {"tune": ids["tune"][:1], "test": ids["test"]}
+    _write_fake(tmp_path, "laya", groups, short)
+    partial = manifest.summarize("laya", groups, ids, tmp_path)
+    assert not partial["complete"]
+    assert partial["groups"]["out_of_box/tune"] == {"records": 1, "missing": 1, "unexpected": 0,
+                                                    "complete": False}  # fmt: skip
+    assert manifest.summarize("kev-4b", groups, ids, tmp_path) == {
+        "present": False,
+        "complete": False,
+        "groups": {},
+    }
+
+
+def test_manifest_covers_every_contestant_and_its_conditions():
+    import manifest
+
+    assert set(manifest.GROUPS) == {*manifest.AI_CONTESTANTS, "scorecard", "gbm"}
+    assert len(manifest.GROUPS["frontier-verbal"]) == 4  # 2 conditions x 2 splits
+    assert ("trained_calibrated", "tune") not in manifest.GROUPS["gbm"]
+
+
+def test_manifest_rejects_two_versions_within_one_condition(tmp_path):
+    import manifest
+
+    ids = {"tune": ["cust_00001"], "test": ["cust_00003"]}
+    groups = manifest.GROUPS["jev"]
+    recs = [
+        rc.make_record(
+            id=ids[s][0],
+            split=s,
+            contestant="jev",
+            condition=c,
+            model_version="v1" if s == "tune" else "v2",
+            p_default=0.2,
+            label=0,
+            latency_ms=10.0,
+            cost_usd=0.0,
+            ts="2026-11-22T10:00:00Z",
+        )  # fmt: skip
+        for c, s in groups
+    ]
+    rc.write_records("jev", recs, directory=tmp_path)
+    assert not manifest.summarize("jev", groups, ids, tmp_path)["complete"]

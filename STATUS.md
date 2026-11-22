@@ -6,8 +6,8 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 **M2 is in progress.**
 - **Done:** the baselines, the three open-model runners, and the frontier-verbal runner (GPT-6.2 Sol).
-- **Smoke-tested:** Laya, here on CPU; frontier-verbal (Sol) through OpenRouter.
-- **Next:** smoke-test Kev and Qwen on the L4, then write the Jev runner.
+- **Smoke-tested:** Laya (CPU), frontier-verbal (Sol, OpenRouter), and Kev-4B, Kev-0.8B and Qwen on the L4 (2026-11-22).
+- **Next:** write and smoke-test the Jev runner (laptop), and write `PREDICTIONS.md`. Both are the gate before any M3 run (`L4_RUNBOOK.md`); the L4 has nothing to do until then.
 
 M1 is done. The frontier-model memorization test found that GPT-6.2 Sol (the contestant) has memorized the start of the data file, as had Astra, tested before the switch. See the M1 section and `data/contamination.md`.
 
@@ -23,13 +23,26 @@ All runners share `runners/harness.py`. It:
 
 | Contestant | Script | Interface | Pinned to | Status |
 |---|---|---|---|---|
-| `kev-0.8b`, `kev-4b` | `runners/kev.py --size 0.8b\|4b` | local Kev server, `POST /v1/systemone` | v1.0 (`9a45d25e` / `139fdd94`); refuses to run if `/v1/models` doesn't show it | tested against a fake server; **needs L4 smoke** |
+| `kev-0.8b`, `kev-4b` | `runners/kev.py --size 0.8b\|4b` | local Kev server, `POST /v1/systemone` | v1.0 (`9a45d25e` / `139fdd94`); refuses to run if `/v1/models` doesn't show it | **smoke passed** on the L4 (2026-11-22; see below) |
 | `laya` | `runners/laya_classic.py` (`uv run --group laya`) | in-process `laya.Agent(..., vegaml=False).predict` | `convaiinnovations/laya@fd4f9dbc` | **smoke passed** (CPU, ~1.1 s/request; 40 valid records) |
-| `qwen-logprobs` | `runners/qwen_logprobs.py` (`uv run --group runners`) | vLLM + `jevper` `method="logprobs"` | `Qwen/Qwen3.5-4B@851bf6e8`, thinking off | **needs L4 smoke** |
+| `qwen-logprobs` | `runners/qwen_logprobs.py` (`uv run --group runners`) | vLLM + `jevper` `method="logprobs"` | `Qwen/Qwen3.5-4B@851bf6e8`, thinking off; P(yes) computed in the runner, not by jevper | **smoke passed** on the L4 (2026-11-22; see below) |
 
 **Commands on the L4: follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md).** It covers the Kev server setup, the M2 smoke tests, the gate before M3 (Jev smoke done and `PREDICTIONS.md` committed), the M3 GPU runs and the wrap-up, all as copy-paste commands.
 
 **Kev v1.0 commits:** the `v1.0` tags point at `591dcb5b` (4B) and `788ddbdd` (0.8B), not at the README's `139fdd94` / `9a45d25e`. The weight files are byte-identical at both (checked 2026-11-22). `runners/kev.py` accepts any of the names.
+
+**L4 smoke results (2026-11-22, 20 tune customers, actual rate 0.20):**
+
+| Contestant | Mean p, out of box | Mean p, base rate | Range (out of box) | Latency |
+|---|---|---|---|---|
+| `kev-4b` | 0.55 | 0.30 | 0.34–0.70 | ~0.15 s |
+| `kev-0.8b` | 0.36 | 0.52 | 0.19–0.66 | ~0.05 s |
+| `qwen-logprobs` | 0.42 | 0.26 | 0.27–0.71 | ~0.15 s |
+
+- No probabilities of exactly 0 or 1 anywhere. Kev-0.8B's base-rate sentence *raised* its predictions; with 20 customers that's only worth rechecking on the full run.
+- Kev ran without flash-linear-attention (reference PyTorch kernel). It was fast enough, so it wasn't installed.
+
+**jevper logprob bug (found in the Qwen smoke test, worked around):** jevper 0.7.12's readout strips whitespace from the top-20 tokens and lets the *last* match overwrite the rival label's logprob. A low-ranked `" A"` (−10.5) replaced `"A"` (−1.2), so every Qwen probability came out near 0 or 1 (e.g. 4e-5 where the model's own P(yes) was 0.32), and which extreme depended on the letter sampled at temperature 1.0. `runners/qwen_logprobs.py` now computes P(yes) itself from the recorded first-token top-20: each label's logprob is the logsumexp of all its variants, and the softmax is taken over the two labels, with the Yes letter read from the prompt's options. jevper's value is kept as `jevper_noul` in the raw record, and unit tests cover the exact case. The model version string now ends in `readout: label-variant logsumexp over first-token top-20`. Worth reporting upstream to jevper.
 
 **Checks for the L4 smoke runs:**
 - **Kev:** if `/v1/models` names the checkpoint without the revision, look at it and use `--skip-version-check` only after confirming it's the v1.0 weights.

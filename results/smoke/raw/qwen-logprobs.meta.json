@@ -1,0 +1,32 @@
+{
+  "model_version": "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20",
+  "started": "2026-11-22T09:15:22Z",
+  "server_model": {
+    "id": "qwen3.5-4b",
+    "object": "model",
+    "created": 1795338922,
+    "owned_by": "vllm",
+    "root": "Qwen/Qwen3.5-4B",
+    "parent": null,
+    "max_model_len": 16384,
+    "permission": [
+      {
+        "id": "modelperm-a480d1bcd4bc9843",
+        "object": "model_permission",
+        "created": 1795338922,
+        "allow_create_engine": false,
+        "allow_sampling": true,
+        "allow_logprobs": true,
+        "allow_search_indices": false,
+        "allow_view": true,
+        "allow_fine_tuning": false,
+        "organization": "*",
+        "group": null,
+        "is_blocking": false
+      }
+    ]
+  },
+  "base_url": "http://127.0.0.1:8000/v1",
+  "jevper": "0.7.12",
+  "usd_per_hour": 0.44
+}

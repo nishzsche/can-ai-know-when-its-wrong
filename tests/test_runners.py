@@ -316,3 +316,76 @@ def test_parse_probability_rejects_bad_answers(content):
 
     with pytest.raises((ValueError, KeyError)):
         fv.parse_probability(content)
+
+
+# ---- Qwen logprob readout (bypasses jevper 0.7.12's last-variant-wins bug) -----------------------
+
+import math  # noqa: E402
+
+import qwen_logprobs as ql  # noqa: E402
+
+# First-token top logprobs recorded for cust_00005 in the 2026-11-22 L4 smoke run (trimmed).
+# jevper reported P(yes) = 4.0e-5 because " A" (-10.54) overwrote "A" (-1.16).
+CUST_00005_TOP = [
+    {"token": "B", "logprob": -0.41}, {"token": "A", "logprob": -1.16},
+    {"token": "No", "logprob": -3.91}, {"token": "Yes", "logprob": -6.66},
+    {"token": " B", "logprob": -9.60}, {"token": " A", "logprob": -10.54},
+    {"token": "b", "logprob": -11.60},
+]  # fmt: skip
+
+
+def _lse(*xs):
+    m = max(xs)
+    return m + math.log(sum(math.exp(x - m) for x in xs))
+
+
+def test_readout_combines_variants_instead_of_last_one_winning():
+    p, missing = ql.p_yes_from_top_logprobs(CUST_00005_TOP, "A", "B")
+    a, b = _lse(-1.16, -10.54), _lse(-0.41, -9.60, -11.60)
+    assert missing == []
+    assert p == pytest.approx(math.exp(a) / (math.exp(a) + math.exp(b)))
+    assert 0.3 < p < 0.33  # not jevper's 4.0e-5
+
+
+def test_readout_is_symmetric_in_label_order():
+    p, _ = ql.p_yes_from_top_logprobs(CUST_00005_TOP, "A", "B")
+    q, _ = ql.p_yes_from_top_logprobs(list(reversed(CUST_00005_TOP)), "A", "B")
+    r, _ = ql.p_yes_from_top_logprobs(CUST_00005_TOP, "B", "A")
+    assert p == pytest.approx(q) and p == pytest.approx(1 - r)
+
+
+def test_readout_missing_label_and_bad_values():
+    p, missing = ql.p_yes_from_top_logprobs([{"token": "A", "logprob": -0.1}], "A", "B")
+    assert p == 1.0 and missing == ["B"]
+    with pytest.raises(ValueError):
+        ql.p_yes_from_top_logprobs([{"token": "No", "logprob": -0.1}], "A", "B")
+    with pytest.raises(ValueError):
+        ql.p_yes_from_top_logprobs([{"token": "A", "logprob": 0.5}], "A", "B")
+
+
+def _raw(options: str, first_token: str, top: list[dict]) -> dict:
+    request = {"input": [
+        {"role": "system", "content": "You are a precise classification engine."},
+        {"role": "user", "content": f"Question:\nWill they default?\n\nOptions:\n{options}"},
+        {"role": "user", "content": "<document>\nA: Yes\n</document>"},
+    ]}  # fmt: skip
+    response = {"output": [{"content": [{"logprobs": [
+        {"token": first_token, "logprob": -0.4, "top_logprobs": top},
+        {"token": "<|im_end|>", "logprob": -0.04, "top_logprobs": []},
+    ]}]}]}  # fmt: skip
+    return {"debug": {"llm_attempts": [
+        {"question_id": "will_default", "request": request, "response": response}
+    ]}}  # fmt: skip
+
+
+def test_readout_from_raw_reads_letters_from_the_request():
+    p, _ = ql.p_yes_from_raw(_raw("A: Yes\nB: No", "B", CUST_00005_TOP), "will_default")
+    assert 0.3 < p < 0.33
+    # Swapped options: the same tokens now mean the opposite answer.
+    q, _ = ql.p_yes_from_raw(_raw("A: No\nB: Yes", "B", CUST_00005_TOP), "will_default")
+    assert q == pytest.approx(1 - p)
+
+
+def test_readout_from_raw_rejects_non_label_answer():
+    with pytest.raises(ValueError):
+        ql.p_yes_from_raw(_raw("A: Yes\nB: No", "The", CUST_00005_TOP), "will_default")

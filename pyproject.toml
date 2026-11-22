@@ -1,0 +1,40 @@
+[project]
+name = "can-ai-know-when-its-wrong"
+version = "0.1.0"
+description = "Are AI decision models' default probabilities honest? A calibration test on real credit card customers."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ucimlrepo>=0.0.7",
+    "pandas>=2.2",
+    "pyarrow>=17",
+    "numpy>=1.26",
+    "scikit-learn>=1.5",
+    "lightgbm>=4.5",
+    "matplotlib>=3.9",
+    "huggingface-hub>=0.26",
+    "tokenizers>=0.20",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+# LLM memorization tests (Bordt et al.). Separate because it pulls in openai, xgboost, tiktoken.
+memcheck = [
+    "tabmemcheck==0.1.6",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["data"]

@@ -1,0 +1,85 @@
+{
+  "dataset": "Default of Credit Card Clients",
+  "uci_id": 350,
+  "repository_url": "https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients",
+  "data_url": "https://archive.ics.uci.edu/static/public/350/data.csv",
+  "doi": "https://doi.org/10.24432/C55S3H",
+  "uci_last_updated": "Fri Mar 29 2024",
+  "license": "CC BY 4.0 (stated on the UCI dataset page)",
+  "citation": "Yeh, I. C., & Lien, C. H. (2009). The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients. Expert Systems with Applications, 36(2), 2473-2480.",
+  "loader": "ucimlrepo==0.0.7",
+  "fetched_at": "2026-11-21T21:55:42Z",
+  "dropped_columns": [
+    "SEX",
+    "EDUCATION",
+    "MARRIAGE",
+    "AGE"
+  ],
+  "columns": [
+    "ID",
+    "LIMIT_BAL",
+    "PAY_0",
+    "PAY_2",
+    "PAY_3",
+    "PAY_4",
+    "PAY_5",
+    "PAY_6",
+    "BILL_AMT1",
+    "BILL_AMT2",
+    "BILL_AMT3",
+    "BILL_AMT4",
+    "BILL_AMT5",
+    "BILL_AMT6",
+    "PAY_AMT1",
+    "PAY_AMT2",
+    "PAY_AMT3",
+    "PAY_AMT4",
+    "PAY_AMT5",
+    "PAY_AMT6",
+    "default_next_month"
+  ],
+  "sha256_full_table": "84ba892a2a55a0d711259f30084753f22b14b0c56303baf25ced4e7600230248",
+  "sha256_saved_table": "fc08fd639888b4f83b3d816f04c18bf943012124807cc6197e654d3b31d7851a",
+  "profile": {
+    "rows": 30000,
+    "defaults": 6636,
+    "default_rate": 0.2212,
+    "repayment_status_code_counts": {
+      "-2": 24415,
+      "-1": 34640,
+      "0": 95919,
+      "1": 3722,
+      "2": 18964,
+      "3": 1430,
+      "4": 453,
+      "5": 137,
+      "6": 74,
+      "7": 218,
+      "8": 28
+    },
+    "repayment_status_code_1_by_month": {
+      "PAY_0": 3688,
+      "PAY_2": 28,
+      "PAY_3": 4,
+      "PAY_4": 2,
+      "PAY_5": 0,
+      "PAY_6": 0
+    },
+    "undocumented_codes_rows": {
+      "-2": 6561,
+      "0": 21173
+    },
+    "negative_bill_cells": 3932,
+    "negative_bill_rows": 1930,
+    "min_bill": -339603,
+    "max_bill": 1664089,
+    "max_paid": 1684259,
+    "bill_over_limit_cells": 8274,
+    "limit_range": [
+      10000,
+      1000000
+    ],
+    "duplicate_input_rows": 817,
+    "missing_values": 0
+  }
+}

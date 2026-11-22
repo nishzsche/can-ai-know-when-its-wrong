@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+
+# Memorization-test CSVs (published file incl. demographic columns); results are kept
+data/memcheck/csv/
+data/memcheck/results/dry-run.json

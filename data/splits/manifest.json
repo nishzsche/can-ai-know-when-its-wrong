@@ -1,0 +1,55 @@
+{
+  "seed": 20261122,
+  "stratified_on": "default_next_month",
+  "source_sha256": "fc08fd639888b4f83b3d816f04c18bf943012124807cc6197e654d3b31d7851a",
+  "columns": [
+    "id",
+    "LIMIT_BAL",
+    "PAY_0",
+    "PAY_2",
+    "PAY_3",
+    "PAY_4",
+    "PAY_5",
+    "PAY_6",
+    "BILL_AMT1",
+    "BILL_AMT2",
+    "BILL_AMT3",
+    "BILL_AMT4",
+    "BILL_AMT5",
+    "BILL_AMT6",
+    "PAY_AMT1",
+    "PAY_AMT2",
+    "PAY_AMT3",
+    "PAY_AMT4",
+    "PAY_AMT5",
+    "PAY_AMT6",
+    "default_next_month"
+  ],
+  "base_rate_train": 0.2212,
+  "splits": {
+    "train": {
+      "rows": 20000,
+      "defaults": 4424,
+      "default_rate": 0.2212,
+      "ids_sha256": "a71432385d26c822cb5e9aa3e6a8e879556516021c0869409ba97e425cb47f11"
+    },
+    "tune": {
+      "rows": 2000,
+      "defaults": 442,
+      "default_rate": 0.221,
+      "ids_sha256": "47281ca252d176def2f75c31712d380f40ddf37416126dcb9dfcf1c9734f04d4"
+    },
+    "test": {
+      "rows": 2000,
+      "defaults": 442,
+      "default_rate": 0.221,
+      "ids_sha256": "55d8c8bf7268c10f1ddedf9530a2bc6affe5eab0f556670d8ff1382ef2c7943d"
+    },
+    "reserve": {
+      "rows": 6000,
+      "defaults": 1328,
+      "default_rate": 0.22133333333333333,
+      "ids_sha256": "d1c24cbb5e8571206cbb67290d40a660b21edaf6522c11267fb1e7e6d6b0a1b2"
+    }
+  }
+}

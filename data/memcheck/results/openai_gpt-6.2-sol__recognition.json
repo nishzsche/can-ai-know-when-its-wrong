@@ -1,0 +1,2434 @@
+{
+  "model": "openai/gpt-6.2-sol",
+  "reasoning_effort": "medium",
+  "seed": 0,
+  "sample_seed": 20261122,
+  "run_at": "2026-11-22T19:20:36Z",
+  "recognition_question": "Where does this account summary most likely come from? If you think it comes from a specific public dataset, name it, and give the share of that dataset's customers who miss next month's payment if you know it.\nReply as JSON: {\"source\": <one sentence>, \"named_dataset\": <name, or \"\" if none>, \"confidence_percent\": <0-100>, \"dataset_default_rate_percent\": <number, or null>}",
+  "knowledge_question": "In the UCI \"Default of Credit Card Clients\" dataset (Yeh & Lien, 2009), what share of customers miss next month's payment (the default label)?\nReply as JSON: {\"default_rate_percent\": <number>}",
+  "true_rate_percent": 22.12,
+  "summary": {
+    "random": {
+      "n": 50,
+      "answered": 50,
+      "named_this_dataset": 50,
+      "share_named_this_dataset": 1.0,
+      "rates_given_when_named": [
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12,
+        22.12
+      ],
+      "median_rate_when_named": 22.12,
+      "median_confidence_when_named": 99.0,
+      "other_names": []
+    },
+    "memorized": {
+      "n": 3,
+      "answered": 3,
+      "named_this_dataset": 3,
+      "share_named_this_dataset": 1.0,
+      "rates_given_when_named": [
+        22.12,
+        22.12,
+        22.12
+      ],
+      "median_rate_when_named": 22.12,
+      "median_confidence_when_named": 99,
+      "other_names": []
+    },
+    "knowledge_rates": [
+      22.12,
+      22.12,
+      22.12
+    ]
+  },
+  "recognition": [
+    {
+      "id": "cust_29992",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 319,
+        "total_tokens": 385,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001298,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001298,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00066
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_18140",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 319,
+        "total_tokens": 386,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001308,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001308,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00067
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_16162",
+      "group": "random",
+      "answer": {
+        "source": "This is most likely a reformatted record from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This is most likely a reformatted record from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 319,
+        "total_tokens": 389,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001338,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001338,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.0007
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_08044",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from the UCI Machine Learning Repository's dataset on Taiwanese credit card clients, based on the April\u2013September 2005 billing period and repayment codes.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99.9,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from the UCI Machine Learning Repository's dataset on Taiwanese credit card clients, based on the April\u2013September 2005 billing period and repayment codes.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99.9,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 84,
+        "prompt_tokens": 321,
+        "total_tokens": 405,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001482,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001482,
+          "upstream_inference_prompt_cost": 0.000642,
+          "upstream_inference_completions_cost": 0.00084
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_19722",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 66,
+        "prompt_tokens": 319,
+        "total_tokens": 385,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001298,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001298,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00066
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_12554",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a record of a Taiwanese credit card client in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a record of a Taiwanese credit card client in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 310,
+        "total_tokens": 378,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.0013,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.0013,
+          "upstream_inference_prompt_cost": 0.00062,
+          "upstream_inference_completions_cost": 0.00068
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_20798",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 342,
+        "total_tokens": 412,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001384,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001384,
+          "upstream_inference_prompt_cost": 0.000684,
+          "upstream_inference_completions_cost": 0.0007
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "OpenAI"
+    },
+    {
+      "id": "cust_19434",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a public dataset of Taiwanese credit card accounts with repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a public dataset of Taiwanese credit card accounts with repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 74,
+        "prompt_tokens": 297,
+        "total_tokens": 371,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001334,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001334,
+          "upstream_inference_prompt_cost": 0.000594,
+          "upstream_inference_completions_cost": 0.00074
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_01170",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 319,
+        "total_tokens": 386,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001308,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001308,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00067
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_02163",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99.9,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99.9,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 72,
+        "prompt_tokens": 322,
+        "total_tokens": 394,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001364,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001364,
+          "upstream_inference_prompt_cost": 0.000644,
+          "upstream_inference_completions_cost": 0.00072
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_19762",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 307,
+        "total_tokens": 376,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001304,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001304,
+          "upstream_inference_prompt_cost": 0.000614,
+          "upstream_inference_completions_cost": 0.00069
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_12637",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a record of a Taiwanese credit card client in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a record of a Taiwanese credit card client in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 338,
+        "total_tokens": 408,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001376,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001376,
+          "upstream_inference_prompt_cost": 0.000676,
+          "upstream_inference_completions_cost": 0.0007
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "OpenAI"
+    },
+    {
+      "id": "cust_24955",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a Taiwanese credit card record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a Taiwanese credit card record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 67,
+        "prompt_tokens": 321,
+        "total_tokens": 388,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001312,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001312,
+          "upstream_inference_prompt_cost": 0.000642,
+          "upstream_inference_completions_cost": 0.00067
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_00552",
+      "group": "random",
+      "answer": {
+        "source": "This is most likely a reformatted record from a public dataset of Taiwanese credit card clients, based on the NT dollar amounts, the April\u2013September 2005 billing period, and the repayment status codes.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This is most likely a reformatted record from a public dataset of Taiwanese credit card clients, based on the NT dollar amounts, the April\u2013September 2005 billing period, and the repayment status codes.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 90,
+        "prompt_tokens": 311,
+        "total_tokens": 401,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001522,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001522,
+          "upstream_inference_prompt_cost": 0.000622,
+          "upstream_inference_completions_cost": 0.0009
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_05811",
+      "group": "random",
+      "answer": {
+        "source": "This is most likely a reformatted customer record from a Taiwanese credit card dataset covering April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This is most likely a reformatted customer record from a Taiwanese credit card dataset covering April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 72,
+        "prompt_tokens": 321,
+        "total_tokens": 393,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001362,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001362,
+          "upstream_inference_prompt_cost": 0.000642,
+          "upstream_inference_completions_cost": 0.00072
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_14193",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients with repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card clients with repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 323,
+        "total_tokens": 398,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001396,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001396,
+          "upstream_inference_prompt_cost": 0.000646,
+          "upstream_inference_completions_cost": 0.00075
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_15961",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from the UCI Machine Learning Repository dataset of Taiwanese credit card clients, which records bills, payments, and repayment status from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from the UCI Machine Learning Repository dataset of Taiwanese credit card clients, which records bills, payments, and repayment status from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 83,
+        "prompt_tokens": 319,
+        "total_tokens": 402,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001468,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001468,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00083
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_22256",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients that uses April\u2013September 2005 payment records to predict default the following month.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\"source\":\"This account summary most likely comes from a public dataset of Taiwanese credit card clients that uses April\u2013September 2005 payment records to predict default the following month.\",\"named_dataset\":\"UCI Default of Credit Card Clients\",\"confidence_percent\":99,\"dataset_default_rate_percent\":22.12}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 302,
+        "total_tokens": 370,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001284,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001284,
+          "upstream_inference_prompt_cost": 0.000604,
+          "upstream_inference_completions_cost": 0.00068
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_15846",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients with repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card clients with repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 307,
+        "total_tokens": 382,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001364,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001364,
+          "upstream_inference_prompt_cost": 0.000614,
+          "upstream_inference_completions_cost": 0.00075
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_07672",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository's dataset of Taiwanese credit card clients, with payment records from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository's dataset of Taiwanese credit card clients, with payment records from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 320,
+        "total_tokens": 399,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00143,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00143,
+          "upstream_inference_prompt_cost": 0.00064,
+          "upstream_inference_completions_cost": 0.00079
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_19859",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients and their April\u2013September 2005 payment histories.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients and their April\u2013September 2005 payment histories.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 317,
+        "total_tokens": 394,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001404,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001404,
+          "upstream_inference_prompt_cost": 0.000634,
+          "upstream_inference_completions_cost": 0.00077
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_11874",
+      "group": "random",
+      "answer": {
+        "source": "The summary most likely comes from a record of a Taiwanese credit card client in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"The summary most likely comes from a record of a Taiwanese credit card client in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 329,
+        "total_tokens": 398,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001348,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001348,
+          "upstream_inference_prompt_cost": 0.000658,
+          "upstream_inference_completions_cost": 0.00069
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_09834",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients, based on the NT-dollar amounts, the April\u2013September 2005 reporting period, and the repayment status codes.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients, based on the NT-dollar amounts, the April\u2013September 2005 reporting period, and the repayment status codes.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 91,
+        "prompt_tokens": 311,
+        "total_tokens": 402,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001532,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001532,
+          "upstream_inference_prompt_cost": 0.000622,
+          "upstream_inference_completions_cost": 0.00091
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_13053",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository dataset of Taiwanese credit card clients, which records monthly bills and payments from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository dataset of Taiwanese credit card clients, which records monthly bills and payments from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 81,
+        "prompt_tokens": 319,
+        "total_tokens": 400,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001448,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001448,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00081
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_16905",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a record in a public dataset of Taiwanese credit card clients tracked from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a record in a public dataset of Taiwanese credit card clients tracked from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 317,
+        "total_tokens": 392,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001384,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001384,
+          "upstream_inference_prompt_cost": 0.000634,
+          "upstream_inference_completions_cost": 0.00075
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_08650",
+      "group": "random",
+      "answer": {
+        "source": "This is most likely a reformatted account record from a public dataset of Taiwanese credit card clients with repayment histories from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This is most likely a reformatted account record from a public dataset of Taiwanese credit card clients with repayment histories from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 78,
+        "prompt_tokens": 315,
+        "total_tokens": 393,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00141,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00141,
+          "upstream_inference_prompt_cost": 0.00063,
+          "upstream_inference_completions_cost": 0.00078
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_28987",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a record in the UCI Machine Learning Repository's dataset of Taiwanese credit card clients.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a record in the UCI Machine Learning Repository's dataset of Taiwanese credit card clients.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 71,
+        "prompt_tokens": 317,
+        "total_tokens": 388,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001344,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001344,
+          "upstream_inference_prompt_cost": 0.000634,
+          "upstream_inference_completions_cost": 0.00071
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_21468",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a public dataset of Taiwanese credit card clients with billing and repayment records from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients (UCI Machine Learning Repository)",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a public dataset of Taiwanese credit card clients with billing and repayment records from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients (UCI Machine Learning Repository)\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 319,
+        "total_tokens": 398,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001428,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001428,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00079
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_21890",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 319,
+        "total_tokens": 388,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001328,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001328,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00069
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_24989",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients with payment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card clients with payment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 319,
+        "total_tokens": 394,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001388,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001388,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00075
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_16650",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository's dataset of Taiwanese credit card clients, which records billing and repayment history from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository's dataset of Taiwanese credit card clients, which records billing and repayment history from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 82,
+        "prompt_tokens": 325,
+        "total_tokens": 407,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00147,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00147,
+          "upstream_inference_prompt_cost": 0.00065,
+          "upstream_inference_completions_cost": 0.00082
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_15179",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 319,
+        "total_tokens": 389,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001338,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001338,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.0007
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_27931",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients\u2019 billing and repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card clients\u2019 billing and repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 315,
+        "total_tokens": 392,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.0014,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.0014,
+          "upstream_inference_prompt_cost": 0.00063,
+          "upstream_inference_completions_cost": 0.00077
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_09267",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from the UCI Machine Learning Repository dataset of Taiwanese credit card clients with payment histories from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from the UCI Machine Learning Repository dataset of Taiwanese credit card clients with payment histories from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 317,
+        "total_tokens": 393,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001394,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001394,
+          "upstream_inference_prompt_cost": 0.000634,
+          "upstream_inference_completions_cost": 0.00076
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_11077",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients with billing and repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card clients with billing and repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 319,
+        "total_tokens": 396,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001408,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001408,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00077
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_04655",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 311,
+        "total_tokens": 379,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001302,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001302,
+          "upstream_inference_prompt_cost": 0.000622,
+          "upstream_inference_completions_cost": 0.00068
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_26645",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a Taiwanese credit card customer record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a Taiwanese credit card customer record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 303,
+        "total_tokens": 371,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001286,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001286,
+          "upstream_inference_prompt_cost": 0.000606,
+          "upstream_inference_completions_cost": 0.00068
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_27248",
+      "group": "random",
+      "answer": {
+        "source": "This is most likely a reformatted record from the UCI dataset of Taiwanese credit card accounts, which includes monthly bills, payments, and repayment status from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This is most likely a reformatted record from the UCI dataset of Taiwanese credit card accounts, which includes monthly bills, payments, and repayment status from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 84,
+        "prompt_tokens": 319,
+        "total_tokens": 403,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001478,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001478,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00084
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_12856",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a public dataset of Taiwanese credit card clients, based on the NT-dollar amounts, the April\u2013September 2005 billing history, and the repayment status codes.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a public dataset of Taiwanese credit card clients, based on the NT-dollar amounts, the April\u2013September 2005 billing history, and the repayment status codes.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 86,
+        "prompt_tokens": 325,
+        "total_tokens": 411,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00151,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00151,
+          "upstream_inference_prompt_cost": 0.00065,
+          "upstream_inference_completions_cost": 0.00086
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_23598",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients and their payment histories from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients and their payment histories from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 315,
+        "total_tokens": 394,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00142,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00142,
+          "upstream_inference_prompt_cost": 0.00063,
+          "upstream_inference_completions_cost": 0.00079
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_16681",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card accounts with repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card accounts with repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 317,
+        "total_tokens": 392,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001384,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001384,
+          "upstream_inference_prompt_cost": 0.000634,
+          "upstream_inference_completions_cost": 0.00075
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_28885",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a public dataset of Taiwanese credit card clients with billing and repayment records from April through September 2005.",
+        "named_dataset": "UCI Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a public dataset of Taiwanese credit card clients with billing and repayment records from April through September 2005.\",\n  \"named_dataset\": \"UCI Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 311,
+        "total_tokens": 388,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001392,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001392,
+          "upstream_inference_prompt_cost": 0.000622,
+          "upstream_inference_completions_cost": 0.00077
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_12006",
+      "group": "random",
+      "answer": {
+        "source": "This appears to be a reformatted record from the UCI dataset of Taiwanese credit card clients with payment histories from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This appears to be a reformatted record from the UCI dataset of Taiwanese credit card clients with payment histories from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 76,
+        "prompt_tokens": 311,
+        "total_tokens": 387,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001382,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001382,
+          "upstream_inference_prompt_cost": 0.000622,
+          "upstream_inference_completions_cost": 0.00076
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_19063",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset on Taiwanese credit card clients, which records billing and repayment history from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset on Taiwanese credit card clients, which records billing and repayment history from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 82,
+        "prompt_tokens": 319,
+        "total_tokens": 401,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001458,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001458,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00082
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_29608",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository, which tracks billing and repayment from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a Taiwanese credit card account record in the UCI Machine Learning Repository, which tracks billing and repayment from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 313,
+        "total_tokens": 392,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001416,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001416,
+          "upstream_inference_prompt_cost": 0.000626,
+          "upstream_inference_completions_cost": 0.00079
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_14184",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from the UCI Machine Learning Repository dataset on credit card clients in Taiwan, whose billing and repayment records cover April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from the UCI Machine Learning Repository dataset on credit card clients in Taiwan, whose billing and repayment records cover April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 80,
+        "prompt_tokens": 319,
+        "total_tokens": 399,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001438,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001438,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.0008
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_18944",
+      "group": "random",
+      "answer": {
+        "source": "This account summary most likely comes from a record in the UCI Machine Learning Repository\u2019s Taiwanese credit card default dataset.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a record in the UCI Machine Learning Repository\u2019s Taiwanese credit card default dataset.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 70,
+        "prompt_tokens": 319,
+        "total_tokens": 389,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001338,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001338,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.0007
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_07588",
+      "group": "random",
+      "answer": {
+        "source": "This most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 298,
+        "total_tokens": 366,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001276,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001276,
+          "upstream_inference_prompt_cost": 0.000596,
+          "upstream_inference_completions_cost": 0.00068
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_24030",
+      "group": "random",
+      "answer": {
+        "source": "This summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This summary most likely comes from a record of a Taiwanese credit card customer in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 321,
+        "total_tokens": 390,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001332,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001332,
+          "upstream_inference_prompt_cost": 0.000642,
+          "upstream_inference_completions_cost": 0.00069
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_19916",
+      "group": "random",
+      "answer": {
+        "source": "This is most likely a customer record from a Taiwanese credit card dataset hosted by the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This is most likely a customer record from a Taiwanese credit card dataset hosted by the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 69,
+        "prompt_tokens": 319,
+        "total_tokens": 388,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001328,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001328,
+          "upstream_inference_prompt_cost": 0.000638,
+          "upstream_inference_completions_cost": 0.00069
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_00004",
+      "group": "memorized",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients, which records billing and repayment history from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository\u2019s dataset of Taiwanese credit card clients, which records billing and repayment history from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 82,
+        "prompt_tokens": 340,
+        "total_tokens": 422,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.0015,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.0015,
+          "upstream_inference_prompt_cost": 0.00068,
+          "upstream_inference_completions_cost": 0.00082
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "OpenAI"
+    },
+    {
+      "id": "cust_00016",
+      "group": "memorized",
+      "answer": {
+        "source": "This account summary most likely comes from a Taiwanese credit card client record in the UCI Machine Learning Repository.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from a Taiwanese credit card client record in the UCI Machine Learning Repository.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 68,
+        "prompt_tokens": 321,
+        "total_tokens": 389,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001322,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001322,
+          "upstream_inference_prompt_cost": 0.000642,
+          "upstream_inference_completions_cost": 0.00068
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    },
+    {
+      "id": "cust_00018",
+      "group": "memorized",
+      "answer": {
+        "source": "This account summary most likely comes from the UCI Machine Learning Repository dataset on Taiwanese credit card clients\u2019 repayment histories from April through September 2005.",
+        "named_dataset": "Default of Credit Card Clients",
+        "confidence_percent": 99,
+        "dataset_default_rate_percent": 22.12
+      },
+      "content": "{\n  \"source\": \"This account summary most likely comes from the UCI Machine Learning Repository dataset on Taiwanese credit card clients\u2019 repayment histories from April through September 2005.\",\n  \"named_dataset\": \"Default of Credit Card Clients\",\n  \"confidence_percent\": 99,\n  \"dataset_default_rate_percent\": 22.12\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 77,
+        "prompt_tokens": 322,
+        "total_tokens": 399,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.001414,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.001414,
+          "upstream_inference_prompt_cost": 0.000644,
+          "upstream_inference_completions_cost": 0.00077
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    }
+  ],
+  "knowledge": [
+    {
+      "answer": {
+        "default_rate_percent": 22.12
+      },
+      "content": "{\"default_rate_percent\":22.12}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 90,
+        "total_tokens": 107,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00035,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00035,
+          "upstream_inference_prompt_cost": 0.00018,
+          "upstream_inference_completions_cost": 0.00017
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "OpenAI"
+    },
+    {
+      "answer": {
+        "default_rate_percent": 22.12
+      },
+      "content": "{\"default_rate_percent\":22.12}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 90,
+        "total_tokens": 107,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.00035,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.00035,
+          "upstream_inference_prompt_cost": 0.00018,
+          "upstream_inference_completions_cost": 0.00017
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "OpenAI"
+    },
+    {
+      "answer": {
+        "default_rate_percent": 22.12
+      },
+      "content": "{\"default_rate_percent\":22.12}",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 78,
+        "total_tokens": 95,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null,
+          "text_tokens": null,
+          "image_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "image_tokens": null,
+          "text_tokens": null,
+          "video_tokens": 0
+        },
+        "cost": 0.000326,
+        "is_byok": false,
+        "cost_details": {
+          "upstream_inference_cost": 0.000326,
+          "upstream_inference_prompt_cost": 0.000156,
+          "upstream_inference_completions_cost": 0.00017
+        }
+      },
+      "model": "openai/gpt-6.2-sol",
+      "provider": "Azure"
+    }
+  ],
+  "cost_usd": 0.0743
+}

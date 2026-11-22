@@ -11,7 +11,7 @@
     "source_model_versions": [
       "typesafe/jev-1.14-20261014"
     ],
-    "fitted_at": "2026-11-22T10:59:05Z"
+    "fitted_at": "2026-11-22T19:17:38Z"
   },
   "kev-0.8b": {
     "cv_log_loss": {
@@ -26,7 +26,7 @@
     "source_model_versions": [
       "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e)"
     ],
-    "fitted_at": "2026-11-22T10:59:05Z"
+    "fitted_at": "2026-11-22T19:17:39Z"
   },
   "kev-4b": {
     "cv_log_loss": {
@@ -35,13 +35,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -1.2537901113197423,
-      "slope": 0.619197132941569
+      "intercept": -1.253790111319742,
+      "slope": 0.6191971329415691
     },
     "source_model_versions": [
       "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)"
     ],
-    "fitted_at": "2026-11-22T10:59:05Z"
+    "fitted_at": "2026-11-22T19:17:39Z"
   },
   "laya": {
     "cv_log_loss": {
@@ -50,13 +50,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -0.4948941524604139,
-      "slope": 0.5383168529119813
+      "intercept": -0.49489415246041374,
+      "slope": 0.5383168529119814
     },
     "source_model_versions": [
       "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1"
     ],
-    "fitted_at": "2026-11-22T10:59:05Z"
+    "fitted_at": "2026-11-22T19:17:39Z"
   },
   "qwen-logprobs": {
     "cv_log_loss": {
@@ -71,6 +71,20 @@
     "source_model_versions": [
       "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20"
     ],
-    "fitted_at": "2026-11-22T10:59:05Z"
+    "fitted_at": "2026-11-22T19:17:39Z"
+  },
+  "frontier-verbal": {
+    "cv_log_loss": {
+      "platt": 0.45494108432680846,
+      "isotonic": 0.45237645323016656
+    },
+    "chosen": "isotonic",
+    "params": {
+      "n_thresholds": 25
+    },
+    "source_model_versions": [
+      "openai/gpt-6.2-sol (effort medium; prompt v1)"
+    ],
+    "fitted_at": "2026-11-22T19:17:40Z"
   }
 }

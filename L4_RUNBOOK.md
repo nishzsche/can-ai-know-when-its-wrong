@@ -2,6 +2,8 @@
 
 Everything in this project that needs the GPU, in order. Read `STATUS.md` first (setup, `/home` persistence, money). The L4 bills per second, so don't leave it idle.
 
+**Done (2026-11-22):** every step below ran, the results are committed, and the instance was deleted. A rerun needs a new instance and the first-time setup in `STATUS.md`.
+
 - **API contestants** (Jev, GPT-6.2 Sol) run on the laptop, not here.
 - **No API key needed:** this runbook uses no API key, so the L4 needs no `.env`.
 

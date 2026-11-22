@@ -1,42 +1,48 @@
 # Status and handoff
 
-Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
 ## Where things stand
 
-**M4 started early (2026-11-22, while Sol runs), at the user's request.** Everything is built and run for the seven complete contestants; Sol drops in with one re-run.
+**M4 is nearly done (2026-11-23).** All eight contestants are scored on test and all five figures are regenerated with Sol in. Tests pass.
 - **Built:**
   - `analysis/metrics.py`: every PLAN §4 metric, 19 tests including cross-checks against scikit-learn.
   - `analysis/recalibrate.py`: the `recalibrated` condition.
-  - `analysis/summarize.py`: writes `results/summary.csv` and `results/summary_detail.json`.
+  - `analysis/summarize.py`: writes `results/summary.csv`, `results/summary_detail.json` and `results/summary_excluding_memorized.csv`.
   - `analysis/figures.py`: the five figures, in `results/figures/`.
-- **Recalibration method (flagged choice):** Platt vs isotonic, picked per AI contestant by 5-fold CV log loss on **tune only**. Platt won for Kev-4B, Kev-0.8B, Laya and Qwen; isotonic for Jev. The choice and CV scores are in `results/recalibration.json` and in each record's `model_version`.
+- **Recalibration method (flagged choice):** Platt vs isotonic, picked per AI contestant by 5-fold CV log loss on **tune only**. Platt won for Kev-4B, Kev-0.8B, Laya and Qwen; isotonic for Jev and Sol (Sol narrowly: 0.4524 vs 0.4549). The choice and CV scores are in `results/recalibration.json` and in each record's `model_version`.
 - **Calibration intercept** is the slope-fixed-at-1 ("calibration-in-the-large") intercept (Van Calster et al. 2019); the slope comes from the joint logistic fit.
 - **Manifest fix:** the cost and latency totals now count model calls only. Recalibrated records copy their source call's cost per decision, which is right per record but was double-counting run spend.
-- **Checks done:** labels agree across every predictions file and match the split parquet. Kev-4B's AUC jump with the base-rate sentence (0.59 → 0.76 on test) reproduces on tune (0.59 → 0.73); its two conditions' rankings correlate at only 0.23. That's real model behaviour, worth a line in the write-up.
-- **When Sol finishes:** `uv run python analysis/recalibrate.py && uv run python analysis/summarize.py && uv run python analysis/figures.py`, then look at the figures again (Sol's label positions), and write the final manifest without `--allow-incomplete`.
-- **Still to do for M4:** Sol, and handling Sol's memorized customers (open item below). Bootstrap intervals for AUC, ECE and calibration-in-the-large are already in `summary.csv`.
+- **Checks done:**
+  - Labels agree across every predictions file and match the split parquet.
+  - Kev-4B's AUC jump with the base-rate sentence (0.59 → 0.76 on test) reproduces on tune (0.59 → 0.73); its two conditions' rankings correlate at only 0.23. That's real model behaviour, worth a line in the write-up.
+- **Sol on test:**
+  - Out of the box: AUC 0.754, ECE 0.052, mean p 0.260 (actual 0.221).
+  - With the base rate: ECE 0.032; recalibrated: ECE 0.017.
+  - Cost: $0.74 per 1,000 decisions (base rate: $1.02).
+  - No AI contestant beats the scorecard's AUC (0.777); the best are Kev-4B with the base rate (0.757) and Sol (0.754).
+- **Sol's memorization: all three follow-ups done** (user, 2026-11-22). Details are in `data/contamination.md`.
+  - **Depth test** (`data/memdepth.py`, $1.14): 31 customers memorized verbatim, dense through customer 33 and sporadic to 92. Of those, test has `cust_00004`, `cust_00016` and `cust_00018`; tune has `cust_00005`–`00007`. tabmemcheck's 1,000-token cap (which includes reasoning) was most likely why the first test stopped early.
+  - **With/without:** without the 3 memorized test customers, no contestant's AUC, ECE or calibration-in-the-large moves by more than 0.0006.
+  - **Recognition** (`data/recognition.py`, $0.07): Sol named the dataset for 53 of 53 summaries at 99% confidence and gave its exact default rate (22.12%) every time.
+  - **For the write-up:** its out-of-the-box calibration must be read as that of a model that knows the population, not zero-shot honesty.
+  - **Not run (user's call):** a disguise test, scoring Sol on summaries with the identifying cues (NT$, 2005 dates) removed, would show how much that knowledge drives its calibration. About $1.50 for test, out of the box.
+- **Still to do for M4:** the author reviews the figures. Possible tweak: Sol's green is close to Kev-0.8B's teal on the honesty arc.
 
-
-**M3 is in progress (started 2026-11-22).** The gate is passed: M2 is done and `PREDICTIONS.md` was committed (`24aebdd`) before any M3 prediction.
-- **API runs (laptop): running.** Re-running the same commands resumes them.
-  - **Jev:** tune and test, both conditions, `--workers 8`. About 18 predictions per second, no rate limit.
-  - **Jev: done.** 8,000 records, committed in `ee7afa9`.
-  - **GPT-6.2 Sol: running unattended on the laptop** as a one-off Windows scheduled task, `can-ai-sol-run`, started 2026-11-22 09:58Z; ETA ~17:20Z.
-    - **Independent of the session:** it doesn't depend on VS Code or Claude Code.
-    - **How it runs:** a driver script runs the four parts in priority order, retries a part if it stops on an error, and blocks idle sleep only while it runs (no power settings changed).
-    - **Driver and log** live in the session scratchpad: `C:\Users\nisha\AppData\Local\Temp\claude\425ae268435ce76b\93657737-be5d-4844-a8c5-580f916f66d8\scratchpad\sol_m3_driver.py` and `...\sol_m3.log`.
-    - **Needs:** the PC on, plugged in, user logged in (locking is fine), and no restart. The L4 wouldn't be faster: the cap is per OpenRouter account.
-    - **Progress:** `wc -l results/predictions/frontier-verbal.jsonl` (target 8,000).
-    - **If the PC restarted:** `Start-ScheduledTask -TaskName can-ai-sol-run`, which resumes. If the scratchpad was cleaned, run the four `runners/frontier_verbal.py --workers 4 --split <test|tune> --condition <out_of_box|base_rate>` commands in that order instead.
-    - **When done:** check with `runners/manifest.py`, commit the Sol files, then `Unregister-ScheduledTask -TaskName can-ai-sol-run -Confirm:$false`.
-  - **Sol's rate limit:** OpenRouter caps new accounts at **20 requests/minute** for this model (the first attempt stopped on a 429 after 20 records). The runner now paces requests at 18/min (`--rpm`), retries 429s with backoff, and keeps all waiting out of the recorded latency (it's in raw as `waited_for_rate_limit_s`). At that pace the 8,000 requests take ~7.5 h. It runs the essential parts first: out-of-box test, then out-of-box tune, base-rate test, base-rate tune. If OpenRouter lifts the cap, re-run with a higher `--rpm`; the run resumes.
-- **GPU runs (L4): done (2026-11-22, 09:46–10:36Z).** Laya, Qwen3.5-4B, Kev-4B and Kev-0.8B, 8,000 records each, committed with their raw responses. They ran one model at a time with sequential requests, so latencies aren't inflated by batching. Median latency: Laya 16 ms, Kev-0.8B 39 ms, Kev-4B 139 ms, Qwen 142 ms. Amortized GPU cost $0.02–0.16 per contestant.
+**M3 is done (2026-11-22, 19:16Z).** `runners/manifest.py` passes without `--allow-incomplete`: all eight contestants are complete, and `results/run_manifest.json` says `complete: true`.
+- **Jev:** 8,000 records, $0.17 (`ee7afa9`).
+- **GPT-6.2 Sol:** 8,000 records, $7.12, median latency 2.0 s. It ran unattended on the laptop (a Windows scheduled task, since deleted), paced at 18 requests/minute.
+  - **Answers:** every one ended normally, no customer needed a retry, and no probability was exactly 0 or 1. Sol answers in whole percentages.
+  - **Credit stop:** the run paused ~14:55–16:39Z when the OpenRouter credit ran out (402), and resumed after a top-up. Waits are never in the recorded latency.
+  - **Rate limit:** OpenRouter caps new accounts at 20 requests/minute for this model. The runner paces at 18/min (`--rpm`), retries 429s with backoff, and keeps all waiting out of the recorded latency (it's in raw as `waited_for_rate_limit_s`).
+- **GPU runs (L4): done (2026-11-22, 09:46–10:36Z).** Laya, Qwen3.5-4B, Kev-4B and Kev-0.8B, 8,000 records each, committed with their raw responses.
+  - They ran one model at a time with sequential requests, so latencies aren't inflated by batching. Median latency: Laya 16 ms, Kev-0.8B 39 ms, Kev-4B 139 ms, Qwen 142 ms. Amortized GPU cost $0.02–0.16 per contestant.
   - No probabilities were exactly 0 or 1 in any run. Kev ran without flash-linear-attention.
   - The Qwen raw file is 64 MB (full prompt plus top-20 logprobs per request); GitHub warns above 50 MB.
-  - **The L4 is paused** (user, 2026-11-22 ~11:00Z). Delete it once M4's metrics confirm nothing needs re-running; storage bills while paused (~₹30/day). Revoke its `gh` token then too.
-  - `results/run_manifest.json` is partial (`complete: false`) until Sol finishes.
-- **Done when:** `uv run --group runners python runners/manifest.py` passes without `--allow-incomplete`, meaning all eight contestants are complete, and `results/run_manifest.json` is committed.
+  - **The L4 is deleted** (user, 2026-11-22 ~17:40Z). Everything it produced is in git, and M4's checks of the four GPU contestants found nothing to re-run. It had no `.env`, so no API key was on it. **Pending (user):** revoke the GitHub access it used: a personal access token, or the GitHub CLI OAuth app (that also signs out `gh` on the laptop).
+- **Harness fix:** recalibrated records no longer count as a second model version, so a runner can resume a file after `recalibrate.py` has run.
+
+**Next: M5, the write-up** (`writeup/` is empty). Blog, README, carousel and X drafts, per PLAN §7. Say wherever results are compared that the baselines learned from 20,000 labelled customers while the AI contestants are zero-shot, and that Sol recognizes the dataset.
 
 **M2 is done (2026-11-22).** Baselines are scored on test, and all six AI runners passed their 20-customer smoke tests.
 - **Built:** the baselines, all six AI runners, and `runners/manifest.py`, which checks coverage and writes `results/run_manifest.json`.
@@ -107,6 +113,14 @@ All runners share `runners/harness.py`. It:
 
 **OpenRouter key:** it lives in the git-ignored `.env` in the repo root (`OPENROUTER_API_KEY=...`), loaded by `analysis/env.py` in every runner and in `memcheck.py`. On 2026-11-22 OpenRouter accepted it, with a $100 limit. On the L4, create the same `.env` in `/home/can-ai-know-when-its-wrong`.
 
+**Langfuse tracing (on since 2026-11-22 ~19:00Z, confirmed working):** OpenRouter Broadcast sends every request made with keys in the OpenRouter **Default workspace** to the author's Langfuse project. The workspace was renamed after this project in the dashboard the same evening; renaming kept the key, the Broadcast destination and the usage history. The project key belongs to that workspace.
+- **Setup lives in OpenRouter's dashboard** (Observability → Langfuse destination). No code, packages or Langfuse keys are in the repo.
+- **Only requests since Broadcast was turned on are traced.** All Jev calls and Sol's first ~7,500 records aren't in Langfuse.
+- **Recorded latency is unaffected:** OpenRouter sends traces after the response.
+- **A viewing copy only.** Analysis still reads only `results/predictions/`.
+- **Tagging a request:** add `session_id` and a `trace` object (`trace_name`, `generation_name`, `trace_id` as 32 hex characters, `environment`, any other keys become metadata) to the request body.
+- **Don't delete the Default workspace** (it's still the Default one under its new name). OpenRouter says that disables every key not assigned to a workspace, including the project key, and deletes the Broadcast destination. Usage history can't be moved between workspaces; a key's workspace is fixed when the key is created.
+
 **Frontier model: `openai/gpt-6.2-sol` at its default reasoning effort (medium)** (user, 2026-11-22). Switched from GPT-6.2 Astra for cost: Astra at default effort was estimated at $165–350, beyond the $100 key limit. Sol is also what ChatGPT starts new chats on, which matches the plan's "ask ChatGPT" framing.
 - **Runner:** `runners/frontier_verbal.py` (`uv run --group runners`).
   - Prompt: the shared summary and question, plus one answer line: probability 0–100 as JSON (prompt v1).
@@ -154,10 +168,7 @@ All runners share `runners/harness.py`. It:
   - **GPT-6.2 Astra (tested before the switch; not a contestant):** customers 3–10 verbatim. Row completion: 0 of 50 exact, with 19 refusals; its other answers match no better than guessing each column's most common value.
   - **Reproduced customers we use:** `cust_00004` (test) and `cust_00005`–`cust_00007` (tune). Sol reproduced 4–6, Astra 4–7.
 
-**Open (needs the user):** how to handle Sol's memorization beyond flagging its results. Options, each cheap:
-1. **Longer header test:** Sol stopped after 622 / 764 characters, still matching, so how deep its memory goes is unknown. Test customers `cust_00016` and `cust_00018` lie beyond what the test reached.
-2. **Results with and without** the memorized customers.
-3. **Recognition probe:** ask Sol whether it recognizes a rendered summary as this dataset. This matters more than the leaked rows: the summaries show NT$ and Apr–Sep 2005, and a model that recognizes the dataset could recall its ~22% default rate, which would flatter its out-of-the-box calibration.
+**Sol's memorization follow-ups (user chose all three, 2026-11-22): done.** Results are under M4 above and in `data/contamination.md`.
 
 ## Decisions already made (don't revisit without the user)
 
@@ -167,6 +178,7 @@ All runners share `runners/harness.py`. It:
 - **Recalibrated condition** is computed from the saved `out_of_box` probabilities, so it needs no new API calls.
 - **Scorecard keeps all 19 fields** despite 4 negative WoE coefficients (user, 2026-11-22). The textbook sign rule's premises don't hold here, a sign-consistent version performs the same within noise, and all 19 fields keep its inputs identical to every other contestant's. The write-up gets one line: "A production-style scorecard with consistent signs would drop all six bill amounts; it ranks and calibrates the same within noise."
 - **`qwen-logprobs` contestant = `Qwen/Qwen3.5-4B` @ `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`** (user chose it over Qwen3-4B-Instruct-2507, 2026-11-22). It's the newest ~4B Qwen, Apache-2.0. Run it text-only with thinking off (`enable_thinking=false`) so P(yes) comes from the first answer token's logprobs.
+- **Sol's memorization:** run all three follow-ups (longer header test, with/without table, recognition probe), flag Sol's results everywhere, and keep the main results on the full test set (user, 2026-11-22).
 - **`frontier-verbal` contestant = `openai/gpt-6.2-sol` at default reasoning effort (medium)** through OpenRouter (user, 2026-11-22; switched from Astra for cost). Astra's memorization result stays in `data/contamination.md` as context about the OpenAI family.
 
 ## Things to know for M2 (runners)
@@ -177,7 +189,9 @@ All runners share `runners/harness.py`. It:
 - Jev on OpenRouter: on 2026-11-22 the model list showed only `typesafe/jev-router`, which picks a model and reasoning effort per request. Don't use the router. Pin a version (e.g. `jev-1.14`) through OpenRouter's System One endpoint (`POST /api/v1/systemone`, which maps bare `jev-*` IDs onto `typesafe/`), and record the resolved version from each response.
 - GPU time on the L4 is billed per minute. Do CPU work (baselines, runner code, API runs) wherever it's cheapest and keep the GPU for serving open models.
 
-## The L4 instance (JarvisLabs, launched 2026-11-22)
+## The L4 instance (JarvisLabs, launched 2026-11-22, deleted 2026-11-22)
+
+**Deleted after the M3 GPU runs.** For any new GPU work, launch a fresh instance and follow the first-time setup below; it takes about 20–30 billed minutes.
 
 1× NVIDIA L4 (24 GB), PyTorch template (a container), region IN2, 28 cores and 124 GB RAM. Compute bills per second; storage keeps billing while the instance is paused.
 

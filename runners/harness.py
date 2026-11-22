@@ -29,7 +29,13 @@ for sub in ("data", "analysis"):
         sys.path.insert(0, str(ROOT / sub))
 
 from env import load_env  # noqa: E402
-from records import PREDICTIONS_DIR, make_record, utc_now, validate_record  # noqa: E402
+from records import (  # noqa: E402
+    PREDICTIONS_DIR,
+    TEST_ONLY_CONDITIONS,
+    make_record,
+    utc_now,
+    validate_record,
+)
 
 RENDER_DIR = ROOT / "data" / "rendered"
 SMOKE_DIR = ROOT / "results" / "smoke"
@@ -135,7 +141,11 @@ def resolve_args(args: argparse.Namespace) -> argparse.Namespace:
 
 
 def _existing(path: Path) -> tuple[set[tuple[str, str, str]], set[str]]:
-    """(condition, split, id) keys already written, and the model versions that wrote them."""
+    """(condition, split, id) keys already written, and the model versions that wrote them.
+
+    Recalibrated records are written later by analysis/recalibrate.py, under a version that
+    names the calibrator, so they don't count as another model version here.
+    """
     if not path.exists():
         return set(), set()
     keys, versions = set(), set()
@@ -144,7 +154,8 @@ def _existing(path: Path) -> tuple[set[tuple[str, str, str]], set[str]]:
             rec = json.loads(line)
             validate_record(rec)
             keys.add((rec["condition"], rec["split"], rec["id"]))
-            versions.add(rec["model_version"])
+            if rec["condition"] not in TEST_ONLY_CONDITIONS:
+                versions.add(rec["model_version"])
     return keys, versions
 
 

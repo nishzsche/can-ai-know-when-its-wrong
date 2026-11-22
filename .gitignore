@@ -8,4 +8,4 @@ __pycache__/
 
 # Memorization-test CSVs (published file incl. demographic columns); results are kept
 data/memcheck/csv/
-data/memcheck/results/dry-run.json
+data/memcheck/results/dry-run*.json

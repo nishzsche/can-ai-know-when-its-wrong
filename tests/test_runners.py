@@ -97,6 +97,18 @@ def test_a_file_never_mixes_model_versions(tmp_path):
     assert newer.calls == 0
 
 
+def test_recalibrated_records_dont_block_a_resume(tmp_path):
+    path = harness.run(FakePredictor(), _args(tmp_path, limit=2), log=lambda _: None)
+    first = json.loads(path.read_text("utf-8").splitlines()[0])
+    recal = {**first, "split": "test", "condition": "recalibrated",
+             "model_version": "fake@1; recalibrated: platt fit on tune"}  # fmt: skip
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(recal) + "\n")
+    pred = FakePredictor()
+    harness.run(pred, _args(tmp_path, limit=3), log=lambda _: None)
+    assert pred.calls == 2  # customer 3, both conditions
+
+
 def test_run_resumes_without_repeating_work(tmp_path):
     harness.run(FakePredictor(), _args(tmp_path, limit=3), log=lambda _: None)
     pred = FakePredictor()

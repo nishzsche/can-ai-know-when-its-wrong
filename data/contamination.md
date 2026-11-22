@@ -42,6 +42,7 @@ Card at huggingface.co/convaiinnovations/laya, revision `fd4f9dbc` (2026-11-19).
 **Status:**
 - **Qwen3.5-4B:** done (2026-11-22). No memorization detected.
 - **GPT-6.2 Sol** (the frontier contestant since the user switched from Astra for cost, 2026-11-22): done (2026-11-22). Memorized the start of the file; no recall of rows deeper in the file.
+- **GPT-6.2 Sol follow-ups** (user chose all three, 2026-11-22): all done. The depth test found 31 customers memorized, 3 of them in test. Without them, no metric moves by more than 0.0006. The recognition probe found that Sol identifies every summary as this dataset and knows its exact default rate (22.12%). See "Follow-ups for GPT-6.2 Sol" below.
 - **GPT-6.2 Astra** (the user's first choice, tested before the switch; not a contestant): done (2026-11-22). Same pattern. Kept as context about the OpenAI family.
 
 What runs, for each LLM contestant, on two versions of the file:
@@ -95,10 +96,65 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 
 **What it means for the experiment:**
 - **Direct leaks look tiny.** Of the customers Sol and Astra reproduced, `cust_00004` is in test and `cust_00005`–`cust_00007` are in tune (2, 3, 8 and 10 are in reserve; 9 and 11–13 in train). One test customer out of 2,000 can't move the metrics.
-- **How far the memorized start goes is untested.** Sol stopped on its own after 622 / 764 characters and Astra after 701 / 669, all still matching. Other low-numbered customers in test (`cust_00016`, `cust_00018`) are beyond what the test reached. A header test with a longer window would measure the depth.
+- **How far the memorized start goes:** measured for Sol by the depth test below. It knows customers 2–20 and most of 21–33 verbatim, which adds test customers `cust_00016` and `cust_00018`. (Its earlier stops at 622 / 764 characters were most likely tabmemcheck's 1,000-token cap, which includes reasoning; with room it wrote 993 and 1,633 matching characters.)
 - **The model never sees customer IDs**, only our rendered summaries. Still, rows it knows by heart could be recognizable from their numbers.
-- **Recognition is the bigger risk.** The summaries show NT$ amounts and April–September 2005, so a model that knows this dataset could recognize it and recall facts about it, such as its ~22% default rate. That would flatter Sol's out-of-the-box calibration in particular. The base-rate condition gives every contestant that number, so if Sol is well calibrated out of the box while the others need the base-rate sentence, the write-up must point this out. Not tested yet: we haven't asked Sol whether it recognizes a summary. (In its 20-customer smoke test Sol averaged p = 0.32 against an actual 0.20, so it isn't obviously reciting 22%.)
-- **Not decided yet (user):** whether to run a longer header test, report Sol's results with and without the memorized customers, and probe whether it recognizes a summary. Per the rule below, its results are flagged wherever they appear either way.
+- **Recognition is the bigger risk, and it's confirmed for Sol** (recognition probe below). The summaries show NT$ amounts and April–September 2005. Sol named the dataset for 53 of 53 summaries and gave its exact default rate (22.12%) every time. That can flatter its out-of-the-box calibration, since the base-rate condition gives every other contestant the same number.
+- **Decided (user, 2026-11-22): all three follow-ups.** See the next section. Per the rule below, Sol's results are flagged wherever they appear either way.
+
+## Follow-ups for GPT-6.2 Sol
+
+### 1. Depth test (`data/memdepth.py`, done 2026-11-22)
+
+**What it does:** a longer, deterministic header test.
+- **Cuts:** the file is cut partway through customer k, for k = 2, 12, 22, … (seeded cut points), in both file versions.
+- **Prompt:** tabmemcheck's header-test format: its system prompt, one few-shot example from each of its default CSV files cut at the same offset, then our file up to the cut.
+- **Length:** few-shot continuations are 1,500 characters, about 18 rows, so the model is shown that a long continuation is wanted.
+- **Budget and settings:** 16,000 tokens, so reasoning can't cut the answer short; every answer records why it ended. Settings are the contestant's: effort medium, seed 0.
+- **What counts as memorized:** a customer whose whole row (all 25 fields, label included) the model writes exactly without it being in the prompt; or a cut row it completes exactly, when the completed part contains a non-zero bill or payment.
+- **Stopping rule:** the walk stops after 3 cuts in a row with nothing memorized.
+
+**Result:** 20 queries, $1.14, every answer ended on its own (none hit the budget). Results are in `data/memcheck/results/openai_gpt-6.2-sol__depth.json`.
+
+| File version | Cuts | Memorized (customer IDs) | Notes |
+|---|---|---|---|
+| `uci` | 2–62 | 2–20, 22, 23, 25–27, 29, 32 | Whole rows up to customer 29 and the completion of cut row 32. From cut 42 on, only the cut row's completion: wrong at 42, 52 and 62 |
+| `kaggle_style` | 2–122 | 2–20, 22, 24–27, 29, 33, 42, 72, 92 | Whole runs to 33. From cut 42 on, Sol completed only the cut row and stopped: exact at 42, 72 and 92, wrong at 52, 62, 82, 102, 112 and 122 |
+
+- **Union** (with the original header test): **31 customers**, 2–20, 22–27, 29, 32, 33, 42, 72 and 92.
+- **Customer 92 is the weakest case:** its completed part's only non-zero value (3,968) also appears among its bills in the prompt, so it could have been inferred. Customer 72's completion (an exact bill and five exact payments) and customer 42's (including a payment of 4,042) can't be guessed.
+- **How to read the deep end:** past customer ~40 Sol only completes the row in front of it, so the test measures single-row recall there. It got 2 of 9 rows right in the Kaggle-style file and 0 of 3 in the UCI file. Memory is dense for the first ~33 customers (the part shown in tutorials' `df.head()`-style printouts) and sporadic after that. Rows deeper than ~120 weren't reached; tabmemcheck's row-completion test (0 of 50 deeper rows, 42 refusals) is the only probe of them.
+- **In our evaluation sets:** test `cust_00004`, `cust_00016`, `cust_00018` (3 of 2,000); tune `cust_00005`–`cust_00007` (3 of 2,000). The rest are in train or reserve.
+
+### 2. Results with and without the memorized customers
+
+`analysis/summarize.py` reads the memorized list from the depth result and writes `results/summary_excluding_memorized.csv`.
+- **Same customers for everyone:** every contestant is re-scored on the same 1,997 test customers, so the comparison stays like-for-like.
+- **Recalibrated rows:** they keep their calibrators, which were fitted on all of tune, including 3 memorized tune customers out of 2,000.
+
+**Result (2026-11-23):** removing the 3 memorized test customers changes every contestant's AUC, ECE and calibration-in-the-large by at most 0.0006, Sol included. The leaked rows don't move the results.
+
+### 3. Recognition probe (`data/recognition.py`, done 2026-11-22T19:20Z)
+
+**What it asks:**
+- **Recognition:** the exact `state` Sol saw as a contestant, followed by: "Where does this account summary most likely come from? If you think it comes from a specific public dataset, name it, and give the share of that dataset's customers who miss next month's payment if you know it." Strict JSON.
+  - **Customers:** 50 random test customers (fixed seed) plus the 3 memorized test customers.
+  - **Leading by design:** the question mentions public datasets, so it measures whether Sol *can* place a summary when asked.
+- **Knowledge:** "In the UCI 'Default of Credit Card Clients' dataset (Yeh & Lien, 2009), what share of customers miss next month's payment?", asked 3 times.
+- **Settings:** the contestant's (effort medium, seed 0). Cost $0.07. Results are in `data/memcheck/results/openai_gpt-6.2-sol__recognition.json`.
+
+**Result: Sol recognizes the dataset from any summary and knows its default rate exactly.**
+- **Recognition:** 53 of 53 summaries were named as UCI "Default of Credit Card Clients", at 99% confidence, all 50 random customers included. Every answer gave the default rate as 22.12%, the published file's exact rate (6,636 / 30,000).
+- **Cues it cited:** the April–September 2005 billing period, the NT$ amounts and the repayment codes. The median answer used no reasoning tokens.
+- **Knowledge:** 22.12%, 3 of 3.
+
+**What it means for the comparison:**
+- **Not fully zero-shot:** Sol's out-of-the-box condition isn't zero-shot in the sense that matters for calibration. When asked, it identifies the population and knows its default rate, the number the `base_rate` condition gives everyone.
+- **Its predictions don't simply recite that rate:**
+  - The out-of-the-box mean prediction is 0.260 (test; actual 0.221).
+  - The base-rate sentence barely moves it (0.253). By comparison, it moves Jev 0.48 → 0.38, Kev-4B 0.49 → 0.20 and Qwen 0.36 → 0.25.
+- **Two readings this probe can't separate:** either Sol already uses the rate it knows, or it ignores the sentence.
+- **How to separate them (not run):** score Sol on summaries with the identifying cues (currency, dates) removed.
+- **For the write-up:** Sol's out-of-the-box calibration has to be read as "a model that recognizes this dataset and knows its default rate", not as zero-shot honesty. Its ranking (AUC) is less affected: knowing the overall rate doesn't rank individual customers, and the leaked rows don't change its AUC.
 
 ## What the write-up will say
 
@@ -106,5 +162,5 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - Jev, Kev and Laya can't be probed for memorization because they don't generate text. Kev's disclosed fine-tuning data doesn't include this dataset. The pretraining data of every base model is undisclosed, so exposure can't be ruled out for any AI contestant.
 - The LLM contestants' tabmemcheck results get reported as measured. If a contestant shows memorization, its results are flagged wherever they appear.
 - Qwen3.5-4B showed no memorization in either chat or raw-completion mode: 0 of 100 rows reproduced across both file versions (98 of them non-trivial), and no header continuation beyond trivial runs of zeros. This is absence of evidence, not proof.
-- GPT-6.2 Sol, the frontier contestant, reproduced the start of the data file verbatim in the header test (customers 2–6 and 8–13), so it has seen this dataset in training. It reproduced none of 50 rows from deeper in the file, though it refused 42 of those queries. Its results are flagged as coming from a model that has seen this data.
+- GPT-6.2 Sol, the frontier contestant, has seen this dataset in training. It reproduced the start of the data file verbatim: 31 customers in all, dense through customer 33 with sporadic hits to 92. Three of them are in our 2,000-customer test set; without them, no metric moves by more than 0.0006. More importantly, Sol recognizes every account summary as this dataset and knows its exact default rate (22.12%), so its out-of-the-box calibration is not zero-shot honesty: it is a model that knows the population it's being asked about. It reproduced none of 50 rows from deeper in the file, though it refused 42 of those queries. Its results are flagged as coming from a model that has seen this data.
 - GPT-6.2 Astra, OpenAI's flagship, which we tested before switching to Sol for cost, showed the same: customers 3–10 verbatim, none of 50 deeper rows (19 refused).

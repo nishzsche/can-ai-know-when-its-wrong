@@ -4,15 +4,37 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 ## Where things stand
 
-**M1 (data) is done, except the two LLM memorization runs.**
+**M2 is in progress: the baselines are done; the AI runners are next.** M1 is done except the frontier-model memorization test, which the user chose not to wait for.
+
+### M2 so far (2026-11-22, on CPU)
+
+| Contestant | Condition | Test AUC | Test Brier | Test ECE | Mean p vs actual |
+|---|---|---|---|---|---|
+| `scorecard` (WoE + logistic regression) | `trained` | 0.777 | 0.1365 | 0.014 | 21.8% vs 22.1% |
+| `gbm` (LightGBM, 157 rounds) | `trained` | 0.789 | 0.1319 | 0.017 | 21.8% vs 22.1% |
+| `gbm` + isotonic fitted on tune | `trained_calibrated` | 0.784 | 0.1328 | 0.020 | 21.4% vs 22.1% |
+
+- **Scripts:** `baselines/scorecard.py` and `baselines/gbm.py` write `results/predictions/{scorecard,gbm}.jsonl`, plus `results/baselines/*.json` with the bin table, coefficients, settings and feature importances. Each takes under 10 seconds, and tests check that a re-run reproduces the saved predictions exactly.
+- **Calibration:** isotonic calibration didn't help the GBM. Raw LightGBM is already well calibrated, and 2,000 tune customers add noise. Report this as found.
+- **Scorecard sign flips:** 4 of the 19 WoE coefficients are negative (BILL_AMT1 −1.27, BILL_AMT3 −1.48, PAY_2, BILL_AMT5). Checked on train and tune only (test untouched):
+  - Default rate across bill-amount bins is flat (19–25%), so bills have no risky direction of their own and act as adjustments given the other fields.
+  - The two big negative coefficients are stable: negative in 200/200 bootstrap refits. Only BILL_AMT5 (−0.12) is unstable (134/200).
+  - WoE correlation between months is 0.27–0.69 (raw bills: 0.80–0.95).
+  - A sign-consistent scorecard drops all six bill amounts plus PAY_2 (12 fields left): 5-fold CV AUC 0.767 vs 0.770, Brier 0.1367 vs 0.1362, ECE 0.013 vs 0.015. Same within noise.
+
+  **Decided: keep all 19 fields** (see "Decisions already made").
+- **Shared record format:** every contestant, AI runners included, writes through `analysis/records.py` (`make_record` and `write_records`), which validates the CLAUDE.md schema. `recalibrated` and `trained_calibrated` records may only be written for `test`, since their calibrator was fitted on tune.
+- **For M4:** 7 isotonic test probabilities are exactly 0 or 1 (all correct). Clip probabilities before log-loss or logit-based metrics such as the calibration slope.
+
+### M1
 
 - `data/load.py`: fetches UCI 350 through `ucimlrepo`, drops SEX/MARRIAGE/AGE/EDUCATION before saving, and records the version, a content hash and quirk counts in `data/raw/source.json`.
 - `data/splits.py`: stratified 20,000 / 2,000 / 2,000 / 6,000 split, seed 20261122. The default rate is 22.10–22.13% in every split and 22.12% for train.
 - `data/render.py`: template **v2**. `data/rendered/{tune,test}.jsonl` hold ready-to-send System One requests for the `out_of_box` and `base_rate` conditions.
 - `README.md` has the licence, citation and data quirks; `data/contamination.md` has the per-contestant contamination analysis.
-- Tests: `uv run pytest`, 41 passing. The parked insurance work has its own 67 tests: `uv run pytest parked/insurance`.
+- Tests: `uv run pytest`, 71 passing (data, records and baselines). The parked insurance work has its own 67 tests: `uv run pytest parked/insurance`.
 
-- **Qwen memorization test: done (2026-11-22).** Qwen3.5-4B, chat and raw-completion modes, both file versions: 0/98 rows reproduced and no non-trivial header continuation. Details and the results table are in `data/contamination.md`.
+- **Qwen memorization test: done (2026-11-22).** Qwen3.5-4B, chat and raw-completion modes, both file versions: 0 of 100 rows reproduced (98 of them non-trivial) and no non-trivial header continuation. Details and the results table are in `data/contamination.md`.
 
 **Still open for M1:**
 1. **Frontier-model memorization test.** Needs `OPENROUTER_API_KEY` and a choice of frontier model (the user hasn't picked one yet). Run `uv run --group memcheck python data/memcheck.py --model <openrouter-id>`, then add its rows to the table in `data/contamination.md`. It needs no GPU.
@@ -23,6 +45,7 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Never disadvantage the AI contestants.** Template v2 dropped the "common interpretation" of repayment codes because the data contradicts it (e.g. 40.6% of "−2 = no balance" months carry a positive bill). Labels now say only what's documented and always show the raw code, for example "not late (code -2)" and "paid on time (code -1)". Use train data only for checks like this.
 - **Base-rate condition:** the sentence "In this portfolio, about 22.1% of customers miss next month's payment." goes in front of the question instructions. The `state` stays identical across conditions.
 - **Recalibrated condition** is computed from the saved `out_of_box` probabilities, so it needs no new API calls.
+- **Scorecard keeps all 19 fields** despite 4 negative WoE coefficients (user, 2026-11-22). The textbook sign rule's premises don't hold here, a sign-consistent version performs the same within noise, and all 19 fields keep its inputs identical to every other contestant's. The write-up gets one line: "A production-style scorecard with consistent signs would drop all six bill amounts; it ranks and calibrates the same within noise."
 - **`qwen-logprobs` contestant = `Qwen/Qwen3.5-4B` @ `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a`** (user chose it over Qwen3-4B-Instruct-2507, 2026-11-22). It's the newest ~4B Qwen, Apache-2.0. Run it text-only with thinking off (`enable_thinking=false`) so P(yes) comes from the first answer token's logprobs.
 
 ## Things to know for M2 (runners)

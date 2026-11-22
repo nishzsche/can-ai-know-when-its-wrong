@@ -1,0 +1,42 @@
+{
+  "model_version": "lightgbm 4.7.0; 157 rounds; train a71432385d26",
+  "params": {
+    "objective": "binary",
+    "learning_rate": 0.03,
+    "num_leaves": 15,
+    "min_child_samples": 100,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "lambda_l2": 1.0,
+    "seed": 20261122,
+    "deterministic": true,
+    "force_col_wise": true,
+    "num_threads": 4,
+    "verbose": -1
+  },
+  "rounds": 157,
+  "feature_importance_gain_share": {
+    "LIMIT_BAL": 0.05030358818708379,
+    "PAY_0": 0.468575564694888,
+    "PAY_2": 0.12174383760405952,
+    "PAY_3": 0.04945165639697668,
+    "PAY_4": 0.02448907779489375,
+    "PAY_5": 0.02553608995982746,
+    "PAY_6": 0.014627847798175126,
+    "BILL_AMT1": 0.044800178086760484,
+    "BILL_AMT2": 0.01849886439298175,
+    "BILL_AMT3": 0.013630936748927553,
+    "BILL_AMT4": 0.011505331742385763,
+    "BILL_AMT5": 0.010689058745343727,
+    "BILL_AMT6": 0.008821572237500394,
+    "PAY_AMT1": 0.03611820640232862,
+    "PAY_AMT2": 0.032818506452620425,
+    "PAY_AMT3": 0.03636909281110851,
+    "PAY_AMT4": 0.01570457908614435,
+    "PAY_AMT5": 0.008863386876567908,
+    "PAY_AMT6": 0.0074526239814262105
+  },
+  "isotonic_steps": 38,
+  "calibrated_test_probs_exactly_0_or_1": 7
+}

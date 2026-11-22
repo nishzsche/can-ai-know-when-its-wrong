@@ -43,7 +43,8 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run python data/load.py && uv run python data/splits.py` — fetch data and build splits
 - `uv run python data/render.py --split tune` — render account summaries
 - `uv run python data/render.py --show 10` / `--token-report` — hand-check summaries / token counts per contestant tokenizer
-- `uv run pytest` — render, split and metric tests
+- `uv run python baselines/scorecard.py` / `uv run python baselines/gbm.py` — train the baselines on `train` and write their `tune`/`test` predictions (CPU, seconds)
+- `uv run pytest` — render, split, record, baseline and metric tests
 - `uv run --group memcheck python data/memcheck.py --model <id>` — LLM memorization tests (needs `OPENROUTER_API_KEY`; `--dry-run` works offline)
 - `uv run python runners/<name>.py --split test --condition out_of_box` — run one contestant
 - `uv run python analysis/figures.py` — regenerate all charts

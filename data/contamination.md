@@ -81,4 +81,4 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - The scorecard and GBM were trained only on our `train` split.
 - Jev, Kev and Laya can't be probed for memorization because they don't generate text. Kev's disclosed fine-tuning data doesn't include this dataset. The pretraining data of every base model is undisclosed, so exposure can't be ruled out for any AI contestant.
 - The LLM contestants' tabmemcheck results get reported as measured. If a contestant shows memorization, its results are flagged wherever they appear.
-- Qwen3.5-4B showed no memorization in either chat or raw-completion mode: 0 of 98 rows reproduced across both file versions, and no header continuation beyond trivial runs of zeros. This is absence of evidence, not proof.
+- Qwen3.5-4B showed no memorization in either chat or raw-completion mode: 0 of 100 rows reproduced across both file versions (98 of them non-trivial), and no header continuation beyond trivial runs of zeros. This is absence of evidence, not proof.

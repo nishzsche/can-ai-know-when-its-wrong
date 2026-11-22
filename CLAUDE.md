@@ -57,5 +57,6 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run --group runners python runners/manifest.py` — check every contestant's coverage and write `results/run_manifest.json` (`--allow-incomplete` to write a partial one)
 - `uv run python analysis/recalibrate.py` — the `recalibrated` condition: Platt vs isotonic chosen per AI contestant by 5-fold CV on tune, applied to test (re-run when a contestant completes)
 - `uv run python analysis/summarize.py` — score every contestant x condition on test -> `results/summary.csv`, `results/summary_detail.json`, plus `results/summary_excluding_memorized.csv` once `memdepth.py` has run
+- `uv run python analysis/explain.py` — why the results look as they do: by repayment status, prediction spread, and calibration at other default rates -> `results/explain.json`
 - `uv run python analysis/figures.py` — regenerate all five charts into `results/figures/` (run the two above first)
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)

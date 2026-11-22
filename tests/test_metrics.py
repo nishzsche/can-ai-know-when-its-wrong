@@ -197,3 +197,31 @@ def test_choice_uses_cv_on_tune_only():
     assert info["cv_log_loss"][info["chosen"]] == min(info["cv_log_loss"].values())
     # a logit-linear miscalibration is exactly Platt's family, so Platt should win
     assert info["chosen"] == "platt"
+
+
+# ---- analysis/explain.py ---------------------------------------------------------------------
+
+import explain  # noqa: E402
+
+
+def test_weighted_ece_matches_ece_with_equal_weights():
+    rng = np.random.default_rng(3)
+    p = rng.uniform(0.01, 0.99, 500)
+    y = (rng.uniform(size=500) < p).astype(float)
+    assert explain.weighted_ece(y, p, np.ones(500)) == pytest.approx(m.ece(y, p))
+
+
+def test_reweighting_hits_the_target_rate_and_keeps_predictions():
+    import pandas as pd
+
+    rng = np.random.default_rng(4)
+    p = rng.uniform(0.01, 0.99, 400)
+    y = (rng.uniform(size=400) < 0.25).astype(int)
+    df = pd.DataFrame({"id": range(400), "p": p, "y": y})
+    rows = explain.base_rate_sensitivity({"m": df})
+    observed = next(r for r in rows if r["default_rate"] == 0.221)
+    assert observed["m"]["mean_predicted"] == pytest.approx(p.mean(), abs=0.02)
+    for r in rows:
+        target = r["default_rate"]
+        w = np.where(y == 1, target / y.mean(), (1 - target) / (1 - y.mean()))
+        assert np.average(y, weights=w) == pytest.approx(target)

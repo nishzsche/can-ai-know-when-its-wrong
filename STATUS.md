@@ -26,7 +26,13 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
   - **With/without:** without the 3 memorized test customers, no contestant's AUC, ECE or calibration-in-the-large moves by more than 0.0006.
   - **Recognition** (`data/recognition.py`, $0.07): Sol named the dataset for 53 of 53 summaries at 99% confidence and gave its exact default rate (22.12%) every time.
   - **For the write-up:** its out-of-the-box calibration must be read as that of a model that knows the population, not zero-shot honesty.
-  - **Not run (user's call):** a disguise test, scoring Sol on summaries with the identifying cues (NT$, 2005 dates) removed, would show how much that knowledge drives its calibration. About $1.50 for test, out of the box.
+  - **Disguise check** (`runners/checks/sol_disguise.py`, user asked 2026-11-23): removing NT$, the 2005 months and the raw repayment codes doesn't hide the dataset. Sol still named it for 50 of 50 disguised summaries (22.12%, 99% confidence), now citing the six-month bill/payment/status structure itself.
+    - **Full run stopped:** the 2,000-customer disguised run (~$1.50) was stopped before spending, since it can't isolate recognition. It can still be run with `--workers 4`, then `--report`.
+  - **Open (user's call): a false-base-rate test** could still separate the two readings:
+    - **Method:** tell Sol "about 10%" (and/or "about 40%") instead of 22.1% in the base-rate sentence, on ~500 test customers each (~$0.40 each).
+    - **If its average follows the stated rate:** Sol listens to the sentence, so its out-of-the-box closeness to 22% reflects what it already knows.
+    - **If its average doesn't follow:** it ignores stated rates.
+    - **Status:** a diagnostic only, never a contestant condition.
 - **Still to do for M4:** the author reviews the figures. Possible tweak: Sol's green is close to Kev-0.8B's teal on the honesty arc.
 
 **M3 is done (2026-11-22, 19:16Z).** `runners/manifest.py` passes without `--allow-incomplete`: all eight contestants are complete, and `results/run_manifest.json` says `complete: true`.

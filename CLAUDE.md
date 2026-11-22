@@ -51,6 +51,7 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run --group memcheck python data/memcheck.py --model <id>` — LLM memorization tests (needs `OPENROUTER_API_KEY`; `--dry-run` works offline)
 - `uv run --group memcheck --group runners python data/memdepth.py --model openai/gpt-6.2-sol` — how deep Sol's memory of the file goes; writes the memorized-customer list `summarize.py` excludes for the with/without table
 - `uv run --group runners python data/recognition.py --model openai/gpt-6.2-sol` — does Sol recognize a summary as this dataset, and does it know the default rate
+- `uv run --group runners python runners/checks/sol_disguise.py --probe 50` — the same question on summaries without NT$, dates or raw codes (`--workers 4` runs Sol on 2,000 disguised test summaries into `results/checks/disguise/`; `--report` compares)
 - `uv run python runners/<name>.py --split test --condition out_of_box` — run one contestant (`--smoke` = 20 tune customers into `results/smoke/`; Laya needs `--group laya`, Qwen/API runners `--group runners`; keys come from a git-ignored `.env`)
 - `uv run --group runners python runners/manifest.py` — check every contestant's coverage and write `results/run_manifest.json` (`--allow-incomplete` to write a partial one)
 - `uv run python analysis/recalibrate.py` — the `recalibrated` condition: Platt vs isotonic chosen per AI contestant by 5-fold CV on tune, applied to test (re-run when a contestant completes)

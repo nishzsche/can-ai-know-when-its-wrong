@@ -161,3 +161,48 @@ def test_memorized_ids_reads_the_depth_result(tmp_path):
     path = tmp_path / "depth.json"
     path.write_text('{"memorized_ids": ["cust_00004", "cust_00005"]}', "utf-8")
     assert sm.memorized_ids(path) == {"cust_00004", "cust_00005"}
+
+
+# ---- disguise check --------------------------------------------------------------------------
+
+
+def _sol_disguise():
+    import importlib
+    import sys
+    from pathlib import Path
+
+    checks = str(Path(__file__).resolve().parents[1] / "runners" / "checks")
+    if checks not in sys.path:
+        sys.path.insert(0, checks)
+    return importlib.import_module("sol_disguise")
+
+
+def test_disguise_removes_the_cues_and_keeps_the_numbers():
+    sd = _sol_disguise()
+    state = (
+        "Credit card account summary\nCredit limit: NT$160,000\n\n"
+        "Month (most recent first) | Bill amount | Amount paid | Repayment status\n"
+        "Sep 2005 | NT$30,265 | NT$131 | paid on time (code -1)\n"
+        "Aug 2005 | -NT$131 (credit) | NT$396 | not late (code -2)\n"
+        "Jul 2005 | NT$0 | NT$0 | not late (code 0)\n"
+        "Jun 2005 | NT$923 | NT$565 | 2 months late (code 2)\n"
+        "May 2005 | NT$1,488 | NT$792 | 9+ months late (code 9)\n"
+        "Apr 2005 | NT$1,884 | NT$0 | 1 month late (code 1)"
+    )
+    out = sd.disguise(state)
+    assert "NT$" not in out and "2005" not in out and "(code" not in out
+    assert out.splitlines()[1] == sd.UNITS_LINE
+    assert "Month 6 | 30,265 | 131 | paid on time" in out
+    assert "Month 5 | -131 (credit) | 396 | not late (type A)" in out
+    assert "Month 4 | 0 | 0 | not late (type B)" in out
+    assert "Month 1 | 1,884 | 0 | 1 month late" in out and "9+ months late" in out
+
+
+def test_disguise_works_on_every_rendered_test_summary():
+    import json
+    from pathlib import Path
+
+    sd = _sol_disguise()
+    path = Path(__file__).resolve().parents[1] / "data" / "rendered" / "test.jsonl"
+    for line in path.read_text("utf-8").splitlines():
+        sd.disguise(json.loads(line)["requests"]["out_of_box"]["state"])

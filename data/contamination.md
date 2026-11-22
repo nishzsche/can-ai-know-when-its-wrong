@@ -153,8 +153,28 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
   - The out-of-the-box mean prediction is 0.260 (test; actual 0.221).
   - The base-rate sentence barely moves it (0.253). By comparison, it moves Jev 0.48 → 0.38, Kev-4B 0.49 → 0.20 and Qwen 0.36 → 0.25.
 - **Two readings this probe can't separate:** either Sol already uses the rate it knows, or it ignores the sentence.
-- **How to separate them (not run):** score Sol on summaries with the identifying cues (currency, dates) removed.
+- **The disguise check tried to separate them and couldn't** (next section): Sol recognizes the dataset even without the cues.
 - **For the write-up:** Sol's out-of-the-box calibration has to be read as "a model that recognizes this dataset and knows its default rate", not as zero-shot honesty. Its ranking (AUC) is less affected: knowing the overall rate doesn't rank individual customers, and the leaked rows don't change its AUC.
+
+### 4. Disguise check (`runners/checks/sol_disguise.py`, recognition step done 2026-11-23)
+
+**Idea:** remove the cues Sol cited, then compare its out-of-the-box predictions with the original run on the same test customers. If recognition drives its calibration, the disguised run should be worse calibrated.
+
+**Disguise d1:** the rest of the summary is unchanged.
+- **Currency:** "NT$" is dropped, plus one line: "Amounts are in local currency units."
+- **Months:** "Sep 2005"…"Apr 2005" become "Month 6"…"Month 1".
+- **Repayment codes:** raw numbers removed. Codes −2 and 0 stay distinct as "not late (type A)" and "(type B)".
+- **Real context goes too:** this also removes Taiwan and 2005, so any change would measure recognition and context together.
+
+**First step, does the disguise hide the dataset? No.**
+- **Probe:** the recognition question on the same 50 random test customers as the original probe, disguised. Cost $0.07. Results are in `results/checks/sol_disguise_recognition.json`.
+- **Result:** Sol still named the dataset for 50 of 50, at 99% confidence, and gave the rate as 22.12% every time.
+- **What it cites now:** the structure itself: "six months of bill amounts, payments, and repayment status".
+
+**What follows:**
+- **No faithful disguise works:** any faithful rendering of this data has that structure, so any disguise that keeps the information intact won't stop recognition. One that changes the structure (fewer months, aggregated amounts) would also change the information, and the comparison would no longer be clean.
+- **The full run wasn't done:** the 2,000-customer disguised run (about $1.50) can't measure what recognition contributes, since Sol still recognizes the data. It would only show whether the surface cues change its numbers. The script can still run it (`--workers 4`, then `--report`).
+- **For the write-up:** Sol identifies this dataset from the bare structure of a six-month credit-card history, not just from its currency or dates.
 
 ## What the write-up will say
 

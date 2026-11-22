@@ -1,0 +1,98 @@
+[
+  {
+    "model_version": "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e); control: original summaries",
+    "started": "2026-11-22T22:58:41Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 595.58.03",
+      "packages": {
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "server_models": {
+      "models": [
+        {
+          "name": "kev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving jaredpalmer/kev-0.8b@788ddbdd65715bb03a56788c822f6c632c9a551d at temperature 2.35",
+          "release_date": "2026-10-01",
+          "run": "jaredpalmer/kev-0.8b@788ddbdd65715bb03a56788c822f6c632c9a551d",
+          "base": "Qwen/Qwen3.5-0.8B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch",
+          "dtype": "bfloat16",
+          "temperature": 2.3510958125672174,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 4,
+            "kept": 4,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 2000,
+            "cached_states": 4,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 2000,
+            "requests": 2000,
+            "queued": 0
+          }
+        },
+        {
+          "name": "jev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving jaredpalmer/kev-0.8b@788ddbdd65715bb03a56788c822f6c632c9a551d at temperature 2.35",
+          "release_date": "2026-10-01",
+          "run": "jaredpalmer/kev-0.8b@788ddbdd65715bb03a56788c822f6c632c9a551d",
+          "base": "Qwen/Qwen3.5-0.8B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch",
+          "dtype": "bfloat16",
+          "temperature": 2.3510958125672174,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 4,
+            "kept": 4,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 2000,
+            "cached_states": 4,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 2000,
+            "requests": 2000,
+            "queued": 0
+          }
+        }
+      ]
+    },
+    "base_url": "http://127.0.0.1:8009",
+    "usd_per_hour": 0.44,
+    "check": "control",
+    "disguise": null
+  }
+]

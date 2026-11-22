@@ -1,0 +1,52 @@
+[
+  {
+    "model_version": "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20; disguise d1",
+    "started": "2026-11-22T23:03:02Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 595.58.03",
+      "packages": {
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "server_model": {
+      "id": "qwen3.5-4b",
+      "object": "model",
+      "created": 1795388582,
+      "owned_by": "vllm",
+      "root": "Qwen/Qwen3.5-4B",
+      "parent": null,
+      "max_model_len": 16384,
+      "permission": [
+        {
+          "id": "modelperm-8d763033cc08377d",
+          "object": "model_permission",
+          "created": 1795388582,
+          "allow_create_engine": false,
+          "allow_sampling": true,
+          "allow_logprobs": true,
+          "allow_search_indices": false,
+          "allow_view": true,
+          "allow_fine_tuning": false,
+          "organization": "*",
+          "group": null,
+          "is_blocking": false
+        }
+      ]
+    },
+    "base_url": "http://127.0.0.1:8000/v1",
+    "jevper": "0.7.12",
+    "usd_per_hour": 0.44,
+    "check": "disguised",
+    "disguise": "d1"
+  }
+]

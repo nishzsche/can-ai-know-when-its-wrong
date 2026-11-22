@@ -17,7 +17,11 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
     - **If the PC restarted:** `Start-ScheduledTask -TaskName can-ai-sol-run`, which resumes. If the scratchpad was cleaned, run the four `runners/frontier_verbal.py --workers 4 --split <test|tune> --condition <out_of_box|base_rate>` commands in that order instead.
     - **When done:** check with `runners/manifest.py`, commit the Sol files, then `Unregister-ScheduledTask -TaskName can-ai-sol-run -Confirm:$false`.
   - **Sol's rate limit:** OpenRouter caps new accounts at **20 requests/minute** for this model (the first attempt stopped on a 429 after 20 records). The runner now paces requests at 18/min (`--rpm`), retries 429s with backoff, and keeps all waiting out of the recorded latency (it's in raw as `waited_for_rate_limit_s`). At that pace the 8,000 requests take ~7.5 h. It runs the essential parts first: out-of-box test, then out-of-box tune, base-rate test, base-rate tune. If OpenRouter lifts the cap, re-run with a higher `--rpm`; the run resumes.
-- **GPU runs (L4): to do.** Follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md) section 3 (Laya, Qwen, Kev-4B, Kev-0.8B), then section 4.
+- **GPU runs (L4): done (2026-11-22, 09:46–10:36Z).** Laya, Qwen3.5-4B, Kev-4B and Kev-0.8B, 8,000 records each, committed with their raw responses. They ran one model at a time with sequential requests, so latencies aren't inflated by batching. Median latency: Laya 16 ms, Kev-0.8B 39 ms, Kev-4B 139 ms, Qwen 142 ms. Amortized GPU cost $0.02–0.16 per contestant.
+  - No probabilities were exactly 0 or 1 in any run. Kev ran without flash-linear-attention.
+  - The Qwen raw file is 64 MB (full prompt plus top-20 logprobs per request); GitHub warns above 50 MB.
+  - **The L4 can be paused, then deleted** once M4's metrics confirm nothing needs re-running (storage bills while paused).
+  - `results/run_manifest.json` is partial (`complete: false`) until Sol finishes.
 - **Done when:** `uv run --group runners python runners/manifest.py` passes without `--allow-incomplete`, meaning all eight contestants are complete, and `results/run_manifest.json` is committed.
 
 **M2 is done (2026-11-22).** Baselines are scored on test, and all six AI runners passed their 20-customer smoke tests.

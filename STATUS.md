@@ -34,7 +34,7 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **GPU runs (L4): done (2026-11-22, 09:46–10:36Z).** Laya, Qwen3.5-4B, Kev-4B and Kev-0.8B, 8,000 records each, committed with their raw responses. They ran one model at a time with sequential requests, so latencies aren't inflated by batching. Median latency: Laya 16 ms, Kev-0.8B 39 ms, Kev-4B 139 ms, Qwen 142 ms. Amortized GPU cost $0.02–0.16 per contestant.
   - No probabilities were exactly 0 or 1 in any run. Kev ran without flash-linear-attention.
   - The Qwen raw file is 64 MB (full prompt plus top-20 logprobs per request); GitHub warns above 50 MB.
-  - **The L4 can be paused, then deleted** once M4's metrics confirm nothing needs re-running (storage bills while paused).
+  - **The L4 is paused** (user, 2026-11-22 ~11:00Z). Delete it once M4's metrics confirm nothing needs re-running; storage bills while paused (~₹30/day). Revoke its `gh` token then too.
   - `results/run_manifest.json` is partial (`complete: false`) until Sol finishes.
 - **Done when:** `uv run --group runners python runners/manifest.py` passes without `--allow-incomplete`, meaning all eight contestants are complete, and `results/run_manifest.json` is committed.
 

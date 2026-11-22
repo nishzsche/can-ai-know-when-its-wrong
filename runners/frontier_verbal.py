@@ -11,6 +11,8 @@ every other AI contestant, plus one fixed line asking for a probability from 0 t
   later change of default can't silently change the contestant.
 - Sampling: Sol accepts no temperature; `seed` is fixed for best-effort repeatability.
 - Cost: OpenRouter reports each request's real cost in `usage.cost`; that's what we record.
+- Rate limit: new OpenRouter accounts get 20 requests/minute for Sol, so requests are paced
+  (--rpm, default 18). Waits are kept out of the recorded latency.
 - Needs OPENROUTER_API_KEY (environment, or the git-ignored .env).
 """
 
@@ -24,6 +26,7 @@ import time
 from harness import (
     Prediction,
     PredictionFailed,
+    RateLimiter,
     build_parser,
     http_client,
     resolve_args,
@@ -35,6 +38,10 @@ REASONING_EFFORT = "medium"  # Sol's default_effort in OpenRouter's model metada
 SEED = 0
 PROMPT_VERSION = "v1"
 BASE_URL = "https://openrouter.ai/api/v1"
+# OpenRouter caps new accounts at 20 requests/minute for this model (429 seen 2026-11-22);
+# 18 leaves headroom. Raise it with --rpm if the cap is lifted.
+DEFAULT_RPM = 18.0
+MAX_TRANSIENT_RETRIES = 10
 ANSWER_LINE = (
     "Answer with the probability, from 0 to 100, that this customer misses next month's "
     'payment. Reply as JSON: {"probability": <number>}'
@@ -70,22 +77,59 @@ def parse_probability(content: str | None) -> float:
 class FrontierVerbalPredictor:
     contestant = "frontier-verbal"
 
-    def __init__(self, base_url: str = BASE_URL, api_key: str | None = None, retries: int = 2):
+    def __init__(
+        self,
+        base_url: str = BASE_URL,
+        api_key: str | None = None,
+        retries: int = 2,
+        rpm: float | None = DEFAULT_RPM,
+        backoff_s: float = 30.0,
+    ):
         from openai import OpenAI
 
         key = api_key or os.environ.get("OPENROUTER_API_KEY")
         if not key:
             raise SystemExit("Set OPENROUTER_API_KEY (environment or the git-ignored .env).")
+        # The client doesn't retry by itself: its backoff would happen inside the timed call and
+        # be recorded as Sol's latency. _call() retries instead, outside the timer.
         self.client = OpenAI(
-            base_url=base_url, api_key=key, max_retries=5, timeout=300,
+            base_url=base_url, api_key=key, max_retries=0, timeout=300,
             http_client=http_client(timeout=300),  # kept alive, IPv4 (see harness.http_client)
         )  # fmt: skip
         self.retries = retries
+        self.limiter = RateLimiter(rpm)
+        self.backoff_s = backoff_s
         # OpenRouter serves Sol without a dated snapshot; every record's `ts` carries the date.
         self.model_version = f"{MODEL} (effort {REASONING_EFFORT}; prompt {PROMPT_VERSION})"
         self.meta = {"model": MODEL, "reasoning_effort": REASONING_EFFORT, "seed": SEED,
                      "prompt_version": PROMPT_VERSION, "answer_line": ANSWER_LINE,
-                     "base_url": base_url}  # fmt: skip
+                     "base_url": base_url, "requests_per_minute_cap": rpm}  # fmt: skip
+
+    def _call(self, prompt: str):
+        """One successful API call and its own duration in ms.
+
+        Waits for the rate limiter, and on 429s, timeouts, connection errors or 5xx waits and
+        tries again. None of that waiting is inside the timed call.
+        """
+        import openai
+
+        transient = (openai.RateLimitError, openai.APIConnectionError, openai.APITimeoutError,
+                     openai.InternalServerError)  # fmt: skip
+        waited = 0
+        for attempt in range(MAX_TRANSIENT_RETRIES + 1):
+            self.limiter.wait()
+            start = time.perf_counter()
+            try:
+                resp = self._ask(prompt)
+            except transient:
+                if attempt == MAX_TRANSIENT_RETRIES:
+                    raise
+                pause = min(self.backoff_s * (attempt + 1), 300)
+                waited += pause
+                time.sleep(pause)
+                continue
+            return resp, (time.perf_counter() - start) * 1000, waited
+        raise AssertionError("unreachable")
 
     def _ask(self, prompt: str):
         return self.client.chat.completions.create(
@@ -101,9 +145,9 @@ class FrontierVerbalPredictor:
 
     def predict(self, request: dict) -> Prediction:
         prompt = build_prompt(request)
-        attempts, total_cost, start = [], 0.0, time.perf_counter()
+        attempts, total_cost = [], 0.0
         for _ in range(self.retries + 1):
-            resp = self._ask(prompt)
+            resp, call_ms, waited_s = self._call(prompt)
             body = resp.model_dump(mode="json")
             usage = body.get("usage") or {}
             total_cost += float(usage.get("cost") or 0.0)
@@ -115,6 +159,8 @@ class FrontierVerbalPredictor:
                 "finish_reason": choice.get("finish_reason"),
                 "content": content,
                 "usage": usage,
+                "call_ms": round(call_ms, 1),
+                "waited_for_rate_limit_s": waited_s,
             }
             attempts.append(raw)
             try:
@@ -122,10 +168,11 @@ class FrontierVerbalPredictor:
             except (ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
                 raw["error"] = str(exc)
                 continue
-            latency_ms = (time.perf_counter() - start) * 1000
             return Prediction(
                 p_default=p,
-                latency_ms=latency_ms,
+                # The model's own response time for the answer we use. Rate-limit waits and
+                # backoffs come from our account tier, not from Sol, so they're left out.
+                latency_ms=call_ms,
                 cost_usd=total_cost,  # includes any retried attempts: the real spend
                 raw={"attempts": attempts},
             )
@@ -135,11 +182,13 @@ class FrontierVerbalPredictor:
 
 
 def main() -> None:
-    args = resolve_args(build_parser(__doc__).parse_args())
+    ap = build_parser(__doc__)
+    ap.add_argument("--rpm", type=float, default=DEFAULT_RPM, help="requests-per-minute cap")
+    args = resolve_args(ap.parse_args())
     from env import load_env
 
     load_env()
-    run(FrontierVerbalPredictor(), args)
+    run(FrontierVerbalPredictor(rpm=args.rpm), args)
 
 
 if __name__ == "__main__":

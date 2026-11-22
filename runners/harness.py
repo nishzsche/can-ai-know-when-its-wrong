@@ -64,6 +64,25 @@ class Predictor(Protocol):
     def predict(self, request: dict) -> Prediction: ...
 
 
+class RateLimiter:
+    """Spaces request starts so a run stays under a requests-per-minute cap (thread-safe)."""
+
+    def __init__(self, per_minute: float | None):
+        import threading
+
+        self.interval = 60.0 / per_minute if per_minute else 0.0
+        self._lock = threading.Lock()
+        self._next = 0.0
+
+    def wait(self) -> None:
+        if not self.interval:
+            return
+        with self._lock:
+            start = max(time.monotonic(), self._next)
+            self._next = start + self.interval
+        time.sleep(max(0.0, start - time.monotonic()))
+
+
 def http_client(timeout: float = 300):
     """One kept-alive HTTP client that connects over IPv4 only.
 

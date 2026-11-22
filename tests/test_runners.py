@@ -245,6 +245,15 @@ def _fake_openrouter(contents):
             assert req["reasoning"] == {"effort": "medium"} and req["seed"] == 0
             assert req["response_format"]["json_schema"]["strict"] is True
             prompts.append(req["messages"][0]["content"])
+            if queue and queue[0] == "RATE_LIMIT":
+                queue.pop(0)
+                body = json.dumps({"error": {"code": 429, "message": "Rate limit exceeded"}})
+                self.send_response(429)
+                self.send_header("content-type", "application/json")
+                self.send_header("content-length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body.encode())
+                return
             body = json.dumps({
                 "id": "gen-1", "object": "chat.completion", "created": 0,
                 "model": "openai/gpt-6.2-sol", "provider": "OpenAI",
@@ -268,7 +277,34 @@ def _verbal(server, retries=2):
     import frontier_verbal as fv
 
     url = f"http://127.0.0.1:{server.server_port}"
-    return fv, fv.FrontierVerbalPredictor(base_url=url, api_key="test-key", retries=retries)
+    pred = fv.FrontierVerbalPredictor(
+        base_url=url, api_key="test-key", retries=retries, rpm=None, backoff_s=0.05
+    )
+    return fv, pred
+
+
+def test_frontier_waits_out_a_rate_limit_without_counting_it_as_latency():
+    server, prompts = _fake_openrouter(["RATE_LIMIT", "RATE_LIMIT", '{"probability": 12}'])
+    try:
+        _, pred = _verbal(server)
+        pred.backoff_s = 0.5  # 0.5 s, then 1.0 s of waiting before the call that succeeds
+        out = pred.predict(harness.load_requests("tune", 1)[0]["requests"]["out_of_box"])
+        assert out.p_default == pytest.approx(0.12) and len(prompts) == 3
+        assert out.raw["attempts"][-1]["waited_for_rate_limit_s"] == pytest.approx(1.5)
+        assert out.latency_ms < 1000  # the 1.5 s of waiting isn't Sol's latency
+    finally:
+        server.shutdown()
+
+
+def test_rate_limiter_spaces_request_starts():
+    import time as _time
+
+    limiter = harness.RateLimiter(per_minute=600)  # one start every 0.1 s
+    t0 = _time.monotonic()
+    for _ in range(4):
+        limiter.wait()
+    assert _time.monotonic() - t0 >= 0.29
+    assert harness.RateLimiter(None).interval == 0
 
 
 def test_frontier_prompt_is_the_shared_request_plus_one_answer_line():

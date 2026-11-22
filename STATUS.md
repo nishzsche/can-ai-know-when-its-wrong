@@ -27,18 +27,14 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
   - **Recognition** (`data/recognition.py`, $0.07): Sol named the dataset for 53 of 53 summaries at 99% confidence and gave its exact default rate (22.12%) every time.
   - **For the write-up:** its out-of-the-box calibration must be read as that of a model that knows the population, not zero-shot honesty.
   - **Disguise check** (`runners/checks/disguise.py`, user asked 2026-11-23): removing NT$, the 2005 months and the raw repayment codes doesn't hide the dataset. Sol still named it for 50 of 50 disguised summaries (22.12%, 99% confidence), now citing the six-month bill/payment/status structure itself.
-    - **GPU contestants (L4 step 5, 2026-11-22 22:35–23:10Z, about $0.08 of GPU time):** 2,000 disguised test customers each, plus a 200-customer control on the original summaries. Kev and Qwen controls reproduce exactly or nearly (|change| 0.000–0.005), so every shift below is real.
-      - **Kev-4B:** mean p 0.486 → 0.502, ECE 0.267 → 0.283, **AUC 0.594 → 0.651**, rank correlation 0.91. Its ranking gets *better* without the cues.
-      - **Kev-0.8B:** mean p 0.305 → 0.292, ECE 0.090 → 0.084, AUC 0.750 → 0.747. Slightly better calibrated when disguised.
-      - **Qwen:** mean p 0.355 → 0.389, ECE 0.140 → 0.171, AUC 0.744 → 0.738, rank correlation 0.80.
-      - **Jev** (laptop, for comparison): mean p +0.041, ECE 0.265 → 0.308.
-    - **Layout check on the GPU contestants** (`--variant aligned --split tune`, L4 2026-11-22 23:10–23:31Z, about $0.09): each bill shown next to the payment made the following month, 2,000 tune customers, numbers unchanged. No control on tune, but Kev's and Qwen's test controls reproduced to within 0.005.
-      - **Kev-4B changes a lot:** mean p 0.488 → 0.357, **ECE 0.268 → 0.147, AUC 0.594 → 0.711**. For "paid on time (code -1)" customers (actual 0.18) it goes 0.37 → 0.24. Template v2's same-month layout seems to read as underpayment to it.
-      - **Laya goes the other way:** mean p 0.206 → 0.265, ECE 0.045 → 0.067, AUC 0.638 → 0.581.
-      - **Kev-0.8B and Qwen:** essentially unchanged (shift −0.003 and −0.002; AUC −0.003 and −0.011).
-      - **Fairness flag for the author:** under the "never disadvantage the AI contestants" rule, the v2 layout costs Kev-4B a lot and helps Laya. No template change made; that's the author's call, and any change would mean re-running every AI contestant on test.
-      - **Laya and Sol's disguised runs are not in git** (the report lists only the four above). If they ran on the laptop, commit them from there.
-    - **Full run stopped:** the 2,000-customer disguised run (~$1.50) was stopped before spending, since it can't isolate recognition. It can still be run with `--workers 4`, then `--report`.
+    - **Prediction run, every AI contestant (2026-11-23):** 2,000 disguised test customers each, plus a 200-customer control on the original summaries. Mean shifts: Jev +4.1, Qwen +3.4, Kev-4B +1.5, Sol +0.8, Kev-0.8B −1.3, Laya −4.8 points (noise ≤ 0.3; Kev and Qwen reproduce exactly or nearly). Kev-4B ranks *better* disguised (AUC 0.594 → 0.651). No era effect; wording sensitivity. Details are in `data/contamination.md` §4.
+    - **Layout check (`--variant aligned`, tune and test, 2026-11-23):** each bill shown beside the payment made the following month, for the template-v2 tilt the review panel flagged. The author chose to run it on test for every AI contestant and report it next to v2 (headlines stay v2). Test results:
+      - **Kev-4B changes a lot:** mean p 0.486 → 0.356, ECE 0.267 → 0.135, AUC 0.594 → 0.720; code 0 customers 0.54 → 0.36 (actual 0.12). v2 put it at a real disadvantage.
+      - **Laya goes the other way:** mean p +6.0 points, ECE 0.052 → 0.060, AUC 0.666 → 0.569.
+      - **Jev, Qwen, Kev-0.8B:** mean within 0.3 points; AUC 0.712 → 0.692, 0.744 → 0.715, 0.750 → 0.743. v2 suited them slightly better.
+      - **Sol:** running on the laptop, slowed by upstream 429s (OpenAI/Azure); report on the customers done, with n.
+      - Tune results match test closely. `results/checks/disguise_summary.json` has both.
+  - **Review panel (2026-11-23):** four reviewers plus an advisor scored the work 6.5/10 as written and about 8 after fixes. The must-fixes are applied to the blog, carousel, X post and README. `analysis/robustness.py` holds the extra statistics.
   - **False-base-rate check** (`runners/checks/sol_false_rate.py`, user asked 2026-11-23, $0.46): 500 test customers, the base-rate sentence saying 10.0% instead of 22.1%.
     - **Sol follows it:** mean 0.258 → 0.175, a pass-through of 0.69 [0.64, 0.73]. 98% of customers went lower, and AUC was unchanged.
     - **So:** it listens to stated rates, and the true sentence barely moved it because its own estimate was already near 22%. Most likely that's from knowing this dataset.

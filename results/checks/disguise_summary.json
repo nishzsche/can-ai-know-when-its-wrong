@@ -21,7 +21,7 @@
         "original": 0.7116052602536028,
         "disguised": 0.7062954884728652
       },
-      "spearman": 0.9480926265231566,
+      "spearman": 0.9485171551292888,
       "cost_usd": 0.038724756,
       "control": {
         "n": 200,
@@ -29,6 +29,68 @@
         "noise_mean_abs_change": 0.018,
         "disguise_mean_shift_same_customers": 0.04195,
         "disguise_mean_abs_change_same_customers": 0.05184999999999999
+      }
+    },
+    "laya": {
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.20422595,
+        "disguised": 0.15587920000000002
+      },
+      "mean_shift": {
+        "estimate": -0.04834675,
+        "lo": -0.054269591250000006,
+        "hi": -0.042336218749999995
+      },
+      "mean_abs_change": 0.09749285,
+      "ece": {
+        "original": 0.05245085,
+        "disguised": 0.08058509999999999
+      },
+      "auc": {
+        "original": 0.6662496587456944,
+        "disguised": 0.6253310892837435
+      },
+      "spearman": 0.6299385824846455,
+      "cost_usd": 0.0,
+      "control": {
+        "n": 200,
+        "noise_mean_shift": 0.0009599999999999997,
+        "noise_mean_abs_change": 0.0049089999999999984,
+        "disguise_mean_shift_same_customers": -0.03825049999999999,
+        "disguise_mean_abs_change_same_customers": 0.10081150000000001
+      }
+    },
+    "frontier-verbal": {
+      "n": 2000,
+      "observed_rate": 0.221,
+      "mean_predicted": {
+        "original": 0.26004,
+        "disguised": 0.267615
+      },
+      "mean_shift": {
+        "estimate": 0.007574999999999999,
+        "lo": 0.005644875,
+        "hi": 0.009475375
+      },
+      "mean_abs_change": 0.030244999999999998,
+      "ece": {
+        "original": 0.05190000000000003,
+        "disguised": 0.06211499999999998
+      },
+      "auc": {
+        "original": 0.7536318170993094,
+        "disguised": 0.7440171585569154
+      },
+      "spearman": 0.940542383635596,
+      "cost_usd": 1.502164,
+      "control": {
+        "n": 200,
+        "noise_mean_shift": 0.00029999999999999943,
+        "noise_mean_abs_change": 0.024900000000000002,
+        "disguise_mean_shift_same_customers": 0.006699999999999999,
+        "disguise_mean_abs_change_same_customers": 0.029500000000000002
       }
     },
     "kev-4b": {
@@ -52,7 +114,7 @@
         "original": 0.5935145708327767,
         "disguised": 0.6511255583501299
       },
-      "spearman": 0.9062649090662274,
+      "spearman": 0.9062541930635483,
       "cost_usd": 0.031047560468605823,
       "control": {
         "n": 200,
@@ -83,7 +145,7 @@
         "original": 0.7501945875614984,
         "disguised": 0.7473244210293972
       },
-      "spearman": 0.8896897474224368,
+      "spearman": 0.8897095204273802,
       "cost_usd": 0.00864600984002981,
       "control": {
         "n": 200,
@@ -114,7 +176,7 @@
         "original": 0.7443874557821548,
         "disguised": 0.7384096968500049
       },
-      "spearman": 0.799968571992143,
+      "spearman": 0.7999709809927453,
       "cost_usd": 0.03579838477246877,
       "control": {
         "n": 200,
@@ -126,181 +188,537 @@
     }
   },
   "aligned_layout": {
-    "laya": {
-      "split": "tune",
-      "n": 2000,
-      "observed_rate": 0.221,
-      "mean_predicted": {
-        "original": 0.2059373,
-        "aligned": 0.2648089
-      },
-      "mean_shift": {
-        "estimate": 0.058871599999999996,
-        "lo": 0.050310278750000006,
-        "hi": 0.06623759624999999
-      },
-      "mean_abs_change": 0.1302821,
-      "ece": {
-        "original": 0.0453837,
-        "aligned": 0.0666779
-      },
-      "auc": {
-        "original": 0.638409842064603,
-        "aligned": 0.5812337722686586
-      },
-      "by_status": {
-        "not late (code -2)": {
-          "n": 171,
-          "actual": 0.14035087719298245,
-          "original": 0.19421754385964912,
-          "aligned": 0.21976549707602341
+    "tune": {
+      "jev": {
+        "split": "tune",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.482115,
+          "aligned": 0.483525
         },
-        "paid on time (code -1)": {
-          "n": 389,
-          "actual": 0.17994858611825193,
-          "original": 0.12593161953727505,
-          "aligned": 0.2345241645244216
+        "mean_shift": {
+          "estimate": 0.0014099999999999985,
+          "lo": -0.002765125000000001,
+          "hi": 0.005760249999999997
         },
-        "not late (code 0)": {
-          "n": 977,
-          "actual": 0.12589559877175024,
-          "original": 0.20051750255885362,
-          "aligned": 0.2811346980552712
-        }
+        "mean_abs_change": 0.07640000000000001,
+        "ece": {
+          "original": 0.269965,
+          "aligned": 0.2803050000000001
+        },
+        "auc": {
+          "original": 0.6915474938864654,
+          "aligned": 0.6823503273137042
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 171,
+            "actual": 0.14035087719298245,
+            "original": 0.2537426900584796,
+            "aligned": 0.14590643274853804
+          },
+          "paid on time (code -1)": {
+            "n": 389,
+            "actual": 0.17994858611825193,
+            "original": 0.30074550128534705,
+            "aligned": 0.21125964010282777
+          },
+          "not late (code 0)": {
+            "n": 977,
+            "actual": 0.12589559877175024,
+            "original": 0.5052610030706244,
+            "aligned": 0.5614431934493347
+          }
+        },
+        "cost_usd": 0.047784702
       },
-      "cost_usd": 0.004514315399237805
+      "laya": {
+        "split": "tune",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.2059373,
+          "aligned": 0.2648089
+        },
+        "mean_shift": {
+          "estimate": 0.058871599999999996,
+          "lo": 0.050310278750000006,
+          "hi": 0.06623759624999999
+        },
+        "mean_abs_change": 0.1302821,
+        "ece": {
+          "original": 0.0453837,
+          "aligned": 0.0666779
+        },
+        "auc": {
+          "original": 0.638409842064603,
+          "aligned": 0.5812337722686586
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 171,
+            "actual": 0.14035087719298245,
+            "original": 0.19421754385964912,
+            "aligned": 0.21976549707602341
+          },
+          "paid on time (code -1)": {
+            "n": 389,
+            "actual": 0.17994858611825193,
+            "original": 0.12593161953727505,
+            "aligned": 0.2345241645244216
+          },
+          "not late (code 0)": {
+            "n": 977,
+            "actual": 0.12589559877175024,
+            "original": 0.20051750255885362,
+            "aligned": 0.2811346980552712
+          }
+        },
+        "cost_usd": 0.004514315399237805
+      },
+      "frontier-verbal": {
+        "split": "tune",
+        "n": 60,
+        "observed_rate": 0.15,
+        "mean_predicted": {
+          "original": 0.27783333333333343,
+          "aligned": 0.26933333333333326
+        },
+        "mean_shift": {
+          "estimate": -0.0085,
+          "lo": -0.018333333333333333,
+          "hi": 0.002333333333333334
+        },
+        "mean_abs_change": 0.028500000000000004,
+        "ece": {
+          "original": 0.19916666666666666,
+          "aligned": 0.156
+        },
+        "auc": {
+          "original": 0.7298474945533769,
+          "aligned": 0.724400871459695
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 3,
+            "actual": 0.3333333333333333,
+            "original": 0.18000000000000002,
+            "aligned": 0.16
+          },
+          "paid on time (code -1)": {
+            "n": 15,
+            "actual": 0.13333333333333333,
+            "original": 0.18533333333333335,
+            "aligned": 0.15866666666666662
+          },
+          "not late (code 0)": {
+            "n": 28,
+            "actual": 0.03571428571428571,
+            "original": 0.16928571428571426,
+            "aligned": 0.17214285714285718
+          }
+        },
+        "cost_usd": 0.052762
+      },
+      "kev-4b": {
+        "split": "tune",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.48793965,
+          "aligned": 0.3566087
+        },
+        "mean_shift": {
+          "estimate": -0.13133095,
+          "lo": -0.135831945,
+          "hi": -0.12679907875000002
+        },
+        "mean_abs_change": 0.13841865,
+        "ece": {
+          "original": 0.26765355,
+          "aligned": 0.1465459
+        },
+        "auc": {
+          "original": 0.5943575415749395,
+          "aligned": 0.7107521244895707
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 171,
+            "actual": 0.14035087719298245,
+            "original": 0.3409701754385965,
+            "aligned": 0.20647602339181284
+          },
+          "paid on time (code -1)": {
+            "n": 389,
+            "actual": 0.17994858611825193,
+            "original": 0.3667017994858612,
+            "aligned": 0.23661131105398456
+          },
+          "not late (code 0)": {
+            "n": 977,
+            "actual": 0.12589559877175024,
+            "original": 0.5383725690890481,
+            "aligned": 0.3595704196519959
+          }
+        },
+        "cost_usd": 0.037164696029325324
+      },
+      "kev-0.8b": {
+        "split": "tune",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.30800585,
+          "aligned": 0.3048435
+        },
+        "mean_shift": {
+          "estimate": -0.00316235,
+          "lo": -0.0054338287499999995,
+          "hi": -0.0011269275000000006
+        },
+        "mean_abs_change": 0.03917955000000001,
+        "ece": {
+          "original": 0.09040715000000003,
+          "aligned": 0.09592370000000003
+        },
+        "auc": {
+          "original": 0.7181116003229573,
+          "aligned": 0.714866054054682
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 171,
+            "actual": 0.14035087719298245,
+            "original": 0.21287426900584794,
+            "aligned": 0.22653216374269003
+          },
+          "paid on time (code -1)": {
+            "n": 389,
+            "actual": 0.17994858611825193,
+            "original": 0.2610223650385604,
+            "aligned": 0.26451748071979436
+          },
+          "not late (code 0)": {
+            "n": 977,
+            "actual": 0.12589559877175024,
+            "original": 0.24408341862845442,
+            "aligned": 0.27038290685772776
+          }
+        },
+        "cost_usd": 0.01085555026119368
+      },
+      "qwen-logprobs": {
+        "split": "tune",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.3572609584823039,
+          "aligned": 0.35534780275228833
+        },
+        "mean_shift": {
+          "estimate": -0.0019131557300155592,
+          "lo": -0.005930237565393638,
+          "hi": 0.002254734603592769
+        },
+        "mean_abs_change": 0.07288839385658483,
+        "ece": {
+          "original": 0.13691032973587552,
+          "aligned": 0.14178038186884886
+        },
+        "auc": {
+          "original": 0.7081251924093426,
+          "aligned": 0.6970322492579534
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 171,
+            "actual": 0.14035087719298245,
+            "original": 0.24992602440408856,
+            "aligned": 0.23001170203957724
+          },
+          "paid on time (code -1)": {
+            "n": 389,
+            "actual": 0.17994858611825193,
+            "original": 0.28521658706569736,
+            "aligned": 0.29056436310246964
+          },
+          "not late (code 0)": {
+            "n": 977,
+            "actual": 0.12589559877175024,
+            "original": 0.3069156304961542,
+            "aligned": 0.3264604157757638
+          }
+        },
+        "cost_usd": 0.0409190923490458
+      }
     },
-    "kev-4b": {
-      "split": "tune",
-      "n": 2000,
-      "observed_rate": 0.221,
-      "mean_predicted": {
-        "original": 0.48793965,
-        "aligned": 0.3566087
-      },
-      "mean_shift": {
-        "estimate": -0.13133095,
-        "lo": -0.135831945,
-        "hi": -0.12679907875000002
-      },
-      "mean_abs_change": 0.13841865,
-      "ece": {
-        "original": 0.26765355,
-        "aligned": 0.1465459
-      },
-      "auc": {
-        "original": 0.5943575415749395,
-        "aligned": 0.7107521244895707
-      },
-      "by_status": {
-        "not late (code -2)": {
-          "n": 171,
-          "actual": 0.14035087719298245,
-          "original": 0.3409701754385965,
-          "aligned": 0.20647602339181284
+    "test": {
+      "jev": {
+        "split": "test",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.481045,
+          "aligned": 0.483335
         },
-        "paid on time (code -1)": {
-          "n": 389,
-          "actual": 0.17994858611825193,
-          "original": 0.3667017994858612,
-          "aligned": 0.23661131105398456
+        "mean_shift": {
+          "estimate": 0.0022899999999999995,
+          "lo": -0.002450500000000001,
+          "hi": 0.0061899999999999985
         },
-        "not late (code 0)": {
-          "n": 977,
-          "actual": 0.12589559877175024,
-          "original": 0.5383725690890481,
-          "aligned": 0.3595704196519959
-        }
-      },
-      "cost_usd": 0.037164696029325324
-    },
-    "kev-0.8b": {
-      "split": "tune",
-      "n": 2000,
-      "observed_rate": 0.221,
-      "mean_predicted": {
-        "original": 0.30800585,
-        "aligned": 0.3048435
-      },
-      "mean_shift": {
-        "estimate": -0.00316235,
-        "lo": -0.0054338287499999995,
-        "hi": -0.0011269275000000006
-      },
-      "mean_abs_change": 0.03917955000000001,
-      "ece": {
-        "original": 0.09040715000000003,
-        "aligned": 0.09592370000000003
-      },
-      "auc": {
-        "original": 0.7181116003229573,
-        "aligned": 0.714866054054682
-      },
-      "by_status": {
-        "not late (code -2)": {
-          "n": 171,
-          "actual": 0.14035087719298245,
-          "original": 0.21287426900584794,
-          "aligned": 0.22653216374269003
+        "mean_abs_change": 0.07526999999999999,
+        "ece": {
+          "original": 0.264745,
+          "aligned": 0.26739500000000005
         },
-        "paid on time (code -1)": {
-          "n": 389,
-          "actual": 0.17994858611825193,
-          "original": 0.2610223650385604,
-          "aligned": 0.26451748071979436
+        "auc": {
+          "original": 0.7116052602536028,
+          "aligned": 0.6922830058260097
         },
-        "not late (code 0)": {
-          "n": 977,
-          "actual": 0.12589559877175024,
-          "original": 0.24408341862845442,
-          "aligned": 0.27038290685772776
-        }
-      },
-      "cost_usd": 0.01085555026119368
-    },
-    "qwen-logprobs": {
-      "split": "tune",
-      "n": 2000,
-      "observed_rate": 0.221,
-      "mean_predicted": {
-        "original": 0.3572609584823039,
-        "aligned": 0.35534780275228833
-      },
-      "mean_shift": {
-        "estimate": -0.0019131557300155592,
-        "lo": -0.005930237565393638,
-        "hi": 0.002254734603592769
-      },
-      "mean_abs_change": 0.07288839385658483,
-      "ece": {
-        "original": 0.13691032973587552,
-        "aligned": 0.14178038186884886
-      },
-      "auc": {
-        "original": 0.7081251924093426,
-        "aligned": 0.6970322492579534
-      },
-      "by_status": {
-        "not late (code -2)": {
-          "n": 171,
-          "actual": 0.14035087719298245,
-          "original": 0.24992602440408856,
-          "aligned": 0.23001170203957724
+        "by_status": {
+          "not late (code -2)": {
+            "n": 177,
+            "actual": 0.15254237288135594,
+            "original": 0.24423728813559326,
+            "aligned": 0.15774011299435028
+          },
+          "paid on time (code -1)": {
+            "n": 405,
+            "actual": 0.14320987654320988,
+            "original": 0.2974074074074074,
+            "aligned": 0.21101234567901236
+          },
+          "not late (code 0)": {
+            "n": 971,
+            "actual": 0.12255406797116375,
+            "original": 0.5092790937178167,
+            "aligned": 0.5630072090628219
+          }
         },
-        "paid on time (code -1)": {
-          "n": 389,
-          "actual": 0.17994858611825193,
-          "original": 0.28521658706569736,
-          "aligned": 0.29056436310246964
-        },
-        "not late (code 0)": {
-          "n": 977,
-          "actual": 0.12589559877175024,
-          "original": 0.3069156304961542,
-          "aligned": 0.3264604157757638
-        }
+        "cost_usd": 0.047838672
       },
-      "cost_usd": 0.0409190923490458
+      "laya": {
+        "split": "test",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.20422595,
+          "aligned": 0.26409065
+        },
+        "mean_shift": {
+          "estimate": 0.0598647,
+          "lo": 0.05180517375,
+          "hi": 0.0679357475
+        },
+        "mean_abs_change": 0.127911,
+        "ece": {
+          "original": 0.05245085,
+          "aligned": 0.05972144999999999
+        },
+        "auc": {
+          "original": 0.6662496587456944,
+          "aligned": 0.5694111257616505
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 177,
+            "actual": 0.15254237288135594,
+            "original": 0.18756101694915256,
+            "aligned": 0.21787175141242937
+          },
+          "paid on time (code -1)": {
+            "n": 405,
+            "actual": 0.14320987654320988,
+            "original": 0.12098246913580246,
+            "aligned": 0.2168283950617284
+          },
+          "not late (code 0)": {
+            "n": 971,
+            "actual": 0.12255406797116375,
+            "original": 0.1977546858908342,
+            "aligned": 0.2823604531410917
+          }
+        },
+        "cost_usd": 0.004456793079069919
+      },
+      "frontier-verbal": {
+        "split": "test",
+        "n": 14,
+        "observed_rate": 0.35714285714285715,
+        "mean_predicted": {
+          "original": 0.34285714285714286,
+          "aligned": 0.3321428571428572
+        },
+        "mean_shift": {
+          "estimate": -0.010714285714285706,
+          "lo": -0.02928571428571428,
+          "hi": 0.008589285714285707
+        },
+        "mean_abs_change": 0.033571428571428565,
+        "ece": {
+          "original": 0.18857142857142858,
+          "aligned": 0.33499999999999996
+        },
+        "auc": {
+          "original": 0.5777777777777777,
+          "aligned": 0.6444444444444445
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 2,
+            "actual": 0.5,
+            "original": 0.07,
+            "aligned": 0.045000000000000005
+          },
+          "paid on time (code -1)": {
+            "n": 1,
+            "actual": 0.0,
+            "original": 0.18,
+            "aligned": 0.12
+          },
+          "not late (code 0)": {
+            "n": 7,
+            "actual": 0.2857142857142857,
+            "original": 0.18285714285714286,
+            "aligned": 0.1957142857142857
+          }
+        },
+        "cost_usd": 0.011574
+      },
+      "kev-4b": {
+        "split": "test",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.48638675,
+          "aligned": 0.35577105
+        },
+        "mean_shift": {
+          "estimate": -0.1306157,
+          "lo": -0.1350005725,
+          "hi": -0.1260697025
+        },
+        "mean_abs_change": 0.1369171,
+        "ece": {
+          "original": 0.26653815,
+          "aligned": 0.13477104999999998
+        },
+        "auc": {
+          "original": 0.5935145708327767,
+          "aligned": 0.7202150337769155
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 177,
+            "actual": 0.15254237288135594,
+            "original": 0.33008248587570616,
+            "aligned": 0.2139841807909605
+          },
+          "paid on time (code -1)": {
+            "n": 405,
+            "actual": 0.14320987654320988,
+            "original": 0.3656733333333333,
+            "aligned": 0.23777234567901234
+          },
+          "not late (code 0)": {
+            "n": 971,
+            "actual": 0.12255406797116375,
+            "original": 0.5380907312049433,
+            "aligned": 0.35882564366632336
+          }
+        },
+        "cost_usd": 0.037852831776854064
+      },
+      "kev-0.8b": {
+        "split": "test",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.3054794,
+          "aligned": 0.30329195
+        },
+        "mean_shift": {
+          "estimate": -0.00218745,
+          "lo": -0.004259538750000001,
+          "hi": -0.00010370250000000005
+        },
+        "mean_abs_change": 0.03765535,
+        "ece": {
+          "original": 0.08965060000000001,
+          "aligned": 0.09836195
+        },
+        "auc": {
+          "original": 0.7501945875614984,
+          "aligned": 0.7426347155826881
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 177,
+            "actual": 0.15254237288135594,
+            "original": 0.22159378531073445,
+            "aligned": 0.23461581920903957
+          },
+          "paid on time (code -1)": {
+            "n": 405,
+            "actual": 0.14320987654320988,
+            "original": 0.2455022222222222,
+            "aligned": 0.2531254320987655
+          },
+          "not late (code 0)": {
+            "n": 971,
+            "actual": 0.12255406797116375,
+            "original": 0.24411565396498452,
+            "aligned": 0.2696316168898043
+          }
+        },
+        "cost_usd": 0.010872313475029337
+      },
+      "qwen-logprobs": {
+        "split": "test",
+        "n": 2000,
+        "observed_rate": 0.221,
+        "mean_predicted": {
+          "original": 0.35514813768119075,
+          "aligned": 0.35205135843231905
+        },
+        "mean_shift": {
+          "estimate": -0.00309677924887172,
+          "lo": -0.007375201254122672,
+          "hi": 0.0011533102202154629
+        },
+        "mean_abs_change": 0.07199747595133314,
+        "ece": {
+          "original": 0.14022663962409926,
+          "aligned": 0.14400403307666418
+        },
+        "auc": {
+          "original": 0.7443874557821548,
+          "aligned": 0.7146605753983236
+        },
+        "by_status": {
+          "not late (code -2)": {
+            "n": 177,
+            "actual": 0.15254237288135594,
+            "original": 0.24894107879225907,
+            "aligned": 0.2311073294589695
+          },
+          "paid on time (code -1)": {
+            "n": 405,
+            "actual": 0.14320987654320988,
+            "original": 0.2751426810178286,
+            "aligned": 0.2901263910392557
+          },
+          "not late (code 0)": {
+            "n": 971,
+            "actual": 0.12255406797116375,
+            "original": 0.3085252778734583,
+            "aligned": 0.3250506965213856
+          }
+        },
+        "cost_usd": 0.040428269860852094
+      }
     }
   }
 }

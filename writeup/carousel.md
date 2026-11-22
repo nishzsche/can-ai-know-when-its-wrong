@@ -14,11 +14,13 @@ Written for anyone, tech or not: every term is explained the first time it appea
 >
 > What I found:
 > → Most AI models said customers were riskier than they were. Two of them more than doubled it.
-> → They read the safest customers, people paying part of their bill on time, as the riskiest.
-> → One extra sentence, "about 22% of customers miss a payment", fixed most of it, and confused one model.
-> → The most "honest" AI had most likely seen this data before: it's a famous public dataset.
-> → A decades-old bank scorecard still sorted risky customers from safe ones best.
-> → Who looks honest depends on the bank: if half the customers missed payments, the order flips.
+> → Two of them treated some of the safest customers, people paying part of their bill on time, as coin flips.
+> → One extra sentence, "about 22% of customers miss a payment", helped four models, made no clear difference to one, and broke one.
+> → Simply shifting each AI's numbers to match that 22%, with no past outcomes needed, fixed most of the error for four of six.
+> → The closest AI already knew this famous public dataset and its default rate, so its score isn't a clean test.
+> → The trained models still sorted risky customers from safe ones best. For a simple approve-or-decline call, the best AI models did about as well.
+> → Who looks honest depends on the bank: if half the customers missed payments, the order changes.
+> → One model was partly misled by my table's layout: shown each payment beside the bill it pays, Kev-4B's average fell from 49% to 36%.
 >
 > I also wrote down my predictions before running anything. I got three of four wrong.
 >
@@ -50,7 +52,7 @@ Written for anyone, tech or not: every term is explained the first time it appea
 - 6 AI models, given no examples to learn from
 - 2 traditional bank models that learned from 20,000 past customers
 - No age, sex, marital status or education
-**Visual:** two columns of model names, each with a few words on what it is. AI: Jev (built for yes/no decisions), Kev-4B and Kev-0.8B (free, open-source), Laya (open-source, tiny), Qwen3.5-4B (free, general-purpose), GPT-6.2 Sol (ChatGPT's model). Traditional: Scorecard (banks' classic), Gradient boosting (today's standard).
+**Visual:** two columns of model names, each with a few words on what it is. AI: Jev (built for yes/no decisions), Kev-4B and Kev-0.8B (free, open-source), Laya (open-source, tiny), Qwen3.5-4B (free, general-purpose), GPT-6.2 Sol (OpenAI's chat model). Traditional: Scorecard (banks' classic), Gradient boosting (today's standard).
 
 ### 3. What "honest" looks like
 
@@ -66,32 +68,32 @@ Written for anyone, tech or not: every term is explained the first time it appea
 
 ### 5. Where it goes wrong
 
-**Headline:** They read the safest customers as the riskiest.
-**Body:** Half the customers pay part of their balance on time. Only 12% of them defaulted, the lowest of any group. Jev predicted 51% for them, Kev-4B 54%.
+**Headline:** Two models treated some of the safest customers as coin flips.
+**Body:** Half the customers pay part of their balance on time. Only 12% of them defaulted, about as few as those who pay in full. Jev predicted 51% for them, Kev-4B 54%. (Kev-4B said 36% when my table showed each payment beside the bill it pays.)
 **Visual:** bars: each model's average prediction for these customers, against the 12% who actually defaulted (`results/explain.json`).
 
 ### 6. The honesty arc
 
-**Headline:** One sentence fixes most of it.
-**Body:** Adding "About 22% of customers miss a payment" made 5 of 6 models more honest. Kev-4B went from 27 percentage points off, on average, to 3. It confused Kev-0.8B, which got worse.
+**Headline:** One sentence helps, but unpredictably.
+**Body:** Adding "About 22% of customers miss a payment" clearly helped four models: Kev-4B went from 27 percentage points off, on average, to 3. It made no clear difference to Laya and broke Kev-0.8B, from 9 points off to 27.
 **Visual:** `results/figures/2_honesty_arc.png`.
 
 ### 7. The twist
 
-**Headline:** The most "honest" model had most likely seen the answers.
-**Body:** These customers come from a famous public dataset. GPT-6.2 Sol recognised it 53 times out of 53 and knew its exact rate of missed payments: 22.12%. Told a false rate (10%), it moved 70% of the way there. It already knew the real one.
-**Visual:** three big numbers in a row: **53/53** recognised · **22.12%** recalled · **70%** followed a false hint.
+**Headline:** The closest model already knew this dataset.
+**Body:** These customers come from a famous public dataset. Asked which dataset a summary came from, GPT-6.2 Sol named it every time and knew its exact rate of missed payments. So its score isn't a clean test of judging customers from scratch.
+**Visual:** three big numbers: **53/53** named the dataset · **22.12%** default rate recalled · **26→18%** its average when told a false 10%. Note: the question invited a dataset name, and Sol ranks the "not late" groups in the opposite order to this data, so it knows the dataset, not its patterns.
 
 ### 8. The punchline
 
-**Headline:** A decades-old scorecard still ranks customers best.
-**Body:** At sorting risky customers from safe ones, on a score where 0.5 is a coin flip and 1 is perfect: the scorecard 0.777, the best AI models 0.757 and 0.754. Close, but not ahead, and the scorecard learned from 20,000 past customers.
+**Headline:** The trained models still rank customers best.
+**Body:** On a score where 0.5 is a coin flip and 1 is perfect: gradient boosting 0.789, the scorecard 0.777, the best AI out of the box 0.754. For a simple approve-or-decline call, the best AI models did about as well.
 **Visual:** `results/figures/3_ranking_auc_ks.png`.
 
 ### 9. It depends on the portfolio
 
 **Headline:** Who looks honest depends on your portfolio.
-**Body:** Take the same customers, mixed to look like a bank where 5% or 50% miss payments. Where half do, Kev-4B becomes the most honest. Where 5% do, every model overstates the risk, the scorecard too.
+**Body:** Mix the same customers to look like a bank where 5% or 50% miss payments. Where half do, Kev-4B is the most honest; where 5% do, everyone overstates. It's mostly each model's average.
 **Visual:** table of how far off each model is, in percentage points, at 5%, 22% and 50%, with the most honest model in each column highlighted (`results/explain.json`).
 
 ### 10. What to take away
@@ -99,8 +101,8 @@ Written for anyone, tech or not: every term is explained the first time it appea
 **Headline:** Ask how honest it is, not just how accurate.
 **Body:**
 - Check that its percentages come true, not just that it ranks well
-- Check on your own customers: honesty changes with how many miss payments
-- Correct its percentages with your own past outcomes (2,000 customers was enough)
+- Shift its numbers to your own default rate: no past outcomes needed
+- Then correct them with your own past outcomes (2,000 customers was enough)
 - Test on data it can't have seen before
 **Footer:** Next: why 99% accuracy can still be a disaster.
 **Visual:** text only, with the next-post teaser at the bottom.

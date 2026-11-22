@@ -25,6 +25,10 @@ and the headline results are unchanged.
     uv run --group runners python runners/checks/disguise.py --contestant jev --control --workers 8
     uv run --group runners --group laya python runners/checks/disguise.py --contestant laya
     uv run --group runners python runners/checks/disguise.py --workers 4   # Sol (the default)
+    # layout check: each bill beside the following month's payment (template v2 pairs each payment
+    # with the same month's bill). Tune first, then test, reported next to v2.
+    uv run --group runners python runners/checks/disguise.py --contestant jev --variant aligned \
+        --split tune   # then the same with --split test
     # compare with the original runs
     uv run --group runners python runners/checks/disguise.py --report
 """
@@ -262,13 +266,15 @@ def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dic
     return result
 
 
-def report_aligned(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dict | None:
-    """Original vs aligned layout on the tune customers, overall and by latest repayment status."""
+def report_aligned(
+    contestant: str, split: str = "tune", n_boot: int = 1000, seed: int = 20261122
+) -> dict | None:
+    """Original vs aligned layout on one split, overall and by latest repayment status."""
     import metrics as m
     import pandas as pd
 
-    orig = _records(contestant, split="tune")
-    alig = _records(f"{contestant}-aligned", CHECK_DIR, split="tune")
+    orig = _records(contestant, split=split)
+    alig = _records(f"{contestant}-aligned", CHECK_DIR, split=split)
     ids = sorted(set(orig) & set(alig))
     if not ids:
         return None
@@ -278,7 +284,7 @@ def report_aligned(contestant: str, n_boot: int = 1000, seed: int = 20261122) ->
     rng = np.random.default_rng(seed)
     shifts = [float((p1[idx] - p0[idx]).mean())
               for idx in (rng.integers(0, len(ids), len(ids)) for _ in range(n_boot))]  # fmt: skip
-    status = pd.read_parquet(ROOT / "data" / "splits" / "tune.parquet").set_index("id")["PAY_0"]
+    status = pd.read_parquet(ROOT / "data" / "splits" / f"{split}.parquet").set_index("id")["PAY_0"]
     codes = np.array([status[i] for i in ids])
     groups = {}
     for code, label in ((-2, "not late (code -2)"), (-1, "paid on time (code -1)"),
@@ -291,7 +297,7 @@ def report_aligned(contestant: str, n_boot: int = 1000, seed: int = 20261122) ->
             "aligned": float(p1[g].mean()),
         }
     return {
-        "split": "tune",
+        "split": split,
         "n": len(ids),
         "observed_rate": float(y.mean()),
         "mean_predicted": {"original": float(p0.mean()), "aligned": float(p1.mean())},
@@ -310,17 +316,19 @@ def report_aligned(contestant: str, n_boot: int = 1000, seed: int = 20261122) ->
 
 def report() -> dict:
     results = {c: r for c in CONTESTANTS if (r := report_one(c))}
-    aligned = {c: r for c in CONTESTANTS if (r := report_aligned(c))}
+    aligned = {split: {c: r for c in CONTESTANTS if (r := report_aligned(c, split))}
+               for split in ("tune", "test")}  # fmt: skip
     SUMMARY_JSON.write_text(json.dumps({"disguise": results, "aligned_layout": aligned}, indent=2)
                             + "\n", encoding="utf-8")  # fmt: skip
-    for c, r in aligned.items():
-        s, st = r["mean_shift"], r["by_status"]["paid on time (code -1)"]
-        print(f"aligned {c} (tune): mean p {r['mean_predicted']['original']:.3f} -> "
-              f"{r['mean_predicted']['aligned']:.3f}  shift {s['estimate']:+.3f} "
-              f"[{s['lo']:+.3f}, {s['hi']:+.3f}]  ECE {r['ece']['original']:.3f} -> "
-              f"{r['ece']['aligned']:.3f}  AUC {r['auc']['original']:.3f} -> "
-              f"{r['auc']['aligned']:.3f}  | paid on time: actual {st['actual']:.2f}, "
-              f"{st['original']:.2f} -> {st['aligned']:.2f}")  # fmt: skip
+    for split, by_contestant in aligned.items():
+        for c, r in by_contestant.items():
+            s, st = r["mean_shift"], r["by_status"]["not late (code 0)"]
+            print(f"aligned {c} ({split}, n={r['n']}): mean p "
+                  f"{r['mean_predicted']['original']:.3f} -> {r['mean_predicted']['aligned']:.3f}"
+                  f"  shift {s['estimate']:+.3f} [{s['lo']:+.3f}, {s['hi']:+.3f}]  ECE "
+                  f"{r['ece']['original']:.3f} -> {r['ece']['aligned']:.3f}  AUC "
+                  f"{r['auc']['original']:.3f} -> {r['auc']['aligned']:.3f}  | code 0: actual "
+                  f"{st['actual']:.2f}, {st['original']:.2f} -> {st['aligned']:.2f}")  # fmt: skip
     for c, r in results.items():
         s = r["mean_shift"]
         print(f"{c}: n={r['n']}  mean p {r['mean_predicted']['original']:.3f} -> "
@@ -344,7 +352,7 @@ def main() -> None:
     ap.add_argument("--contestant", choices=CONTESTANTS, default="frontier-verbal")
     ap.add_argument("--variant", choices=("disguised", "aligned"), default="disguised",
                     help="disguised: no NT$/dates/codes (test); aligned: each bill next to "
-                         "the next month's payment (run on --split tune)")  # fmt: skip
+                         "the next month's payment (tune, then test)")  # fmt: skip
     ap.add_argument("--control", action="store_true",
                     help=f"original summaries, {CONTROL_N} customers")  # fmt: skip
     ap.add_argument("--rpm", type=float, default=18.0, help="Sol's requests-per-minute cap")

@@ -1,0 +1,32 @@
+[
+  {
+    "model_version": "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1; disguise d1",
+    "started": "2026-11-22T21:41:59Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "agent_class": "Agent",
+    "laya_version": "0.5.2",
+    "device": "cpu",
+    "usd_per_hour": 0.0,
+    "check": "disguised",
+    "disguise": "d1"
+  }
+]

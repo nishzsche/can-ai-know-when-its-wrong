@@ -9,10 +9,12 @@ Status: **the runs, the analysis and the checks are done. The write-up is in dra
 ## In short
 
 - **Most AI models overstate default risk out of the box.** Jev and Kev-4B predict about 48% on average; 22.1% of these customers defaulted.
-- **One sentence stating the portfolio's default rate improves calibration for five of the six.** It makes Kev-0.8B worse (ECE 0.090 → 0.269).
-- **GPT-6.2 Sol and Laya are the best calibrated out of the box** (ECE 0.052). But Sol recognises this dataset and knows its exact default rate, so its result isn't zero-shot honesty (see [Checks](#checks-on-these-results)).
-- **No AI contestant beats the trained scorecard at ranking.** The scorecard's AUC is 0.777; the best AI contestants reach 0.757 and 0.754, inside the scorecard's interval.
-- **Recalibrating on 2,000 labelled customers** brings every AI contestant to an ECE between 0.003 and 0.041. The scorecard's is 0.014.
+- **One sentence stating the portfolio's default rate clearly helps four of the six.** It makes no clear difference to Laya, makes Kev-0.8B worse (ECE 0.090 → 0.269), and costs Qwen ranking (AUC 0.744 → 0.710).
+- **Shifting each model's log-odds so its mean equals the known 22.1% rate** needs no per-customer labels and beats the sentence for four of six (Kev-4B: ECE 0.267 → 0.018).
+- **GPT-6.2 Sol and Laya are the best calibrated out of the box** (ECE 0.052). But Sol knows this dataset and its exact default rate, so its result isn't a clean zero-shot test (see [Checks](#checks-on-these-results)).
+- **The table layout matters for one model.** Template v2 shows each payment beside the same month's bill, though payments usually settle the previous month's. Realigned, Kev-4B's mean drops from 0.486 to 0.356 and its AUC rises from 0.594 to 0.720 on test; Laya gets worse; the rest barely change. Results are reported for both layouts.
+- **No AI contestant out-ranks the trained models.** Gradient boosting's AUC is 0.789 and the scorecard's 0.777; the best AI contestants reach 0.757 and 0.754. Paired against the scorecard, the closest six gaps have Holm-adjusted p ≈ 0.06. Approving the safest 80%, the scorecard's approvals default at 13.6% and Sol's at 13.4%.
+- **Recalibrating on 2,000 labelled customers** brings every AI contestant to an ECE of about 0.02–0.04 (equal-mass bins; a perfectly calibrated model scores up to ~0.03 here). Jev, Laya and Qwen still fail Hosmer–Lemeshow. A scorecard trained on the same 2,000 labels reaches AUC 0.758 and ECE 0.024.
 
 ## Results
 
@@ -76,9 +78,12 @@ The whole project, every check included, cost $14.20 in API calls plus a few dol
 |---|---|---|
 | Memorization (tabmemcheck, plus a longer deterministic version) | Sol reproduces 31 customers from the data file verbatim, dense through customer 33. Qwen3.5-4B shows none. The decision models can't be probed. | [`data/contamination.md`](data/contamination.md) §1 |
 | Results without the memorized customers | Leaving out Sol's 3 memorized test customers moves no metric for any contestant by more than 0.0006 | `results/summary_excluding_memorized.csv` |
-| Recognition | Sol names the dataset for 53 of 53 account summaries and gives its default rate as 22.12% | `contamination.md` §3 |
-| Disguise | With NT$, the 2005 dates and the raw codes removed, Sol still names it: 50 of 50 | `contamination.md` §4 |
-| False base rate | Told "about 10%" instead of 22.1%, Sol moves 69% of the way (95% interval 64–73%), with its ranking unchanged. It listens to stated rates, so its own estimate was already near the true one. | `contamination.md` §5 |
+| Recognition | Asked which public dataset a summary came from, Sol names this one for 53 of 53 and gives its default rate as 22.12%. The question invites a dataset name, and there's no negative control. | `contamination.md` §3 |
+| Disguise: recognition | With NT$, the 2005 dates and the raw codes removed, Sol still names it: 50 of 50 | `contamination.md` §4 |
+| Disguise: predictions | Every AI contestant re-answers the 2,000 test customers with those cues removed, plus 200 on the original summaries for run-to-run noise. Mean prediction: Jev +4.1 points, Qwen +3.4, Kev-4B +1.5, Sol +0.8, Kev-0.8B −1.3, Laya −4.8 (noise ≤ 0.3). If knowing "Taiwan 2005" had raised the numbers, hiding it should lower them; most went up. The models are sensitive to wording, not to the era. | `results/checks/disguise_summary.json`, `contamination.md` §4 |
+| Layout | Template v2 pairs each payment with the same month's bill (quirk 3 below), which could tilt the comparison. Re-asked on tune and test with each bill beside the following month's payment. On test: **Kev-4B** mean 0.486 → 0.356, ECE 0.267 → 0.135, AUC 0.594 → 0.720 (v2 hurt it); **Laya** mean +6.0 points, AUC 0.666 → 0.569; Jev, Qwen and Kev-0.8B within 0.3 points, AUC down 0.007–0.029 (v2 suited them). Sol in progress. Headlines stay v2, the pre-registered template. | `results/checks/disguise_summary.json` |
+| False base rate | Told "about 10%" instead of 22.1%, Sol's mean falls from 0.258 to 0.175: 69% of the change in the stated rate (95% interval 64–73%), about half the distance to 10%, with its ranking unchanged. | `contamination.md` §5 |
+| Statistics | Equal-mass ECE, a perfect-calibration noise floor, Hosmer–Lemeshow by decile, paired AUC tests with Holm correction, approval at 80%, the label-free shift and a 2,000-label scorecard | `analysis/robustness.py` → `results/robustness.json` |
 | Qwen option order | Swapping which letter means "yes" leaves its mean P(yes) almost unchanged (−0.004) | `results/checks/qwen_order_swap.jsonl` |
 | Qwen probability readout | jevper 0.7.12 lets a low-ranked spelling of an option overwrite a high-ranked one (0.32 read as 0.00004). The runner computes P(yes) itself, and the bug is [reported upstream](https://github.com/zhulinchng/jevper/issues/1). | `runners/qwen_logprobs.py` |
 
@@ -140,7 +145,7 @@ We document these rather than hide them.
 
    So the summaries (template v2) say only what's documented or follows from the scale, and always show the raw code: −2 → "not late (code −2)", −1 → "paid on time (code −1)", 0 → "not late (code 0)", 1–9 → "N months late (code N)". This gives the AI models the same information the trained baselines see, without wording that would mislead them. (Template v1 used the common interpretation and was replaced before any runs.) Code 9 never occurs.
 2. **Code 1 ("one month late") appears almost only in September**: 3,688 times there, but 28, 4, 2, 0 and 0 times in August–April. The coding seems to differ between months.
-3. **Payments usually settle the previous month's bill.** "Amount paid" in a month matches the *previous* month's bill 21,213 times, against 3,720 for the same month. We keep UCI's month alignment, so each row shows that month's bill and that month's payment.
+3. **Payments usually settle the previous month's bill.** "Amount paid" in a month matches the *previous* month's bill 21,213 times, against 3,720 for the same month. We keep UCI's month alignment, so each row shows that month's bill and that month's payment. The trained baselines learn the real relationship from data; an AI model reading the table might not, so this could tilt the comparison against the AI contestants. It wasn't flagged as a tilt before the runs. The layout check (above) measures it: realigned, Kev-4B does much better and Laya worse, and the rest barely change.
 4. **Negative bills (credit balances):** 3,932 entries across 1,930 customers, down to −NT$339,603. The summary shows them as `-NT$1,234 (credit)`.
 5. **Bills above the credit limit:** 8,274 entries.
 6. **Identical inputs:** 817 customers have exactly the same financial fields as another customer (795 have no bills or payments at all), and some of them have different outcomes.
@@ -169,6 +174,7 @@ This is a famous dataset, so `data/contamination.md` records what each contestan
 uv sync
 uv run python analysis/summarize.py   # results/summary.csv, summary_detail.json, summary_excluding_memorized.csv
 uv run python analysis/figures.py     # results/figures/
+uv run python analysis/robustness.py  # results/robustness.json
 ```
 
 **Rebuild from the raw data:**

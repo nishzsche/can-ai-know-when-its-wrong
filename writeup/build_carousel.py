@@ -34,7 +34,7 @@ FAIRNESS = (
 # A few plain words on what each contestant is, for readers outside tech (slide 2).
 WHAT = {"jev": "built for yes/no decisions", "kev-4b": "free, open-source",
         "kev-0.8b": "free, open-source, smaller", "laya": "open-source, tiny",
-        "qwen-logprobs": "free, general-purpose", "frontier-verbal": "ChatGPT's model",
+        "qwen-logprobs": "free, general-purpose", "frontier-verbal": "OpenAI's chat model",
         "scorecard": "banks' classic", "gbm": "today's standard"}  # fmt: skip
 # Plain-language legend for the three conditions (slide 6).
 STAGE_LABEL = {"out_of_box": "Out of the box", "base_rate": "Told the overall rate",
@@ -244,9 +244,9 @@ def slide_arc(fig, s, n, total, rows):
 
 def slide_twist(fig, s, n, total):
     y = frame(fig, n, total, s, headline_size=25)
-    stats = [("53/53", "times it recognised\nthe public dataset"),
+    stats = [("53/53", "times it named this\npublic dataset when asked"),
              ("22.12%", "its rate of missed\npayments, recalled exactly"),
-             ("70%", "of the way it moved\ntoward a false 10%")]  # fmt: skip
+             ("26→18%", "its average when told\na false rate of 10%")]  # fmt: skip
     for i, (big, small) in enumerate(stats):
         yy = y - 0.04 - i * 0.125
         fig.text(M, yy, big, fontsize=36, fontweight="bold", color=F.COLOR["frontier-verbal"],
@@ -256,8 +256,9 @@ def slide_twist(fig, s, n, total):
     fig.text(
         M,
         0.095,
-        "GPT-6.2 Sol. It still recognised the data with the currency, dates\n"
-        "and codes removed: 50 of 50.",
+        "GPT-6.2 Sol. Caveats: my question invited a dataset name, and Sol ranks the\n"
+        '"not late" groups in the opposite order to this data. It knows the dataset,\n'
+        "not its patterns.",
         fontsize=12,
         color=F.INK_2,
         linespacing=1.3,

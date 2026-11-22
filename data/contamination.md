@@ -147,6 +147,8 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - **Cues it cited:** the April–September 2005 billing period, the NT$ amounts and the repayment codes. The median answer used no reasoning tokens.
 - **Knowledge:** 22.12%, 3 of 3.
 
+**Limits (review panel, 2026-11-23):** the question invites a dataset name, and there's no negative control: Sol wasn't shown summaries from another source to see whether it names this dataset for those too. So the probe shows Sol *knows* this dataset and its rate, not that it *used* that knowledge when predicting. One piece of evidence against row-level knowledge: out of the box, Sol rates the latest-status codes −2 / −1 / 0 at 10% / 13% / 18%, while the test customers defaulted at 15% / 14% / 12%. That is the conventional credit reading, not this file's pattern.
+
 **What it means for the comparison:**
 - **Not fully zero-shot:** Sol's out-of-the-box condition isn't zero-shot in the sense that matters for calibration. When asked, it identifies the population and knows its default rate, the number the `base_rate` condition gives everyone.
 - **Its predictions don't simply recite that rate:**
@@ -156,7 +158,7 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - **The disguise check tried to separate them and couldn't** (next section): Sol recognizes the dataset even without the cues.
 - **For the write-up:** Sol's out-of-the-box calibration has to be read as "a model that recognizes this dataset and knows its default rate", not as zero-shot honesty. Its ranking (AUC) is less affected: knowing the overall rate doesn't rank individual customers, and the leaked rows don't change its AUC.
 
-### 4. Disguise check (`runners/checks/disguise.py`, recognition step done 2026-11-23)
+### 4. Disguise check (`runners/checks/disguise.py`, recognition 2026-11-23; predictions for every AI contestant 2026-11-23)
 
 **Idea:** remove the cues Sol cited, then compare its out-of-the-box predictions with the original run on the same test customers. If recognition drives its calibration, the disguised run should be worse calibrated.
 
@@ -173,8 +175,25 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 
 **What follows:**
 - **No faithful disguise works:** any faithful rendering of this data has that structure, so any disguise that keeps the information intact won't stop recognition. One that changes the structure (fewer months, aggregated amounts) would also change the information, and the comparison would no longer be clean.
-- **The full run wasn't done:** the 2,000-customer disguised run (about $1.50) can't measure what recognition contributes, since Sol still recognizes the data. It would only show whether the surface cues change its numbers. The script can still run it (`--workers 4`, then `--report`).
 - **For the write-up:** Sol identifies this dataset from the bare structure of a six-month credit-card history, not just from its currency or dates.
+
+**Second step, do the cues change the predictions? (run for every AI contestant, 2026-11-23)**
+- **Why run it after all:** the author asked whether the models' sense of time and place (Taiwan, 2005, a card-debt crisis; or recent world events) drives their numbers. Removing the cues tests that, even though it can't isolate Sol's recognition.
+- **Setup:** each AI contestant re-answers the 2,000 test customers out of the box with disguise d1, plus a 200-customer control on the *original* summaries (fixed seed) that measures run-to-run noise. Jev, Laya and Sol ran on the laptop; Kev-4B, Kev-0.8B and Qwen on the L4. Output in `results/checks/disguise/`, summary in `results/checks/disguise_summary.json` (`disguise.py --report`).
+
+| Contestant | Mean: original → disguised | Shift (95% CI) | Noise (control) | ECE | AUC |
+|---|---|---|---|---|---|
+| Jev | 0.481 → 0.522 | +4.1 [+3.8, +4.3] | 0.3 | 0.265 → 0.308 | 0.712 → 0.706 |
+| Qwen3.5-4B | 0.355 → 0.389 | +3.4 [+3.0, +3.8] | 0.1 | 0.140 → 0.171 | 0.744 → 0.738 |
+| Kev-4B | 0.486 → 0.502 | +1.5 [+1.3, +1.8] | 0.0 (deterministic) | 0.267 → 0.283 | 0.594 → 0.651 |
+| GPT-6.2 Sol | 0.260 → 0.268 | +0.8 [+0.6, +0.9] | 0.0 (but 2.5 per customer) | 0.052 → 0.062 | 0.754 → 0.744 |
+| Kev-0.8B | 0.305 → 0.292 | −1.3 [−1.5, −1.2] | 0.0 (deterministic) | 0.090 → 0.084 | 0.750 → 0.747 |
+| Laya | 0.204 → 0.156 | −4.8 [−5.4, −4.2] | 0.1 | 0.052 → 0.081 | 0.666 → 0.625 |
+
+- **No era effect:** if knowing "Taiwan, 2005" pushed the numbers up, hiding it should bring them down. Four of six went up instead, and the two that fell disagree in size. Nothing here supports "the models know about the crisis, or about recent world events, and raise their risk".
+- **Sol is noisy per customer:** on the 200 control customers its answers moved 2.5 points on average between two identical runs, against 3.0 under the disguise, so most of its per-customer change is noise. Its average still moved 0.8 points against 0.03 of noise.
+- **Wording sensitivity:** shifts of 1–5 points, well above the noise, and slightly worse calibration and ranking for most. Kev-4B is the exception on ranking (AUC 0.594 → 0.651): the original codes may confuse it.
+- **For the write-up:** report as sensitivity to wording, not knowledge of the era.
 
 ### 5. False-base-rate check (`runners/checks/sol_false_rate.py`, done 2026-11-22T20:05Z)
 
@@ -199,6 +218,7 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - **Sol listens to the base-rate sentence.** So the true sentence moved it only from 0.267 to 0.258 because its own estimate was already close to the true rate.
 - **Where that estimate likely comes from:** Sol names this dataset from any summary and knows its default rate to two decimals (22.12%), so the most likely source is what it knows about this dataset.
 - **What it can't rule out:** this can't exclude that Sol's generic prior for credit-card default happens to sit near 25% too. Its out-of-the-box mean (0.267) is above the true rate, so it isn't reciting 22% either.
+- **How to state the pass-through:** told 10% instead of 22.1%, its mean fell 0.083, which is 69% of the 12.1-point change in the stated rate, or 53% of the distance from its own 0.258 to 0.10. "Moved 70% of the way to 10%" overstates it.
 - **For the write-up:** Sol's out-of-the-box honesty is best read as "a model that knows this population's default rate", not zero-shot honesty. Sol also responds to a stated rate the way you'd hope: it follows most of the way, but not blindly.
 
 ## What the write-up will say

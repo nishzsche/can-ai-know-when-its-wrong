@@ -28,11 +28,10 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
   - **For the write-up:** its out-of-the-box calibration must be read as that of a model that knows the population, not zero-shot honesty.
   - **Disguise check** (`runners/checks/sol_disguise.py`, user asked 2026-11-23): removing NT$, the 2005 months and the raw repayment codes doesn't hide the dataset. Sol still named it for 50 of 50 disguised summaries (22.12%, 99% confidence), now citing the six-month bill/payment/status structure itself.
     - **Full run stopped:** the 2,000-customer disguised run (~$1.50) was stopped before spending, since it can't isolate recognition. It can still be run with `--workers 4`, then `--report`.
-  - **Open (user's call): a false-base-rate test** could still separate the two readings:
-    - **Method:** tell Sol "about 10%" (and/or "about 40%") instead of 22.1% in the base-rate sentence, on ~500 test customers each (~$0.40 each).
-    - **If its average follows the stated rate:** Sol listens to the sentence, so its out-of-the-box closeness to 22% reflects what it already knows.
-    - **If its average doesn't follow:** it ignores stated rates.
-    - **Status:** a diagnostic only, never a contestant condition.
+  - **False-base-rate check** (`runners/checks/sol_false_rate.py`, user asked 2026-11-23, $0.46): 500 test customers, the base-rate sentence saying 10.0% instead of 22.1%.
+    - **Sol follows it:** mean 0.258 → 0.175, a pass-through of 0.69 [0.64, 0.73]. 98% of customers went lower, and AUC was unchanged.
+    - **So:** it listens to stated rates, and the true sentence barely moved it because its own estimate was already near 22%. Most likely that's from knowing this dataset.
+    - **Status:** a diagnostic only, never a contestant condition. Details are in `data/contamination.md` §5.
 - **Still to do for M4:** the author reviews the figures. Possible tweak: Sol's green is close to Kev-0.8B's teal on the honesty arc.
 
 **M3 is done (2026-11-22, 19:16Z).** `runners/manifest.py` passes without `--allow-incomplete`: all eight contestants are complete, and `results/run_manifest.json` says `complete: true`.
@@ -102,7 +101,7 @@ All runners share `runners/harness.py`. It:
 - No probabilities of exactly 0 or 1 anywhere. Kev-0.8B's base-rate sentence *raised* its predictions; with 20 customers that's only worth rechecking on the full run.
 - Kev ran without flash-linear-attention (reference PyTorch kernel). It was fast enough, so it wasn't installed.
 
-**jevper logprob bug (found in the Qwen smoke test, worked around):** jevper 0.7.12's readout strips whitespace from the top-20 tokens and lets the *last* match overwrite the rival label's logprob. A low-ranked `" A"` (−10.5) replaced `"A"` (−1.2), so every Qwen probability came out near 0 or 1 (e.g. 4e-5 where the model's own P(yes) was 0.32), and which extreme depended on the letter sampled at temperature 1.0. `runners/qwen_logprobs.py` now computes P(yes) itself from the recorded first-token top-20: each label's logprob is the logsumexp of all its variants, and the softmax is taken over the two labels, with the Yes letter read from the prompt's options. jevper's value is kept as `jevper_noul` in the raw record, and unit tests cover the exact case. The model version string now ends in `readout: label-variant logsumexp over first-token top-20`. Worth reporting upstream to jevper.
+**jevper logprob bug (found in the Qwen smoke test, worked around):** jevper 0.7.12's readout strips whitespace from the top-20 tokens and lets the *last* match overwrite the rival label's logprob. A low-ranked `" A"` (−10.5) replaced `"A"` (−1.2), so every Qwen probability came out near 0 or 1 (e.g. 4e-5 where the model's own P(yes) was 0.32), and which extreme depended on the letter sampled at temperature 1.0. `runners/qwen_logprobs.py` now computes P(yes) itself from the recorded first-token top-20: each label's logprob is the logsumexp of all its variants, and the softmax is taken over the two labels, with the Yes letter read from the prompt's options. jevper's value is kept as `jevper_noul` in the raw record, and unit tests cover the exact case. The model version string now ends in `readout: label-variant logsumexp over first-token top-20`. **Reported upstream** (user asked, 2026-11-23): https://github.com/zhulinchng/jevper/issues/1, with a minimal reproduction. jevper 0.7.12 is still the latest release, so the bug is current.
 
 **Qwen option-order check (2026-11-22, `runners/checks/qwen_order_swap.py`):** 200 tune customers, out of box, with jevper's exact request replayed as "A: No / B: Yes". Mean P(yes) shift −0.004, mean |shift| 0.048, correlation 0.91 (Spearman 0.91), no labels missing from the top 20; in the swapped order 2/200 answers were a word, not a letter. No letter bias, so the contestant stays single-order. The check is label-free and writes to `results/checks/`, not `results/predictions/`.
 

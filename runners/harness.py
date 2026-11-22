@@ -193,10 +193,19 @@ def _parallel(fn, items, workers):
         pool.shutdown(wait=True, cancel_futures=True)
 
 
-def run(predictor: Predictor, args: argparse.Namespace, log: Callable[[str], None] = print) -> Path:
-    """Predict every (condition, customer) not already in the output file; append as we go."""
+def run(
+    predictor: Predictor,
+    args: argparse.Namespace,
+    log: Callable[[str], None] = print,
+    requests: list[dict] | None = None,
+) -> Path:
+    """Predict every (condition, customer) not already in the output file; append as we go.
+
+    `requests` replaces the split's rendered customers (checks that use a sample pass theirs).
+    """
     load_env()
-    requests = load_requests(args.split, args.limit)
+    if requests is None:
+        requests = load_requests(args.split, args.limit)
     out_dir: Path = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "raw").mkdir(exist_ok=True)

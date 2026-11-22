@@ -176,6 +176,31 @@ Results go in `data/memcheck/results/<model>.json` (raw-completion runs: `<model
 - **The full run wasn't done:** the 2,000-customer disguised run (about $1.50) can't measure what recognition contributes, since Sol still recognizes the data. It would only show whether the surface cues change its numbers. The script can still run it (`--workers 4`, then `--report`).
 - **For the write-up:** Sol identifies this dataset from the bare structure of a six-month credit-card history, not just from its currency or dates.
 
+### 5. False-base-rate check (`runners/checks/sol_false_rate.py`, done 2026-11-22T20:05Z)
+
+**Idea:** tell Sol a wrong rate. If it follows, the sentence is something it uses, and the true sentence's tiny effect means its own estimate was already near 22%. If it doesn't follow, it ignores stated rates.
+
+**Setup:**
+- **Sample:** 500 test customers (fixed seed, 23.2% of them defaulted).
+- **Prompt:** the `base_rate` request exactly, except "about 10.0%" in place of "about 22.1%". Same settings.
+- **Cost:** $0.46.
+- **Results:** in `results/checks/sol_false_rate_summary.json`.
+
+| Same 500 customers | Mean prediction | Median | AUC | ECE |
+|---|---|---|---|---|
+| Out of the box | 0.267 | 0.170 | 0.781 | 0.053 |
+| Told 22.1% (true) | 0.258 | 0.160 | 0.783 | 0.028 |
+| Told 10.0% (false) | 0.175 | 0.110 | 0.784 | 0.059 |
+
+- **Pass-through 0.69** (95% interval 0.64–0.73): told 10% instead of 22.1%, Sol passed on about 70% of the 12.1-point drop. 98% of customers got a lower probability, 1% were unchanged and 1% went up.
+- **Ranking is untouched** (AUC 0.783 vs 0.784). The stated rate shifts everyone together.
+
+**What it means:**
+- **Sol listens to the base-rate sentence.** So the true sentence moved it only from 0.267 to 0.258 because its own estimate was already close to the true rate.
+- **Where that estimate likely comes from:** Sol names this dataset from any summary and knows its default rate to two decimals (22.12%), so the most likely source is what it knows about this dataset.
+- **What it can't rule out:** this can't exclude that Sol's generic prior for credit-card default happens to sit near 25% too. Its out-of-the-box mean (0.267) is above the true rate, so it isn't reciting 22% either.
+- **For the write-up:** Sol's out-of-the-box honesty is best read as "a model that knows this population's default rate", not zero-shot honesty. Sol also responds to a stated rate the way you'd hope: it follows most of the way, but not blindly.
+
 ## What the write-up will say
 
 - The scorecard and GBM were trained only on our `train` split.

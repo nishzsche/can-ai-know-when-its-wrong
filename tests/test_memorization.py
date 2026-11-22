@@ -206,3 +206,41 @@ def test_disguise_works_on_every_rendered_test_summary():
     path = Path(__file__).resolve().parents[1] / "data" / "rendered" / "test.jsonl"
     for line in path.read_text("utf-8").splitlines():
         sd.disguise(json.loads(line)["requests"]["out_of_box"]["state"])
+
+
+# ---- false-base-rate check -------------------------------------------------------------------
+
+
+def _check(name: str):
+    _sol_disguise()  # puts runners/checks on sys.path
+    import importlib
+
+    return importlib.import_module(name)
+
+
+def test_false_rate_changes_only_the_rate():
+    import json
+    from pathlib import Path
+
+    fr = _check("sol_false_rate")
+    path = Path(__file__).resolve().parents[1] / "data" / "rendered" / "test.jsonl"
+    row = json.loads(path.read_text("utf-8").splitlines()[0])
+    base = row["requests"]["base_rate"]
+    out = fr.with_false_rate(base)
+    before = base["questions"]["will_default"]["instructions"]
+    after = out["questions"]["will_default"]["instructions"]
+    assert "about 10.0%" in after and "22.1%" not in after
+    assert after == before.replace("22.1%", "10.0%")
+    assert (
+        out["state"] == base["state"]
+        and base["questions"]["will_default"]["instructions"] == before
+    )
+    with pytest.raises(ValueError):
+        fr.with_false_rate(row["requests"]["out_of_box"])
+
+
+def test_false_rate_sample_is_fixed():
+    fr = _check("sol_false_rate")
+    rows = [{"id": f"cust_{i:05d}"} for i in range(1, 2001)]
+    a, b = fr.sample(rows), fr.sample(rows)
+    assert [r["id"] for r in a] == [r["id"] for r in b] and len(a) == fr.N_CUSTOMERS

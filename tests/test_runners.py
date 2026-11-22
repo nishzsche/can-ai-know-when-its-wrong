@@ -647,3 +647,12 @@ def test_parallel_run_stops_and_cancels_on_a_hard_failure(tmp_path):
     with pytest.raises(SystemExit, match="version changed"):
         harness.run(pred, _args(tmp_path, limit=50, workers=2), log=lambda _: None)
     assert pred.calls < 100  # queued requests were cancelled, not all sent
+
+
+def test_run_accepts_an_explicit_customer_list(tmp_path):
+    rows = harness.load_requests("tune")
+    chosen = [rows[5], rows[2]]
+    pred = FakePredictor()
+    path = harness.run(pred, _args(tmp_path), log=lambda _: None, requests=chosen)
+    ids = {json.loads(line)["id"] for line in path.read_text("utf-8").splitlines()}
+    assert ids == {rows[5]["id"], rows[2]["id"]}

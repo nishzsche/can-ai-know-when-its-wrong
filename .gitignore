@@ -5,6 +5,7 @@ __pycache__/
 .ruff_cache/
 .env
 .env.*
+.vscode/
 
 # Memorization-test CSVs (published file incl. demographic columns); results are kept
 data/memcheck/csv/

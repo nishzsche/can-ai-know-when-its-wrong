@@ -47,7 +47,11 @@ COLOR = {
     "kev-0.8b": "#1baf7a",  # slot 3 aqua
     "laya": "#eda100",  # slot 4 yellow
     "qwen-logprobs": "#e87ba4",  # slot 5 magenta
-    "frontier-verbal": "#008300",  # slot 6 green
+    # Slot 7 violet at its earlier, darker step. The slot 6 green sat next to Kev-0.8B's aqua
+    # (normal-vision dE 15.6) and was nearly identical to Kev-4B's orange for red-green colour
+    # blindness (dE 3.2); this violet's nearest pairs are Jev (16.3) and the grey scorecard (CVD
+    # 7.0, which every chart's name labels cover).
+    "frontier-verbal": "#4a3aa7",
     "scorecard": "#52514e",  # neutral reference
     "gbm": "#898781",  # neutral reference
 }

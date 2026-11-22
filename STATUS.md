@@ -4,13 +4,18 @@ Last updated 2026-11-22. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 ## Where things stand
 
+**M3 is in progress (started 2026-11-22).** The gate is passed: M2 is done and `PREDICTIONS.md` was committed (`24aebdd`) before any M3 prediction.
+- **API runs (laptop): running.** Jev and GPT-6.2 Sol on tune and test, both conditions, 8 parallel requests each (`--workers 8`). Re-running the same command resumes them.
+- **GPU runs (L4): to do.** Follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md) section 3 (Laya, Qwen, Kev-4B, Kev-0.8B), then section 4.
+- **Done when:** `uv run --group runners python runners/manifest.py` passes without `--allow-incomplete`, meaning all eight contestants are complete, and `results/run_manifest.json` is committed.
+
 **M2 is done (2026-11-22).** Baselines are scored on test, and all six AI runners passed their 20-customer smoke tests.
 - **Built:** the baselines, all six AI runners, and `runners/manifest.py`, which checks coverage and writes `results/run_manifest.json`.
 - **Smoke-tested (passed):**
   - Laya (CPU).
   - GPT-6.2 Sol and Jev (OpenRouter).
   - Kev-4B, Kev-0.8B and Qwen (L4).
-- **Next: the gate before M3.** The user fills in `PREDICTIONS.md`; a template is there, recording what was already visible. Then M3 starts: the GPU runs follow [`L4_RUNBOOK.md`](L4_RUNBOOK.md) section 3, and the API runs (Jev, Sol) run on the laptop.
+- **`PREDICTIONS.md`** (the author's guesses, 2026-11-22): most honest Jev, least honest Laya, the base rate helps most contestants, and at least one AI contestant beats the scorecard's AUC.
 
 ### API runners (2026-11-22, CPU)
 

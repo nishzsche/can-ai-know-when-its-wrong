@@ -40,7 +40,7 @@ After launch, the author asked to train the AI models on the same 20,000 custome
 **Next:**
 1. **Author: `PREDICTIONS.md` M6 guesses**, committed before any full run (the gate in L4_RUNBOOK.md §6). For example: which trained AI model is most honest, whether any beats LightGBM's AUC (0.789), and whether Jev and Sol beat their own 20 neighbours (AUC 0.764).
 2. **Author: top up OpenRouter by $30.** The balance was $21.51 on 2026-11-23; the M6 API runs need about $44.
-3. **L4: L4_RUNBOOK.md §6** (§6.0 sets up a fresh instance from zero), in the order Kev-0.8B → Laya → Kev-4B → Qwen. Expected 4–6 GPU hours (~$2–3). Stop and ask if Kev-4B's or Qwen's epoch ETA is over 3 hours. The trained weights go into a GitHub release (`m6-weights`).
+3. **L4: L4_RUNBOOK.md §6** (§6.0 sets up a fresh instance from zero), in the order Kev-0.8B → Laya → Kev-4B → Qwen → the tabular models (§6.7). Expected 4–6 GPU hours (~$2–3). Stop and ask if Kev-4B's or Qwen's epoch ETA is over 3 hours. The trained weights go into a GitHub release (`m6-weights`).
 4. **Laptop: Jev and Sol with examples**, after steps 1 and 2. Sol is paced at 18 requests/minute, so each split takes about 2 hours.
    ```bash
    uv run --group runners python runners/examples.py --contestant jev --split tune --workers 4
@@ -48,11 +48,16 @@ After launch, the author asked to train the AI models on the same 20,000 custome
    uv run --group runners python runners/examples.py --contestant sol --split tune --workers 4
    uv run --group runners python runners/examples.py --contestant sol --split test --workers 4
    ```
-5. **Part B: check the tabular foundation models** (PLAN.md §11): access, row limit, GPU memory and licence for Kumo-Tabular, TabPFN-3.5, TabICLv2 and Mitra-v2. Then write a runner (`baselines/`-style: the 19 fields, `train` in context) and run it on the L4.
+5. **Part B, tabular foundation models: checked (2026-11-23), runner `baselines/tabular_fm.py`, L4_RUNBOOK.md §6.7.**
+   - **Kumo-Tabular:** NVIDIA, `nvidia/Kumo-Tabular` (large, checkpoint v1.0.1). Package `structured-data-models` 0.3.0. Weights OpenMDW-1.1, code Apache-2.0. Pretrained on up to 60,000 rows and 100 columns. Runs.
+   - **TabICLv2:** Inria, `tabicl` 2.2.0, BSD-3. Checkpoint `tabicl-classifier-v2-20260212`. Pretrained on 300–48K rows. Its default settings soften its own probabilities (temperature 0.9); that's the maker's choice, so it stays. Runs.
+   - **TabPFN-3.5:** Prior Labs, `tabpfn` 10.2.0. The weights need a Prior Labs login, and the licence is non-commercial for weights *and outputs*. It runs only if the author opts in (`--accept-noncommercial-licence` plus `TABPFN_TOKEN`).
+   - **Laptop smoke (CPU, 500 context rows, 100 tune customers):** Kumo-Tabular *small* AUC 0.775, TabICLv2 AUC 0.788. Both code paths work; the contestant is Kumo *large* on the L4.
+   - **Mitra:** dropped. No v2 exists in AutoGluon's docs, and v1 caps out at 10,000 training rows, half of what the baselines see.
 6. **After the runs:**
    - `uv run python analysis/recalibrate.py` (it also refreshes the zero-shot `recalibrated` records, with the same values).
    - `uv run --group runners python runners/manifest.py --m6`.
-   - Then the M6 analysis, not written yet: zero-shot → trained per model against the baselines, paired AUC tests against the scorecard and LightGBM, and one figure.
+   - `uv run python analysis/fair_fight.py` (written 2026-11-23, checked on the existing rows): zero-shot → trained per model against the baselines, with paired AUC tests against the scorecard and LightGBM, Holm-corrected. The figure is still to write.
 
 ## Launched (2026-11-23, 16:05 IST)
 

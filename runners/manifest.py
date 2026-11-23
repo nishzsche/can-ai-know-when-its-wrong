@@ -37,7 +37,7 @@ GROUPS = {
 M6_GROUPS = {
     c: [("trained", "tune"), ("trained", "test"), ("trained_calibrated", "test")]
     for c in ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples", "sol-examples",
-              "neighbours-20")
+              "neighbours-20", "kumo-tabular", "tabicl-v2")
 }  # fmt: skip
 
 

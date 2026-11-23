@@ -295,6 +295,24 @@ If the readout check fails, don't score anything: commit the check file and tell
 
 Only for a model whose first epoch took under an hour. Train one more epoch from the saved weights (Kev: `--init_from /home/runs/<name>-ft --out /home/runs/<name>-ft-e2`; Qwen: `--init-adapter /home/runs/qwen-ft --out /home/runs/qwen-ft-e2`), score **tune only** with `--out-dir results/checks/m6_epoch2`, and keep the second epoch only if its tune log loss is lower. If it is, move the first epoch's predictions file to `results/checks/m6_epoch1/` and score both splits with the second. Never look at test to decide.
 
+### 6.7 Tabular foundation models (PLAN.md §11, Part B; added 2026-11-23)
+
+Run after Qwen, before the wrap-up. They read the 19 raw fields with all 20,000 `train` customers in context: no training, no text. Each takes minutes.
+
+```bash
+cd /home/can-ai-know-when-its-wrong && git pull
+uv sync --group runners --group laya --group training --group tabular
+T="--group tabular"
+uv run $T python baselines/tabular_fm.py --model kumo-tabular --smoke     # 500 context rows, prints only
+uv run $T python baselines/tabular_fm.py --model kumo-tabular             # tune + test -> results/predictions
+uv run $T python baselines/tabular_fm.py --model tabicl-v2 --smoke
+uv run $T python baselines/tabular_fm.py --model tabicl-v2
+```
+
+- **Out of GPU memory with 20,000 context rows:** stop and tell the author. Don't cut the context; fewer rows than the baselines get would tilt the comparison.
+- **TabPFN-3.5:** only if the author has accepted its non-commercial licence and given a `TABPFN_TOKEN`. Then add `--model tabpfn-3.5 --accept-noncommercial-licence`.
+- Commit `results/predictions/<model>.jsonl` and `results/baselines/<model>.json` with the rest in 6.6.
+
 ### 6.6 Wrap up
 
 ```bash
@@ -305,7 +323,7 @@ cd /home/runs && for r in kev-0.8b-ft kev-4b-ft laya-ft qwen-ft; do tar czf /hom
 gh release create m6-weights --repo nishzsche/can-ai-know-when-its-wrong --title "M6 trained weights" \
   --notes "Fine-tuned on the 20,000 train customers (PLAN.md §11)." /home/*-ft.tar.gz
 cd /home/can-ai-know-when-its-wrong
-git add results/predictions results/checks results/run_manifest_m6.json
+git add results/predictions results/checks results/baselines results/run_manifest_m6.json
 git commit -m "M6: fine-tuned Kev-0.8B, Laya, Kev-4B and Qwen on train; tune and test predictions"
 git push
 ```

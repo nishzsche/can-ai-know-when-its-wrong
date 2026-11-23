@@ -68,4 +68,6 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
   - `uv run --group runners python runners/examples.py --contestant <jev|sol> --split <tune|test>` runs Jev or Sol with 20 examples in the prompt (`--show 1` prints a request without calling the API).
   - `training/qwen_lora.py`, `training/laya_ft.py` and Kev's `kev.train` fine-tune the models on the L4. `runners/qwen_ft.py`, `runners/kev.py --finetuned` and `runners/laya_classic.py --checkpoint` score them. Exact commands are in L4_RUNBOOK.md §6.
   - `uv run --group runners python runners/manifest.py --m6` checks M6 coverage.
+  - `uv run --group tabular python baselines/tabular_fm.py --model <kumo-tabular|tabicl-v2>` runs a tabular foundation model, with `train` as its context (GPU; `--smoke` for a quick check).
+  - `uv run python analysis/fair_fight.py` builds the M6 scoreboard: zero-shot → trained per model against the baselines, with paired AUC tests -> `results/fair_fight.csv`.
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)

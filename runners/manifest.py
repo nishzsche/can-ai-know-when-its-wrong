@@ -2,6 +2,7 @@
 
     uv run python runners/manifest.py                     # exit 1 if anything is missing
     uv run python runners/manifest.py --allow-incomplete  # write it anyway (e.g. on the L4)
+    uv run python runners/manifest.py --m6                # M6 contestants -> run_manifest_m6.json
 
 For every contestant: are exactly the expected customers there for each (condition, split)?
 Does each file come from a single model version? Also recorded: total cost, median latency, run
@@ -23,6 +24,7 @@ from records import PREDICTIONS_DIR, TEST_ONLY_CONDITIONS, read_records, utc_now
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "results" / "run_manifest.json"
+MANIFEST_M6 = ROOT / "results" / "run_manifest_m6.json"
 SPLITS = ("tune", "test")
 
 AI_CONTESTANTS = ("jev", "kev-0.8b", "kev-4b", "laya", "qwen-logprobs", "frontier-verbal")
@@ -31,6 +33,12 @@ GROUPS = {
     "scorecard": [("trained", "tune"), ("trained", "test")],
     "gbm": [("trained", "tune"), ("trained", "test"), ("trained_calibrated", "test")],
 }
+# M6 (PLAN.md §11): every contestant that learned from `train`, plus the neighbours reference.
+M6_GROUPS = {
+    c: [("trained", "tune"), ("trained", "test"), ("trained_calibrated", "test")]
+    for c in ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples", "sol-examples",
+              "neighbours-20")
+}  # fmt: skip
 
 
 def expected_ids() -> dict[str, list[str]]:
@@ -88,9 +96,10 @@ def _git(*args: str) -> str | None:
         return None
 
 
-def build_manifest(directory: Path = PREDICTIONS_DIR) -> dict:
+def build_manifest(directory: Path = PREDICTIONS_DIR, groups: dict | None = None) -> dict:
     expected = expected_ids()
-    contestants = {c: summarize(c, g, expected, directory) for c, g in GROUPS.items()}
+    groups = GROUPS if groups is None else groups
+    contestants = {c: summarize(c, g, expected, directory) for c, g in groups.items()}
     splits = json.loads((ROOT / "data" / "splits" / "manifest.json").read_text("utf-8"))
     rendered = load_requests("test", 1)[0]
     return {
@@ -117,8 +126,10 @@ def main() -> None:
     )
     ap.add_argument("--allow-incomplete", action="store_true")
     ap.add_argument("--predictions-dir", type=Path, default=PREDICTIONS_DIR)
+    ap.add_argument("--m6", action="store_true", help="the M6 contestants (PLAN.md §11)")
     args = ap.parse_args()
-    manifest = build_manifest(args.predictions_dir)
+    manifest = build_manifest(args.predictions_dir, M6_GROUPS if args.m6 else None)
+    target = MANIFEST_M6 if args.m6 else MANIFEST
     print(
         f"{'contestant':<16} {'records':>8} {'complete':>9} {'cost $':>9} {'median ms':>10}  model"
     )
@@ -137,9 +148,9 @@ def main() -> None:
         sys.exit(
             "Incomplete: not writing the manifest (pass --allow-incomplete to write it anyway)."
         )
-    MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-    MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", "utf-8")
-    print(f"Wrote {MANIFEST.relative_to(ROOT)} (complete: {manifest['complete']})")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(manifest, indent=2) + "\n", "utf-8")
+    print(f"Wrote {target.relative_to(ROOT)} (complete: {manifest['complete']})")
 
 
 if __name__ == "__main__":

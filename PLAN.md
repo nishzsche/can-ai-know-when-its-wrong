@@ -119,6 +119,7 @@ Readable at phone size; one consistent colour per contestant.
 | M3 | Full runs (L4 session + APIs), all three conditions | All `tune` + `test` predictions saved; manifest written |
 | M4 | Metrics, figures, recalibration | Tests pass; all five figures generated |
 | M5 | Write-up | Blog, README, carousel and X drafts ready for review |
+| M6 | The fair fight: AI models learn from the same 20,000 (§11) | §11 "done when" |
 
 ## 9. Limitations to state openly
 2005 data from one Taiwanese bank; famous dataset that may have been seen in training; demographic fields deliberately excluded; undocumented repayment-status codes; zero-shot AI vs trained baselines; vendor models change over time (record versions and dates).
@@ -127,3 +128,84 @@ Readable at phone size; one consistent colour per contestant.
 - Synthetic insurance appetite set (insurance triage) and open document sets (ContractNLI, CUAD insurance clauses) → the document-pipeline series.
 - English vs Tamil honesty test (IndicSentiment, IndicXNLI, DravidianCodeMix) → a later post.
 - HMDA mortgage decisions (2025 data) → possible follow-up on lending.
+
+---
+
+## 11. M6: the fair fight (added 2026-11-23)
+
+**The question:** the published post compared zero-shot AI models with baselines that learned from 20,000 labelled customers. Here every AI model gets those same 20,000 (`train`) and is scored on the same `test`. The author asked for this after launch; the closed-model treatment below is the author's choice (2026-11-23).
+
+**Who can learn from `train`, and how (checked 2026-11-23):**
+
+| id | How it learns from `train` | Settings | Where |
+|---|---|---|---|
+| `kev-4b-ft` | LoRA fine-tune starting from released Kev-4B v1.0: the maker's delta recipe, `kev.train --data … --init_from jaredpalmer/kev-4b@591dcb5b` | lr 2e-5, LoRA rank 16, batch 1 × accum 8, bf16, checkpointing | L4 |
+| `kev-0.8b-ft` | The same, from Kev-0.8B v1.0 (`@788ddbdd`) | the same | L4 |
+| `qwen-ft` | LoRA on `Qwen/Qwen3.5-4B@851bf6e8` with the exact zero-shot prompt, loss on the yes/no answer token only; P(yes) read from logprobs as before | Common LoRA defaults (no maker recipe exists): rank 16, alpha 32, all linear layers, lr 1e-4, effective batch 16 | L4 |
+| `laya-ft` | `laya.train.finetune` from `convaiinnovations/laya@fd4f9dbc`, the maker's defaults: 4 epochs, its proper-scoring "rlcd" objective, its own temperature fit on 400 held-out `train` rows | maker defaults | L4 (minutes) |
+| `jev-examples` | Can't be fine-tuned (TypeSafe docs: "Jev is not fine-tuned or LoRA-adapted with customer data… the same weights serve every account"). Each customer is shown with its 20 most similar `train` customers and their outcomes | k = 20 | API, under $1 |
+| `sol-examples` | Can't be fine-tuned (OpenAI's fine-tuning is closed to new users and never covered GPT-6.2). The same 20 examples in the prompt | k = 20, effort medium as before | API, ~$40 (needs a top-up) |
+
+**Conditions:** `trained` (the model's own output after learning from `train`) and `trained_calibrated` (Platt vs isotonic chosen by 5-fold CV on `tune`, applied to `test`), the same names and the same treatment as the baselines. The zero-shot rows stay as they are, so each model shows zero-shot → trained.
+
+**Rules carried over:** template v2 for every summary and every example; no demographic fields; training data and examples come from `train` only; nothing is tuned on `test`; every prediction goes in the usual record schema.
+
+**Choices that could tilt the comparison (flagged before running):**
+1. **Training budget:** each maker's defaults, no hyperparameter search, all 20,000 `train` customers. One epoch for Kev and Qwen (Kev's default and its own worked example). A second epoch is tried only if the first takes under an hour, and kept only if it lowers `tune` log loss. The baselines got about the same: LightGBM has fixed settings with its round count chosen by CV inside `train`; the scorecard is a fixed recipe.
+2. **Layout:** training uses the template v2 summaries, the same as zero-shot, so zero-shot → trained is like for like. Training teaches the model what each column means, so v2's payment-month pairing should matter much less than it did zero-shot.
+3. **Kev's temperature:** the fine-tuned Kev models are served at temperature 1.0 (raw output of a model trained on our data). The released checkpoints' temperatures were fitted for other data. Laya keeps its own fit on `train` rows (its default); Qwen gives raw logprobs.
+4. **Neighbours for Jev and Sol:** the 20 nearest `train` customers on the 19 financial fields (amounts as signed log, then standardized; repayment codes as numbers), Euclidean, most similar first. That retrieval is itself a small model fitted on `train`, so the neighbours' own default rate is reported as a reference, to show whether the AI adds anything beyond counting.
+5. **Class balance:** the natural 22% default rate, no reweighting, so probabilities can stay honest.
+6. **Seeds:** one run per model (seed 0). If GPU time allows, Kev-0.8B is re-run with two more seeds as a variance check.
+
+**Compute:** build and test on CPU first: export the training files, run each trainer for a few steps on CPU (Kev-0.8B and Laya; Qwen with a small Qwen as stand-in), and smoke-test the example runners on 20 `tune` customers. Then one L4 session: Kev-0.8B → Laya → Kev-4B → Qwen, each trained and then scored on `tune` and `test`. Measure throughput in the first minutes; stop and check with the author if Kev-4B's epoch projects past 3 hours. Expected 4–6 GPU hours (~$2–3). Keep the trained adapters (a GitHub release asset) so the runs can be reproduced.
+
+**Before running:** the author adds M6 guesses to `PREDICTIONS.md`.
+
+**Write-up:** decided once the results are in (probably a follow-up post). Laya's training objective rewards honest probabilities, the idea behind the sequel the post promised, so the two may merge.
+
+### Part B: tabular foundation models (added 2026-11-23, the author's suggestion)
+
+AI built for tables: these models read the training rows themselves (in context, no gradient training) and predict new rows. A third-party index ([AIMultiple's AIM Tabular Index](https://aimultiple.com/tabular), updated 2026-10-12, 19 datasets, default settings) ranks eight of them above CatBoost, LightGBM and XGBoost. Its ratings are accuracy-type, and it reports no calibration at all. Whether they're honest is exactly this project's question, so they join the fair fight. They read the same 19 financial fields as the scorecard and LightGBM (no text, no demographics), learn from the same `train`, and are scored on `test`.
+
+| Candidate | Maker | Licence (per the index) |
+|---|---|---|
+| Kumo-Tabular | NVIDIA | OpenMDW-1.1 (top of the index) |
+| TabPFN-3.5 | Prior Labs | non-commercial |
+| TabICLv2 | Inria SODA | BSD-3-Clause |
+| Mitra-v2 | Amazon | Apache-2.0 |
+| LimiX-2 | StableAI | non-commercial |
+
+**Check before any run** (the index doesn't say):
+- how to get each model (weights, pip package or API);
+- how many training rows it takes in context. If it's fewer than 20,000, that's a disadvantage: flag it, and use the maker's own subsampling or ensembling if there is one;
+- GPU memory on a 24 GB L4;
+- whether a non-commercial licence suits a personal blog.
+
+Then pick two or three. Recommended: Kumo-Tabular, TabPFN-3.5, and TabICLv2 or Mitra-v2. Conditions `trained` / `trained_calibrated`. They aren't text models, so they're compared with the baselines and the trained AI models, not with the zero-shot runs. They run in the same L4 session if the checks are done in time, otherwise in a short second one.
+
+**Not in M6: the newer open decision models (Jev alternatives).** The strongest are 27–31B and don't fit an L4, and none publishes a fine-tuning recipe, so they can't join a trained comparison. The ones that should fit one L4 suit a cheap zero-shot "round 2" (§12, post 4):
+- Karpo Decision 4B / 2B (Apache-2.0, System One API);
+- Elephant-1 9B (MIT, about 19 GB by estimate);
+- GLiDE 9B (Fastino community licence, attribution required);
+- pplx-decider Flash 4B (Apache-2.0, its own API, free on OpenRouter).
+
+Source: a third-party round-up ([Pinggy, 2026-11-18](https://pinggy.io/blog/best_open_source_jev_alternatives_self_hosted_decision_models/)) built from leaderboards and vendor cards; verify each model before use.
+
+**Done when:** all six new contestants (plus the chosen tabular foundation models and the `neighbours-20` reference) have `tune` and `test` records for `trained` and `test` records for `trained_calibrated`; `summary.csv` includes them, with paired AUC tests against the scorecard and LightGBM; one figure shows zero-shot → trained per model against the baselines.
+
+---
+
+## 12. Next posts (proposed 2026-11-23, for the author to choose)
+
+Ordered so each one keeps a promise or answers a limit of the one before. Titles lead with the question, per `writeup/STYLE.md`.
+
+| # | Working title | What it answers | New compute |
+|---|---|---|---|
+| 1 | **Why 99% accuracy can still be a disaster** | Promised at the end of post 1. A model that says "nobody defaults" is 78% accurate here; accuracy vs ranking (AUC) vs honesty (calibration) vs what each mistake costs a bank. Built from results already in `results/` | None. It can go out while M6 runs |
+| 2 | **The fair fight: what happens when AI gets the same 20,000 customers** | M6. Fine-tuned Kev, Qwen and Laya; Jev and Sol shown 20 look-alike customers; tabular foundation models; the scorecard and LightGBM. Twenty look-alikes alone already rank at AUC 0.764 and are nearly honest (ECE 0.023), so "does the AI add anything?" is the hook | One L4 session (~$3) plus ~$44 of API |
+| 3 | **Teaching a small model to say "I don't know"** | The sequel post 1 promised. Laya and Kev-0.8B trained with a proper-scoring reward vs plain cross-entropy, plus abstention: refer the unsure cases to a person, and see what happens to approval and default rates. Builds on M6's setup; merge into post 2 if it's short | A short L4 session |
+| 4 | **Honesty leaderboard, round 2** | The newer open decision models that fit one L4, zero-shot, on the same `test` (§11 Part B list). A short update post, or just a new README table | ~1 L4 hour; pplx Flash is free on OpenRouter |
+| 5 | **Fresh data no model has seen** | Post 1's biggest limit: Sol knows the Taiwan file. HMDA 2025 mortgage decisions (§10) can't be memorized, and they're closer to a real lending decision | A bigger project: new data, new splits, re-run the best few |
+
+After that, the series parked in §10: the insurance document pipeline and English vs Tamil.

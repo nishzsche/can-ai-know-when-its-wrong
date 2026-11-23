@@ -34,6 +34,13 @@ runners = [
 laya = [
     "laya==0.5.2",
 ]
+# M6: LoRA fine-tuning and in-process scoring of Qwen3.5-4B on the L4 (PLAN.md §11).
+training = [
+    "torch>=2.6",
+    "transformers>=5.24",
+    "peft>=0.17",
+    "accelerate>=1.0",
+]
 
 [tool.uv]
 package = false

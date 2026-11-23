@@ -2,6 +2,58 @@
 
 Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
+## M6: the fair fight (started 2026-11-23)
+
+After launch, the author asked to train the AI models on the same 20,000 customers the scorecard and LightGBM learned from. PLAN.md §11 has the design and the choices that could tilt the comparison. §12 proposes the next posts.
+
+**Author's choices (2026-11-23):**
+- Jev and Sol take part through 20 look-alike `train` customers in the prompt, since neither can be fine-tuned.
+- Tabular foundation models join as Part B (the author's suggestion).
+- Write-up venue: decided once the results are in.
+
+**Who can be trained (checked 2026-11-23):**
+- **Kev:** yes, with the maker's `kev.train --init_from`, a LoRA delta on the released weights.
+- **Laya:** yes, with `laya.train.finetune`.
+- **Qwen:** yes, with a standard LoRA.
+- **Jev:** no. TypeSafe's docs: "Jev is not fine-tuned or LoRA-adapted with customer data".
+- **Sol:** no. OpenAI is winding down fine-tuning, it's closed to new users, and it never covered GPT-6.2.
+
+**Built and tested on the laptop (2026-11-23):**
+- **`data/neighbours.py`:** the 20 nearest `train` customers for every `tune` and `test` customer (`data/neighbours/`).
+  - Its own answer, the neighbours' default rate, is the reference contestant `neighbours-20`: test AUC 0.764, ECE 0.023; after calibration on tune, 0.762 and 0.015 (isotonic).
+  - That already beats every zero-shot AI model's AUC and is close to the scorecard (0.777).
+- **`runners/examples.py`:** `jev-examples` and `sol-examples`, condition `trained`. Smoke run on 20 tune customers (actual rate 0.20):
+  - Jev: 5,251 input tokens per call, mean p 0.40, $0.0002 per call.
+  - Sol: 4,045 tokens per call, mean p 0.27, $0.0107 per call.
+  - Full runs: Sol about $43 (tune plus test), Jev about $1.
+- **Trainers:** `training/export.py` (training files for Kev, Laya and Qwen from the template v2 summaries), `training/qwen_lora.py`, `training/laya_ft.py`.
+- **Scoring:**
+  - `runners/qwen_ft.py`: in-process, with a readout check against M3's zero-shot numbers before it scores anything.
+  - `runners/kev.py --finetuned`: refuses a server that isn't at temperature 1.0.
+  - `runners/laya_classic.py --checkpoint`.
+  - The harness's `trained` condition reuses the `out_of_box` request.
+- **Analysis plumbing:** `analysis/recalibrate.py` now writes `trained_calibrated` for the M6 contestants, and `runners/manifest.py --m6` writes `results/run_manifest_m6.json`. The published M3 manifest is untouched.
+- **Qwen's training prompt:** rebuilt from jevper's own pieces. It matches all 8,000 first-attempt requests recorded in M3 byte for byte (`tests/test_training.py` checks 300).
+- **Not smoke-tested yet:** the Kev, Laya and Qwen trainers. The laptop has 1 GB free on C:, so no model weights were downloaded. L4_RUNBOOK.md §6 smoke-tests each one on the L4 for a few steps before its real run.
+- **Tests:** `uv run --group runners pytest`, 170 passing.
+
+**Next:**
+1. **Author: `PREDICTIONS.md` M6 guesses**, committed before any full run (the gate in L4_RUNBOOK.md §6). For example: which trained AI model is most honest, whether any beats LightGBM's AUC (0.789), and whether Jev and Sol beat their own 20 neighbours (AUC 0.764).
+2. **Author: top up OpenRouter by $30.** The balance was $21.51 on 2026-11-23; the M6 API runs need about $44.
+3. **L4: L4_RUNBOOK.md §6**, in the order Kev-0.8B → Laya → Kev-4B → Qwen. Expected 4–6 GPU hours (~$2–3). Stop and ask if Kev-4B's or Qwen's epoch ETA is over 3 hours. The trained weights go into a GitHub release (`m6-weights`).
+4. **Laptop: Jev and Sol with examples**, after steps 1 and 2. Sol is paced at 18 requests/minute, so each split takes about 2 hours.
+   ```bash
+   uv run --group runners python runners/examples.py --contestant jev --split tune --workers 4
+   uv run --group runners python runners/examples.py --contestant jev --split test --workers 4
+   uv run --group runners python runners/examples.py --contestant sol --split tune --workers 4
+   uv run --group runners python runners/examples.py --contestant sol --split test --workers 4
+   ```
+5. **Part B: check the tabular foundation models** (PLAN.md §11): access, row limit, GPU memory and licence for Kumo-Tabular, TabPFN-3.5, TabICLv2 and Mitra-v2. Then write a runner (`baselines/`-style: the 19 fields, `train` in context) and run it on the L4.
+6. **After the runs:**
+   - `uv run python analysis/recalibrate.py` (it also refreshes the zero-shot `recalibrated` records, with the same values).
+   - `uv run --group runners python runners/manifest.py --m6`.
+   - Then the M6 analysis, not written yet: zero-shot → trained per model against the baselines, paired AUC tests against the scorecard and LightGBM, and one figure.
+
 ## Launched (2026-11-23, 16:05 IST)
 
 - **Published:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (`writeup/blog.md`, cut from about 5,400 words to about 2,000). The deep dive (`writeup/deep_dive.md`: method, statistics, Sol's checks, disguise and layout tables, different-data analysis, related work, limits, reproduction) lives in this repo only: it was published as a second post, then removed from the blog at the author's request (2026-11-23), and the post links to the GitHub copy. Blog PRs #22 and #23.

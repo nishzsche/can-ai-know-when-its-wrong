@@ -12,16 +12,25 @@ then run, from this repo:
     uv run python runners/kev.py --size 4b --split test        # M3
 
 The runner refuses to start if the server isn't serving the pinned v1.0 checkpoint.
+
+M6 (`kev-4b-ft`, `kev-0.8b-ft`, condition `trained`): serve the fine-tuned run directory at
+temperature 1.0 (PLAN.md §11, choice 3) and point the runner at it:
+
+    KEV_TEMPERATURE=1.0 uv run --extra serve python -m kev.serve \
+        --run /home/runs/kev-4b-ft --port 8009
+    uv run python runners/kev.py --size 4b --finetuned /home/runs/kev-4b-ft --split test
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
-from harness import L4_USD_PER_HOUR, Prediction, build_parser, gpu_cost, resolve_args, run
+from harness import L4_USD_PER_HOUR, TRAINED, Prediction, build_parser, gpu_cost, resolve_args, run
 
 # Kev 1.0: (Hub repo, commit the v1.0 tag points at, weights revision in the README's Kev 1.0
 # table). The tag sits on a later model-card commit; on 2026-11-22 we checked that the adapter,
@@ -47,8 +56,20 @@ def _http_json(url: str, body: dict | None = None, timeout: float = 120, tries: 
     raise AssertionError("unreachable")
 
 
+def _find_key(obj, key: str) -> list:
+    """Every value stored under `key` anywhere in a JSON object."""
+    if isinstance(obj, dict):
+        return [v for k, v in obj.items() if k == key] + [
+            x for v in obj.values() for x in _find_key(v, key)
+        ]
+    if isinstance(obj, list):
+        return [x for v in obj for x in _find_key(v, key)]
+    return []
+
+
 class KevPredictor:
-    def __init__(self, size: str, base_url: str, usd_per_hour: float, check_version: bool = True):
+    def __init__(self, size: str, base_url: str, usd_per_hour: float, check_version: bool = True,
+                 finetuned: Path | None = None):  # fmt: skip
         repo, tag_commit, weights_rev = CHECKPOINTS[size]
         self.contestant = f"kev-{size}"
         self.model_version = f"{repo}@v1.0 ({tag_commit[:8]}; weights {weights_rev})"
@@ -57,6 +78,17 @@ class KevPredictor:
         models = _http_json(f"{self.base_url}/v1/models")
         served = json.dumps(models)
         accepted = (tag_commit[:8], weights_rev, f"{repo}@v1.0")
+        if finetuned is not None:  # M6: a run directory written by kev.train --init_from
+            self.contestant = f"kev-{size}-ft"
+            weights = sorted(finetuned.glob("*.safetensors")) + [finetuned / "head.pt"]
+            digest = hashlib.sha256(b"".join(p.read_bytes() for p in weights)).hexdigest()
+            self.model_version = (f"kev-{size}-ft: LoRA delta from {repo}@v1.0 ({tag_commit[:8]}), "
+                                  f"trained on train; weights {digest[:12]}; T 1.0")  # fmt: skip
+            accepted = (finetuned.name,)
+            temps = _find_key(models, "temperature")
+            if check_version and any(abs(float(t) - 1.0) > 1e-9 for t in temps):
+                raise SystemExit(f"The server runs at temperature {temps}; start it with "
+                                 f"KEV_TEMPERATURE=1.0 (PLAN.md §11, choice 3).")  # fmt: skip
         if check_version and not any(ident in served for ident in accepted):
             raise SystemExit(
                 f"The server at {self.base_url} doesn't report {repo} v1.0 in /v1/models "
@@ -91,9 +123,17 @@ def main() -> None:
     ap.add_argument("--base-url", default="http://127.0.0.1:8009")
     ap.add_argument("--usd-per-hour", type=float, default=L4_USD_PER_HOUR)
     ap.add_argument("--skip-version-check", action="store_true")
-    args = resolve_args(ap.parse_args())
+    ap.add_argument("--finetuned", type=Path, help="M6: the fine-tuned run directory being served")
+    args = ap.parse_args()
+    if args.finetuned is not None:
+        args.condition = TRAINED
+    args = resolve_args(args)
     predictor = KevPredictor(
-        args.size, args.base_url, args.usd_per_hour, check_version=not args.skip_version_check
+        args.size,
+        args.base_url,
+        args.usd_per_hour,
+        check_version=not args.skip_version_check,
+        finetuned=args.finetuned,
     )
     run(predictor, args)
 

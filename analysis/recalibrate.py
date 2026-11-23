@@ -15,6 +15,10 @@ Recalibrated records copy latency and cost from the out_of_box test record they 
 records, so it's safe to run again when a contestant (e.g. Sol) completes.
 
     uv run python analysis/recalibrate.py
+
+M6 (PLAN.md §11): the contestants that learned from `train` get `trained_calibrated` the same way,
+from their `trained` probabilities, exactly as the baselines' calibrated condition is a fit on
+tune. Contestants whose runs aren't complete are skipped and picked up on a later run.
 """
 
 from __future__ import annotations
@@ -31,6 +35,8 @@ from metrics import EPS, logit  # noqa: E402
 from records import ROOT, make_record, read_records, utc_now, write_records  # noqa: E402
 
 AI_CONTESTANTS = ("jev", "kev-0.8b", "kev-4b", "laya", "qwen-logprobs", "frontier-verbal")
+M6_CONTESTANTS = ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples",
+                  "sol-examples", "neighbours-20")  # fmt: skip
 N_CUSTOMERS = 2000
 CV_FOLDS = 5
 SEED = 20261122
@@ -93,15 +99,17 @@ def choose_and_fit(p_tune, y_tune) -> tuple[object, dict]:
     return model, {"cv_log_loss": scores, "chosen": best, "params": model.params()}
 
 
-def recalibrate(contestant: str) -> dict | None:
+def recalibrate(
+    contestant: str, source: str = "out_of_box", target: str = "recalibrated"
+) -> dict | None:
     records = read_records(contestant)
-    base = [r for r in records if r["condition"] != "recalibrated"]
-    tune = sorted((r for r in base if r["condition"] == "out_of_box" and r["split"] == "tune"),
+    base = [r for r in records if r["condition"] != target]
+    tune = sorted((r for r in base if r["condition"] == source and r["split"] == "tune"),
                   key=lambda r: r["id"])  # fmt: skip
-    test = sorted((r for r in base if r["condition"] == "out_of_box" and r["split"] == "test"),
+    test = sorted((r for r in base if r["condition"] == source and r["split"] == "test"),
                   key=lambda r: r["id"])  # fmt: skip
     if len(tune) != N_CUSTOMERS or len(test) != N_CUSTOMERS:
-        print(f"{contestant}: skipped (out_of_box tune {len(tune)}, test {len(test)})")
+        print(f"{contestant}: skipped ({source} tune {len(tune)}, test {len(test)})")
         return None
     p_tune = np.array([r["p_default"] for r in tune])
     y_tune = np.array([r["label"] for r in tune], dtype=float)
@@ -109,11 +117,11 @@ def recalibrate(contestant: str) -> dict | None:
     q_test = np.clip(model.predict(np.array([r["p_default"] for r in test])), 0.0, 1.0)
 
     versions = sorted({r["model_version"] for r in test})
-    suffix = f"recalibrated: {info['chosen']} fit on tune out_of_box ({CV_FOLDS}-fold CV choice)"
+    suffix = f"{target}: {info['chosen']} fit on tune {source} ({CV_FOLDS}-fold CV choice)"
     ts = utc_now()
     new = [
         make_record(
-            id=r["id"], split="test", contestant=contestant, condition="recalibrated",
+            id=r["id"], split="test", contestant=contestant, condition=target,
             model_version=f"{r['model_version']}; {suffix}", p_default=float(q),
             label=r["label"], latency_ms=r["latency_ms"], cost_usd=r["cost_usd"], ts=ts,
         )
@@ -129,11 +137,13 @@ def recalibrate(contestant: str) -> dict | None:
 
 def main() -> None:
     summary = json.loads(OUT_JSON.read_text("utf-8")) if OUT_JSON.exists() else {}
-    for contestant in AI_CONTESTANTS:
+    jobs = [(c, "out_of_box", "recalibrated") for c in AI_CONTESTANTS]
+    jobs += [(c, "trained", "trained_calibrated") for c in M6_CONTESTANTS]
+    for contestant, source, target in jobs:
         if not (ROOT / "results" / "predictions" / f"{contestant}.jsonl").exists():
             print(f"{contestant}: no predictions file yet")
             continue
-        info = recalibrate(contestant)
+        info = recalibrate(contestant, source, target)
         if info:
             summary[contestant] = info
     OUT_JSON.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")

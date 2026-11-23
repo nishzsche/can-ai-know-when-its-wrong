@@ -1,8 +1,8 @@
-# L4 runbook: M2 smoke tests, then M3 GPU runs
+# L4 runbook: M2 smoke tests, M3 GPU runs, M6 fine-tuning
 
 Everything in this project that needs the GPU, in order. Read `STATUS.md` first (setup, `/home` persistence, money). The L4 bills per second, so don't leave it idle.
 
-**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Step 5 done (2026-11-22, 22:35–23:31Z)** on a new instance (`jl-584335`): the disguise check for Kev-4B, Kev-0.8B and Qwen, and the layout check (`--variant aligned`, tune) for Kev-4B, Kev-0.8B, Qwen and Laya, at the same weights and setup as M3 (Kev without flash-linear-attention, vLLM 0.34.0). Results are in `results/checks/disguise/` and `results/checks/disguise_summary.json`. Nothing else in the runbook needs the GPU.
+**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Step 5 done (2026-11-22, 22:35–23:31Z)** on a new instance (`jl-584335`): the disguise check for Kev-4B, Kev-0.8B and Qwen, and the layout check (`--variant aligned`, tune) for Kev-4B, Kev-0.8B, Qwen and Laya, at the same weights and setup as M3 (Kev without flash-linear-attention, vLLM 0.34.0). Results are in `results/checks/disguise/` and `results/checks/disguise_summary.json`. **Step 6 (M6, the fair fight) is next:** fine-tune Kev-0.8B, Laya, Kev-4B and Qwen on `train` and score them (PLAN.md §11).
 
 - **API contestants** (Jev, GPT-6.2 Sol) run on the laptop, not here.
 - **No API key needed:** this runbook uses no API key, so the L4 needs no `.env`.
@@ -174,3 +174,112 @@ git add results/checks/disguise && git commit -m "Disguise and layout checks: Ke
 - **Qwen:** `851bf6e8`, with thinking off.
 
 The control run on the original summaries makes any change from the disguise visible against noise.
+
+## 6. M6: the fair fight, fine-tuning on `train` (added 2026-11-23)
+
+PLAN.md §11 has the design and the flagged choices. In short: Kev-0.8B, Laya, Kev-4B and Qwen each learn from the 20,000 `train` customers with the maker's default settings, then answer the usual `tune` and `test` questions as condition `trained`. Jev and Sol run on the laptop (examples in the prompt), not here. Nothing here is tuned on `test`.
+
+**Gate:** `PREDICTIONS.md` has the author's M6 guesses, committed before any full run (smoke runs are fine).
+
+**Order and time** (estimates; measure in the first minutes of each run): Kev-0.8B (~20–30 min) → Laya (~10–20 min) → Kev-4B (~1–2 h) → Qwen (~1–2 h). Scoring is ~0.05–0.2 s per customer, so 4,000 customers take 5–15 min per model. **If Kev-4B's or Qwen's first-epoch ETA is over 3 hours, stop and ask the author** (PLAN.md §11, compute).
+
+### 6.0 Once per instance
+
+The repo is public, so cloning needs no login; pushing results does (`gh auth login`, as in STATUS.md).
+
+```bash
+source /home/env.sh
+cd /home/can-ai-know-when-its-wrong && git pull
+uv sync --group runners --group laya --group training
+uv run --group runners --group laya --group training pytest -q      # all pass
+uv run python data/render.py --split train                            # 20,000 summaries (git-ignored)
+uv run --group runners python training/export.py                      # training/data/{kev,laya,qwen}_train.jsonl
+mkdir -p /home/runs /home/logs
+```
+
+Kev's own environment is step 1 (`/home/kev` at commit `65b1e763`). For speed, try `uv pip install flash-linear-attention` in both `/home/kev` and this repo's venv; it affects speed only, so skip it if it won't build.
+
+### 6.1 Kev-0.8B
+
+```bash
+cd /home/kev
+REL=jaredpalmer/kev-0.8b@788ddbdd65715bb03a56788c822f6c632c9a551d
+# 1. The released checkpoint's architecture settings; kev.train refuses a warm start that differs.
+uv run python -c "from kev.checkpoint import Checkpoint; print(Checkpoint('$REL').meta)"
+#    Use its `base` for --base, and pass --head_dim / --option_isolation / --special_embeddings /
+#    --lora / --base_revision whenever they differ from kev.train's defaults (256 / 0 / 0 / 16 / unset).
+BASE=<meta.base>     # e.g. Qwen/Qwen3.5-0.8B-Base
+ARGS="--data /home/can-ai-know-when-its-wrong/training/data/kev_train.jsonl --base $BASE --init_from $REL \
+  --epochs 1 --lr 2e-5 --batch 1 --accum 8 --dtype bf16 --checkpointing 1 --device cuda --seed 0"
+# 2. Smoke: 5 optimizer steps, then delete it.
+uv run python -m kev.train $ARGS --max_steps 5 --out /home/runs/kev-0.8b-smoke && rm -rf /home/runs/kev-0.8b-smoke
+# 3. The real run (one epoch over all 20,000), logged.
+uv run python -m kev.train $ARGS --out /home/runs/kev-0.8b-ft 2>&1 | tee /home/logs/kev-0.8b-ft.log
+# 4. Serve it at temperature 1.0 (window 1) ...
+KEV_TEMPERATURE=1.0 uv run --extra serve python -m kev.serve --run /home/runs/kev-0.8b-ft --port 8009
+```
+
+```bash
+# ... and score it (window 2). The runner refuses a server that isn't at temperature 1.0.
+cd /home/can-ai-know-when-its-wrong
+uv run python runners/kev.py --size 0.8b --finetuned /home/runs/kev-0.8b-ft --split tune
+uv run python runners/kev.py --size 0.8b --finetuned /home/runs/kev-0.8b-ft --split test
+```
+
+Then stop the server (`pkill -f "kev.serve"` on its own line). Check the runner's summary line: mean p near the actual rate (~0.22) is expected after training on the natural rate; many exactly-0-or-1 values aren't.
+
+### 6.2 Laya (in-process)
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+uv run --group laya python training/laya_ft.py --out /home/runs/laya-smoke --limit 64 --epochs 1 --device cuda \
+  && rm -rf /home/runs/laya-smoke /home/runs/laya-smoke-data.jsonl
+uv run --group laya python training/laya_ft.py --out /home/runs/laya-ft --device cuda 2>&1 | tee /home/logs/laya-ft.log
+uv run --group laya python runners/laya_classic.py --checkpoint /home/runs/laya-ft --split tune --device cuda
+uv run --group laya python runners/laya_classic.py --checkpoint /home/runs/laya-ft --split test --device cuda
+```
+
+`laya.train` warns if predictions collapsed to the class prior (a near-constant output); if it does, stop and tell the author rather than adding epochs.
+
+### 6.3 Kev-4B
+
+The same as 6.1 with `REL=jaredpalmer/kev-4b@591dcb5bd6d05eb0b5131ea6608f93f10243335c`, its own `meta.base` (Qwen3.5-4B-Base), `/home/runs/kev-4b-ft`, and `runners/kev.py --size 4b`. Watch the first log lines for the step rate: one epoch is 2,500 optimizer steps (20,000 ÷ 8).
+
+### 6.4 Qwen3.5-4B
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+G="--group runners --group training"
+# 1. Readout check: the base model in-process must reproduce M3's zero-shot numbers (vLLM) on 50
+#    tune customers. It writes results/checks/qwen_inprocess_check.json and stops on a FAIL.
+uv run $G python runners/qwen_ft.py --zero-shot-check 50
+# 2. Smoke, then the real run (one epoch, 1,250 optimizer steps of 16 customers).
+uv run $G python training/qwen_lora.py --out /home/runs/qwen-smoke --limit 64 --max-steps 4 && rm -rf /home/runs/qwen-smoke
+uv run $G python training/qwen_lora.py --out /home/runs/qwen-ft 2>&1 | tee /home/logs/qwen-ft.log
+# 3. Score.
+uv run $G python runners/qwen_ft.py --adapter /home/runs/qwen-ft --split tune
+uv run $G python runners/qwen_ft.py --adapter /home/runs/qwen-ft --split test
+```
+
+If the readout check fails, don't score anything: commit the check file and tell the author.
+
+### 6.5 Optional second epoch (PLAN.md §11, choice 1)
+
+Only for a model whose first epoch took under an hour. Train one more epoch from the saved weights (Kev: `--init_from /home/runs/<name>-ft --out /home/runs/<name>-ft-e2`; Qwen: `--init-adapter /home/runs/qwen-ft --out /home/runs/qwen-ft-e2`), score **tune only** with `--out-dir results/checks/m6_epoch2`, and keep the second epoch only if its tune log loss is lower. If it is, move the first epoch's predictions file to `results/checks/m6_epoch1/` and score both splits with the second. Never look at test to decide.
+
+### 6.6 Wrap up
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+uv run --group runners python runners/manifest.py --m6 --allow-incomplete   # Jev/Sol come from the laptop
+# Keep the trained weights for reproduction: one GitHub release, one archive per model.
+cd /home/runs && for r in kev-0.8b-ft kev-4b-ft laya-ft qwen-ft; do tar czf /home/$r.tar.gz $r; done
+gh release create m6-weights --repo nishzsche/can-ai-know-when-its-wrong --title "M6 trained weights" \
+  --notes "Fine-tuned on the 20,000 train customers (PLAN.md §11)." /home/*-ft.tar.gz
+cd /home/can-ai-know-when-its-wrong
+git add results/predictions results/checks results/run_manifest_m6.json
+git commit -m "M6: fine-tuned Kev-0.8B, Laya, Kev-4B and Qwen on train; tune and test predictions"
+git push
+```
+
+Each archive must be under 2 GB (Laya's full weights are ~1.7 GB). Then pause or delete the instance. `recalibrate.py` and the analysis run on the laptop.

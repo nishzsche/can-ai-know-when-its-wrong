@@ -1,0 +1,38 @@
+[
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)",
+    "started": "2026-11-23T14:12:35Z",
+    "split": "tune",
+    "conditions": [
+      "trained"
+    ],
+    "limit": 20,
+    "workers": 4,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 18.0,
+    "examples_version": "v1",
+    "k": 20,
+    "intro": "Examples: the {k} customers from the same portfolio whose accounts are most similar to the one below, most similar first, and whether each missed next month's payment.",
+    "example_header": "Example {n}. Missed next month's payment: {outcome}",
+    "target_header": "The account summary to assess:"
+  }
+]

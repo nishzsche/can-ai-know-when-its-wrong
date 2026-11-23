@@ -7,6 +7,8 @@ raw responses for audit, and resumes where it stopped.
     --smoke              20 tune customers, written to results/smoke/ (the M2 check)
     --split test         full split, written to results/predictions/ (M3)
     --condition both     out_of_box and base_rate (default); `recalibrated` is computed in M4
+    --condition trained  M6: a model that learned from `train` (fine-tuned, or shown examples);
+                         it answers the out_of_box request unless the runner supplies its own
 
 Every contestant gets the identical request from data/rendered/<split>.jsonl.
 """
@@ -40,6 +42,7 @@ from records import (  # noqa: E402
 RENDER_DIR = ROOT / "data" / "rendered"
 SMOKE_DIR = ROOT / "results" / "smoke"
 RUN_CONDITIONS = ("out_of_box", "base_rate")
+TRAINED = "trained"  # M6: same request as out_of_box, asked of a model that learned from `train`
 L4_USD_PER_HOUR = 0.44  # JarvisLabs on-demand L4, checked 2026-11-22
 
 
@@ -118,7 +121,7 @@ def build_parser(description: str) -> argparse.ArgumentParser:
         description=description, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--split", choices=["tune", "test"], default="tune")
-    ap.add_argument("--condition", choices=[*RUN_CONDITIONS, "both"], default="both")
+    ap.add_argument("--condition", choices=[*RUN_CONDITIONS, "both", TRAINED], default="both")
     ap.add_argument("--limit", type=int, help="only the first N customers of the split")
     ap.add_argument("--smoke", action="store_true", help="20 tune customers into results/smoke/")
     ap.add_argument(
@@ -138,6 +141,14 @@ def resolve_args(args: argparse.Namespace) -> argparse.Namespace:
         args.out_dir = SMOKE_DIR if args.smoke else PREDICTIONS_DIR
     args.conditions = RUN_CONDITIONS if args.condition == "both" else (args.condition,)
     return args
+
+
+def request_for(row: dict, condition: str) -> dict:
+    """The request a condition sends. `trained` reuses out_of_box unless the row carries its own
+    (the examples runner puts the summary-plus-examples request there)."""
+    if condition == TRAINED and TRAINED not in row["requests"]:
+        return row["requests"]["out_of_box"]
+    return row["requests"][condition]
 
 
 def _existing(path: Path) -> tuple[set[tuple[str, str, str]], set[str]]:
@@ -242,7 +253,7 @@ def run(
 
             def attempt(row, condition=condition):
                 try:
-                    return row, predictor.predict(row["requests"][condition]), None
+                    return row, predictor.predict(request_for(row, condition)), None
                 except PredictionFailed as failure:
                     return row, None, failure
 

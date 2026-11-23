@@ -28,6 +28,7 @@ Current status, open items and decisions already made: `STATUS.md`.
 data/        load.py, render.py, splits.py, splits/{train,tune,test}.parquet, rendered/{tune,test}.jsonl, contamination.md
 baselines/   scorecard.py, gbm.py
 runners/     one script per AI contestant -> results/predictions/<contestant>.jsonl
+training/    M6: export.py, qwen_lora.py, laya_ft.py (fine-tuning on train; data/ is git-ignored)
 analysis/    metrics.py, figures.py, report.ipynb
 results/     predictions/, figures/, summary.csv, run_manifest.json
 writeup/     blog.md, deep_dive.md, carousel.md, x_post.md
@@ -61,4 +62,10 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run python analysis/robustness.py` — the review panel's statistics: equal-mass ECE, perfect-calibration noise floor, Hosmer–Lemeshow, paired AUC vs scorecard with Holm, approval at 80%, label-free shift to 22.1%, scorecard on 2,000 tune labels -> `results/robustness.json`
 - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant aligned --split tune` — layout check: each bill beside the following month's payment (tune only)
 - `uv run python analysis/figures.py` — regenerate all five charts into `results/figures/` (run the two above first)
+- **M6, the fair fight (PLAN.md §11):**
+  - `uv run python data/render.py --split train && uv run --group runners python training/export.py` builds the training files (git-ignored).
+  - `uv run python data/neighbours.py` finds each customer's 20 nearest `train` customers and writes the `neighbours-20` reference.
+  - `uv run --group runners python runners/examples.py --contestant <jev|sol> --split <tune|test>` runs Jev or Sol with 20 examples in the prompt (`--show 1` prints a request without calling the API).
+  - `training/qwen_lora.py`, `training/laya_ft.py` and Kev's `kev.train` fine-tune the models on the L4. `runners/qwen_ft.py`, `runners/kev.py --finetuned` and `runners/laya_classic.py --checkpoint` score them. Exact commands are in L4_RUNBOOK.md §6.
+  - `uv run --group runners python runners/manifest.py --m6` checks M6 coverage.
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)

@@ -1,0 +1,1038 @@
+{
+  "written_at": "2026-11-23T21:59:33Z",
+  "complete": false,
+  "git": {
+    "commit": "17cf33de86c1e9f12496fdb7f246ebef811bc93e",
+    "dirty": true
+  },
+  "data": {
+    "source_sha256": "fc08fd639888b4f83b3d816f04c18bf943012124807cc6197e654d3b31d7851a",
+    "split_seed": 20261122,
+    "base_rate_train": 0.2212,
+    "template_version": "v2",
+    "customers": {
+      "tune": 2000,
+      "test": 2000
+    }
+  },
+  "contestants": {
+    "kev-4b-ft": {
+      "present": true,
+      "complete": false,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 0,
+          "missing": 2000,
+          "unexpected": 0,
+          "complete": false
+        }
+      },
+      "cost_usd_total": 0.052193,
+      "latency_ms_median": 105.8,
+      "first_ts": "2026-11-23T19:39:25Z",
+      "last_ts": "2026-11-23T19:46:27Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0",
+          "started": "2026-11-23T19:39:19Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 0,
+                  "kept": 0,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 0,
+                  "cached_states": 0,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 0,
+                  "requests": 0,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 0,
+                  "kept": 0,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 0,
+                  "cached_states": 0,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 0,
+                  "requests": 0,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0",
+          "started": "2026-11-23T19:42:56Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 4,
+                  "kept": 4,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2000,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2000,
+                  "requests": 2000,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 4,
+                  "kept": 4,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2000,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2000,
+                  "requests": 2000,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44
+        }
+      ]
+    },
+    "kev-0.8b-ft": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.012175,
+      "latency_ms_median": 23.3,
+      "first_ts": "2026-11-23T16:31:08Z",
+      "last_ts": "2026-11-23T19:55:32Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0",
+          "started": "2026-11-23T16:31:02Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 0,
+                  "kept": 0,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 0,
+                  "cached_states": 0,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 0,
+                  "requests": 0,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 0,
+                  "kept": 0,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 0,
+                  "cached_states": 0,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 0,
+                  "requests": 0,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0",
+          "started": "2026-11-23T16:31:55Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 4,
+                  "kept": 4,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2000,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2000,
+                  "requests": 2000,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": {
+                  "captured": 4,
+                  "kept": 4,
+                  "pending": 0,
+                  "failed": 0
+                },
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2000,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2000,
+                  "requests": 2000,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44
+        }
+      ]
+    },
+    "qwen-ft": {
+      "present": true,
+      "complete": false,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 0,
+          "missing": 2000,
+          "unexpected": 0,
+          "complete": false
+        }
+      },
+      "cost_usd_total": 0.056729,
+      "latency_ms_median": 116.5,
+      "first_ts": "2026-11-23T21:48:16Z",
+      "last_ts": "2026-11-23T21:56:14Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "started": "2026-11-23T21:48:15Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "started": "2026-11-23T21:52:19Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    },
+    "laya-ft": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037",
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00839,
+      "latency_ms_median": 17.0,
+      "first_ts": "2026-11-23T17:14:13Z",
+      "last_ts": "2026-11-23T19:55:33Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037",
+          "started": "2026-11-23T17:14:13Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44
+        },
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037",
+          "started": "2026-11-23T17:14:53Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 580.126.20",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44
+        }
+      ]
+    },
+    "jev-examples": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "typesafe/jev-1.14-20261014; 20 train examples (examples v1)",
+        "typesafe/jev-1.14-20261014; 20 train examples (examples v1); trained_calibrated: isotonic fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.858119,
+      "latency_ms_median": 447.3,
+      "first_ts": "2026-11-23T15:23:01Z",
+      "last_ts": "2026-11-23T19:55:33Z",
+      "runs": [
+        {
+          "model_version": "typesafe/jev-1.14-20261014; 20 train examples (examples v1)",
+          "started": "2026-11-23T15:23:01Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 4,
+          "environment": {
+            "python": "3.12.10",
+            "platform": "Windows-11-10.0.26340-SP0",
+            "gpu": null,
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "requested": "jev-latest",
+          "resolved": "typesafe/jev-1.14-20261014",
+          "request_model": "typesafe/jev-1.14-20261014",
+          "provider": "TypeSafe",
+          "base_url": "https://openrouter.ai/api/v1",
+          "examples_version": "v1",
+          "k": 20,
+          "intro": "Examples: the {k} customers from the same portfolio whose accounts are most similar to the one below, most similar first, and whether each missed next month's payment.",
+          "example_header": "Example {n}. Missed next month's payment: {outcome}",
+          "target_header": "The account summary to assess:"
+        },
+        {
+          "model_version": "typesafe/jev-1.14-20261014; 20 train examples (examples v1)",
+          "started": "2026-11-23T15:26:56Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 4,
+          "environment": {
+            "python": "3.12.10",
+            "platform": "Windows-11-10.0.26340-SP0",
+            "gpu": null,
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "requested": "jev-latest",
+          "resolved": "typesafe/jev-1.14-20261014",
+          "request_model": "typesafe/jev-1.14-20261014",
+          "provider": "TypeSafe",
+          "base_url": "https://openrouter.ai/api/v1",
+          "examples_version": "v1",
+          "k": 20,
+          "intro": "Examples: the {k} customers from the same portfolio whose accounts are most similar to the one below, most similar first, and whether each missed next month's payment.",
+          "example_header": "Example {n}. Missed next month's payment: {outcome}",
+          "target_header": "The account summary to assess:"
+        }
+      ]
+    },
+    "sol-examples": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)",
+        "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 40.953952,
+      "latency_ms_median": 2402.9,
+      "first_ts": "2026-11-23T15:30:52Z",
+      "last_ts": "2026-11-23T19:55:33Z",
+      "runs": [
+        {
+          "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)",
+          "started": "2026-11-23T15:30:50Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 4,
+          "environment": {
+            "python": "3.12.10",
+            "platform": "Windows-11-10.0.26340-SP0",
+            "gpu": null,
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "model": "openai/gpt-6.2-sol",
+          "reasoning_effort": "medium",
+          "seed": 0,
+          "prompt_version": "v1",
+          "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+          "base_url": "https://openrouter.ai/api/v1",
+          "requests_per_minute_cap": 18.0,
+          "examples_version": "v1",
+          "k": 20,
+          "intro": "Examples: the {k} customers from the same portfolio whose accounts are most similar to the one below, most similar first, and whether each missed next month's payment.",
+          "example_header": "Example {n}. Missed next month's payment: {outcome}",
+          "target_header": "The account summary to assess:"
+        },
+        {
+          "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)",
+          "started": "2026-11-23T17:21:59Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 4,
+          "environment": {
+            "python": "3.12.10",
+            "platform": "Windows-11-10.0.26340-SP0",
+            "gpu": null,
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "model": "openai/gpt-6.2-sol",
+          "reasoning_effort": "medium",
+          "seed": 0,
+          "prompt_version": "v1",
+          "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+          "base_url": "https://openrouter.ai/api/v1",
+          "requests_per_minute_cap": 18.0,
+          "examples_version": "v1",
+          "k": 20,
+          "intro": "Examples: the {k} customers from the same portfolio whose accounts are most similar to the one below, most similar first, and whether each missed next month's payment.",
+          "example_header": "Example {n}. Missed next month's payment: {outcome}",
+          "target_header": "The account summary to assess:"
+        }
+      ]
+    },
+    "neighbours-20": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "20 nearest train customers (amounts: sign(x)*log1p(|x|); codes as numbers; z-scored on train; Euclidean); train a71432385d26",
+        "20 nearest train customers (amounts: sign(x)*log1p(|x|); codes as numbers; z-scored on train; Euclidean); train a71432385d26; trained_calibrated: isotonic fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.0,
+      "latency_ms_median": 0.1,
+      "first_ts": "2026-11-23T14:10:55Z",
+      "last_ts": "2026-11-23T19:55:33Z",
+      "runs": []
+    },
+    "kumo-tabular": {
+      "present": true,
+      "complete": false,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows)"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 0,
+          "missing": 2000,
+          "unexpected": 0,
+          "complete": false
+        }
+      },
+      "cost_usd_total": 0.013337,
+      "latency_ms_median": 27.3,
+      "first_ts": "2026-11-23T21:58:00Z",
+      "last_ts": "2026-11-23T21:58:54Z",
+      "runs": []
+    },
+    "tabicl-v2": {
+      "present": true,
+      "complete": false,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows)"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 0,
+          "missing": 2000,
+          "unexpected": 0,
+          "complete": false
+        }
+      },
+      "cost_usd_total": 0.001238,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-23T21:59:20Z",
+      "last_ts": "2026-11-23T21:59:25Z",
+      "runs": []
+    }
+  }
+}

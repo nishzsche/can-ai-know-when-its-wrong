@@ -1,0 +1,198 @@
+[
+  {
+    "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0",
+    "started": "2026-11-23T19:39:19Z",
+    "split": "tune",
+    "conditions": [
+      "trained"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 580.126.20",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "server_models": {
+      "models": [
+        {
+          "name": "kev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-4b-ft",
+          "base": "Qwen/Qwen3.5-4B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 0,
+            "kept": 0,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 0,
+            "cached_states": 0,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 0,
+            "requests": 0,
+            "queued": 0
+          }
+        },
+        {
+          "name": "jev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-4b-ft",
+          "base": "Qwen/Qwen3.5-4B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 0,
+            "kept": 0,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 0,
+            "cached_states": 0,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 0,
+            "requests": 0,
+            "queued": 0
+          }
+        }
+      ]
+    },
+    "base_url": "http://127.0.0.1:8009",
+    "usd_per_hour": 0.44
+  },
+  {
+    "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0",
+    "started": "2026-11-23T19:42:56Z",
+    "split": "test",
+    "conditions": [
+      "trained"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-71-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 580.126.20",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "server_models": {
+      "models": [
+        {
+          "name": "kev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-4b-ft",
+          "base": "Qwen/Qwen3.5-4B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 4,
+            "kept": 4,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 2000,
+            "cached_states": 4,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 2000,
+            "requests": 2000,
+            "queued": 0
+          }
+        },
+        {
+          "name": "jev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-4b-ft",
+          "base": "Qwen/Qwen3.5-4B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 4,
+            "kept": 4,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 2000,
+            "cached_states": 4,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 2000,
+            "requests": 2000,
+            "queued": 0
+          }
+        }
+      ]
+    },
+    "base_url": "http://127.0.0.1:8009",
+    "usd_per_hour": 0.44
+  }
+]

@@ -5,10 +5,14 @@ finishes) are drawn as "pending" panels or left out, so this can run again later
 
     uv run python analysis/figures.py
 
-Design: reference palette (dataviz skill, light mode), first six categorical slots in their
-documented order for the AI contestants; baselines in neutral grays as references. One colour
-per contestant across every figure. Direct labels everywhere (three of the slots sit below 3:1
+Design: reference palette (dataviz skill), first six categorical slots in their documented
+order for the AI contestants; baselines in neutral grays as references. One colour per
+contestant across every figure. Direct labels everywhere (three of the slots sit below 3:1
 contrast on the light surface). Sized for phones (4:5 portrait or 1:1).
+
+Each figure is drawn twice: light, and a `-dark.png` version for the blog's dark mode, using the
+palette's dark steps of the same hues on the blog's dark background (validated with the dataviz
+skill's validate_palette.js against #18181b: all checks pass).
 """
 
 from __future__ import annotations
@@ -60,6 +64,34 @@ NAME = {
     "qwen-logprobs": "Qwen3.5-4B", "frontier-verbal": "GPT-6.2 Sol",
     "scorecard": "Scorecard", "gbm": "Gradient boosting",
 }  # fmt: skip
+
+# Dark mode: the palette's dark steps of the same hues; the baselines swap gray steps so the
+# scorecard stays the more prominent reference. Light stays the module default, because
+# writeup/build_carousel.py imports these tokens.
+LIGHT = {"SURFACE": SURFACE, "INK": INK, "INK_2": INK_2, "MUTED": MUTED, "GRID": GRID,
+         "AXIS": AXIS, "COLOR": dict(COLOR)}  # fmt: skip
+DARK = {
+    "SURFACE": "#18181b",  # the blog's dark background, so the chart sits flush on the page
+    "INK": "#f0efec", "INK_2": "#c3c2b7", "MUTED": "#898781", "GRID": "#2c2c2a", "AXIS": "#4a4a46",
+    "COLOR": {
+        "jev": "#3987e5", "kev-4b": "#d95926", "kev-0.8b": "#199e70", "laya": "#c98500",
+        "qwen-logprobs": "#d55181", "frontier-verbal": "#9085e9",
+        "scorecard": "#c3c2b7", "gbm": "#898781",
+    },
+}  # fmt: skip
+SUFFIX = ""  # added to every saved file name: "" for light, "-dark" for dark
+
+
+def set_theme(dark: bool) -> None:
+    global SURFACE, INK, INK_2, MUTED, GRID, AXIS, COLOR, SUFFIX
+    t = DARK if dark else LIGHT
+    SURFACE, INK, INK_2 = t["SURFACE"], t["INK"], t["INK_2"]
+    MUTED, GRID, AXIS = t["MUTED"], t["GRID"], t["AXIS"]
+    COLOR = dict(t["COLOR"])
+    SUFFIX = "-dark" if dark else ""
+    style()
+
+
 BASE_CONDITION = {"scorecard": "trained", "gbm": "trained"}
 FOOTNOTE = (
     "Test set: 2,000 real credit card customers (UCI, Taiwan 2005), 22.1% defaulted.\n"
@@ -106,7 +138,7 @@ def footer(fig, text: str = FOOTNOTE) -> None:
 
 def save(fig, name: str) -> Path:
     FIG_DIR.mkdir(parents=True, exist_ok=True)
-    path = FIG_DIR / name
+    path = FIG_DIR / name.replace(".png", f"{SUFFIX}.png")
     fig.savefig(path, dpi=200)
     plt.close(fig)
     return path
@@ -164,7 +196,17 @@ def fig_reliability(rows, detail, condition: str = "out_of_box") -> Path:
 
 STAGES = (("out_of_box", "Out of the box", "o", "none"),
           ("base_rate", "Told the base rate", "^", None),
-          ("recalibrated", "Recalibrated on tune", "o", None))  # fmt: skip
+          ("recalibrated", "Recalibrated", "o", None))  # fmt: skip
+SHIFT_LABEL = "Shifted to 22.1%"  # label-free: one fixed shift until the numbers average the rate
+
+
+def label_free_shift() -> dict[str, float]:
+    """ECE after shifting each model's numbers to average the real default rate (robustness.py)."""
+    path = ROOT / "results" / "robustness.json"
+    if not path.exists():
+        return {}
+    shift = json.loads(path.read_text()).get("label_free_shift", {})
+    return {c: v["ece_after"] for c, v in shift.items()}
 
 
 def noise_floor(contestants) -> float | None:
@@ -183,8 +225,13 @@ def fig_honesty_arc(rows) -> Path:
     fig, ax = plt.subplots(figsize=(7.2, 7.2))
     fig.subplots_adjust(left=0.2, right=0.95, top=0.8, bottom=0.17)
     order = sorted(present, key=lambda c: rows[(c, "out_of_box")]["ece"])
+    shift = label_free_shift()
     for y, c in enumerate(order):
         xs = [rows[(c, s)]["ece"] for s, *_ in STAGES if (c, s) in rows]
+        if c in shift:
+            xs.append(shift[c])
+            ax.plot(shift[c], y - 0.17, marker="D", ms=7.5, color=COLOR[c], mfc="none", mew=2,
+                    mec=COLOR[c], ls="none", zorder=3)  # fmt: skip
         ax.plot([min(xs), max(xs)], [y, y], color=COLOR[c], lw=2, alpha=0.35, zorder=2)
         for s, _, marker, face in STAGES:
             if (c, s) in rows:
@@ -214,11 +261,14 @@ def fig_honesty_arc(rows) -> Path:
     handles = [plt.Line2D([], [], marker=mk, ls="none", ms=9, color=INK_2,
                           mfc=f or INK_2, mew=2, mec=INK_2, label=lab)
                for _, lab, mk, f in STAGES]  # fmt: skip
-    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.42, 1.09), ncol=3,
-              fontsize=9.5, handletextpad=0.3, columnspacing=1.2)  # fmt: skip
+    if shift:
+        handles.insert(2, plt.Line2D([], [], marker="D", ls="none", ms=7.5, color=INK_2,
+                                     mfc="none", mew=2, mec=INK_2, label=SHIFT_LABEL))  # fmt: skip
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.42, 1.12), ncol=2,
+              fontsize=9.5, handletextpad=0.3, columnspacing=1.6)  # fmt: skip
     header(fig, "The honesty arc",
            "How far each AI's probabilities are from the truth, and what fixes it.\n"
-           "Recalibration needs labelled data (2,000 tune customers).")  # fmt: skip
+           "Shifting needs only the default rate; recalibrating needs 2,000 labels.")  # fmt: skip
     footer(fig)
     return save(fig, "2_honesty_arc.png")
 
@@ -340,11 +390,12 @@ def fig_cost(rows) -> Path:
 
 
 def main() -> None:
-    style()
     rows, detail = load()
-    for path in (fig_reliability(rows, detail), fig_honesty_arc(rows), fig_ranking(rows),
-                 fig_risk_bands(rows, detail), fig_cost(rows)):  # fmt: skip
-        print(f"Saved -> {path}")
+    for dark in (False, True):
+        set_theme(dark)
+        for path in (fig_reliability(rows, detail), fig_honesty_arc(rows), fig_ranking(rows),
+                     fig_risk_bands(rows, detail), fig_cost(rows)):  # fmt: skip
+            print(f"Saved -> {path}")
 
 
 if __name__ == "__main__":

@@ -61,7 +61,7 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run python analysis/explain.py` — why the results look as they do: by repayment status, prediction spread, and calibration at other default rates -> `results/explain.json`
 - `uv run python analysis/robustness.py` — the review panel's statistics: equal-mass ECE, perfect-calibration noise floor, Hosmer–Lemeshow, paired AUC vs scorecard with Holm, approval at 80%, label-free shift to 22.1%, scorecard on 2,000 tune labels -> `results/robustness.json`
 - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant aligned --split tune` — layout check: each bill beside the following month's payment (tune only)
-- `uv run python analysis/figures.py` — regenerate all five charts into `results/figures/` (run the two above first)
+- `uv run python analysis/figures.py` — regenerate all five charts into `results/figures/`, each as a light and a `-dark.png` version for the blog's dark mode (run the two above first)
 - **M6, the fair fight (PLAN.md §11):**
   - `uv run python data/render.py --split train && uv run --group runners python training/export.py` builds the training files (git-ignored).
   - `uv run python data/neighbours.py` finds each customer's 20 nearest `train` customers and writes the `neighbours-20` reference.

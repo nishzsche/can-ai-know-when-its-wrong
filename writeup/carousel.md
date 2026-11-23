@@ -103,6 +103,6 @@ Written for anyone, tech or not: every term is explained the first time it appea
 - Check that its percentages come true, not just that it ranks well
 - Shift its numbers to your own default rate: no past outcomes needed
 - Then correct them with your own past outcomes (2,000 customers was enough)
-- Test on data it can't have seen before
+- Test on data it can't have seen, laid out more than one way
 **Footer:** Next: why 99% accuracy can still be a disaster.
 **Visual:** text only, with the next-post teaser at the bottom.

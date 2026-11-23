@@ -5,7 +5,8 @@ next set). Reads the published M3 predictions only; no new model calls.
 
 For each model on the 2,000 test customers (the scorecard and LightGBM trained on 20,000; the AI
 models zero-shot, out of the box):
-- accuracy at the usual 50% cut-off, next to the "nobody defaults" model (always answer no);
+- accuracy at the usual 50% cut-off, next to the "nobody defaults" model (always answer no),
+  and the four-way count behind it (confusion matrix), at 50% and at the 20% lending cut-off;
 - the share of defaulters caught and of customers flagged at that cut-off;
 - ranking (AUC) and honesty (ECE), as in post 1;
 - a simple lending decision. Each paying customer earns 1 unit and each default costs L units
@@ -64,6 +65,14 @@ def tune_cutoff(y_tune: np.ndarray, p_tune: np.ndarray, loss: float) -> float:
     return float(max(np.unique(p_tune), key=lambda t: profit(y_tune, p_tune <= t, loss)))
 
 
+def confusion(y: np.ndarray, flag: np.ndarray) -> dict:
+    """The four-way count (confusion matrix), with "flagged" meaning "predicted to default"."""
+    return {"defaulters_caught": int((flag & (y == 1)).sum()),
+            "defaulters_missed": int((~flag & (y == 1)).sum()),
+            "payers_turned_away": int((flag & (y == 0)).sum()),
+            "payers_approved": int((~flag & (y == 0)).sum())}  # fmt: skip
+
+
 def build() -> dict:
     y_test, _ = get("scorecard", "trained", "test")
     rate = float(y_test.mean())
@@ -71,6 +80,7 @@ def build() -> dict:
            "break_even_loss_ratio": (1 - rate) / rate,
            "approve_everyone": {str(L): profit(y_test, np.ones(len(y_test), bool), L)
                                 for L in LOSS_RATIOS},
+           "always_no_confusion": confusion(y_test, np.zeros(len(y_test), bool)),
            "models": {}}  # fmt: skip
     for contestant, condition in MODELS:
         y, p = get(contestant, condition, "test")
@@ -86,6 +96,8 @@ def build() -> dict:
             "ece": m.ece(y, p),
             "mean_predicted": float(p.mean()),
             "decisions": {},
+            # at the usual 50% cut-off, and at the 4:1 lending cut-off (flag at 20% or more)
+            "confusion": {"50": confusion(y, flag), "20": confusion(y, p >= 0.2)},
         }
         for L in LOSS_RATIOS:
             own = p < 1 / (1 + L)

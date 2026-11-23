@@ -8,6 +8,12 @@
     "6": -547.0,
     "10": -1431.0
   },
+  "always_no_confusion": {
+    "defaulters_caught": 0,
+    "defaulters_missed": 442,
+    "payers_turned_away": 0,
+    "payers_approved": 1558
+  },
   "models": {
     "scorecard": {
       "condition": "trained",
@@ -50,6 +56,20 @@
             "approve": 0.271,
             "profit": 78.5
           }
+        }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 151,
+          "defaulters_missed": 291,
+          "payers_turned_away": 74,
+          "payers_approved": 1484
+        },
+        "20": {
+          "defaulters_caught": 272,
+          "defaulters_missed": 170,
+          "payers_turned_away": 309,
+          "payers_approved": 1249
         }
       }
     },
@@ -95,6 +115,20 @@
             "profit": 91.0
           }
         }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 160,
+          "defaulters_missed": 282,
+          "payers_turned_away": 68,
+          "payers_approved": 1490
+        },
+        "20": {
+          "defaulters_caught": 294,
+          "defaulters_missed": 148,
+          "payers_turned_away": 360,
+          "payers_approved": 1198
+        }
       }
     },
     "frontier-verbal": {
@@ -138,6 +172,20 @@
             "approve": 0.0365,
             "profit": -7.5
           }
+        }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 205,
+          "defaulters_missed": 237,
+          "payers_turned_away": 130,
+          "payers_approved": 1428
+        },
+        "20": {
+          "defaulters_caught": 314,
+          "defaulters_missed": 128,
+          "payers_turned_away": 457,
+          "payers_approved": 1101
         }
       }
     },
@@ -183,6 +231,20 @@
             "profit": -12.5
           }
         }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 177,
+          "defaulters_missed": 265,
+          "payers_turned_away": 120,
+          "payers_approved": 1438
+        },
+        "20": {
+          "defaulters_caught": 394,
+          "defaulters_missed": 48,
+          "payers_turned_away": 1168,
+          "payers_approved": 390
+        }
       }
     },
     "qwen-logprobs": {
@@ -226,6 +288,20 @@
             "approve": 0.008,
             "profit": -8.5
           }
+        }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 193,
+          "defaulters_missed": 249,
+          "payers_turned_away": 114,
+          "payers_approved": 1444
+        },
+        "20": {
+          "defaulters_caught": 428,
+          "defaulters_missed": 14,
+          "payers_turned_away": 1468,
+          "payers_approved": 90
         }
       }
     },
@@ -271,6 +347,20 @@
             "profit": 0.5
           }
         }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 57,
+          "defaulters_missed": 385,
+          "payers_turned_away": 85,
+          "payers_approved": 1473
+        },
+        "20": {
+          "defaulters_caught": 227,
+          "defaulters_missed": 215,
+          "payers_turned_away": 402,
+          "payers_approved": 1156
+        }
       }
     },
     "jev": {
@@ -315,6 +405,20 @@
             "profit": -12.5
           }
         }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 316,
+          "defaulters_missed": 126,
+          "payers_turned_away": 656,
+          "payers_approved": 902
+        },
+        "20": {
+          "defaulters_caught": 416,
+          "defaulters_missed": 26,
+          "payers_turned_away": 1427,
+          "payers_approved": 131
+        }
       }
     },
     "kev-4b": {
@@ -358,6 +462,20 @@
             "approve": 0.0155,
             "profit": -12.0
           }
+        }
+      },
+      "confusion": {
+        "50": {
+          "defaulters_caught": 285,
+          "defaulters_missed": 157,
+          "payers_turned_away": 740,
+          "payers_approved": 818
+        },
+        "20": {
+          "defaulters_caught": 437,
+          "defaulters_missed": 5,
+          "payers_turned_away": 1533,
+          "payers_approved": 25
         }
       }
     }

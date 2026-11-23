@@ -125,7 +125,7 @@ Readable at phone size; one consistent colour per contestant.
 2005 data from one Taiwanese bank; famous dataset that may have been seen in training; demographic fields deliberately excluded; undocumented repayment-status codes; zero-shot AI vs trained baselines; vendor models change over time (record versions and dates).
 
 ## 10. Parked for later posts
-- Synthetic insurance appetite set (insurance triage) and open document sets (ContractNLI, CUAD insurance clauses) → the document-pipeline series.
+- Synthetic insurance appetite set (insurance triage) and open document sets (ContractNLI, CUAD insurance clauses) → the document-pipeline series. Now planned as the documents arc, §12 posts 5–7.
 - English vs Tamil honesty test (IndicSentiment, IndicXNLI, DravidianCodeMix) → a later post.
 - HMDA mortgage decisions (2025 data) → possible follow-up on lending.
 
@@ -196,16 +196,68 @@ Source: a third-party round-up ([Pinggy, 2026-11-18](https://pinggy.io/blog/best
 
 ---
 
-## 12. Next posts (proposed 2026-11-23, for the author to choose)
+## 12. Next posts (proposed 2026-11-23, for the author to choose; quantization and the documents arc added 2026-11-24)
 
-Ordered so each one keeps a promise or answers a limit of the one before. Titles lead with the question, per `writeup/STYLE.md`.
+Ordered so each one keeps a promise or answers a limit of the one before. Titles lead with the question, per `writeup/STYLE.md`. Where a post matches a topic on the author's Notion list ("Content Strategy: Curiosity First, Expertise Second"), its number is given.
 
 | # | Working title | What it answers | New compute |
 |---|---|---|---|
-| 1 | **Why 99% accuracy can still be a disaster** | Promised at the end of post 1. A model that says "nobody defaults" is 78% accurate here; accuracy vs ranking (AUC) vs honesty (calibration) vs what each mistake costs a bank. Built from results already in `results/` | None. It can go out while M6 runs |
-| 2 | **The fair fight: what happens when AI gets the same 20,000 customers** | M6. Fine-tuned Kev, Qwen and Laya; Jev and Sol shown 20 look-alike customers; tabular foundation models; the scorecard and LightGBM. Twenty look-alikes alone already rank at AUC 0.764 and are nearly honest (ECE 0.023), so "does the AI add anything?" is the hook | One L4 session (~$3) plus ~$44 of API |
-| 3 | **Teaching a small model to say "I don't know"** | The sequel post 1 promised. Laya and Kev-0.8B trained with a proper-scoring reward vs plain cross-entropy, plus abstention: refer the unsure cases to a person, and see what happens to approval and default rates. Builds on M6's setup; merge into post 2 if it's short | A short L4 session |
-| 4 | **Honesty leaderboard, round 2** | The newer open decision models that fit one L4, zero-shot, on the same `test` (§11 Part B list). A short update post, or just a new README table | ~1 L4 hour; pplx Flash is free on OpenRouter |
-| 5 | **Fresh data no model has seen** | Post 1's biggest limit: Sol knows the Taiwan file. HMDA 2025 mortgage decisions (§10) can't be memorized, and they're closer to a real lending decision | A bigger project: new data, new splits, re-run the best few |
+| 1 | **Why 99% accuracy can still be a disaster** (Notion #2) | Promised at the end of post 1. A model that says "nobody defaults" is 78% accurate here; accuracy vs ranking (AUC) vs honesty (calibration) vs what each mistake costs a bank. Built from results already in `results/` | None. It can go out while M6 runs |
+| 2 | **The fair fight: what happens when AI gets the same 20,000 customers** (Notion #3) | M6. Fine-tuned Kev, Qwen and Laya; Jev and Sol shown 20 look-alike customers; tabular foundation models; the scorecard and LightGBM. Twenty look-alikes alone already rank at AUC 0.764 and are nearly honest (ECE 0.023), so "does the AI add anything?" is the hook | One L4 session (~$3) plus ~$44 of API |
+| 3 | **Does shrinking an AI model make it less honest?** (Notion #7) | Quantization (spec below). The fair fight's trained models, re-scored at full precision, 8-bit and 4-bit on the same `test`. Does ranking hold while the percentages drift? Pairs with post 1's point that accuracy alone misses what matters | ~1 L4 hour, no API |
+| 4 | **Teaching a small model to say "I don't know"** (Notion #9) | The sequel post 1 promised. Laya and Kev-0.8B trained with a proper-scoring reward vs plain cross-entropy, plus abstention: refer the unsure cases to a person, and see what happens to approval and default rates. Builds on M6's setup; merge into post 2 if it's short | A short L4 session |
+| 5 | **Does retrieval make AI more honest, or just more confident?** (documents arc, 1 of 3) | RAG on one public document set: no retrieval, good retrieval, noisy retrieval, conflicting passages, and the whole document in context. Accuracy, honesty, "I don't know" rate and cost (spec below) | API runs on public documents; a small L4 session for the open models |
+| 6 | **Can a PDF trick an AI into making a bad decision?** (Notion #4; documents arc, 2 of 3) | Hidden instructions in the same pipeline's documents (indirect prompt injection): how often they change the answer or the confidence, and which defences hold | Same set-up as post 5, plus crafted documents |
+| 7 | **Can you trust an AI to grade an AI?** (new topic; documents arc, 3 of 3) | Post 5's answers graded by AI judges and by people: agreement beyond chance, position bias, run-to-run consistency, and whether a judge's confidence is itself honest | Judge API calls; a few hundred human labels by the author |
+| 8 | **Honesty leaderboard, round 2** | The newer open decision models that fit one L4, zero-shot, on the same `test` (§11 Part B list). A short update post, or just a new README table | ~1 L4 hour; pplx Flash is free on OpenRouter |
+| 9 | **Fresh data no model has seen** | Post 1's biggest limit: Sol knows the Taiwan file. HMDA 2025 mortgage decisions (§10) can't be memorized, and they're closer to a real lending decision | A bigger project: new data, new splits, re-run the best few |
 
-After that, the series parked in §10: the insurance document pipeline and English vs Tamil.
+After that, English vs Tamil (§10). The document-pipeline series parked in §10 is now the documents arc (posts 5–7).
+
+### Post 3 spec: does shrinking an AI model make it less honest? (added 2026-11-24)
+
+**The question:** quantizing a model (storing its weights in 8 or 4 bits instead of 16) cuts its memory and serving cost, and the usual check is that accuracy holds. A model can keep its ranking while its percentages drift, which is the failure this series measures.
+
+**Setup:**
+- **Models:** the M6 trained models that run on a GPU (Kev-4B, Kev-0.8B, Qwen fine-tuned; weights from the `m6-weights` GitHub release). Optionally their zero-shot versions too, to see whether training makes a model more or less robust to shrinking.
+- **Precisions:** full (bf16, the M6 run itself), 8-bit and 4-bit, with standard off-the-shelf methods (e.g. bitsandbytes 8-bit and NF4). Pin each method's version, and use no calibration data from `test`.
+- **Data:** the same 2,000 `test` customers, the same template v2 summaries and the same readout as M6. Each model is compared only with itself, so nothing else changes between rows.
+- **Measures:**
+  - ranking (AUC, with a paired bootstrap against the full-precision model);
+  - honesty (ECE, with the noise floor);
+  - the post 2 lending profit, at the model's own percentages;
+  - GPU memory, latency and cost per 1,000 decisions.
+- **Fairness:** quantization is a deployment choice, not a new contestant. A quantized model that drifts can be recalibrated on `tune` like any other, so report both raw and recalibrated.
+
+**Done when:** every model has `test` predictions at each precision, recorded with the precision in `model_version`; one table and one chart (honesty and ranking by precision, per model).
+
+### Documents arc spec: posts 5–7 (added 2026-11-24)
+
+**Why these three:** 2026 interview guides put RAG first, then evaluation (including AI judges), agents and production judgment: cost, latency, security. These guides are career and vendor blogs, informed opinion rather than hiring data. One document pipeline, examined three ways, covers the top three areas and builds one story (Notion principle 5). It sits next to the author's insurance work, using **public data only**: nothing from an employer.
+
+**Data:** one public document set with questions whose answers are known. Candidates are CUAD (contract clauses), ContractNLI, or public insurance policy wordings with author-written questions. Check each licence before use. A frozen test split, as in post 1. Nothing is tuned on test.
+
+**Post 5, retrieval and honesty.**
+- **Conditions:** no retrieval (the model's own knowledge); good retrieval; noisy retrieval (irrelevant passages mixed in); conflicting passages; the whole document in context.
+- **Measures:**
+  - accuracy;
+  - honesty (ECE, as in post 1);
+  - how often the model says "I don't know", and whether it says it at the right times;
+  - retrieval quality (did the right passage come back);
+  - cost and latency per question.
+- **Prior work:**
+  - [NOVA, EMNLP Findings 2026](https://aclanthology.org/2026.findings-emnlp.705/): noisy or conflicting retrieval makes models more overconfident.
+  - [LaRA](https://arxiv.org/pdf/2605.10235): stronger models do better with the whole document, and retrieval handles refusals better.
+  - [Token Tax, June 2026](https://arxiv.org/html/2606.20898v1): the whole document is most accurate but about ten times the cost per question.
+
+**Post 6, the PDF trick.** Same pipeline. Plant hidden instructions in some documents (white text, metadata, alt text), as in [OpenRAG-Soc, WWW '26](https://arxiv.org/pdf/2601.10923) and [Chang et al., USENIX Security '26](https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_chang.pdf). Measure how often the answer or the confidence changes, and test simple defences: strip hidden text, quote the document as data, check against the source. Plant only harmless payloads, such as "answer 'yes'" or "say you're certain"; this is a measurement of the risk, not a toolkit.
+
+**Post 7, AI grading AI.** Post 5's free-text answers graded by two or three AI judges and by the author (a few hundred labels).
+- **Measures:**
+  - agreement beyond chance (Cohen's kappa, not raw agreement);
+  - position bias (swap the order);
+  - run-to-run consistency;
+  - whether the judge's own confidence is honest.
+- **Prior work:** [Reliability without Validity, 2026](https://arxiv.org/abs/2606.19544): raw agreement overstates judge quality, and a judge that gives the same score every time can still be heavily biased by which answer it sees first.
+
+**Done when** (per post): the experiment's predictions are recorded in the usual schema, with model versions; one table, one chart, and a draft following `writeup/STYLE.md`.

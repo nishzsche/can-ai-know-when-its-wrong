@@ -52,7 +52,7 @@ PAIRS = {
     "jev-examples": "jev",
     "sol-examples": "frontier-verbal",
 }
-TABULAR = ("kumo-tabular", "tabicl-v2", "tabpfn-3.5")
+TABULAR = ("kumo-tabular", "tabicl-v2")
 REFERENCES = ("neighbours-20",)
 BASELINES = {"scorecard": ("trained",), "gbm": ("trained", "trained_calibrated")}
 TRAINED = ("trained", "trained_calibrated")

@@ -171,7 +171,7 @@ AI built for tables: these models read the training rows themselves (in context,
 | Candidate | Maker | Licence (per the index) |
 |---|---|---|
 | Kumo-Tabular | NVIDIA | OpenMDW-1.1 (top of the index) |
-| TabPFN-3.5 | Prior Labs | non-commercial |
+| TabPFN-3.5 | Prior Labs | non-commercial: **out** (the author's decision, 2026-11-24; the licence also covers outputs) |
 | TabICLv2 | Inria SODA | BSD-3-Clause |
 | Mitra-v2 | Amazon | Apache-2.0 |
 | LimiX-2 | StableAI | non-commercial |
@@ -182,7 +182,7 @@ AI built for tables: these models read the training rows themselves (in context,
 - GPU memory on a 24 GB L4;
 - whether a non-commercial licence suits a personal blog.
 
-Then pick two or three. Recommended: Kumo-Tabular, TabPFN-3.5, and TabICLv2 or Mitra-v2. Conditions `trained` / `trained_calibrated`. They aren't text models, so they're compared with the baselines and the trained AI models, not with the zero-shot runs. They run in the same L4 session if the checks are done in time, otherwise in a short second one.
+**Chosen (2026-11-24): Kumo-Tabular and TabICLv2.** TabPFN-3.5 is out on licence; Mitra is out because no v2 exists and v1 caps at 10,000 rows; LimiX-2 was never pursued (non-commercial). Conditions `trained` / `trained_calibrated`. They aren't text models, so they're compared with the baselines and the trained AI models, not with the zero-shot runs. They run in the same L4 session if the checks are done in time, otherwise in a short second one.
 
 **Not in M6: the newer open decision models (Jev alternatives).** The strongest are 27–31B and don't fit an L4, and none publishes a fine-tuning recipe, so they can't join a trained comparison. The ones that should fit one L4 suit a cheap zero-shot "round 2" (§12, post 4):
 - Karpo Decision 4B / 2B (Apache-2.0, System One API);

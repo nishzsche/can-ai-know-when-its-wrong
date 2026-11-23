@@ -41,7 +41,13 @@ After launch, the author asked to train the AI models on the same 20,000 custome
 1. **Author: `PREDICTIONS.md` M6 guesses**, committed before any full run (the gate in L4_RUNBOOK.md §6). For example: which trained AI model is most honest, whether any beats LightGBM's AUC (0.789), and whether Jev and Sol beat their own 20 neighbours (AUC 0.764).
 2. **Author: top up OpenRouter by $30.** The balance was $21.51 on 2026-11-23; the M6 API runs need about $44.
 3. **L4: L4_RUNBOOK.md §6** (§6.0 sets up a fresh instance from zero), in the order Kev-0.8B → Laya → Kev-4B → Qwen → the tabular models (§6.7). Expected 4–6 GPU hours (~$2–3). Stop and ask if Kev-4B's or Qwen's epoch ETA is over 3 hours. The trained weights go into a GitHub release (`m6-weights`).
-4. **Laptop: Jev and Sol with examples**, after steps 1 and 2. Sol is paced at 18 requests/minute, so each split takes about 2 hours.
+4. **Laptop: Jev and Sol with examples: done (2026-11-24, 01:25 IST).** 4,000 records each, no duplicates, no failed customers. Jev $0.86, Sol $40.95 (one Sol request hung for 18 minutes; its recorded latency includes that).
+   - **Results so far** (`analysis/fair_fight.py`, test, raw `trained`; AUC gaps are paired bootstrap, Holm-corrected):
+     - Kev-0.8B fine-tuned: AUC 0.790, tied with LightGBM (+0.001, p = 1.0); ECE 0.045 (it under-predicts: 18.1% vs 22.1%), 0.014 after calibration on tune.
+     - Laya fine-tuned: AUC 0.778, tied with the scorecard; ECE 0.017, as honest as LightGBM, and 0.009 calibrated.
+     - Sol with examples: AUC 0.762, ECE 0.035. That's no better than its own 20 neighbours (0.764, 0.023), and it's behind LightGBM (p < 0.001).
+     - Jev with examples: AUC 0.743, ECE 0.106. That's below its neighbours, and behind both baselines (p = 0.014 and < 0.001).
+   - Original plan for this step: Sol is paced at 18 requests/minute, so each split takes about 2 hours.
    ```bash
    uv run --group runners python runners/examples.py --contestant jev --split tune --workers 4
    uv run --group runners python runners/examples.py --contestant jev --split test --workers 4
@@ -51,7 +57,7 @@ After launch, the author asked to train the AI models on the same 20,000 custome
 5. **Part B, tabular foundation models: checked (2026-11-23), runner `baselines/tabular_fm.py`, L4_RUNBOOK.md §6.7.**
    - **Kumo-Tabular:** NVIDIA, `nvidia/Kumo-Tabular` (large, checkpoint v1.0.1). Package `structured-data-models` 0.3.0. Weights OpenMDW-1.1, code Apache-2.0. Pretrained on up to 60,000 rows and 100 columns. Runs.
    - **TabICLv2:** Inria, `tabicl` 2.2.0, BSD-3. Checkpoint `tabicl-classifier-v2-20260212`. Pretrained on 300–48K rows. Its default settings soften its own probabilities (temperature 0.9); that's the maker's choice, so it stays. Runs.
-   - **TabPFN-3.5:** Prior Labs, `tabpfn` 10.2.0. The weights need a Prior Labs login, and the licence is non-commercial for weights *and outputs*. It runs only if the author opts in (`--accept-noncommercial-licence` plus `TABPFN_TOKEN`).
+   - **TabPFN-3.5: out** (the author's decision, 2026-11-24). Its weights need a Prior Labs login, and its licence is non-commercial for the weights *and their outputs*. It's removed from the runner and the dependencies.
    - **Laptop smoke (CPU, 500 context rows, 100 tune customers):** Kumo-Tabular *small* AUC 0.775, TabICLv2 AUC 0.788. Both code paths work; the contestant is Kumo *large* on the L4.
    - **Mitra:** dropped. No v2 exists in AutoGluon's docs, and v1 caps out at 10,000 training rows, half of what the baselines see.
 6. **After the runs:**

@@ -36,8 +36,7 @@ from records import ROOT, make_record, read_records, utc_now, write_records  # n
 
 AI_CONTESTANTS = ("jev", "kev-0.8b", "kev-4b", "laya", "qwen-logprobs", "frontier-verbal")
 M6_CONTESTANTS = ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples",
-                  "sol-examples", "neighbours-20", "kumo-tabular", "tabicl-v2",
-                  "tabpfn-3.5")  # fmt: skip
+                  "sol-examples", "neighbours-20", "kumo-tabular", "tabicl-v2")  # fmt: skip
 N_CUSTOMERS = 2000
 CV_FOLDS = 5
 SEED = 20261122

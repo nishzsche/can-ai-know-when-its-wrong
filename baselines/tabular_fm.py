@@ -18,9 +18,8 @@ Each maker's defaults (choice 1):
   is passed as numerical (the model takes only numerical features; LightGBM also reads the
   repayment codes as numbers).
 - tabicl-v2: Inria's `tabicl` package, `TabICLClassifier()` defaults. Pretrained on 300-48K rows.
-- tabpfn-3.5: Prior Labs' `tabpfn`, `TabPFNClassifier()` defaults. Its weights need a Prior Labs
-  login (TABPFN_TOKEN) and a non-commercial licence that also covers its outputs, so it runs only
-  with --accept-noncommercial-licence, which is the author's decision.
+TabPFN-3.5 is out (the author's decision, 2026-11-24): its weights need a Prior Labs login, and
+its licence is non-commercial for the weights and their outputs.
 
 Latency is one batched call per split divided by the customers in it, as for LightGBM; cost is
 that GPU time at the L4 rate. Writes results/predictions/<model>.jsonl and
@@ -33,7 +32,6 @@ import argparse
 import importlib.metadata
 import inspect
 import json
-import os
 import sys
 import time
 from pathlib import Path
@@ -53,7 +51,7 @@ from common import (  # noqa: E402
 from records import write_records  # noqa: E402
 
 L4_USD_PER_HOUR = 0.44  # = runners/harness.py
-MODELS = ("kumo-tabular", "tabicl-v2", "tabpfn-3.5")
+MODELS = ("kumo-tabular", "tabicl-v2")
 KUMO_ESTIMATORS = 8  # the nvidia/Kumo-Tabular model card's example
 TARGET_COL = "target"
 
@@ -126,17 +124,12 @@ class KumoTabular:
 
 
 class SklearnStyle:
-    """TabICLClassifier / TabPFNClassifier: fit(X, y), predict_proba(X)."""
+    """TabICLClassifier: fit(X, y), predict_proba(X)."""
 
     def __init__(self, name: str, device: str):
-        if name == "tabicl-v2":
-            from tabicl import TabICLClassifier as cls
+        from tabicl import TabICLClassifier as cls
 
-            pkg = "tabicl"
-        else:
-            from tabpfn import TabPFNClassifier as cls
-
-            pkg = "tabpfn"
+        pkg = "tabicl"
         kwargs = {"device": device} if "device" in inspect.signature(cls).parameters else {}
         self.clf = _seeded(cls, **kwargs)
         self.version = f"{pkg} {_version(pkg)} {type(self.clf).__name__}() defaults"
@@ -173,14 +166,7 @@ def main() -> None:
     ap.add_argument("--smoke", action="store_true", help="500 context rows, 100 tune customers")
     ap.add_argument("--kumo-size", default="large", choices=("small", "medium", "large"),
                     help="large is the contestant; small only for a quick CPU smoke")  # fmt: skip
-    ap.add_argument("--accept-noncommercial-licence", action="store_true",
-                    help="tabpfn-3.5: author accepts Prior Labs' non-commercial terms")  # fmt: skip
     args = ap.parse_args()
-    if args.model == "tabpfn-3.5":
-        if not args.accept_noncommercial_licence:
-            sys.exit("tabpfn-3.5 needs --accept-noncommercial-licence (the author's decision).")
-        if not os.environ.get("TABPFN_TOKEN"):
-            sys.exit("tabpfn-3.5 needs TABPFN_TOKEN (a Prior Labs login) on a headless machine.")
 
     _, X_train, y_train = load_split("train")
     if args.smoke:

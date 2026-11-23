@@ -99,6 +99,65 @@
     "source_model_versions": [
       "20 nearest train customers (amounts: sign(x)*log1p(|x|); codes as numbers; z-scored on train; Euclidean); train a71432385d26"
     ],
-    "fitted_at": "2026-11-23T14:25:45Z"
+    "fitted_at": "2026-11-23T19:55:33Z"
+  },
+  "kev-0.8b-ft": {
+    "cv_log_loss": {
+      "platt": 0.4292557044589255,
+      "isotonic": 0.43836200741214537
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.05944355513227501,
+      "slope": 0.8180078817672709
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0"
+    ],
+    "fitted_at": "2026-11-23T19:55:32Z"
+  },
+  "laya-ft": {
+    "cv_log_loss": {
+      "platt": 0.43184007031728244,
+      "isotonic": 0.4462521670696641
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.06689810161058385,
+      "slope": 0.9063284653144504
+    },
+    "source_model_versions": [
+      "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037"
+    ],
+    "fitted_at": "2026-11-23T19:55:33Z"
+  },
+  "jev-examples": {
+    "cv_log_loss": {
+      "platt": 0.46438666369814774,
+      "isotonic": 0.46294792862357986
+    },
+    "chosen": "isotonic",
+    "params": {
+      "n_thresholds": 25
+    },
+    "source_model_versions": [
+      "typesafe/jev-1.14-20261014; 20 train examples (examples v1)"
+    ],
+    "fitted_at": "2026-11-23T19:55:33Z"
+  },
+  "sol-examples": {
+    "cv_log_loss": {
+      "platt": 0.44511551513901493,
+      "isotonic": 0.4531876192567494
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.3440425338862224,
+      "slope": 0.7549592716212059
+    },
+    "source_model_versions": [
+      "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)"
+    ],
+    "fitted_at": "2026-11-23T19:55:33Z"
   }
 }

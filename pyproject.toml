@@ -41,12 +41,10 @@ training = [
     "peft>=0.17",
     "accelerate>=1.0",
 ]
-# M6 Part B: tabular foundation models (PLAN.md §11). tabpfn's weights are gated and licensed
-# non-commercially; baselines/tabular_fm.py runs it only with the author's explicit flag.
+# M6 Part B: tabular foundation models (PLAN.md §11). TabPFN is out (non-commercial licence).
 tabular = [
     "structured-data-models==0.3.0",
     "tabicl==2.2.0",
-    "tabpfn==10.2.0",
 ]
 
 [tool.uv]

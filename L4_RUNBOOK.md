@@ -310,7 +310,7 @@ uv run $T python baselines/tabular_fm.py --model tabicl-v2
 ```
 
 - **Out of GPU memory with 20,000 context rows:** stop and tell the author. Don't cut the context; fewer rows than the baselines get would tilt the comparison.
-- **TabPFN-3.5:** only if the author has accepted its non-commercial licence and given a `TABPFN_TOKEN`. Then add `--model tabpfn-3.5 --accept-noncommercial-licence`.
+- **TabPFN-3.5 is out** (the author's decision, 2026-11-24: non-commercial licence). Only Kumo-Tabular and TabICLv2 run.
 - Commit `results/predictions/<model>.jsonl` and `results/baselines/<model>.json` with the rest in 6.6.
 
 ### 6.6 Wrap up

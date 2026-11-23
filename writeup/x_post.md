@@ -49,7 +49,8 @@ One long-form post with the main chart attached, and no links in it. Links go in
 
 ## First reply
 
-> Full write-up, with the method, every chart and links to every technique: [blog link]
+> Full write-up: https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/
+> The deep dive, with the method and every check: https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong-deep-dive/
 > Code and every prediction: github.com/nishzsche/can-ai-know-when-its-wrong
 >
 > Data: a public dataset of 30,000 Taiwanese credit-card customers from 2005 (UCI, CC BY 4.0). Every model was scored on the same 2,000 customers, and nothing was adjusted using them.

@@ -2,26 +2,18 @@
 
 Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
-## Launch prep (2026-11-23, updated 15:40 IST)
+## Launched (2026-11-23, 16:05 IST)
 
-**Merged and live:**
-- **Blog repo:** `site-fixes` (link previews with a 1200x630 social card, x.com links, `TODO.md` as the launch checklist), plus a table of contents for posts with `toc: true` (sticky list in the right margin at 1280px and wider, collapsible box above the post on narrower screens), all through PRs #20 and #21. The deployed review page has the contents list, `og:image` and the large X card.
-- **Analytics:** GoatCounter is on (`goatcounter_code: nishzsche`).
-- **Comments:** Giscus is on, stored as Discussions in this repo (`nishzsche/can-ai-know-when-its-wrong`, Announcements category). The IDs were checked against the GitHub API. It shows on published posts only, not on the review copy.
-- **This repo:** `noise-band-and-wording` is on `main`. The honesty arc (figure 2) and carousel slide 6 both shade the noise band: an honest model can score up to 0.033 by chance. The base-rate sentence "helps four" everywhere.
+- **Published:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (`writeup/blog.md`, cut from about 5,400 words to about 2,000) and [the deep dive](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong-deep-dive/) (`writeup/deep_dive.md`: method, statistics, Sol's checks, disguise and layout tables, different-data analysis, related work, limits, reproduction). Blog PR #22.
+- **Live checks:** both pages load. The post has the contents list, Giscus comments (Discussions in this repo), GoatCounter and the social card, and search engines can index it. The old review URL redirects to the post.
+- **Blog housekeeping:** the notebook pipeline is removed (the three workflows republished the two old notebooks as new posts). `notebooks/` stays, unpublished. The About page mentions the credit-risk work and links the post. The `gh-pages` branch is a leftover from that pipeline: Pages deploys from `main`, so it's unused.
+- **Carousel and X post** now carry the real links. They're ready for the author to post; `writeup/carousel.pdf` is the LinkedIn document.
 
-**To do (author):**
-1. Update the About page's Background section before launch.
-2. Revoke the GitHub access the L4 used.
-3. Launch by following the blog's `TODO.md`:
-   - move the review copy to `_posts/`, dropping `permalink`, `noindex` and `hypothesis` and removing the review note;
-   - keep `description`, `image`, `image_alt` and `toc: true`;
-   - check the preview with LinkedIn Post Inspector or opengraph.xyz.
-4. Laptop: the old clone of the blog has no `review/` folder, so pull before editing there.
-
-**Open recommendations:**
-- **Cut the post to about 2,000 words** (now about 5,800 with the appendix), moving the layout check, the disguise and memorization detail, and the methods into a deep-dive follow-up post. Not done: it would change the page friends are reviewing, so it waits for the author's call.
-- **Blog notebook pipeline:** any push to `dev` that touches `notebooks/` republishes both old notebooks as new, today-dated posts. Decide before touching them (in the blog's `TODO.md`).
+**Still to do (author):**
+1. Post the LinkedIn carousel (`writeup/carousel.md` post text plus `carousel.pdf`, links in the first comment) and the X thread (`writeup/x_post.md`, chart attached, links in the first reply).
+2. Optionally re-check the link preview in LinkedIn Post Inspector (needs a login). The tags themselves are verified.
+3. Revoke the GitHub access the L4 used.
+4. The Notion review copy still shows the long version 3 draft. It now carries a note that points to the published post.
 
 ## Where things stand
 

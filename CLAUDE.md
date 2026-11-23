@@ -30,7 +30,7 @@ baselines/   scorecard.py, gbm.py
 runners/     one script per AI contestant -> results/predictions/<contestant>.jsonl
 analysis/    metrics.py, figures.py, report.ipynb
 results/     predictions/, figures/, summary.csv, run_manifest.json
-writeup/     blog.md, carousel.md, x_post.md
+writeup/     blog.md, deep_dive.md, carousel.md, x_post.md
 PREDICTIONS.md   my guesses, written BEFORE any runs
 ```
 

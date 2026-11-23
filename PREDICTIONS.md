@@ -57,3 +57,36 @@ To be fair to readers, this is the information visible before writing:
 | laya | | |
 | qwen-logprobs | | |
 | frontier-verbal (GPT-6.2 Sol) | | |
+
+---
+
+# M6 predictions: the fair fight (written before any M6 full run)
+
+**Written 2026-11-23, before any M6 full run** (PLAN.md §11). The author answered these questions in a Q&A with Claude Code on the L4; the answers are recorded verbatim, with no reasons given. Only smoke runs (a few training steps, 20 tune customers) had happened. The commit that adds them comes before every M6 prediction file.
+
+## What was already known when this was written
+
+- **The published zero-shot results on test** (`results/summary.csv`):
+  - Scorecard AUC 0.776, ECE 0.013; LightGBM AUC 0.788, ECE 0.016.
+  - Best zero-shot AI calibration: GPT-6.2 Sol, ECE 0.051 (out of the box). Best zero-shot AI AUC: Kev-4B told the base rate, 0.756.
+  - Out-of-the-box ECE: Jev 0.264, Kev-4B 0.266, Kev-0.8B 0.089, Laya 0.052, Qwen 0.140, Sol 0.051.
+- **The `neighbours-20` reference** (the 20 nearest `train` customers' default rate): test AUC 0.764, ECE 0.023.
+- **Smoke runs:** Jev and Sol with examples on 20 tune customers (actual rate 0.20): mean p 0.40 and 0.27. The trainers ran a few steps each; their losses say nothing about test.
+
+## My guesses
+
+**Most honest AI model after training** (lowest test ECE, raw `trained` output):
+
+> **Qwen3.5-4B.**
+
+**Will any trained AI model beat LightGBM's AUC (0.789)?**
+
+> **Yes, at least one.**
+
+**Will Jev and Sol with 20 examples beat their own neighbours (AUC 0.764, ECE 0.023)?**
+
+> **Both beat them.**
+
+**Least honest AI contestant after training** (highest test ECE, raw `trained` output, Jev and Sol with examples included):
+
+> **Kev-4B.**

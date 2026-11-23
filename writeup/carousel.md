@@ -1,4 +1,4 @@
-# LinkedIn carousel: "Can AI actually know when it's wrong?"
+# LinkedIn carousel: "Can AI know when it's wrong? I tested Jev and 7 other models on 2,000 real credit-card customers"
 
 Ten square slides (1080 × 1080), exported as one PDF by `writeup/build_carousel.py`. One idea per slide, big type, a chart where there's evidence to show. The numbers come from `results/summary.csv` and `data/contamination.md`, and the charts from `results/figures/`.
 
@@ -6,11 +6,11 @@ Ten square slides (1080 × 1080), exported as one PDF by `writeup/build_carousel
 
 Written for anyone, tech or not: every term is explained the first time it appears.
 
-> Banks get audited on whether their risk scores are honest. I held AI to the same standard.
+> Everyone's talking about Jev. I gave it, and 7 other models, 2,000 real credit-card customers and checked whether their percentages come true: the standard banks get audited against.
 >
 > "Honest" has a precise meaning here: when a model says a customer is 30% likely to miss a payment, about 30 in every 100 such customers should actually miss it. Statisticians call this calibration, and banks have to prove it.
 >
-> So I gave eight models the same 2,000 real credit-card customers and one question: will this customer miss next month's payment? Six were AI models, given no examples to learn from. Two were traditional bank models that learned from 20,000 past customers.
+> Every model got the same customers and one question: will this customer miss next month's payment? Six were AI models, Jev among them, given no examples to learn from. Two were traditional bank models that learned from 20,000 past customers.
 >
 > What I found:
 > → Most AI models said customers were riskier than they were. Two of them more than doubled it.
@@ -39,7 +39,7 @@ Written for anyone, tech or not: every term is explained the first time it appea
 ### 1. Hook
 
 **Headline:** Banks get audited on whether their risk scores are honest.
-**Body:** I held AI to the same standard.
+**Body:** I held Jev and 7 other models to the same standard.
 **Footer:** 8 models · 2,000 real customers · 1 question
 **Visual:** text only. Large headline, the body line in a second colour.
 

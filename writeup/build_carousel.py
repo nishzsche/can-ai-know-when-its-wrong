@@ -23,6 +23,10 @@ import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.backends.backend_pdf import PdfPages  # noqa: E402
 from matplotlib.ticker import FuncFormatter  # noqa: E402
 
+TITLE = (
+    "Can AI know when it's wrong? "
+    "I tested Jev and 7 other models on 2,000 real credit-card customers"
+)
 CAROUSEL_MD = HERE / "carousel.md"
 OUT_PDF = HERE / "carousel.pdf"
 SIZE_IN, DPI = 7.5, 144  # 7.5 in x 144 dpi = 1080 px
@@ -101,7 +105,7 @@ def frame(fig, n: int, total: int, slide: dict, headline_size: float = 27) -> fl
     if slide["body"]:
         y = text_block(fig, y - 0.005, slide["body"], 15.5, color=F.INK_2)
     fig.text(1 - M, 0.035, f"{n} / {total}", fontsize=10, color=F.MUTED, ha="right")
-    fig.text(M, 0.035, "Can AI actually know when it's wrong?", fontsize=10, color=F.MUTED)
+    fig.text(M, 0.035, "Can AI know when it's wrong?", fontsize=10, color=F.MUTED)
     return y
 
 
@@ -122,7 +126,8 @@ def slide_hook(fig, s, n, total):
     lines = wrap(fig, s["headline"], 36, fontweight="bold")
     fig.text(M, 0.70, "\n".join(lines), fontsize=36, fontweight="bold", color=F.INK, va="top",
              linespacing=1.15)  # fmt: skip
-    fig.text(M, 0.40, s["body"], fontsize=24, color=F.COLOR["jev"], va="top")
+    fig.text(M, 0.40, "\n".join(wrap(fig, s["body"], 24)), fontsize=24, color=F.COLOR["jev"],
+             va="top", linespacing=1.2)  # fmt: skip
     fig.text(M, 0.20, s["footer"], fontsize=15, color=F.INK_2)
     fig.text(1 - M, 0.035, "Swipe →", fontsize=12, color=F.INK_2, ha="right")
     fig.text(M, 0.035, f"{n} / {total}", fontsize=10, color=F.MUTED)
@@ -369,7 +374,7 @@ def build(png_dir: Path | None = None) -> Path:
     }
     if png_dir:
         png_dir.mkdir(parents=True, exist_ok=True)
-    with PdfPages(OUT_PDF, metadata={"Title": "Can AI actually know when it's wrong?"}) as pdf:
+    with PdfPages(OUT_PDF, metadata={"Title": TITLE}) as pdf:
         for n in sorted(slides):
             fig = new_slide()
             makers[slides[n]["title"]](fig, slides[n], n)

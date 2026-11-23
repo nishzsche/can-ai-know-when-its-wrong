@@ -1,4 +1,4 @@
-# X long-form post: "Can AI actually know when it's wrong?"
+# X long-form post: "Can AI know when it's wrong? I tested Jev and 7 other models on 2,000 real credit-card customers"
 
 One long-form post with the main chart attached, and no links in it. Links go in the first reply. Written for anyone, tech or not: every term is explained in passing, and the blog carries the technical detail. The numbers come from `results/summary.csv`, `results/explain.json` and `data/contamination.md`.
 
@@ -6,9 +6,9 @@ One long-form post with the main chart attached, and no links in it. Links go in
 
 ## Post
 
-> When an AI says "30% likely", does it mean 30%?
+> Everyone's talking about Jev. When it says "30% likely", does it mean 30%?
 >
-> Banks have to prove their risk numbers are honest: if a model says 30% of a group will miss a payment, about 30% should. (The technical word is calibration.) I held 8 models to that standard, on 2,000 real credit-card customers.
+> Banks have to prove their risk numbers are honest: if a model says 30% of a group will miss a payment, about 30% should. (The technical word is calibration.) I held Jev and 7 other models to that standard, on 2,000 real credit-card customers.
 >
 > The contestants:
 > • 6 AI models, given no examples to learn from: Jev (a commercial AI built for yes/no decisions), Kev-4B, Kev-0.8B and Laya (free open-source ones), Qwen3.5-4B (a free general-purpose AI; I read its probability from inside the model) and GPT-6.2 Sol (OpenAI's chat model, asked for a percentage)

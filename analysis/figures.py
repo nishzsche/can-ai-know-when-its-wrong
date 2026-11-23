@@ -167,6 +167,17 @@ STAGES = (("out_of_box", "Out of the box", "o", "none"),
           ("recalibrated", "Recalibrated on tune", "o", None))  # fmt: skip
 
 
+def noise_floor(contestants) -> float | None:
+    """Largest 95th-percentile noise-floor ECE among the plotted points (from robustness.py)."""
+    path = ROOT / "results" / "robustness.json"
+    if not path.exists():
+        return None
+    cal = json.loads(path.read_text()).get("calibration", {})
+    p95 = [v["ece_noise_floor"]["p95"] for k, v in cal.items()
+           if k.split("/")[0] in contestants and "ece_noise_floor" in v]  # fmt: skip
+    return max(p95) if p95 else None
+
+
 def fig_honesty_arc(rows) -> Path:
     present = [c for c in AI if (c, "out_of_box") in rows]
     fig, ax = plt.subplots(figsize=(7.2, 7.2))
@@ -181,6 +192,13 @@ def fig_honesty_arc(rows) -> Path:
                 ax.plot(rows[(c, s)]["ece"], y + dy, marker=marker, ms=10 if marker == "o" else 9,
                         color=COLOR[c], mfc=face or COLOR[c], mew=2, mec=COLOR[c], ls="none",
                         zorder=3)  # fmt: skip
+    floor = noise_floor(order)
+    if floor:
+        # Shade where a perfectly calibrated model lands by chance on these 2,000 customers
+        # (95th percentile of simulated ECE, worst case over the contestants and stages shown).
+        ax.axvspan(-0.01, floor, color=GRID, alpha=0.55, lw=0, zorder=0)
+        ax.text(floor + 0.004, -0.42, f"Shaded: a perfectly honest model can score up to "
+                f"{floor:.3f} by chance", color=INK_2, fontsize=9, va="center")  # fmt: skip
     ref = rows.get(("scorecard", "trained"))
     if ref:
         ax.axvline(ref["ece"], color=COLOR["scorecard"], lw=1.2, zorder=1)

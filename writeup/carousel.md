@@ -75,7 +75,7 @@ Written for anyone, tech or not: every term is explained the first time it appea
 ### 6. The honesty arc
 
 **Headline:** One sentence helps, but unpredictably.
-**Body:** Adding "About 22% of customers miss a payment" clearly helped four models: Kev-4B went from 27 percentage points off, on average, to 3. It made no clear difference to Laya and broke Kev-0.8B, from 9 points off to 27.
+**Body:** Adding "About 22% of customers miss a payment" helped four models (one at a cost to its ranking): Kev-4B went from 27 percentage points off, on average, to 3. It made no clear difference to Laya and broke Kev-0.8B, from 9 points off to 27.
 **Visual:** `results/figures/2_honesty_arc.png`.
 
 ### 7. The twist

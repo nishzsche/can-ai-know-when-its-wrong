@@ -22,7 +22,7 @@ One long-form post with the main chart attached, and no links in it. Links go in
 >
 > 2. Where they went wrong: half the customers pay part of their bill, on time. Only 12% of them missed a payment, about as few as those who pay in full. Jev predicted 51% for them, Kev-4B 54%. (Part of Kev-4B's error was my table's fault: shown each payment beside the bill it actually pays, it said 36%, and ranked customers much better.)
 >
-> 3. One extra sentence ("about 22% of customers miss a payment") clearly helped four. Kev-4B went from 27 percentage points off, on average, to 3. It did nothing clear for Laya, and one small model got worse: 9 to 27.
+> 3. One extra sentence ("about 22% of customers miss a payment") helped four. Kev-4B went from 27 percentage points off, on average, to 3. It did nothing clear for Laya, and one small model got worse: 9 to 27.
 >
 > Simpler still: shift each AI's numbers until they average 22%. No past outcomes needed, and it beat the sentence for four of six.
 >

@@ -143,7 +143,7 @@ Before running anything, I wrote down my guesses and committed them to the repos
 |---|---|
 | Jev would be the most honest | ✗ Out of the box, its percentages ran about 26 points high |
 | Laya would be the least honest | ✗ Laya was among the closest on average |
-| Telling the base rate would help most models | ✓ Mostly: it clearly helped four, made no clear difference to one, and broke one |
+| Telling the base rate would help most models | ✓ Mostly: it helped four (Qwen's numbers at a cost to its ranking), made no clear difference to one, and broke one |
 | At least one AI model would beat the scorecard at ranking | ✗ None did |
 
 One out of four. Which is rather the point: confident guesses need checking.

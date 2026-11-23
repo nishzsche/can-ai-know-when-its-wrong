@@ -40,7 +40,7 @@ After launch, the author asked to train the AI models on the same 20,000 custome
 **Next:**
 1. **Author: `PREDICTIONS.md` M6 guesses**, committed before any full run (the gate in L4_RUNBOOK.md §6). For example: which trained AI model is most honest, whether any beats LightGBM's AUC (0.789), and whether Jev and Sol beat their own 20 neighbours (AUC 0.764).
 2. **Author: top up OpenRouter by $30.** The balance was $21.51 on 2026-11-23; the M6 API runs need about $44.
-3. **L4: L4_RUNBOOK.md §6**, in the order Kev-0.8B → Laya → Kev-4B → Qwen. Expected 4–6 GPU hours (~$2–3). Stop and ask if Kev-4B's or Qwen's epoch ETA is over 3 hours. The trained weights go into a GitHub release (`m6-weights`).
+3. **L4: L4_RUNBOOK.md §6** (§6.0 sets up a fresh instance from zero), in the order Kev-0.8B → Laya → Kev-4B → Qwen. Expected 4–6 GPU hours (~$2–3). Stop and ask if Kev-4B's or Qwen's epoch ETA is over 3 hours. The trained weights go into a GitHub release (`m6-weights`).
 4. **Laptop: Jev and Sol with examples**, after steps 1 and 2. Sol is paced at 18 requests/minute, so each split takes about 2 hours.
    ```bash
    uv run --group runners python runners/examples.py --contestant jev --split tune --workers 4
@@ -268,7 +268,7 @@ All runners share `runners/harness.py`. It:
 
 ## The L4 instance (JarvisLabs, launched 2026-11-22, deleted 2026-11-22)
 
-**Deleted after the M3 GPU runs.** For any new GPU work, launch a fresh instance and follow the first-time setup below; it takes about 20–30 billed minutes.
+**Deleted after the M3 GPU runs.** For M6 or any new GPU work, launch a fresh instance and follow **L4_RUNBOOK.md §6.0**, the current from-zero setup: base tools, `gh`, the project and Kev's environment. The "First-time setup" below is the M1 version, kept for the record: it predates the public repo and the M6 groups.
 
 1× NVIDIA L4 (24 GB), PyTorch template (a container), region IN2, 28 cores and 124 GB RAM. Compute bills per second; storage keeps billing while the instance is paused.
 

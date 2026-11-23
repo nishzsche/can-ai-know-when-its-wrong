@@ -183,21 +183,49 @@ PLAN.md §11 has the design and the flagged choices. In short: Kev-0.8B, Laya, K
 
 **Order and time** (estimates; measure in the first minutes of each run): Kev-0.8B (~20–30 min) → Laya (~10–20 min) → Kev-4B (~1–2 h) → Qwen (~1–2 h). Scoring is ~0.05–0.2 s per customer, so 4,000 customers take 5–15 min per model. **If Kev-4B's or Qwen's first-epoch ETA is over 3 hours, stop and ask the author** (PLAN.md §11, compute).
 
-### 6.0 Once per instance
+### 6.0 A fresh instance, from zero (about 20–30 billed minutes)
 
-The repo is public, so cloning needs no login; pushing results does (`gh auth login`, as in STATUS.md).
+JarvisLabs, PyTorch template, one L4. Everything lives under `/home`, which is the only part that survives a pause. The repo is public, so cloning needs no login; pushing results back does.
 
+**1. Base tools**
 ```bash
+cat > /home/env.sh <<'EOF'
+export HF_HOME=/home/hf-cache
+export UV_CACHE_DIR=/home/uv-cache
+export UV_PYTHON_INSTALL_DIR=/home/uv-python
+export GH_CONFIG_DIR=/home/gh-config
+export PATH=/home/bin:$PATH
+EOF
 source /home/env.sh
-cd /home/can-ai-know-when-its-wrong && git pull
-uv sync --group runners --group laya --group training
-uv run --group runners --group laya --group training pytest -q      # all pass
-uv run python data/render.py --split train                            # 20,000 summaries (git-ignored)
-uv run --group runners python training/export.py                      # training/data/{kev,laya,qwen}_train.jsonl
-mkdir -p /home/runs /home/logs
+mkdir -p /home/bin /home/runs /home/logs
+curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/home/bin sh
+curl -sL https://github.com/cli/cli/releases/download/v2.105.0/gh_2.105.0_linux_amd64.tar.gz | tar xz -C /tmp   && cp /tmp/gh_2.105.0_linux_amd64/bin/gh /home/bin/
+gh auth login -h github.com -p https -w      # only needed to push results back
+tmux new -s l4                                # runs survive a dropped connection
 ```
 
-Kev's own environment is step 1 (`/home/kev` at commit `65b1e763`). For speed, try `uv pip install flash-linear-attention` in both `/home/kev` and this repo's venv; it affects speed only, so skip it if it won't build.
+**2. The project** (inside tmux)
+```bash
+source /home/env.sh
+cd /home && git clone https://github.com/nishzsche/can-ai-know-when-its-wrong.git
+cd can-ai-know-when-its-wrong && gh auth setup-git
+uv sync --group runners --group laya --group training
+uv run --group runners --group laya --group training pytest -q      # 170 passed
+uv run python data/render.py --split train                            # 20,000 summaries (git-ignored)
+uv run --group runners python training/export.py                      # 3 files, default rate 0.2212
+```
+
+**3. Kev's own environment** (its training code comes with it)
+```bash
+git clone https://github.com/jaredpalmer/kev.git /home/kev
+cd /home/kev && git checkout 65b1e763943ace53fd3a4aae00d8d08dbd849772
+uv sync --extra serve
+uv pip install flash-linear-attention    # optional, speed only; skip it if it won't build
+```
+
+**After a resume or in a new shell:** `source /home/env.sh`, then `cd /home/can-ai-know-when-its-wrong && git pull`.
+
+**Running Claude Code here instead:** after block 2, tell it "Read STATUS.md (the M6 section) and follow L4_RUNBOOK.md §6." There's no API key on this box, and none is needed.
 
 ### 6.1 Kev-0.8B
 

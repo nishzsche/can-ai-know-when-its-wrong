@@ -9,7 +9,7 @@ Status: **the runs, the analysis and the checks are done. The write-up is in dra
 ## In short
 
 - **Most AI models overstate default risk out of the box.** Jev and Kev-4B predict about 48% on average; 22.1% of these customers defaulted.
-- **One sentence stating the portfolio's default rate clearly helps four of the six.** It makes no clear difference to Laya, makes Kev-0.8B worse (ECE 0.090 → 0.269), and costs Qwen ranking (AUC 0.744 → 0.710).
+- **One sentence stating the portfolio's default rate helps four of the six** (three clearly, plus Qwen's numbers). It makes no clear difference to Laya, makes Kev-0.8B worse (ECE 0.090 → 0.269), and costs Qwen ranking (AUC 0.744 → 0.710).
 - **Shifting each model's log-odds so its mean equals the known 22.1% rate** needs no per-customer labels and beats the sentence for four of six (Kev-4B: ECE 0.267 → 0.018).
 - **GPT-6.2 Sol and Laya are the best calibrated out of the box** (ECE 0.052). But Sol knows this dataset and its exact default rate, so its result isn't a clean zero-shot test (see [Checks](#checks-on-these-results)).
 - **The table layout matters for one model.** Template v2 shows each payment beside the same month's bill, though payments usually settle the previous month's. Realigned, Kev-4B's mean drops from 0.486 to 0.356 and its AUC rises from 0.594 to 0.720 on test; Laya gets worse; the rest barely change. Results are reported for both layouts.

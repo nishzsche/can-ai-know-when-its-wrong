@@ -232,11 +232,16 @@ def slide_arc(fig, s, n, total, rows):
     ref = rows[("scorecard", "trained")]["ece"]
     ax.axvline(ref, color=F.COLOR["scorecard"], lw=1.2)
     ax.text(ref + 0.005, len(order) - 0.35, "scorecard", fontsize=11, color=F.INK_2)
+    floor = F.noise_floor(order)  # same band as figure 2: within chance for an honest model
+    if floor:
+        ax.axvspan(-0.01, floor, color=F.GRID, alpha=0.55, lw=0, zorder=0)
+        ax.text(floor + 0.004, -0.8, f"Shaded: an honest model can be up to {floor * 100:.0f} "
+                "points off by chance", fontsize=10, color=F.INK_2, va="center")  # fmt: skip
     ax.set_yticks(range(len(order)), [F.NAME[c] for c in order])
     ax.tick_params(axis="y", length=0, labelsize=13, labelcolor=F.INK)
     ax.tick_params(axis="x", labelsize=12)
     ax.grid(axis="y", visible=False)
-    ax.set_ylim(-0.6, len(order) - 0.1)
+    ax.set_ylim(-1.1 if floor else -0.6, len(order) - 0.1)
     ax.set_xlim(-0.01, 0.3)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v * 100:.0f}"))
     ax.set_xlabel("Percentage points off, on average: lower is more honest", fontsize=13)

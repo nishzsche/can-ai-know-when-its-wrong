@@ -2,37 +2,26 @@
 
 Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
-## Launch prep: site fixes and open items (2026-11-23, 15:05 IST)
+## Launch prep (2026-11-23, updated 15:40 IST)
 
-The pre-launch fixes are on two pushed branches. Neither is merged, and no pull requests are open.
-
-- **Blog repo (`nishzsche.github.io`), branch `site-fixes` off `dev`, commit `e844327`:**
-  - Link previews: per-page `description`, `image` and `image_alt` in front matter, `og:image` and `twitter:image`, and the large X card when there's an image. The home page preview shows "Learning curve", not "Home". The site description is shorter and plain text, so previews don't cut it off.
-  - Social card: `public/images/can-ai-know-when-its-wrong/social-card.png` (1200x630, built from the results), wired into the review copy along with a description.
-  - Giscus comments and GoatCounter analytics are wired up but stay off until configured. Giscus never shows on review copies.
-  - `.venv/` is untracked and ignored, Twitter links now point to x.com, and `TODO.md` is now the launch checklist.
-  - The review copy's predictions table says "helped four (Qwen's numbers at a cost to its ranking)", which matches finding 2. It also uses the new honesty arc chart.
-- **This repo, branch `noise-band-and-wording` off `main`, commit `aa817dd`:**
-  - `analysis/figures.py`: the honesty arc shades the noise floor. That is the largest 95th-percentile noise-floor ECE among the plotted points, 0.033, from `results/robustness.json`. Kev-4B's recalibrated 0.003 now reads as level with the scorecard within noise, not better.
-  - "Clearly helped four" is now "helped four" in `writeup/blog.md`, carousel slide 6 and `writeup/x_post.md`. `carousel.pdf` is rebuilt.
-- **How it was checked:** the blog templates were rendered with the real config and front matter using Python Liquid, and the tags came out right on the post, home and About pages. A full Jekyll build wasn't possible in that session, so look at the deployed site once.
+**Merged and live:**
+- **Blog repo:** `site-fixes` (link previews with a 1200x630 social card, x.com links, `TODO.md` as the launch checklist), plus a table of contents for posts with `toc: true` (sticky list in the right margin at 1280px and wider, collapsible box above the post on narrower screens), all through PRs #20 and #21. The deployed review page has the contents list, `og:image` and the large X card.
+- **Analytics:** GoatCounter is on (`goatcounter_code: nishzsche`).
+- **Comments:** Giscus is on, stored as Discussions in this repo (`nishzsche/can-ai-know-when-its-wrong`, Announcements category). The IDs were checked against the GitHub API. It shows on published posts only, not on the review copy.
+- **This repo:** `noise-band-and-wording` is on `main`. The honesty arc (figure 2) and carousel slide 6 both shade the noise band: an honest model can score up to 0.033 by chance. The base-rate sentence "helps four" everywhere.
 
 **To do (author):**
-1. Review and merge `site-fixes` into the blog's `dev`, and `noise-band-and-wording` into `main` here.
-2. Analytics: create a free GoatCounter site and set `goatcounter_code` in the blog's `_config.yml`.
-3. Comments: enable Discussions on the blog repo and install the giscus app (github.com/apps/giscus). Then set `giscus.repo_id` and `giscus.category_id` in `_config.yml`, from giscus.app.
-4. Update the About page's Background section before launch.
-5. Revoke the GitHub access the L4 used (still pending, see M3 below).
-6. Launch by following the blog's `TODO.md`:
-   - move the review copy to `_posts/`;
-   - drop `permalink`, `noindex` and `hypothesis`, and remove the review note;
+1. Update the About page's Background section before launch.
+2. Revoke the GitHub access the L4 used.
+3. Launch by following the blog's `TODO.md`:
+   - move the review copy to `_posts/`, dropping `permalink`, `noindex` and `hypothesis` and removing the review note;
+   - keep `description`, `image`, `image_alt` and `toc: true`;
    - check the preview with LinkedIn Post Inspector or opengraph.xyz.
-7. Laptop: the local clone of the blog is from April and has no `review/` folder, so pull before editing there. The laptop is also too low on disk space for a cloud session to run commands on it (that needs up to 17 GB free).
+4. Laptop: the old clone of the blog has no `review/` folder, so pull before editing there.
 
-**Recommended, not done:**
-- **Cut the post to about 2,000 words.** It's about 5,800 now, including the appendix. Move the layout check, the disguise and memorization detail, and the methods into a deep-dive follow-up post.
-- **Carousel slide 6** draws its own honesty arc, which still puts Kev-4B's recalibrated point left of the scorecard line with no noise band. Add the same shading or a short note.
-- **Blog notebook pipeline:** any push to `dev` that touches `notebooks/` republishes both old notebooks as new, today-dated posts. Decide what to do before touching them (noted in the blog's `TODO.md`).
+**Open recommendations:**
+- **Cut the post to about 2,000 words** (now about 5,800 with the appendix), moving the layout check, the disguise and memorization detail, and the methods into a deep-dive follow-up post. Not done: it would change the page friends are reviewing, so it waits for the author's call.
+- **Blog notebook pipeline:** any push to `dev` that touches `notebooks/` republishes both old notebooks as new, today-dated posts. Decide before touching them (in the blog's `TODO.md`).
 
 ## Where things stand
 

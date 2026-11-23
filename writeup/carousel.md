@@ -31,7 +31,7 @@ Written for anyone, tech or not: every term is explained the first time it appea
 ## First comment
 
 > The full write-up: https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/
-> The deep dive, including how I checked whether the models had memorized the data: https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong-deep-dive/
+> The deep dive, including how I checked whether the models had memorized the data: https://github.com/nishzsche/can-ai-know-when-its-wrong/blob/main/writeup/deep_dive.md
 > Code and all predictions: [github.com/nishzsche/can-ai-know-when-its-wrong](https://github.com/nishzsche/can-ai-know-when-its-wrong)
 > Data: a public dataset of 30,000 Taiwanese credit-card customers from 2005 (UCI "Default of Credit Card Clients", Yeh & Lien, 2009; CC BY 4.0).
 

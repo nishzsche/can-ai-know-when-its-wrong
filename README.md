@@ -2,7 +2,7 @@
 
 Banks are audited on whether their risk scores are honest: if a model says "30% chance of default", about 30% of those customers should default. This project holds AI decision models to the same standard on 2,000 real credit card customers, and compares them with a logistic-regression scorecard and gradient boosting.
 
-**Published 23 November 2026:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) and [the deep dive](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong-deep-dive/), with every method and check. Their sources are [`writeup/blog.md`](writeup/blog.md) and [`writeup/deep_dive.md`](writeup/deep_dive.md). The full plan is in [PLAN.md](PLAN.md).
+**Published 23 November 2026:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (source: [`writeup/blog.md`](writeup/blog.md)). The method and every check are in [the deep dive](writeup/deep_dive.md), kept here rather than on the blog. The full plan is in [PLAN.md](PLAN.md).
 
 ![Promised vs actual default rate for each AI model, with the scorecard for reference](results/figures/1_promised_vs_actual.png)
 

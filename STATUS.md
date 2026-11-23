@@ -4,8 +4,8 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 ## Launched (2026-11-23, 16:05 IST)
 
-- **Published:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (`writeup/blog.md`, cut from about 5,400 words to about 2,000) and [the deep dive](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong-deep-dive/) (`writeup/deep_dive.md`: method, statistics, Sol's checks, disguise and layout tables, different-data analysis, related work, limits, reproduction). Blog PR #22.
-- **Live checks:** both pages load. The post has the contents list, Giscus comments (Discussions in this repo), GoatCounter and the social card, and search engines can index it. The old review URL redirects to the post.
+- **Published:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (`writeup/blog.md`, cut from about 5,400 words to about 2,000). The deep dive (`writeup/deep_dive.md`: method, statistics, Sol's checks, disguise and layout tables, different-data analysis, related work, limits, reproduction) lives in this repo only: it was published as a second post, then removed from the blog at the author's request (2026-11-23), and the post links to the GitHub copy. Blog PRs #22 and #23.
+- **Live checks:** the post loads. The post has the contents list, Giscus comments (Discussions in this repo), GoatCounter and the social card, and search engines can index it. The old review URL redirects to the post.
 - **Blog housekeeping:** the notebook pipeline is removed (the three workflows republished the two old notebooks as new posts). `notebooks/` stays, unpublished. The About page mentions the credit-risk work and links the post. The `gh-pages` branch is a leftover from that pipeline: Pages deploys from `main`, so it's unused.
 - **Carousel and X post** now carry the real links. They're ready for the author to post; `writeup/carousel.pdf` is the LinkedIn document.
 

@@ -1,0 +1,365 @@
+{
+  "customers": 2000,
+  "default_rate": 0.221,
+  "always_no_accuracy": 0.779,
+  "break_even_loss_ratio": 3.524886877828054,
+  "approve_everyone": {
+    "4": -105.0,
+    "6": -547.0,
+    "10": -1431.0
+  },
+  "models": {
+    "scorecard": {
+      "condition": "trained",
+      "accuracy_at_50": 0.8175,
+      "defaulters_caught_at_50": 0.3416289592760181,
+      "flagged_at_50": 0.1125,
+      "auc": 0.7768559877787394,
+      "ece": 0.013977742664834853,
+      "mean_predicted": 0.21782127615613917,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.7095,
+            "profit": 284.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.15692979457822082,
+            "approve": 0.5775,
+            "profit": 285.0
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.49,
+            "profit": 189.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.13012820037565678,
+            "approve": 0.3995,
+            "profit": 196.5
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.1615,
+            "profit": 62.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.10810212632931958,
+            "approve": 0.271,
+            "profit": 78.5
+          }
+        }
+      }
+    },
+    "gbm": {
+      "condition": "trained",
+      "accuracy_at_50": 0.825,
+      "defaulters_caught_at_50": 0.36199095022624433,
+      "flagged_at_50": 0.114,
+      "auc": 0.7886764560667755,
+      "ece": 0.016657465164744985,
+      "mean_predicted": 0.21751130858406564,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.673,
+            "profit": 303.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.2034546733331205,
+            "approve": 0.681,
+            "profit": 303.5
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.4715,
+            "profit": 191.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.1501402824084904,
+            "approve": 0.5125,
+            "profit": 180.0
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.235,
+            "profit": 92.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.10016614122695296,
+            "approve": 0.2835,
+            "profit": 91.0
+          }
+        }
+      }
+    },
+    "frontier-verbal": {
+      "condition": "out_of_box",
+      "accuracy_at_50": 0.8165,
+      "defaulters_caught_at_50": 0.4638009049773756,
+      "flagged_at_50": 0.1675,
+      "auc": 0.7536318170993094,
+      "ece": 0.05190000000000003,
+      "mean_predicted": 0.26004,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.6145,
+            "profit": 294.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.27,
+            "approve": 0.7405,
+            "profit": 285.5
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.3895,
+            "profit": 109.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.16,
+            "approve": 0.492,
+            "profit": 145.5
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.1415,
+            "profit": -40.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.07,
+            "approve": 0.0365,
+            "profit": -7.5
+          }
+        }
+      }
+    },
+    "kev-0.8b": {
+      "condition": "out_of_box",
+      "accuracy_at_50": 0.8075,
+      "defaulters_caught_at_50": 0.4004524886877828,
+      "flagged_at_50": 0.1485,
+      "auc": 0.7501945875614984,
+      "ece": 0.08965060000000001,
+      "mean_predicted": 0.3054794,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.219,
+            "profit": 99.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.2711,
+            "approve": 0.661,
+            "profit": 306.0
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.0,
+            "profit": 0.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.2542,
+            "approve": 0.643,
+            "profit": 160.0
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.0,
+            "profit": 0.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.1699,
+            "approve": 0.015,
+            "profit": -12.5
+          }
+        }
+      }
+    },
+    "qwen-logprobs": {
+      "condition": "out_of_box",
+      "accuracy_at_50": 0.8185,
+      "defaulters_caught_at_50": 0.43665158371040724,
+      "flagged_at_50": 0.1535,
+      "auc": 0.7443874557821548,
+      "ece": 0.14022663962409926,
+      "mean_predicted": 0.35514813768119075,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.052,
+            "profit": 17.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.40732066777538084,
+            "approve": 0.737,
+            "profit": 252.0
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.0165,
+            "profit": 6.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.37753531960816605,
+            "approve": 0.7215,
+            "profit": 67.0
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.0025,
+            "profit": -3.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.11920017979783394,
+            "approve": 0.008,
+            "profit": -8.5
+          }
+        }
+      }
+    },
+    "laya": {
+      "condition": "out_of_box",
+      "accuracy_at_50": 0.765,
+      "defaulters_caught_at_50": 0.12895927601809956,
+      "flagged_at_50": 0.071,
+      "auc": 0.6662496587456944,
+      "ece": 0.05245085,
+      "mean_predicted": 0.20422595,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.6855,
+            "profit": 148.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.1848,
+            "approve": 0.6315,
+            "profit": 149.0
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.411,
+            "profit": 64.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.1074,
+            "approve": 0.2185,
+            "profit": 43.5
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.1415,
+            "profit": -51.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.0222,
+            "approve": 0.0005,
+            "profit": 0.5
+          }
+        }
+      }
+    },
+    "jev": {
+      "condition": "out_of_box",
+      "accuracy_at_50": 0.609,
+      "defaulters_caught_at_50": 0.7149321266968326,
+      "flagged_at_50": 0.486,
+      "auc": 0.7116052602536028,
+      "ece": 0.264745,
+      "mean_predicted": 0.481045,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.0785,
+            "profit": 13.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.6,
+            "approve": 0.773,
+            "profit": 225.5
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.041,
+            "profit": -15.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.51,
+            "approve": 0.554,
+            "profit": 81.5
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.013,
+            "profit": -14.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.06,
+            "approve": 0.004,
+            "profit": -12.5
+          }
+        }
+      }
+    },
+    "kev-4b": {
+      "condition": "out_of_box",
+      "accuracy_at_50": 0.5515,
+      "defaulters_caught_at_50": 0.6447963800904978,
+      "flagged_at_50": 0.5125,
+      "auc": 0.5935145708327767,
+      "ece": 0.26653815,
+      "mean_predicted": 0.48638675,
+      "decisions": {
+        "4": {
+          "own_percentages": {
+            "approve": 0.015,
+            "profit": 2.5
+          },
+          "tune_cutoff": {
+            "cutoff": 0.4011,
+            "approve": 0.269,
+            "profit": 49.0
+          }
+        },
+        "6": {
+          "own_percentages": {
+            "approve": 0.007,
+            "profit": 0.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.346,
+            "approve": 0.1595,
+            "profit": 2.0
+          }
+        },
+        "10": {
+          "own_percentages": {
+            "approve": 0.001,
+            "profit": 1.0
+          },
+          "tune_cutoff": {
+            "cutoff": 0.204,
+            "approve": 0.0155,
+            "profit": -12.0
+          }
+        }
+      }
+    }
+  }
+}

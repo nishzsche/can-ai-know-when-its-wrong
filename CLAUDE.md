@@ -31,7 +31,7 @@ runners/     one script per AI contestant -> results/predictions/<contestant>.js
 training/    M6: export.py, qwen_lora.py, laya_ft.py (fine-tuning on train; data/ is git-ignored)
 analysis/    metrics.py, figures.py, report.ipynb
 results/     predictions/, figures/, summary.csv, run_manifest.json
-writeup/     blog.md, deep_dive.md, carousel.md, x_post.md
+writeup/     blog.md, deep_dive.md, carousel.md, x_post.md, accuracy_post.md (post 2 draft)
 PREDICTIONS.md   my guesses, written BEFORE any runs
 ```
 
@@ -70,4 +70,5 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
   - `uv run --group runners python runners/manifest.py --m6` checks M6 coverage.
   - `uv run --group tabular python baselines/tabular_fm.py --model <kumo-tabular|tabicl-v2>` runs a tabular foundation model, with `train` as its context (GPU; `--smoke` for a quick check).
   - `uv run python analysis/fair_fight.py` builds the M6 scoreboard: zero-shot → trained per model against the baselines, with paired AUC tests -> `results/fair_fight.csv`.
+- `uv run python analysis/accuracy.py` — post 2's numbers and chart (accuracy vs a lending decision, from the M3 predictions; cut-offs chosen on tune) -> `results/accuracy.json`, `results/figures/post2_profit.png`
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)

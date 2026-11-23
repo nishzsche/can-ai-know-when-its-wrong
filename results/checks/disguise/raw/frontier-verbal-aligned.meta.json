@@ -1,0 +1,482 @@
+[
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:08:24Z",
+    "split": "tune",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:45:49Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:45:53Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:51:37Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:53:13Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 3,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:56:51Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-22T23:59:08Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:02:28Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 4,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:02:34Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 3,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:02:35Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:02:37Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:45:43Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:45:43Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 8,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:45:43Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 3,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  },
+  {
+    "model_version": "openai/gpt-6.2-sol (effort medium; prompt v1); layout aligned a1",
+    "started": "2026-11-23T00:48:20Z",
+    "split": "test",
+    "conditions": [
+      "out_of_box"
+    ],
+    "limit": null,
+    "workers": 6,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "model": "openai/gpt-6.2-sol",
+    "reasoning_effort": "medium",
+    "seed": 0,
+    "prompt_version": "v1",
+    "answer_line": "Answer with the probability, from 0 to 100, that this customer misses next month's payment. Reply as JSON: {\"probability\": <number>}",
+    "base_url": "https://openrouter.ai/api/v1",
+    "requests_per_minute_cap": 400.0,
+    "check": "aligned"
+  }
+]

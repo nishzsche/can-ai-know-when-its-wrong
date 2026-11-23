@@ -32,7 +32,7 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
       - **Kev-4B changes a lot:** mean p 0.486 → 0.356, ECE 0.267 → 0.135, AUC 0.594 → 0.720; code 0 customers 0.54 → 0.36 (actual 0.12). v2 put it at a real disadvantage.
       - **Laya goes the other way:** mean p +6.0 points, ECE 0.052 → 0.060, AUC 0.666 → 0.569.
       - **Jev, Qwen, Kev-0.8B:** mean within 0.3 points; AUC 0.712 → 0.692, 0.744 → 0.715, 0.750 → 0.743. v2 suited them slightly better.
-      - **Sol:** running on the laptop, slowed by upstream 429s (OpenAI/Azure); report on the customers done, with n.
+      - **Sol** (test only; its tune run was skipped as unneeded): mean p 0.260 → 0.252, ECE 0.052 → 0.052, AUC 0.754 → 0.745. Five copies of the runner ran at once for a while after restarts (Windows kept the old retry scripts alive), so the records were deduplicated, keeping the first answer per customer; the raw log keeps every call.
       - Tune results match test closely. `results/checks/disguise_summary.json` has both.
   - **Review panel (2026-11-23):** four reviewers plus an advisor scored the work 6.5/10 as written and about 8 after fixes. The must-fixes are applied to the blog, carousel, X post and README. `analysis/robustness.py` holds the extra statistics.
   - **False-base-rate check** (`runners/checks/sol_false_rate.py`, user asked 2026-11-23, $0.46): 500 test customers, the base-rate sentence saying 10.0% instead of 22.1%.

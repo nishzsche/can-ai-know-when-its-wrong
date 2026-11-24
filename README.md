@@ -2,11 +2,21 @@
 
 Banks are audited on whether their risk scores are honest: if a model says "30% chance of default", about 30% of those customers should default. This project holds AI decision models to the same standard on 2,000 real credit card customers, and compares them with a logistic-regression scorecard and gradient boosting.
 
-**Published 23 November 2026:** [the post](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (source: [`writeup/blog.md`](writeup/blog.md)). The method and every check are in [the deep dive](writeup/deep_dive.md), kept here rather than on the blog. The full plan is in [PLAN.md](PLAN.md).
+It's the experiment behind a blog series. Every post uses the same customers, the same test set and the same saved predictions:
+
+| | Post | What it asks | Source and numbers |
+|---|---|---|---|
+| 1 | [Can AI know when it's wrong?](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (23 November 2026) | When an AI model says "30% chance of default", is it right? Six AI models answer cold, against two models trained on 20,000 customers | [`writeup/blog.md`](writeup/blog.md); [results below](#post-1s-results); the method and every check in [the deep dive](writeup/deep_dive.md) |
+| 2 | [Why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/) (24 November 2026) | Would judging the same models by accuracy have picked the right one for a lender? | [`writeup/accuracy_post.md`](writeup/accuracy_post.md); `analysis/accuracy.py` → `results/accuracy.json` |
+| 3 | The fair fight (in review) | What happens when the AI models learn from the same 20,000 customers the trained models did | [`writeup/fair_fight_post.md`](writeup/fair_fight_post.md) (draft); `analysis/fair_fight.py` → `results/fair_fight.csv`; trained weights in the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights). Its results go here when it's published |
+
+Next in this repo: whether shrinking a model to 8 or 4 bits makes it less honest, and teaching a small model to say "I don't know". Both reuse these customers and post 3's trained models. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
 
 ![Promised vs actual default rate for each AI model, with the scorecard for reference](results/figures/1_promised_vs_actual.png)
 
 ## In short
+
+**Post 1: zero-shot AI against trained models.**
 
 - **Most AI models overstate default risk out of the box.** Jev and Kev-4B predict about 48% on average; 22.1% of these customers defaulted.
 - **One sentence stating the portfolio's default rate helps four of the six** (three clearly, plus Qwen's numbers). It makes no clear difference to Laya, makes Kev-0.8B worse (ECE 0.090 → 0.269), and costs Qwen ranking (AUC 0.744 → 0.710).
@@ -16,7 +26,15 @@ Banks are audited on whether their risk scores are honest: if a model says "30% 
 - **No AI contestant out-ranks the trained models.** Gradient boosting's AUC is 0.789 and the scorecard's 0.777; the best AI contestants reach 0.757 and 0.754. Paired against the scorecard, the closest six gaps have Holm-adjusted p ≈ 0.06. Approving the safest 80%, the scorecard's approvals default at 13.6% and Sol's at 13.4%.
 - **Recalibrating on 2,000 labelled customers** brings every AI contestant to an ECE of about 0.02–0.04 (equal-mass bins; a perfectly calibrated model scores up to ~0.03 here). Jev, Laya and Qwen still fail Hosmer–Lemeshow. A scorecard trained on the same 2,000 labels reaches AUC 0.758 and ECE 0.024.
 
-## Results
+**Post 2: accuracy against a lending decision.** Built from post 1's predictions, with no new runs. The profit figures assume a paying customer earns a lender 1 unit and a defaulter costs it 4, an illustrative ratio; the post checks others.
+
+- **Doing nothing is 77.9% accurate.** Saying "won't default" to everyone is right that often, because 22.1% defaulted. The most accurate model, gradient boosting at 82.5%, beats it by 4.6 points, and Laya (76.5%), Jev (60.9%) and Kev-4B (55.2%) fall below it.
+- **Doing nothing loses money anyway.** Approving everyone loses 105 units per 1,000 customers.
+- **Accuracy can't tell a useful model from a useless one.** Qwen ties the scorecard on accuracy (81.9% against 81.8%). Taken at its word (approve anyone it rates under 20%), it approves 5 customers in 100 and earns 17 per 1,000, against the scorecard's 284.
+- **Honest percentages can be used as they come.** Gradient boosting, the scorecard and Sol earn about the same at their own percentages as with a cut-off chosen on the 2,000 labelled tune customers. Kev-0.8B earns 99 at its word and 306, the most of any model, with the chosen cut-off.
+- As in post 1, the scorecard and gradient boosting learned from 20,000 labelled customers and the AI models answered cold.
+
+## Post 1's results
 
 Test set: 2,000 customers, 22.1% of whom defaulted. **The baselines learned from 20,000 labelled customers. The AI contestants are zero-shot:** each sees one customer's summary, with no labelled examples.
 
@@ -48,13 +66,15 @@ Test set: 2,000 customers, 22.1% of whom defaulted. **The baselines learned from
 
 [`PREDICTIONS.md`](PREDICTIONS.md) holds the author's guesses, committed before any run. One of four held: the base rate did help most contestants. Jev wasn't the most honest, Laya wasn't the least, and no AI contestant beat the scorecard at ranking.
 
-**Charts** (`results/figures/`):
+**Post 1's charts** (`results/figures/`):
 
 1. [Promised vs actual default rate](results/figures/1_promised_vs_actual.png), by decile of predicted risk (shown above).
 2. [The honesty arc](results/figures/2_honesty_arc.png): ECE out of the box, told the base rate, and recalibrated.
 3. [Ranking](results/figures/3_ranking_auc_ks.png): AUC with 95% intervals, and KS.
 4. [What a bank would see](results/figures/4_risk_bands.png): promised vs actual default rates by risk band.
 5. [Cost vs ranking](results/figures/5_cost_vs_auc.png).
+
+Post 2's charts are `post2_*.png` and post 3's are `m6_*.png`. Every chart also has a `-dark.png` version for the blog's dark mode.
 
 ### Cost and speed
 
@@ -157,8 +177,8 @@ The splits are stratified on the target with a fixed seed (`data/splits.py`):
 
 | split | customers | defaults | default rate | used for |
 |---|---:|---:|---:|---|
-| train | 20,000 | 4,424 | 22.12% | the scorecard and GBM only |
-| tune | 2,000 | 442 | 22.10% | recalibration and threshold choices |
+| train | 20,000 | 4,424 | 22.12% | training the scorecard and GBM; in post 3, also training the AI models and supplying their examples |
+| tune | 2,000 | 442 | 22.10% | recalibration, threshold choices and post 2's cut-offs |
 | test | 2,000 | 442 | 22.10% | scoring every contestant; nothing is tuned on it |
 | reserve | 6,000 | 1,328 | 22.13% | unused |
 
@@ -175,6 +195,14 @@ uv sync
 uv run python analysis/summarize.py   # results/summary.csv, summary_detail.json, summary_excluding_memorized.csv
 uv run python analysis/figures.py     # results/figures/
 uv run python analysis/robustness.py  # results/robustness.json
+
+# post 2
+uv run python analysis/accuracy.py    # results/accuracy.json and post 2's charts
+
+# post 3
+uv run python analysis/fair_fight.py          # results/fair_fight.csv, fair_fight.json
+uv run python analysis/seeds.py               # results/seeds.json (the re-run check)
+uv run python analysis/fair_fight_figures.py  # post 3's charts
 ```
 
 **Rebuild from the raw data:**
@@ -200,6 +228,8 @@ uv run --group runners python runners/checks/sol_false_rate.py --report
 
 **Re-run the AI contestants.** Jev and Sol need an OpenRouter key, and the open models need a GPU. The per-contestant commands are in [`CLAUDE.md`](CLAUDE.md), and the GPU setup is in [`L4_RUNBOOK.md`](L4_RUNBOOK.md). Afterwards, run `analysis/recalibrate.py`, then the two scoring commands above.
 
+**Retrain post 3's models.** This needs an L4 GPU; the steps are in [`L4_RUNBOOK.md`](L4_RUNBOOK.md) §6. To score without retraining, use the weights from the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights).
+
 ## Repository layout
 
 | Path | What's there |
@@ -207,11 +237,12 @@ uv run --group runners python runners/checks/sol_false_rate.py --report
 | `data/` | Loading, splits, the text template (`render.py`), memorization tests, `contamination.md` |
 | `baselines/` | The scorecard and gradient boosting |
 | `runners/` | One script per AI contestant, the shared harness, and `checks/` (robustness checks) |
-| `analysis/` | Metrics, recalibration, the summary tables and the figures |
-| `results/` | Predictions, raw responses, summary tables, figures, checks and the run manifest |
-| `writeup/` | The blog post, the LinkedIn carousel and the X post (drafts), plus their style brief |
+| `training/` | Post 3: exporting the `train` customers and fine-tuning Qwen and Laya (Kev trains with its own `kev.train`) |
+| `analysis/` | Metrics, recalibration, the summary tables and the figures, plus `accuracy.py` (post 2) and `fair_fight.py`, `seeds.py` and `fair_fight_figures.py` (post 3) |
+| `results/` | Predictions, raw responses, summary tables, figures, checks and the run manifests |
+| `writeup/` | Each post, its LinkedIn post and carousel, and the X post, plus the deep dive and the style brief (`STYLE.md`) |
 | `tests/` | Tests for rendering, splits, records, runners, baselines, metrics and the checks |
-| `PREDICTIONS.md` | The author's guesses, committed before any run |
+| `PREDICTIONS.md` | The author's guesses, committed before any run: for post 1, and for post 3 before its training runs |
 
 ## Licence
 

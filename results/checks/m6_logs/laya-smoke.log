@@ -1,0 +1,24 @@
+Fetching 39 files:   0%|          | 0/39 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 39 files:   3%|▎         | 1/39 [00:00<00:10,  3.78it/s]Fetching 39 files:  10%|█         | 4/39 [00:00<00:02, 11.94it/s]Fetching 39 files:  15%|█▌        | 6/39 [00:00<00:02, 12.68it/s]Fetching 39 files:  21%|██        | 8/39 [00:00<00:02, 14.24it/s]Fetching 39 files:  26%|██▌       | 10/39 [00:00<00:01, 14.65it/s]Fetching 39 files:  31%|███       | 12/39 [00:00<00:01, 14.97it/s]Fetching 39 files:  36%|███▌      | 14/39 [00:01<00:01, 15.35it/s]Fetching 39 files:  41%|████      | 16/39 [00:01<00:01, 12.12it/s]Fetching 39 files:  46%|████▌     | 18/39 [00:01<00:01, 12.80it/s]Fetching 39 files:  51%|█████▏    | 20/39 [00:01<00:02,  8.72it/s]Fetching 39 files:  56%|█████▋    | 22/39 [00:02<00:02,  7.31it/s]Fetching 39 files:  62%|██████▏   | 24/39 [00:02<00:01,  8.88it/s]Fetching 39 files:  69%|██████▉   | 27/39 [00:02<00:01, 11.50it/s]Fetching 39 files:  74%|███████▍  | 29/39 [00:02<00:00, 12.68it/s]Fetching 39 files:  79%|███████▉  | 31/39 [00:02<00:00, 13.43it/s]Fetching 39 files:  85%|████████▍ | 33/39 [00:02<00:00, 13.61it/s]Fetching 39 files:  90%|████████▉ | 35/39 [00:02<00:00, 14.61it/s]Fetching 39 files:  95%|█████████▍| 37/39 [00:08<00:01,  1.07it/s]Fetching 39 files: 100%|██████████| 39/39 [00:14<00:00,  1.48s/it]Fetching 39 files: 100%|██████████| 39/39 [00:14<00:00,  2.68it/s]
+train items 58, calibration items 6, eval items 6 (calibration_slice), skipped {}, device cuda
+optimizer budget: 58 train item(s), effective batch up to 64 (micro_batch 8 x grad_accum 8), 1 optimizer updates over 1 epoch(s)
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py:3204: FutureWarning: `gradient_checkpointing_enable` is deprecated and will be removed in v6. Use `activation_checkpointing_enable` instead.
+  warnings.warn(
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/laya/train.py:724: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  scheduler.step()
+epoch 1/1 mean loss 0.5014
+/home/can-ai-know-when-its-wrong/training/laya_ft.py:60: RuntimeWarning: laya.train: noul calibration: not fitted: 6 calibration items, fewer than 10, so the temperature stays 1.0
+  summary = finetune(str(data), base, str(args.out), config=config, device=args.device)
+
+=== Calibration Evidence (in-sample calibration slice, 6 items; not held-out) ===
+Metric                 Before         After          Delta         
+-----------------------------------------------------------------
+Accuracy               0.8333         0.8333         +0.0000       
+Loss                   0.3882         0.2964         -0.0918       
+ECE                    0.3019         0.2150         -0.0869       
+Brier (multi-class)    0.2311         0.1879         -0.0432       
+Brier (top-1)          0.1156         0.0940         -0.0216       
+Mean Confidence        0.7244         0.8360         +0.1116       
+-----------------------------------------------------------------
+
+saved -> /home/runs/laya-smoke (0.2 min)

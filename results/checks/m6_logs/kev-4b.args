@@ -1,0 +1,1 @@
+--data /home/can-ai-know-when-its-wrong/training/data/kev_train.jsonl --base Qwen/Qwen3.5-4B-Base --base_revision 1001bb4d826a52d1f399e183466143f4da7b741b --init_from jaredpalmer/kev-4b@591dcb5bd6d05eb0b5131ea6608f93f10243335c --epochs 1 --lr 2e-5 --batch 1 --accum 8 --dtype bf16 --checkpointing 1 --device cuda --seed 0

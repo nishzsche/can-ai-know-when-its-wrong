@@ -1,0 +1,11 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:  96%|█████████▌| 306/320 [00:00<00:00, 3034.70it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 3108.45it/s]
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 2574.77it/s]
+delta: warm start from /home/hf-cache/hub/models--jaredpalmer--kev-0.8b/snapshots/788ddbdd65715bb03a56788c822f6c632c9a551d: 372 lora tensors and the pointer head loaded
+device=cuda world=1 trainable params=11.3M
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+20000 training requests (holdout=[]), questions by type {'noul': 20000}
+ep0 step 10/30 loss 0.490 kl 0.000 anchor 0.000 0.920s/rec
+ep0 step 20/30 loss 0.439 kl 0.000 anchor 0.000 0.574s/rec
+ep0 step 30/30 loss 0.536 kl 0.000 anchor 0.000 0.459s/rec
+saved /home/runs/kev-0.8b-smoke

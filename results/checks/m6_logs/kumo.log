@@ -1,0 +1,7 @@
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows) (fit 0.0s)
+kumo-tabular               tune  AUC 0.7943  Brier 0.1339  ECE 0.0161  mean p 0.2229 vs actual 0.2210
+kumo-tabular               test  AUC 0.7942  Brier 0.1306  ECE 0.0204  mean p 0.2191 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/predictions/kumo-tabular.jsonl
+EXIT=0

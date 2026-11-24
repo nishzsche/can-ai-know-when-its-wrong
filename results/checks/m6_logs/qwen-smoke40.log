@@ -1,0 +1,18 @@
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 11985.41it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py:3204: FutureWarning: `gradient_checkpointing_enable` is deprecated and will be removed in v6. Use `activation_checkpointing_enable` instead.
+  warnings.warn(
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/triton/knobs.py:504: UserWarning: TRITON_DEFAULT_FP_FUSION is unset: defaulting to FP fusion ENABLED for backward compatibility in Triton 3.9. The default will change to DISABLED in Triton 3.10; set TRITON_DEFAULT_FP_FUSION=1 to keep fusion enabled or =0 to adopt the new default early and silence this warning.
+  warn_once(FP_FUSION_DEFAULT_WARNING)
+/home/can-ai-know-when-its-wrong/training/qwen_lora.py:227: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  run_loss += float(loss)
+640 customers, prompt tokens median 341, max 363; default rate 0.2109
+trainable params: 32,464,896 || all params: 4,238,216,192 || trainable%: 0.7660
+step 10/40 loss 0.6155 elapsed 1.7 min, eta 5.1 min
+step 20/40 loss 0.5036 elapsed 2.6 min, eta 2.6 min
+step 30/40 loss 0.4625 elapsed 3.6 min, eta 1.2 min
+step 40/40 loss 0.4666 elapsed 4.5 min, eta 0.0 min
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+saved adapter -> /home/runs/qwen-smoke (4.5 min)

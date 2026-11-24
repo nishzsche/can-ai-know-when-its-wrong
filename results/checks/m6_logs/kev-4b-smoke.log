@@ -1,0 +1,14 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:37<00:37, 37.29s/it]Fetching 2 files: 100%|██████████| 2/2 [00:37<00:00, 15.56s/it]Fetching 2 files: 100%|██████████| 2/2 [00:37<00:00, 18.82s/it]
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  15%|█▍        | 63/426 [00:00<00:00, 612.05it/s]Loading weights:  35%|███▍      | 148/426 [00:00<00:00, 738.60it/s]Loading weights:  56%|█████▌    | 239/426 [00:00<00:00, 812.63it/s]Loading weights:  77%|███████▋  | 329/426 [00:00<00:00, 842.81it/s]Loading weights:  98%|█████████▊| 416/426 [00:00<00:00, 847.17it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 815.51it/s]
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 2763.47it/s]
+delta: warm start from /home/hf-cache/hub/models--jaredpalmer--kev-4b/snapshots/591dcb5bd6d05eb0b5131ea6608f93f10243335c: 496 lora tensors and the pointer head loaded
+device=cuda world=1 trainable params=33.8M
+20000 training requests (holdout=[]), questions by type {'noul': 20000}
+ep0 step 10/60 loss 0.620 kl 0.000 anchor 0.000 0.907s/rec
+ep0 step 20/60 loss 0.473 kl 0.000 anchor 0.000 0.664s/rec
+ep0 step 30/60 loss 0.500 kl 0.000 anchor 0.000 0.581s/rec
+ep0 step 40/60 loss 0.457 kl 0.000 anchor 0.000 0.541s/rec
+ep0 step 50/60 loss 0.338 kl 0.000 anchor 0.000 0.516s/rec
+ep0 step 60/60 loss 0.446 kl 0.000 anchor 0.000 0.500s/rec
+saved /home/runs/kev-4b-smoke

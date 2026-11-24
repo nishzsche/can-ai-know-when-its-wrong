@@ -1,0 +1,13 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 3571.59it/s]
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 2071.37it/s]
+delta: warm start from /home/hf-cache/hub/models--jaredpalmer--kev-0.8b/snapshots/788ddbdd65715bb03a56788c822f6c632c9a551d: 372 lora tensors and the pointer head loaded
+device=cuda world=1 trainable params=11.3M
+20000 training requests (holdout=[]), questions by type {'noul': 20000}
+ep0 step 10/60 loss 0.492 kl 0.000 anchor 0.000 0.241s/rec
+ep0 step 20/60 loss 0.448 kl 0.000 anchor 0.000 0.234s/rec
+ep0 step 30/60 loss 0.493 kl 0.000 anchor 0.000 0.231s/rec
+ep0 step 40/60 loss 0.447 kl 0.000 anchor 0.000 0.230s/rec
+ep0 step 50/60 loss 0.331 kl 0.000 anchor 0.000 0.229s/rec
+ep0 step 60/60 loss 0.459 kl 0.000 anchor 0.000 0.228s/rec
+saved /home/runs/kev-0.8b-smoke

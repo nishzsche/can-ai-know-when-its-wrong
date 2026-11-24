@@ -1,0 +1,5 @@
+tabicl-v2: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows) (fit 1.4s)
+tabicl-v2                  tune  AUC 0.7933  Brier 0.1346  ECE 0.0307  mean p 0.2094 vs actual 0.2210
+tabicl-v2                  test  AUC 0.7938  Brier 0.1307  ECE 0.0252  mean p 0.2052 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/predictions/tabicl-v2.jsonl
+EXIT=0

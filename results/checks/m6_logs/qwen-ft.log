@@ -1,0 +1,65 @@
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 12540.70it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py:3204: FutureWarning: `gradient_checkpointing_enable` is deprecated and will be removed in v6. Use `activation_checkpointing_enable` instead.
+  warnings.warn(
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/triton/knobs.py:504: UserWarning: TRITON_DEFAULT_FP_FUSION is unset: defaulting to FP fusion ENABLED for backward compatibility in Triton 3.9. The default will change to DISABLED in Triton 3.10; set TRITON_DEFAULT_FP_FUSION=1 to keep fusion enabled or =0 to adopt the new default early and silence this warning.
+  warn_once(FP_FUSION_DEFAULT_WARNING)
+/home/can-ai-know-when-its-wrong/training/qwen_lora.py:227: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  run_loss += float(loss)
+20,000 customers, prompt tokens median 341, max 368; default rate 0.2212
+trainable params: 32,464,896 || all params: 4,238,216,192 || trainable%: 0.7660
+step 25/1250 loss 0.5012 elapsed 2.4 min, eta 119.6 min
+step 50/1250 loss 0.5138 elapsed 4.9 min, eta 116.9 min
+step 75/1250 loss 0.5115 elapsed 7.3 min, eta 113.8 min
+step 100/1250 loss 0.4966 elapsed 9.6 min, eta 110.8 min
+step 125/1250 loss 0.5291 elapsed 12.0 min, eta 108.3 min
+step 150/1250 loss 0.5217 elapsed 14.4 min, eta 105.9 min
+step 175/1250 loss 0.5149 elapsed 16.9 min, eta 103.6 min
+step 200/1250 loss 0.4316 elapsed 19.3 min, eta 101.1 min
+step 225/1250 loss 0.4461 elapsed 21.6 min, eta 98.6 min
+step 250/1250 loss 0.4561 elapsed 24.1 min, eta 96.2 min
+step 275/1250 loss 0.4305 elapsed 26.5 min, eta 93.9 min
+step 300/1250 loss 0.4809 elapsed 28.9 min, eta 91.5 min
+step 325/1250 loss 0.4534 elapsed 31.3 min, eta 89.2 min
+step 350/1250 loss 0.4899 elapsed 33.7 min, eta 86.8 min
+step 375/1250 loss 0.4395 elapsed 36.2 min, eta 84.4 min
+step 400/1250 loss 0.4779 elapsed 38.6 min, eta 82.0 min
+step 425/1250 loss 0.4392 elapsed 41.0 min, eta 79.6 min
+step 450/1250 loss 0.4635 elapsed 43.4 min, eta 77.2 min
+step 475/1250 loss 0.4300 elapsed 45.9 min, eta 74.8 min
+step 500/1250 loss 0.4569 elapsed 48.2 min, eta 72.4 min
+step 525/1250 loss 0.4520 elapsed 50.6 min, eta 69.9 min
+step 550/1250 loss 0.4810 elapsed 53.1 min, eta 67.5 min
+step 575/1250 loss 0.4748 elapsed 55.5 min, eta 65.1 min
+step 600/1250 loss 0.3906 elapsed 57.9 min, eta 62.7 min
+step 625/1250 loss 0.4348 elapsed 60.3 min, eta 60.3 min
+step 650/1250 loss 0.4607 elapsed 62.7 min, eta 57.9 min
+step 675/1250 loss 0.4019 elapsed 65.2 min, eta 55.5 min
+step 700/1250 loss 0.4496 elapsed 67.6 min, eta 53.1 min
+step 725/1250 loss 0.4764 elapsed 70.0 min, eta 50.7 min
+step 750/1250 loss 0.4523 elapsed 72.4 min, eta 48.3 min
+step 775/1250 loss 0.4587 elapsed 74.8 min, eta 45.9 min
+step 800/1250 loss 0.4293 elapsed 77.3 min, eta 43.5 min
+step 825/1250 loss 0.4476 elapsed 79.7 min, eta 41.1 min
+step 850/1250 loss 0.4726 elapsed 82.1 min, eta 38.6 min
+step 875/1250 loss 0.4620 elapsed 84.5 min, eta 36.2 min
+step 900/1250 loss 0.4499 elapsed 86.9 min, eta 33.8 min
+step 925/1250 loss 0.4657 elapsed 89.3 min, eta 31.4 min
+step 950/1250 loss 0.4008 elapsed 91.8 min, eta 29.0 min
+step 975/1250 loss 0.4258 elapsed 94.2 min, eta 26.6 min
+step 1000/1250 loss 0.4382 elapsed 96.6 min, eta 24.1 min
+step 1025/1250 loss 0.4194 elapsed 99.0 min, eta 21.7 min
+step 1050/1250 loss 0.4563 elapsed 101.4 min, eta 19.3 min
+step 1075/1250 loss 0.3737 elapsed 103.8 min, eta 16.9 min
+step 1100/1250 loss 0.3904 elapsed 106.2 min, eta 14.5 min
+step 1125/1250 loss 0.3924 elapsed 108.6 min, eta 12.1 min
+step 1150/1250 loss 0.4109 elapsed 111.0 min, eta 9.7 min
+step 1175/1250 loss 0.4793 elapsed 113.4 min, eta 7.2 min
+step 1200/1250 loss 0.4175 elapsed 115.8 min, eta 4.8 min
+step 1225/1250 loss 0.4547 elapsed 118.2 min, eta 2.4 min
+step 1250/1250 loss 0.4038 elapsed 120.7 min, eta 0.0 min
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+saved adapter -> /home/runs/qwen-ft (120.7 min)
+EXIT=0

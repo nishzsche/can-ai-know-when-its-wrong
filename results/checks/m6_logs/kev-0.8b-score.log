@@ -1,0 +1,8 @@
+kev-0.8b-ft: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft.jsonl
+  trained: 2000 new in 52.7s | mean p 0.185 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0064
+EXIT_tune=0
+kev-0.8b-ft: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft.jsonl
+  trained: 2000 new in 47.2s | mean p 0.181 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0058
+EXIT_test=0

@@ -329,3 +329,52 @@ git push
 ```
 
 Each archive must be under 2 GB (Laya's full weights are ~1.7 GB). Then pause or delete the instance. `recalibrate.py` and the analysis run on the laptop.
+
+## 6.8 Seed check: Kev-0.8B and Laya with seeds 1 and 2 (added 2026-11-24; author's decision)
+
+The review panel asked how much a re-run moves the results (PLAN.md §11, choice 6 promised this "if GPU time allows"). Same data, settings and code as §6.1 and §6.2; only the training seed changes. Nothing replaces the main (seed 0) predictions: these go to `results/checks/m6_seeds/`. About 4 GPU hours (~$1.75): Kev-0.8B ~75 min per seed, Laya ~40 min per seed, plus a few minutes of scoring each.
+
+Fresh instance: §6.0 blocks 1–3 first (the trained weights from the first session are in the `m6-weights` release if you need them; this check doesn't).
+
+```bash
+# Kev-0.8B, seeds 1 and 2: the seed-0 run's exact arguments (base model and its pinned revision
+# included), with only --seed and --out changed. Needs the training files from 6.0 block 2.
+cd /home/kev
+ARGS="$(sed 's/--seed 0//' /home/can-ai-know-when-its-wrong/results/checks/m6_logs/kev-0.8b.args)"
+echo "$ARGS"    # check: --base Qwen/Qwen3.5-0.8B-Base --base_revision dc7cdfe2... --init_from ...@788ddbdd...
+for s in 1 2; do
+  uv run python -m kev.train $ARGS --seed $s --out /home/runs/kev-0.8b-ft-s$s 2>&1 | tee /home/logs/kev-0.8b-ft-s$s.log
+done
+```
+
+For each seed, serve it at temperature 1.0 (window 1) and score both splits (window 2), then stop the server:
+
+```bash
+# window 1
+KEV_TEMPERATURE=1.0 uv run --extra serve python -m kev.serve --run /home/runs/kev-0.8b-ft-s1 --port 8009
+# window 2
+cd /home/can-ai-know-when-its-wrong
+for split in tune test; do
+  uv run python runners/kev.py --size 0.8b --finetuned /home/runs/kev-0.8b-ft-s1 --split $split \
+    --out-dir results/checks/m6_seeds/seed1
+done
+```
+
+(Repeat with `-s2` and `seed2`.)
+
+```bash
+# Laya, seeds 1 and 2
+cd /home/can-ai-know-when-its-wrong
+for s in 1 2; do
+  uv run --group laya python training/laya_ft.py --out /home/runs/laya-ft-s$s --device cuda --seed $s \
+    2>&1 | tee /home/logs/laya-ft-s$s.log
+  for split in tune test; do
+    uv run --group laya python runners/laya_classic.py --checkpoint /home/runs/laya-ft-s$s --split $split \
+      --device cuda --out-dir results/checks/m6_seeds/seed$s
+  done
+done
+uv run python analysis/seeds.py        # spread across seeds 0, 1, 2 -> results/seeds.json
+git add results/checks/m6_seeds results/seeds.json && git commit -m "M6: seed check (Kev-0.8B and Laya, seeds 1 and 2)" && git push
+```
+
+Commit the training logs too (`/home/logs/*-s1.log`, `*-s2.log` into `results/checks/m6_logs/`). No need to release these weights.

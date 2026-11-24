@@ -88,7 +88,8 @@ def shift_to_rate(p: np.ndarray, target: float = BASE_RATE) -> np.ndarray:
     return 1 / (1 + np.exp(-(z + c)))
 
 
-def paired_auc(y, p_ref, p_other, n_boot: int = 2000, seed: int = SEED) -> dict:
+def paired_auc(y, p_ref, p_other, n_boot: int = 2000, seed: int = SEED,
+               alpha: float = 0.05) -> dict:  # fmt: skip
     rng = np.random.default_rng(seed)
     diffs = []
     for _ in range(n_boot):
@@ -100,8 +101,8 @@ def paired_auc(y, p_ref, p_other, n_boot: int = 2000, seed: int = SEED) -> dict:
     est = m.auc(y, p_ref) - m.auc(y, p_other)
     # two-sided bootstrap p-value for "no difference"
     pval = float(min(1.0, 2 * min((diffs <= 0).mean(), (diffs >= 0).mean())))
-    return {"difference": float(est), "lo": float(np.percentile(diffs, 2.5)),
-            "hi": float(np.percentile(diffs, 97.5)), "p_value": pval}  # fmt: skip
+    return {"difference": float(est), "lo": float(np.percentile(diffs, 50 * alpha)),
+            "hi": float(np.percentile(diffs, 100 - 50 * alpha)), "p_value": pval}  # fmt: skip
 
 
 def holm(pvals: dict[str, float]) -> dict[str, float]:

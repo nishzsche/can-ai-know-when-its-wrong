@@ -9,6 +9,29 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Post 1:** gained the "Honest isn't self-aware" caveat (blog PR #33), from a reviewer's point that calibration isn't metacognition.
 - **Still to do (author):** the LinkedIn and X versions of post 2 aren't drafted yet.
 
+## Post 3 (the fair fight): draft and review (2026-11-24)
+
+- **Draft:** `writeup/fair_fight_post.md`. Charts come from `analysis/fair_fight_figures.py`: `m6_catch_up` (ranking), `m6_how_close` (paired gaps to gradient boosting and the scorecard, Bonferroni-widened so the chart matches the Holm wording), `m6_honesty` (raw vs the same correction), `m6_kev_calibration` (Kev raw vs corrected), `m6_cost` (cost vs ranking), `m6_sol_neighbours` (Sol and Jev against their 20 look-alikes) and `m6_reliability` (deep dive, not in the post). The scoreboard comes from `analysis/fair_fight.py`.
+- **Review copy:** https://nishzsche.github.io/review/fair-fight/ (unlisted, noindex). Version 1 went up on 2026-11-24 (blog PR #42); version 1.1 added four charts (PR #43). `results/seeds.json` holds seed 0 only until the seed runs finish.
+- **Review panel** (five agents: statistician, fact-checker, bank model-risk validator, editor, ML engineer and hiring manager). Scores as drafted were 6–7/10, about 8.5 with the fixes. No leakage was found, and every number recomputes from the raw predictions. The must-fixes:
+  - **Laya:** 4 passes plus its own temperature fit on 400 train rows, not one pass.
+  - **Qwen:** common LoRA settings; it has no maker recipe.
+  - **The predictions table:** Kev-0.8B was second least honest, not Kev-4B.
+  - **"It tied":** overstated. The first Holm family covered 26 rows, zero-shot and duplicate calibrated rows included.
+  - **"Added nothing beyond counting":** never tested.
+  - **Wording:** race language, "six" for eight models, "Nobody had checked", and how much tuning gradient boosting got.
+- **Kev under-prediction (diagnosed 2026-11-24):**
+  - Both fine-tuned Kevs average 18–19% against 22.1%, on tune and test alike, mostly for low- to middle-risk customers.
+  - Ruled out: the augmentations (choice-only), the readout (a clean P(yes) over {no, yes}), split differences, truncation.
+  - Kev's maker recipe ends with a temperature fit on held-out data, which was **not applied**: Kev was served at T = 1.0 (PLAN §11, choice 3). Laya's equivalent step **was** kept.
+  - The models are overconfident at T = 1 (calibration slopes 0.86–0.93). A temperature alone fitted on tune fixes most of it (see `results/fair_fight.json`, `temperature_only_on_tune`).
+  - The "overshoot from 49%" story in the first draft was wrong.
+- **Author's decisions (2026-11-24):**
+  - The post compares honesty **after the same correction on tune** for every model, raw second, and explains the Kev/Laya recipe difference.
+  - Title framing: **"It caught up"**.
+  - **Extra seeds:** Kev-0.8B and Laya, seeds 1 and 2 (L4_RUNBOOK.md §6.8, `analysis/seeds.py`). Not yet run.
+- **Analysis fix:** `analysis/fair_fight.py` now runs Holm over the eight trained AI models' raw output only, and adds paired tests against each model's own zero-shot score and against the 20 neighbours, an "adds information beyond the neighbours" test for Jev and Sol, and Kev's temperature-only fit.
+
 ## M6: the fair fight (started 2026-11-23)
 
 After launch, the author asked to train the AI models on the same 20,000 customers the scorecard and LightGBM learned from. PLAN.md §11 has the design and the choices that could tilt the comparison. §12 proposes the next posts.

@@ -44,6 +44,30 @@ How the blog, carousel and X post for this experiment are written. This follows 
 - **Sol's caveat, wherever Sol's honesty is mentioned:** it recognizes this dataset and knows its default rate.
 - **Confidentiality:** a public dataset only. My credit-risk background is described as patterns, never a past employer's internals or numbers.
 
+## Charts (every post in the series)
+
+No study gives a single best number of charts. This budget comes from what the author asked for in post 3: 2 charts in 2,400 words was too few, and 6 in 2,700 was right.
+
+- **How many:** one chart for each finding the reader is asked to believe, which works out to about one every 400–500 words.
+  - A 1,500–2,000-word post has 4–5 charts.
+  - A 2,500–3,000-word post has 5–7.
+  - Fewer than 3 is too few for a data post. More than 7 means the post is doing too much: move the extra charts to the deep dive.
+- **Where:**
+  - The first chart comes within the first 400 words. It can carry the hook.
+  - No stretch of more than about 600 words goes without a chart.
+  - Tables don't count toward either rule. A table gives the exact numbers; a chart gives the pattern.
+- **Each chart earns its place:**
+  - It makes one point, and its title states that point as a sentence ("Paying more didn't buy better ranking", not "Cost vs AUC").
+  - It shows something the text and tables around it can't.
+  - No two charts make the same point.
+  - A chart may repeat a table's numbers only if it adds the shape, as the catch-up chart does in post 3.
+- **How it's built:**
+  - Draw it with the project's figure code and shared palette (`analysis/figures.py`), in a light version and a `-dark.png` version.
+  - Make it readable on a phone.
+  - Use the same encoding throughout a post: an open dot for before, a filled dot for after, each model in its own colour.
+  - Write plain-language alt text that gives the key numbers.
+  - A chart's statistics must match the text's wording. For example, if the text corrects for multiple comparisons, so do the chart's intervals.
+
 ## The blog (`writeup/blog.md`, the canonical piece)
 
 **Audience:** all three readers. About 1,800 words, plus a methods appendix.
@@ -91,6 +115,7 @@ How the blog, carousel and X post for this experiment are written. This follows 
 ## Before publishing
 
 - [ ] Can someone outside tech follow the first three paragraphs without looking anything up?
+- [ ] Does the post meet the chart budget: about one chart per 400–500 words, the first within 400 words, and no 600-word stretch without one?
 - [ ] Does every comparison say the baselines were trained and the AI models weren't?
 - [ ] Is Sol's recognition caveat next to every mention of Sol's honesty?
 - [ ] Is every number traceable to `results/summary.csv` or `data/contamination.md`?

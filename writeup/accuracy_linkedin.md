@@ -1,8 +1,15 @@
 # LinkedIn post: "Why 99% accuracy can still be a disaster"
 
-A single-image post (no carousel), with the post's chart attached. Links go in the first comment, not the post. Written for anyone, tech or not: every term is explained in passing. Numbers come from `results/accuracy.json` (`analysis/accuracy.py`), the same ones the published post uses.
+A multi-image post with the blog post's four charts, in the order the text tells the story. Links go in the first comment, not the post. Written for anyone, tech or not: every term is explained in passing. Numbers come from `results/accuracy.json` (`analysis/accuracy.py`), the same ones the published post uses.
 
-**Attach:** `results/figures/post2_profit.png` (portrait, reads well on a phone). Alternative: the link-preview card `results/figures/post2_social_card.png`.
+**Attach, in this order** (the light versions; LinkedIn has no dark mode for images):
+
+1. `results/figures/post2_accuracy.png`: accuracy barely beats doing nothing. It goes first because it is the hook, and the first image shows largest in the feed.
+2. `results/figures/post2_confusion.png`: which mistakes accuracy can't see.
+3. `results/figures/post2_profit.png`: more accurate isn't worth more.
+4. `results/figures/post2_cost_ratio.png`: the costlier a mistake, the more honesty pays.
+
+**If the original single-image version is already live:** LinkedIn lets you edit a published post's text but not its images. Either repost with all four charts, or keep the post and add charts 1, 2 and 4 as images in replies to your first comment (one image per comment).
 
 ## Post text
 
@@ -17,6 +24,7 @@ A single-image post (no carousel), with the post's chart attached. Links go in t
 > → The best model beat doing nothing by less than 5 points (82.5%).
 > → Three of the six AI models were less accurate than doing nothing.
 > → A small AI model (Qwen) tied a traditional bank scorecard: 81.9% vs 81.8%.
+> → Accuracy can't see which mistakes a model makes. One AI model caught twice as many defaulters as the scorecard, by turning away 656 people who would have paid.
 >
 > Then I made them lend. Say each customer who pays earns a bank 1 unit and each default costs 4.
 >
@@ -25,7 +33,7 @@ A single-image post (no carousel), with the post's chart attached. Links go in t
 > → Another AI model ranks customers well enough to earn 306, the best in the test, once you pick its cut-off from past outcomes. On its own percentages, it earns 99.
 > → The models whose percentages come true earn about the same either way. That's what honest numbers buy you: you can use them as they come.
 >
-> Raise the cost of a default to 6 units and approving everyone loses 547 per 1,000. The costlier a mistake, the more the decision rests on honest numbers.
+> Raise the cost of a default to 6 units and approving everyone loses 547 per 1,000. The two traditional models, taken at their word, still earn about 190. At 10 to 1, every AI model taken at its word either loses money or approves almost nobody. The costlier a mistake, the more the decision rests on honest numbers.
 >
 > So, instead of accuracy:
 > → Compare it with the do-nothing score. 82% sounds good until you learn 78% is free.

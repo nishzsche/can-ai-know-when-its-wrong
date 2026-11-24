@@ -1,0 +1,58 @@
+[
+  {
+    "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights a8c523b01a5d",
+    "started": "2026-11-24T14:26:42Z",
+    "split": "tune",
+    "conditions": [
+      "trained"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 595.58.03",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "agent_class": "Agent",
+    "laya_version": "0.5.2",
+    "device": "cuda",
+    "usd_per_hour": 0.44
+  },
+  {
+    "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights a8c523b01a5d",
+    "started": "2026-11-24T14:27:22Z",
+    "split": "test",
+    "conditions": [
+      "trained"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 595.58.03",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "agent_class": "Agent",
+    "laya_version": "0.5.2",
+    "device": "cuda",
+    "usd_per_hour": 0.44
+  }
+]

@@ -7,12 +7,19 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Live:** [Why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/) (blog PR #38), from `writeup/accuracy_post.md`. Numbers, chart (light and dark) and social card come from `analysis/accuracy.py`.
 - **Review:** two reviewers. Version 2 added the confusion matrices and named the table models (blog PR #31). The review URL now redirects to the post. Post 1's closing line links to post 2.
 - **Post 1:** gained the "Honest isn't self-aware" caveat (blog PR #33), from a reviewer's point that calibration isn't metacognition.
-- **Still to do (author):** the LinkedIn and X versions of post 2 aren't drafted yet.
+- **Charts (2026-11-24):** post 2 went from 1 chart to 4: `post2_accuracy`, `post2_confusion` and `post2_cost_ratio` were added (blog PR #44). Jev's and Kev-4B's defaulters caught were corrected to 71% and 64%; they had been double-rounded to 72% and 65%.
+- **LinkedIn:** the first version went up boosted, with a single image. It is being replaced by a document post, the 9-slide carousel `writeup/accuracy_carousel.pdf` (built by `writeup/build_accuracy_carousel.py` from the `## Slides` section of `writeup/accuracy_linkedin.md`). The document title is "Why 99% accuracy can still be a disaster: 8 models tested", within LinkedIn's 58-character limit.
+- **New rules in `writeup/STYLE.md`:** a chart budget (about one chart per 400–500 words, the first within 400 words), and a LinkedIn carousel for every post (8–10 slides, drawn at phone size).
 
 ## Post 3 (the fair fight): draft and review (2026-11-24)
 
-- **Draft:** `writeup/fair_fight_post.md`. Charts come from `analysis/fair_fight_figures.py`: `m6_catch_up` (ranking), `m6_how_close` (paired gaps to gradient boosting and the scorecard, Bonferroni-widened so the chart matches the Holm wording), `m6_honesty` (raw vs the same correction), `m6_kev_calibration` (Kev raw vs corrected), `m6_cost` (cost vs ranking), `m6_sol_neighbours` (Sol and Jev against their 20 look-alikes) and `m6_reliability` (deep dive, not in the post). The scoreboard comes from `analysis/fair_fight.py`.
-- **Review copy:** https://nishzsche.github.io/review/fair-fight/ (unlisted, noindex). Version 1 went up on 2026-11-24 (blog PR #42); version 1.1 added four charts (PR #43). `results/seeds.json` holds seed 0 only until the seed runs finish.
+- **Draft:** `writeup/fair_fight_post.md`. Charts come from `analysis/fair_fight_figures.py`: `m6_catch_up` (ranking), `m6_how_close` (paired gaps to gradient boosting and the scorecard, Bonferroni-widened so the chart matches the Holm wording), `m6_honesty` (raw vs the same correction), `m6_kev_calibration` (Kev raw vs corrected), `m6_cost` (cost vs ranking), `m6_sol_neighbours` (Sol and Jev against their 20 look-alikes), `m6_ceiling` (every model that learned from the 20,000 on the full 0.5–1.0 scale, plus the scorecard trained on 2,000) and `m6_reliability` (deep dive, not in the post). The scoreboard comes from `analysis/fair_fight.py`.
+- **Review copy:** https://nishzsche.github.io/review/fair-fight/ (unlisted, noindex). Version 1 went up on 2026-11-24 (blog PR #42); version 1.1 added four charts (PR #43). Version 2 (PR #45) added the seed results, Sol's caveat beside its corrected score, the headline chart moved to the top, and the ceiling chart.
+- **Still to do:**
+  - Reviewer feedback.
+  - A decision on the chart rule: 703 words follow the last chart (the predictions, the bank advice, the limits and what's next). The proposal is to exempt the closing sections from the 600-word limit.
+  - The LinkedIn post and its carousel, the X post, and the link-preview image.
+  - Publishing.
 - **Review panel** (five agents: statistician, fact-checker, bank model-risk validator, editor, ML engineer and hiring manager). Scores as drafted were 6–7/10, about 8.5 with the fixes. No leakage was found, and every number recomputes from the raw predictions. The must-fixes:
   - **Laya:** 4 passes plus its own temperature fit on 400 train rows, not one pass.
   - **Qwen:** common LoRA settings; it has no maker recipe.
@@ -29,7 +36,11 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Author's decisions (2026-11-24):**
   - The post compares honesty **after the same correction on tune** for every model, raw second, and explains the Kev/Laya recipe difference.
   - Title framing: **"It caught up"**.
-  - **Extra seeds:** Kev-0.8B and Laya, seeds 1 and 2 (L4_RUNBOOK.md §6.8, `analysis/seeds.py`). Not yet run.
+  - **Extra seeds:** Kev-0.8B and Laya, seeds 1 and 2 (L4_RUNBOOK.md §6.8, `analysis/seeds.py`). Run on 2026-11-24 (commit 0e9f369), with results in `results/seeds.json`:
+    - **Ranking:** varied by under 0.01 across runs (Kev-0.8B 0.786–0.790, Laya 0.778–0.786).
+    - **Raw calibration error:** varied more (Kev-0.8B 3.0–4.5 points, Laya 1.7–3.5).
+    - **After the correction:** steadier (Kev-0.8B 1.3–1.5, Laya 0.9–2.5).
+    - **Kev-0.8B's under-prediction:** holds in all three runs (it averages 18–20%).
 - **Analysis fix:** `analysis/fair_fight.py` now runs Holm over the eight trained AI models' raw output only, and adds paired tests against each model's own zero-shot score and against the 20 neighbours, an "adds information beyond the neighbours" test for Jev and Sol, and Kev's temperature-only fit.
 
 ## M6: the fair fight (started 2026-11-23)

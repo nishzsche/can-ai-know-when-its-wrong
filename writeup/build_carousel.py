@@ -27,6 +27,7 @@ TITLE = (
     "Can AI know when it's wrong? "
     "I tested Jev and 7 other models on 2,000 real credit-card customers"
 )
+SERIES = "Can AI know when it's wrong?"  # footer on every slide; other carousels reset it
 CAROUSEL_MD = HERE / "carousel.md"
 OUT_PDF = HERE / "carousel.pdf"
 SIZE_IN, DPI = 7.5, 144  # 7.5 in x 144 dpi = 1080 px
@@ -105,7 +106,7 @@ def frame(fig, n: int, total: int, slide: dict, headline_size: float = 27) -> fl
     if slide["body"]:
         y = text_block(fig, y - 0.005, slide["body"], 15.5, color=F.INK_2)
     fig.text(1 - M, 0.035, f"{n} / {total}", fontsize=10, color=F.MUTED, ha="right")
-    fig.text(M, 0.035, "Can AI know when it's wrong?", fontsize=10, color=F.MUTED)
+    fig.text(M, 0.035, SERIES, fontsize=10, color=F.MUTED)
     return y
 
 

@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import figures as F  # noqa: E402
 import metrics as m  # noqa: E402
-from records import read_records  # noqa: E402
+from records import ROOT, read_records  # noqa: E402
 from robustness import load, paired_auc  # noqa: E402
 
 MODELS = (  # (trained contestant, its cold self or None, label, how it learned)
@@ -429,7 +429,65 @@ def sol_neighbours(dark: bool = False) -> Path:
     return F.save(fig, "m6_sol_neighbours.png")
 
 
-FIGURES = (catch_up, honesty, reliability, how_close, kev_calibration, cost, sol_neighbours)
+CEILING = ("kumo-tabular", "tabicl-v2", "kev-4b-ft", "kev-0.8b-ft", "gbm", "qwen-ft", "laya-ft",
+           "scorecard")  # fmt: skip
+CEILING_NAME = {c: lab for c, _zs, lab, _how in MODELS} | {"gbm": "Gradient boosting",
+                                                          "scorecard": "Scorecard"}  # fmt: skip
+
+
+def ceiling(dark: bool = False) -> Path:
+    """Every model that learned from the 20,000, on the full scale from coin flip to perfect, with
+    the scorecard trained on 2,000 (results/robustness.json) for the value of ten times the data."""
+    import json
+
+    F.set_theme(dark)
+    plt = F.plt
+    small = json.loads((ROOT / "results" / "robustness.json").read_text("utf-8"))
+    small = small["scorecard_on_2000"]["auc"]
+    rows = sorted(CEILING, key=lambda c: -metric(c, "trained")[0])
+    aucs = {c: metric(c, "trained")[0] for c in rows}
+    fig, ax = plt.subplots(figsize=(7.6, 6.6))
+    fig.subplots_adjust(left=0.29, right=0.95, top=0.75, bottom=0.17)
+    lo, hi = min(aucs.values()), max(aucs.values())
+    ax.axvspan(lo, hi, color=F.GRID, alpha=0.8, lw=0, zorder=0)
+    ax.text((lo + hi) / 2, -0.85, f"all eight: {lo:.3f} to {hi:.3f}", ha="center", va="bottom",
+            fontsize=9, color=F.INK_2)  # fmt: skip
+    for y, c in enumerate(rows):
+        col = F.COLOR[c] if c in F.BASELINES else colour(c, dark)
+        ax.plot(aucs[c], y, "o", ms=10, color=col, mec=F.SURFACE, mew=1.5, zorder=3)
+        ax.text(hi + 0.012, y, f"{aucs[c]:.3f}", va="center", fontsize=9.5, color=F.INK_2)
+    ys = len(rows) + 0.5
+    ax.plot(small, ys, "o", ms=10, color=F.SURFACE, mec=F.COLOR["scorecard"], mew=2, zorder=3)
+    ax.text(small - 0.012, ys, f"{small:.3f}", ha="right", va="center", fontsize=9.5,
+            color=F.INK_2)  # fmt: skip
+    ax.annotate("", (aucs["scorecard"], len(rows) - 1 + 0.25), (small, ys - 0.25),
+                arrowprops={"arrowstyle": "->", "color": F.INK_2, "lw": 1})  # fmt: skip
+    ax.text(hi + 0.012, ys - 0.5, f"10 times the data:\n+{aucs['scorecard'] - small:.3f}",
+            va="center", fontsize=9, color=F.INK_2)  # fmt: skip
+    ax.text(0.99, len(rows) / 2 - 0.5, "None of the eight\ngets past 0.80", ha="right",
+            va="center", fontsize=10, color=F.INK_2)  # fmt: skip
+    labels = [CEILING_NAME[c] for c in rows] + ["Scorecard, 2,000 customers"]
+    ax.set_yticks([*range(len(rows)), ys], labels)
+    ax.set_ylim(ys + 0.6, -1.1)
+    ax.tick_params(axis="y", length=0, labelsize=10.5, labelcolor=F.INK)
+    ax.grid(axis="y", visible=False)
+    ax.set_xlim(0.5, 1.0)
+    ax.set_xticks([0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+                  ["0.5\ncoin flip", "0.6", "0.7", "0.8", "0.9", "1.0\nperfect"])  # fmt: skip
+    ax.set_xlabel("Ranking (AUC)")
+    F.header(fig, "Eight very different models hit the same ceiling",
+             "Ranking on the full scale, from a coin flip to perfect. Every model that learned\n"
+             "from the 20,000 customers lands within 0.02 of the others. A scorecard that saw\n"
+             f"a tenth of the data, 2,000 customers, is only {aucs['scorecard'] - small:.3f} "
+             "behind.")  # fmt: skip
+    F.footer(fig, "\n".join((TEST_LINE,
+                             "The 2,000-customer scorecard is the first post's check, trained on "
+                             "the 2,000 tune customers.")))  # fmt: skip
+    return F.save(fig, "m6_ceiling.png")
+
+
+FIGURES = (catch_up, honesty, reliability, how_close, kev_calibration, cost, sol_neighbours,
+           ceiling)  # fmt: skip
 
 
 def main() -> None:

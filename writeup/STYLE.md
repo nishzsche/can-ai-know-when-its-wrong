@@ -68,6 +68,36 @@ No study gives a single best number of charts. This budget comes from what the a
   - Write plain-language alt text that gives the key numbers.
   - A chart's statistics must match the text's wording. For example, if the text corrects for multiple comparisons, so do the chart's intervals.
 
+## LinkedIn carousel (every post in the series)
+
+Every blog post gets a LinkedIn carousel: a PDF uploaded as a document post, as posts 1 and 2 have. Don't use a single image or several images instead. A LinkedIn post holds either images or a document, and its media can't be changed after it's published, so the carousel has to be ready before the post goes up.
+
+- **How many slides:** 8–10.
+  - At least one slide for each blog chart that shows a finding.
+  - Plus a hook, a slide on what to do, and a closing slide on fairness and what's next. Post 1 has 10 slides and post 2 has 9.
+- **Order:**
+  - The hook: the title and the one-line surprise.
+  - The setup, or the everyday example.
+  - One finding per slide, each with its chart.
+  - What to do about it.
+  - To be fair to the AI, and what's next.
+- **Draw the slides; don't paste the blog charts:**
+  - Draw each chart slide at phone size: 1080 × 1080, headlines 27–30 pt, body text 15–20 pt, chart labels at least 12 pt.
+  - Use the same results files as the blog. Never paste the blog's PNGs: on a phone their text shrinks to about 6 pt.
+  - Use the same colours and encoding as the blog's charts.
+  - One idea per slide, with the headline stating the point.
+  - Chart slides carry the fairness note (who learned from what), and every slide has the series name in its footer.
+- **Where the text lives:**
+  - The slide text goes in the post's LinkedIn file under `## Slides`, as a headline, body and footer for each slide.
+  - A builder script renders it: `writeup/build_carousel.py` for post 1 and `writeup/build_accuracy_carousel.py` for post 2. New builders reuse the first one's helpers.
+- **Check:**
+  - Render with `--png` and look at every slide for overlapping or cut-off text.
+  - The document title can be at most 58 characters, LinkedIn's limit.
+- **The post itself:**
+  - The post text tells the story. Document pages can't take alt text, so the text is what screen-reader users get.
+  - Links go in the first comment.
+- **It ships with the blog post:** a post isn't finished until its carousel is built.
+
 ## The blog (`writeup/blog.md`, the canonical piece)
 
 **Audience:** all three readers. About 1,800 words, plus a methods appendix.
@@ -92,10 +122,10 @@ No study gives a single best number of charts. This budget comes from what the a
 8. **What's next.** "Why 99% accuracy can still be a disaster", and training my own decision model.
 9. **Appendix: method and reproduce.** The template, splits, metrics, recalibration, every check, costs, and the commands. Link to the repo.
 
-## LinkedIn carousel (`writeup/carousel.md`)
+## Post 1's carousel: the original plan (`writeup/carousel.md` has the 10 slides as built)
 
 - **Hook:** a strong first line in the post text: "Banks get audited on whether their risk scores are honest. I held AI to the same standard."
-- **Slides:** 6–8 PDF slides, one idea per slide, a chart on most.
+- **Slides:** planned as 6–8 PDF slides, one idea per slide, a chart on most.
   1. Hook.
   2. Setup.
   3. What honest looks like.
@@ -116,6 +146,7 @@ No study gives a single best number of charts. This budget comes from what the a
 
 - [ ] Can someone outside tech follow the first three paragraphs without looking anything up?
 - [ ] Does the post meet the chart budget: about one chart per 400–500 words, the first within 400 words, and no 600-word stretch without one?
+- [ ] Is its LinkedIn carousel built: 8–10 slides, at least one per chart finding, every slide checked as a PNG, and a document title of 58 characters or fewer?
 - [ ] Does every comparison say the baselines were trained and the AI models weren't?
 - [ ] Is Sol's recognition caveat next to every mention of Sol's honesty?
 - [ ] Is every number traceable to `results/summary.csv` or `data/contamination.md`?

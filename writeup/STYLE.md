@@ -89,7 +89,7 @@ Every blog post gets a LinkedIn carousel: a PDF uploaded as a document post, as 
   - Chart slides carry the fairness note (who learned from what), and every slide has the series name in its footer.
 - **Where the text lives:**
   - The slide text goes in the post's LinkedIn file under `## Slides`, as a headline, body and footer for each slide.
-  - A builder script renders it: `writeup/build_carousel.py` for post 1 and `writeup/build_accuracy_carousel.py` for post 2. New builders reuse the first one's helpers.
+  - A builder script renders it: `writeup/build_carousel.py` for post 1, `writeup/build_accuracy_carousel.py` for post 2 and `writeup/build_fair_fight_carousel.py` for post 3. New builders reuse the first one's helpers.
 - **Check:**
   - Render with `--png` and look at every slide for overlapping or cut-off text.
   - The document title can be at most 58 characters, LinkedIn's limit.

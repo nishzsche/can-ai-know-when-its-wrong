@@ -18,7 +18,7 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Still to do:**
   - Reviewer feedback.
   - A decision on the chart rule: 703 words follow the last chart (the predictions, the bank advice, the limits and what's next). The proposal is to exempt the closing sections from the 600-word limit.
-  - The LinkedIn post and its carousel, the X post, and the link-preview image.
+  - The X post and the link-preview image. The LinkedIn post and its 10-slide carousel are built (`writeup/fair_fight_linkedin.md`, `writeup/fair_fight_carousel.pdf` from `writeup/build_fair_fight_carousel.py`; document title "I gave AI the same data as a bank's model. It caught up.", 56 characters). If review changes a number or the title, rebuild the carousel and update the post text; the first comment needs the post's URL.
   - Publishing.
 - **Review panel** (five agents: statistician, fact-checker, bank model-risk validator, editor, ML engineer and hiring manager). Scores as drafted were 6–7/10, about 8.5 with the fixes. No leakage was found, and every number recomputes from the raw predictions. The must-fixes:
   - **Laya:** 4 passes plus its own temperature fit on 400 train rows, not one pass.

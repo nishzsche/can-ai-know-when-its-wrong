@@ -159,5 +159,65 @@
       "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)"
     ],
     "fitted_at": "2026-11-23T19:55:33Z"
+  },
+  "kev-4b-ft": {
+    "cv_log_loss": {
+      "platt": 0.43512614770961233,
+      "isotonic": 0.4473885227596968
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.0689279573050303,
+      "slope": 0.8772701887230344
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0"
+    ],
+    "fitted_at": "2026-11-24T07:30:03Z"
+  },
+  "qwen-ft": {
+    "cv_log_loss": {
+      "platt": 0.4359518889502728,
+      "isotonic": 0.447207948562404
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.03186898685687514,
+      "slope": 0.9944563544306341
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)"
+    ],
+    "fitted_at": "2026-11-24T07:30:03Z"
+  },
+  "kumo-tabular": {
+    "cv_log_loss": {
+      "platt": 0.42423784607177567,
+      "isotonic": 0.44201770861956086
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.010865018174301017,
+      "slope": 1.0029594835916258
+    },
+    "source_model_versions": [
+      "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows)"
+    ],
+    "fitted_at": "2026-11-24T07:30:03Z"
+  },
+  "tabicl-v2": {
+    "cv_log_loss": {
+      "platt": 0.42519820749197673,
+      "isotonic": 0.4380876742686507
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.019206877013176152,
+      "slope": 0.9024017987904615
+    },
+    "source_model_versions": [
+      "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows)"
+    ],
+    "fitted_at": "2026-11-24T07:30:03Z"
   }
 }

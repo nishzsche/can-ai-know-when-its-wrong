@@ -125,10 +125,11 @@ def pct1(x: float) -> str:
     return f"{(Decimal(str(x)) * 100).quantize(Decimal('0.1'), ROUND_HALF_UP)}%"
 
 
-def figure(res: dict, loss: str = "4") -> Path:
+def figure(res: dict, loss: str = "4", dark: bool = False) -> Path:
+    """The post's chart; dark=True draws the blog's dark-mode version (-dark.png)."""
     import figures as F
 
-    F.style()
+    F.set_theme(dark)
     plt = F.plt
     rows = sorted(FIG_ROWS, key=lambda c: -res["models"][c]["accuracy_at_50"])
     fig, ax = plt.subplots(figsize=(7.2, 8.0))
@@ -179,6 +180,55 @@ def figure(res: dict, loss: str = "4") -> Path:
     return F.save(fig, "post2_profit.png")
 
 
+def social_card(res: dict, loss: str = "4") -> Path:
+    """1200x630 link-preview image in the style of post 1's card: title and hook on the left, a
+    mini chart on the right (three ways to lend, similar accuracy, very different profit)."""
+    import figures as F
+
+    F.set_theme(False)
+    plt = F.plt
+    fig = plt.figure(figsize=(6, 3.15))
+    t = fig.text
+    dot = "·"
+    t(0.055, 0.89, f"LEARNING CURVE  {dot}  nishzsche.github.io", fontsize=7.5, color=F.MUTED,
+      fontweight="bold", va="center")  # fmt: skip
+    t(0.055, 0.80, "Why 99% accuracy\ncan still be\na disaster", fontsize=19, fontweight="bold",
+      color=F.INK, va="top", linespacing=1.05)  # fmt: skip
+    t(0.055, 0.36, "A model that says nobody defaults\nis 78% accurate.", fontsize=10.5,
+      color=F.INK_2, va="top", linespacing=1.25)  # fmt: skip
+    t(0.055, 0.205, "It loses money.", fontsize=12, fontweight="bold", color=F.INK, va="top")
+    t(0.055, 0.075, f"8 models  {dot}  2,000 real credit-card customers", fontsize=7.5,
+      color=F.MUTED, va="center")  # fmt: skip
+
+    m = res["models"]
+    q, sc = m["qwen-logprobs"], m["scorecard"]
+    bars = [
+        (f"Approve everyone\n{pct1(res['always_no_accuracy'])} accurate",
+         res["approve_everyone"][loss], F.MUTED),
+        (f"Qwen3.5-4B\n{pct1(q['accuracy_at_50'])} accurate",
+         q["decisions"][loss]["own_percentages"]["profit"], F.COLOR["qwen-logprobs"]),
+        (f"Scorecard\n{pct1(sc['accuracy_at_50'])} accurate",
+         sc["decisions"][loss]["own_percentages"]["profit"], F.COLOR["scorecard"]),
+    ]  # fmt: skip
+    ax = fig.add_axes((0.67, 0.2, 0.29, 0.55))
+    ys = range(len(bars))
+    ax.barh(list(ys), [b[1] for b in bars], color=[b[2] for b in bars], height=0.55, zorder=2)
+    for y, (_, v, _) in zip(ys, bars, strict=True):
+        ax.text(v + (8 if v >= 0 else -8), y, f"{v:+.0f}", va="center", fontsize=8,
+                ha="left" if v >= 0 else "right", color=F.INK_2)  # fmt: skip
+    ax.set_yticks(list(ys), [b[0] for b in bars], fontsize=7.5)
+    ax.invert_yaxis()
+    ax.axvline(0, color=F.AXIS, lw=1)
+    ax.set_xlim(-290, 390)
+    ax.tick_params(axis="x", labelsize=7)
+    ax.tick_params(axis="y", length=0, labelcolor=F.INK)
+    ax.grid(axis="y", visible=False)
+    ax.set_title("Profit per 1,000 customers", fontsize=9, loc="left", pad=8)
+    ax.text(0, -0.2, "lending on each model's own percentages", transform=ax.transAxes,
+            fontsize=6.5, color=F.MUTED)  # fmt: skip
+    return F.save(fig, "post2_social_card.png")
+
+
 def main() -> None:
     res = build()
     OUT.write_text(json.dumps(res, indent=2) + "\n", encoding="utf-8")
@@ -193,8 +243,10 @@ def main() -> None:
               f"{r['auc']:>7.3f}{r['ece']:>7.3f}{d['own_percentages']['approve']:>13.0%}"
               f"{d['own_percentages']['profit']:>7.0f}{d['tune_cutoff']['approve']:>14.0%}"
               f"{d['tune_cutoff']['profit']:>7.0f}")  # fmt: skip
-    path = figure(res)
-    print(f"wrote {OUT.relative_to(ROOT)} and {path.relative_to(ROOT)}")
+    paths = [figure(res), figure(res, dark=True), social_card(res)]
+    print(
+        f"wrote {OUT.relative_to(ROOT)} and " + ", ".join(str(x.relative_to(ROOT)) for x in paths)
+    )
 
 
 if __name__ == "__main__":

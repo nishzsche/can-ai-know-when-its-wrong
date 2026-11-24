@@ -2,6 +2,13 @@
 
 Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
+## Post 2 published (2026-11-24, 12:55 IST)
+
+- **Live:** [Why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/) (blog PR #38), from `writeup/accuracy_post.md`. Numbers, chart (light and dark) and social card come from `analysis/accuracy.py`.
+- **Review:** two reviewers. Version 2 added the confusion matrices and named the table models (blog PR #31). The review URL now redirects to the post. Post 1's closing line links to post 2.
+- **Post 1:** gained the "Honest isn't self-aware" caveat (blog PR #33), from a reviewer's point that calibration isn't metacognition.
+- **Still to do (author):** the LinkedIn and X versions of post 2 aren't drafted yet.
+
 ## M6: the fair fight (started 2026-11-23)
 
 After launch, the author asked to train the AI models on the same 20,000 customers the scorecard and LightGBM learned from. PLAN.md §11 has the design and the choices that could tilt the comparison. §12 proposes the next posts.

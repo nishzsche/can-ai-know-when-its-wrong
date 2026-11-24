@@ -1,8 +1,8 @@
 {
-  "written_at": "2026-11-23T21:59:33Z",
-  "complete": false,
+  "written_at": "2026-11-24T07:48:44Z",
+  "complete": true,
   "git": {
-    "commit": "17cf33de86c1e9f12496fdb7f246ebef811bc93e",
+    "commit": "5589a3c3ff6be1705c9420c46e3cbc405fdac290",
     "dirty": true
   },
   "data": {
@@ -18,11 +18,12 @@
   "contestants": {
     "kev-4b-ft": {
       "present": true,
-      "complete": false,
+      "complete": true,
       "model_versions": [
-        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0"
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; trained_calibrated: platt fit on tune trained (5-fold CV choice)"
       ],
-      "records": 4000,
+      "records": 6000,
       "groups": {
         "trained/tune": {
           "records": 2000,
@@ -37,16 +38,16 @@
           "complete": true
         },
         "trained_calibrated/test": {
-          "records": 0,
-          "missing": 2000,
+          "records": 2000,
+          "missing": 0,
           "unexpected": 0,
-          "complete": false
+          "complete": true
         }
       },
       "cost_usd_total": 0.052193,
       "latency_ms_median": 105.8,
       "first_ts": "2026-11-23T19:39:25Z",
-      "last_ts": "2026-11-23T19:46:27Z",
+      "last_ts": "2026-11-24T07:30:03Z",
       "runs": [
         {
           "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0",
@@ -479,11 +480,12 @@
     },
     "qwen-ft": {
       "present": true,
-      "complete": false,
+      "complete": true,
       "model_versions": [
-        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)"
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
       ],
-      "records": 4000,
+      "records": 6000,
       "groups": {
         "trained/tune": {
           "records": 2000,
@@ -498,16 +500,16 @@
           "complete": true
         },
         "trained_calibrated/test": {
-          "records": 0,
-          "missing": 2000,
+          "records": 2000,
+          "missing": 0,
           "unexpected": 0,
-          "complete": false
+          "complete": true
         }
       },
       "cost_usd_total": 0.056729,
       "latency_ms_median": 116.5,
       "first_ts": "2026-11-23T21:48:16Z",
-      "last_ts": "2026-11-23T21:56:14Z",
+      "last_ts": "2026-11-24T07:30:03Z",
       "runs": [
         {
           "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
@@ -970,11 +972,12 @@
     },
     "kumo-tabular": {
       "present": true,
-      "complete": false,
+      "complete": true,
       "model_versions": [
-        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows)"
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows)",
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
       ],
-      "records": 4000,
+      "records": 6000,
       "groups": {
         "trained/tune": {
           "records": 2000,
@@ -989,25 +992,26 @@
           "complete": true
         },
         "trained_calibrated/test": {
-          "records": 0,
-          "missing": 2000,
+          "records": 2000,
+          "missing": 0,
           "unexpected": 0,
-          "complete": false
+          "complete": true
         }
       },
       "cost_usd_total": 0.013337,
       "latency_ms_median": 27.3,
       "first_ts": "2026-11-23T21:58:00Z",
-      "last_ts": "2026-11-23T21:58:54Z",
+      "last_ts": "2026-11-24T07:30:03Z",
       "runs": []
     },
     "tabicl-v2": {
       "present": true,
-      "complete": false,
+      "complete": true,
       "model_versions": [
-        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows)"
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows)",
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
       ],
-      "records": 4000,
+      "records": 6000,
       "groups": {
         "trained/tune": {
           "records": 2000,
@@ -1022,16 +1026,16 @@
           "complete": true
         },
         "trained_calibrated/test": {
-          "records": 0,
-          "missing": 2000,
+          "records": 2000,
+          "missing": 0,
           "unexpected": 0,
-          "complete": false
+          "complete": true
         }
       },
       "cost_usd_total": 0.001238,
       "latency_ms_median": 2.5,
       "first_ts": "2026-11-23T21:59:20Z",
-      "last_ts": "2026-11-23T21:59:25Z",
+      "last_ts": "2026-11-24T07:30:03Z",
       "runs": []
     }
   }

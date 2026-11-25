@@ -64,6 +64,11 @@ def main() -> None:
     os.environ.update(check_env(os.environ))
 
     import torch
+
+    # runners/ is on sys.path (for quantize, and as the script's directory), where runners/kev.py
+    # would shadow Kev's own `kev` package: drop it before importing Kev.
+    here = Path(__file__).resolve().parent
+    sys.path[:] = [p for p in sys.path if Path(p or ".").resolve() != here]
     from kev import serve
     from kev.checkpoint import Checkpoint
 

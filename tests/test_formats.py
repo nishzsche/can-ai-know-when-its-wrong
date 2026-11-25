@@ -94,3 +94,25 @@ def test_disguise_script_runs_formats_as_named_diagnostics():
     state = next(iter(_states("test").values()))
     assert wrapped.predict({"state": state}) == f.render(state, "json")
     assert disguise.FORMAT_DIR.name == "formats"
+
+
+def test_report_waits_for_a_complete_run(tmp_path, monkeypatch, capsys):
+    import sys
+
+    import records as rc
+    from harness import load_requests
+
+    sys.path.insert(0, str(ROOT / "runners" / "checks"))
+    import disguise
+
+    monkeypatch.setattr(disguise, "FORMAT_DIR", tmp_path)
+    monkeypatch.setattr(disguise, "FORMAT_SUMMARY_JSON", tmp_path / "summary.json")
+    rows = load_requests("test", 3)
+    recs = [rc.make_record(id=r["id"], split="test", contestant="jev-json",
+                           condition="out_of_box", model_version="jev; format json f1",
+                           p_default=0.5, label=r["label"], latency_ms=1.0, cost_usd=0.0,
+                           ts=rc.utc_now()) for r in rows]  # fmt: skip
+    rc.write_records("jev-json", recs, tmp_path)
+    out = disguise.report_formats()
+    assert not any(out.values()) and not (tmp_path / "summary.json").exists()
+    assert "jev-json (3 of 2000)" in capsys.readouterr().out

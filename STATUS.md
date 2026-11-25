@@ -6,7 +6,7 @@ Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 L4_RUNBOOK.md §7 ran in full on the resumed M6 instance: about 5.8 GPU hours, about $2.55. Nothing failed, so there are no `--record-failure` entries. Everything is pushed (last commit `84bd30b`); the instance can be deleted and its GitHub token revoked.
 
-**Post 5, the open models on four formats:** Laya, Kev-4B, Kev-0.8B and Qwen, zero-shot, `out_of_box`, 2,000 `test` customers per format, in `results/checks/formats/`. The report against v2 is `results/checks/formats_summary.json`. Jev and Sol are still to run on the laptop (Next, item 5).
+**Post 5, the open models on four formats:** Laya, Kev-4B, Kev-0.8B and Qwen, zero-shot, `out_of_box`, 2,000 `test` customers per format, in `results/checks/formats/`. The report against v2 is `results/checks/formats_summary.json`. Jev and Sol ran on the laptop afterwards (Next, item 5), so the summary now covers all six models.
 
 **Post 4, the fine-tuned models at six precisions:** Kev-0.8B, Kev-4B and Qwen at `bf16`, `bnb-int8`, `bnb-nf4`, `hqq-4`, `hqq-3` and `hqq-2`, `tune` and `test`, plus `trained_calibrated` (Platt chosen for all 18 rows).
 - **Guards:** all three bf16 reproduction checks passed against M6 (mean |difference| 0.0009 Kev-0.8B, 0.0010 Kev-4B, 0.0020 Qwen; limit 0.02). Every Kev precision passed its 20-customer smoke run first.
@@ -22,7 +22,10 @@ L4_RUNBOOK.md §7 ran in full on the resumed M6 instance: about 5.8 GPU hours, a
 - **Kev's environment:** `flash-linear-attention` is pinned back to 0.5.0, as M6 had. An unpinned install pulled 0.6.0, which fails to import with Kev's Triton. Fused kernels were off in both M6 and session A, because Kev's fused path wants 0.5.2.
 - **Logs:** the bnb-int8 logs are trimmed in the repo. bitsandbytes' `MatMul8bitLt` cast warning is kept once, with its count (about 1.5M repeats; one log was 122 MB, over GitHub's limit).
 - **Order:** for Kev-4B, the smoke run went before the reproduction check, against the runbook. The check passed before any full run.
-- **To look at on the laptop:** re-running `disguise.py --report` moved only the Spearman values in the published `results/checks/disguise_summary.json`, by at most 0.002 for 6 entries. The committed file was kept as published. A guess, not confirmed: the recalibration's 1e-16 rewrites of the M3 rows change how ties are ranked.
+- **Rank correlation varies between machines:** re-running `disguise.py --report` moved only the Spearman values in the published `results/checks/disguise_summary.json`, by at most 0.002 for 6 entries. The committed file was kept as published.
+  - **Cause (found on the laptop, 2026-11-26):** it is not the recalibration rewrites. `report_one` ranks with `np.argsort(np.argsort(p))`, whose default sort is not stable. Tied predictions get ranks in whatever order the CPU's sort code leaves them, and that order differs between the L4 and the laptop. The formats summary showed the same thing: the L4's four models re-scored on the laptop matched in every field except Spearman, which moved in the fifth decimal.
+  - **Size:** this matters for Jev and Sol only, which give about 80 distinct probabilities across 2,000 customers. For them the current figure is up to 0.003 below a standard tie-aware Spearman (`scipy.stats.spearmanr`). At two decimals, only Sol on markdown changes (0.94 → 0.95); nothing in the published disguise check changes.
+  - **Open (author):** whether to switch to `spearmanr`. That would make the figure the same on every machine, but it would change the published file in the third decimal.
 - **Recalibration** rewrote the M3/M6 prediction files with identical values (timestamps and float noise of at most 2e-16 only).
 
 ## After post 3: the plan (2026-11-25)
@@ -53,9 +56,13 @@ PLAN.md §12 has the order and the specs.
 **Next:**
 1. Post 3's X post (below).
 2. **Done (2026-11-25):** the author's post 4 and post 5 guesses are in `PREDICTIONS.md` (commit 44eee55), before any run.
-3. **Author:** check the OpenRouter balance; post 5's Jev and Sol runs need about $8.
+3. **Done:** the OpenRouter balance covered post 5's Jev and Sol runs.
 4. **Done (2026-11-26):** L4 session A (L4_RUNBOOK.md §7); results above.
-5. **Laptop, after the guesses:** Jev and Sol on the four formats. For each format, run `runners/checks/disguise.py --variant <format>` with `--contestant jev --workers 8`, and with `--workers 4` for Sol (the default contestant).
+5. **Done (2026-11-26, 04:42 IST):** Jev and Sol on the four formats, 2,000 `test` customers per format, into `results/checks/formats/`.
+   - **Versions:** each file has one model version, the same as M3's.
+   - **Cost:** Jev $0.18, Sol $7.59. Sol averaged about 16 requests a minute, about 2 h per format.
+   - **Report fix:** `report_formats` now scores a run only once it covers every test customer and lists shorter runs as still running. It had crashed on Sol's partial prose run, whose first customers were all non-defaulters, so AUC was undefined.
+   - **Summary:** written by calling `disguise.report_formats()` on its own, so the published `disguise_summary.json` stays untouched.
 6. **Meanwhile:** choose the documents arc's dataset and check its licence.
 
 ## Post 2 published (2026-11-24, 12:55 IST)

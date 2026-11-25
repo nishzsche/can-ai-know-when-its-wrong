@@ -367,13 +367,23 @@ def report() -> dict:
 
 
 def report_formats() -> dict:
-    """Post 5: each format against v2 on the same test customers (results/checks/formats/)."""
-    out = {fmt: {c: r for c in CONTESTANTS
-                 if (r := report_one(c, variant=fmt, directory=FORMAT_DIR, control_prefix=fmt))}
-           for fmt in FORMATS}  # fmt: skip
+    """Post 5: each format against v2 on the same test customers (results/checks/formats/).
+    A run is scored only once it covers every test customer; shorter ones are listed as pending."""
+    n_test = len(load_requests("test"))
+    out, pending = {fmt: {} for fmt in FORMATS}, []
+    for fmt in FORMATS:
+        for c in CONTESTANTS:
+            got = len(_records(f"{c}-{fmt}", FORMAT_DIR))
+            if 0 < got < n_test:
+                pending.append(f"{c}-{fmt} ({got} of {n_test})")
+            elif got and (r := report_one(c, variant=fmt, directory=FORMAT_DIR,
+                                          control_prefix=fmt)):  # fmt: skip
+                out[fmt][c] = r
+    if pending:
+        print("formats still running: " + ", ".join(pending))
     if not any(out.values()):
         return out
-    payload = {"format_version": FORMAT_VERSION, "formats": out}
+    payload = {"format_version": FORMAT_VERSION, "formats": out, "pending": pending}
     FORMAT_SUMMARY_JSON.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     for fmt, by_contestant in out.items():
         for c, r in by_contestant.items():

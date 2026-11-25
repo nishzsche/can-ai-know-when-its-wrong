@@ -90,3 +90,55 @@ To be fair to readers, this is the information visible before writing:
 **Least honest AI contestant after training** (highest test ECE, raw `trained` output, Jev and Sol with examples included):
 
 > **Kev-4B.**
+
+---
+
+# Posts 4 and 5 predictions: shrinking the models, and the formats (written before any run)
+
+**Written 2026-11-25, before any post 4 or post 5 run** (PLAN.md §12). The author answered these questions in a Q&A with Claude Code on the laptop. The answers are recorded verbatim, with no reasons given. The commit that adds them comes before every post 4 and post 5 prediction file.
+
+## What was already known when this was written
+
+- **Post 3's published results** for the fine-tuned models at full precision (bf16), on test (`results/fair_fight.csv`):
+  - Kev-4B: AUC 0.792, ECE 0.036.
+  - Kev-0.8B: AUC 0.790, ECE 0.045.
+  - Qwen3.5-4B: AUC 0.780, ECE 0.024.
+- **The published layout and disguise checks** (`results/checks/disguise_summary.json`):
+  - Placing each bill next to the following month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 to 0.569.
+  - Removing the currency, dates and raw codes moved mean predictions by up to 4.8 points.
+- **No post 4 run of any kind,** smoke runs included. The quantization code was tried only on a tiny model with random weights on the laptop, which says nothing about the contestants.
+- **Post 5:** token counts per format (`results/checks/formats_tokens.json`). Laya was run on one test customer in each format on the laptop, to check the plumbing. The author wasn't shown those numbers.
+
+## My guesses
+
+### Post 4: shrinking the fine-tuned models (8, 4, 3 and 2 bits)
+
+**At which bit width will calibration error (ECE) first rise clearly above the full-precision score?**
+
+> **Already at 8-bit.**
+
+**Will ranking (AUC) hold at 4-bit, within about 0.01 of each model's full-precision score?**
+
+> **Yes, for all three.**
+
+**Answering one customer at a time on the L4, will 4-bit (NF4) be faster or slower than bf16?**
+
+> **Faster.**
+
+**Which fine-tuned model will hold up best when shrunk (least change in its percentages)?**
+
+> **Qwen3.5-4B.**
+
+### Post 5: the same customers in four formats (zero-shot models)
+
+**Which format will move the zero-shot models' predictions most, compared with today's pipe table?**
+
+> **Prose.**
+
+**Will any format change a model's ranking (AUC) by as much as the layout check did (Kev-4B 0.594 to 0.720)?**
+
+> **No, every change is smaller.**
+
+**Which kind of zero-shot model will be most sensitive to the format?**
+
+> **A small open model** (Kev-0.8B or Laya).

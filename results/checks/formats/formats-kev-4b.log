@@ -1,0 +1,12 @@
+kev-4b-prose: jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94); format prose f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/kev-4b-prose.jsonl
+  out_of_box: 2000 new in 237.3s | mean p 0.543 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0290
+kev-4b-markdown: jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94); format markdown f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/kev-4b-markdown.jsonl
+  out_of_box: 2000 new in 219.2s | mean p 0.498 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0268
+kev-4b-csv: jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94); format csv f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/kev-4b-csv.jsonl
+  out_of_box: 2000 new in 213.7s | mean p 0.475 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0261
+kev-4b-json: jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94); format json f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/kev-4b-json.jsonl
+  out_of_box: 2000 new in 255.5s | mean p 0.341 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0312

@@ -1,0 +1,9 @@
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 75/426 [00:00<00:00, 709.88it/s]Loading weights:  39%|███▉      | 167/426 [00:00<00:00, 813.82it/s]Loading weights:  59%|█████▉    | 253/426 [00:00<00:00, 833.14it/s]Loading weights:  81%|████████  | 343/426 [00:00<00:00, 843.12it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 838.62it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+qwen-ft-bf16: qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/qwen-ft-bf16.jsonl
+  trained: 2000 new in 241.3s | mean p 0.226 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0292
+qwen-ft-bf16: qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/qwen-ft-bf16.jsonl
+  trained: 2000 new in 240.9s | mean p 0.221 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0291

@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:23,  5.09it/s]Loading weights:  37%|███▋      | 157/426 [00:00<00:00, 649.00it/s]Loading weights:  58%|█████▊    | 246/426 [00:00<00:00, 725.37it/s]Loading weights:  78%|███████▊  | 333/426 [00:00<00:00, 724.35it/s]Loading weights:  98%|█████████▊| 418/426 [00:00<00:00, 756.75it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 676.03it/s]
+MatMul8bitLt: inputs will be cast from torch.bfloat16 to float16 during quantization
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+qwen-ft-bnb-int8: qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/qwen-ft-bnb-int8.jsonl
+  trained: 2000 new in 327.9s | mean p 0.225 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0397
+qwen-ft-bnb-int8: qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/qwen-ft-bnb-int8.jsonl
+  trained: 2000 new in 329.4s | mean p 0.220 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0399
+[trimmed for git: the MatMul8bitLt line above appeared 992000 times in all, once per int8 matmul; full log on the L4 at /home/logs]

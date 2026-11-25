@@ -1,0 +1,4413 @@
+{
+  "written_at": "2026-11-25T19:58:35Z",
+  "complete": true,
+  "git": {
+    "commit": "12a50158373ccb1ae02370f3cdddaa291816191f",
+    "dirty": true
+  },
+  "data": {
+    "source_sha256": "fc08fd639888b4f83b3d816f04c18bf943012124807cc6197e654d3b31d7851a",
+    "split_seed": 20261122,
+    "base_rate_train": 0.2212,
+    "template_version": "v2",
+    "customers": {
+      "tune": 2000,
+      "test": 2000
+    }
+  },
+  "contestants": {
+    "kev-0.8b-ft-bf16": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.030279,
+      "latency_ms_median": 61.7,
+      "first_ts": "2026-11-25T15:23:01Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+          "started": "2026-11-25T15:23:01Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1638914048,
+              "max_allocated": 1667650560,
+              "reserved": 1751121920
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+          "started": "2026-11-25T15:25:08Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2070,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2070,
+                  "requests": 2070,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2070,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2070,
+                  "requests": 2070,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1638815744,
+              "max_allocated": 1667650560,
+              "reserved": 1755316224
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-0.8b-ft-bnb-int8": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.108504,
+      "latency_ms_median": 214.9,
+      "first_ts": "2026-11-25T15:27:59Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+          "started": "2026-11-25T15:27:59Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-int8",
+            "description": "bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "threshold": 6.0,
+              "has_fp16_weights": false
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1051934720,
+              "max_allocated": 1634019328,
+              "reserved": 1394606080
+            },
+            "memory_now": {
+              "allocated": 1150326784,
+              "max_allocated": 1177883648,
+              "reserved": 1509949440
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+          "started": "2026-11-25T15:35:14Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-int8",
+            "description": "bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "threshold": 6.0,
+              "has_fp16_weights": false
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1051934720,
+              "max_allocated": 1634019328,
+              "reserved": 1394606080
+            },
+            "memory_now": {
+              "allocated": 1150228480,
+              "max_allocated": 1177883648,
+              "reserved": 1520435200
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-0.8b-ft-bnb-nf4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.039796,
+      "latency_ms_median": 81.3,
+      "first_ts": "2026-11-25T15:43:33Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+          "started": "2026-11-25T15:43:33Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-nf4",
+            "description": "bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "quant_type": "nf4",
+              "blocksize": 64,
+              "compress_statistics": false,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 813571072,
+              "max_allocated": 1634019328,
+              "reserved": 1191182336
+            },
+            "memory_now": {
+              "allocated": 911891456,
+              "max_allocated": 943548416,
+              "reserved": 1310720000
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+          "started": "2026-11-25T15:46:19Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-nf4",
+            "description": "bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "quant_type": "nf4",
+              "blocksize": 64,
+              "compress_statistics": false,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 813571072,
+              "max_allocated": 1634019328,
+              "reserved": 1191182336
+            },
+            "memory_now": {
+              "allocated": 911793152,
+              "max_allocated": 943548416,
+              "reserved": 1314914304
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-0.8b-ft-hqq-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.054542,
+      "latency_ms_median": 111.3,
+      "first_ts": "2026-11-25T15:49:38Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T15:49:38Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-4",
+            "description": "hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 4,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 810723328,
+              "max_allocated": 1679399424,
+              "reserved": 1138753536
+            },
+            "memory_now": {
+              "allocated": 909043712,
+              "max_allocated": 970803200,
+              "reserved": 1260388352
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T15:53:26Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-4",
+            "description": "hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 4,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 810723328,
+              "max_allocated": 1679399424,
+              "reserved": 1138753536
+            },
+            "memory_now": {
+              "allocated": 908945408,
+              "max_allocated": 970803200,
+              "reserved": 1266679808
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-0.8b-ft-hqq-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.083412,
+      "latency_ms_median": 170.2,
+      "first_ts": "2026-11-25T15:57:47Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T15:57:46Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-3",
+            "description": "hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 3,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 765059584,
+              "max_allocated": 1679190016,
+              "reserved": 1415577600
+            },
+            "memory_now": {
+              "allocated": 863379968,
+              "max_allocated": 925768192,
+              "reserved": 1535115264
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T16:03:33Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-3",
+            "description": "hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 3,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 765059584,
+              "max_allocated": 1679190016,
+              "reserved": 1415577600
+            },
+            "memory_now": {
+              "allocated": 863281664,
+              "max_allocated": 925768192,
+              "reserved": 1541406720
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-0.8b-ft-hqq-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.061677,
+      "latency_ms_median": 125.9,
+      "first_ts": "2026-11-25T16:09:50Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T16:09:50Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-2",
+            "description": "hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 2,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 681994240,
+              "max_allocated": 1678875136,
+              "reserved": 979369984
+            },
+            "memory_now": {
+              "allocated": 780314624,
+              "max_allocated": 842074112,
+              "reserved": 1098907648
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T16:14:07Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-2",
+            "description": "hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 2,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 186,
+            "quantized_layers": 186,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 681994240,
+              "max_allocated": 1678875136,
+              "reserved": 979369984
+            },
+            "memory_now": {
+              "allocated": 780216320,
+              "max_allocated": 842074112,
+              "reserved": 1107296256
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-4b-ft-bf16": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.053959,
+      "latency_ms_median": 110.8,
+      "first_ts": "2026-11-25T17:51:01Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+          "started": "2026-11-25T17:51:00Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8777248768,
+              "max_allocated": 8853377536,
+              "reserved": 8925478912
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+          "started": "2026-11-25T17:54:45Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2070,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2070,
+                  "requests": 2070,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2070,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2070,
+                  "requests": 2070,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8781522944,
+              "max_allocated": 8860404224,
+              "reserved": 8927576064
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-4b-ft-bnb-int8": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.141564,
+      "latency_ms_median": 289.2,
+      "first_ts": "2026-11-25T17:59:12Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+          "started": "2026-11-25T17:59:12Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-int8",
+            "description": "bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "threshold": 6.0,
+              "has_fp16_weights": false
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 4893257728,
+              "max_allocated": 8842690560,
+              "reserved": 5213519872
+            },
+            "memory_now": {
+              "allocated": 5144220672,
+              "max_allocated": 5213460480,
+              "reserved": 5291114496
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+          "started": "2026-11-25T18:08:55Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-int8",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-int8",
+            "description": "bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "threshold": 6.0,
+              "has_fp16_weights": false
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 4893257728,
+              "max_allocated": 8842690560,
+              "reserved": 5213519872
+            },
+            "memory_now": {
+              "allocated": 5164590592,
+              "max_allocated": 5240143360,
+              "reserved": 5318377472
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-4b-ft-bnb-nf4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.067501,
+      "latency_ms_median": 138.7,
+      "first_ts": "2026-11-25T18:19:14Z",
+      "last_ts": "2026-11-25T19:58:33Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+          "started": "2026-11-25T18:19:14Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-nf4",
+            "description": "bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "quant_type": "nf4",
+              "blocksize": 64,
+              "compress_statistics": false,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 3323461632,
+              "max_allocated": 8842690560,
+              "reserved": 3525312512
+            },
+            "memory_now": {
+              "allocated": 3586195456,
+              "max_allocated": 3654106624,
+              "reserved": 3764387840
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+          "started": "2026-11-25T18:23:55Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bnb-nf4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bnb-nf4",
+            "description": "bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "quant_type": "nf4",
+              "blocksize": 64,
+              "compress_statistics": false,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 3323461632,
+              "max_allocated": 8842690560,
+              "reserved": 3525312512
+            },
+            "memory_now": {
+              "allocated": 3586400256,
+              "max_allocated": 3668772864,
+              "reserved": 3768582144
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-4b-ft-hqq-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.208684,
+      "latency_ms_median": 427.4,
+      "first_ts": "2026-11-25T18:29:34Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T18:29:34Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-4",
+            "description": "hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 4,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 3370356736,
+              "max_allocated": 9003350528,
+              "reserved": 3426746368
+            },
+            "memory_now": {
+              "allocated": 3626070016,
+              "max_allocated": 3832730624,
+              "reserved": 3906994176
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T18:43:52Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-4",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-4",
+            "description": "hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 4,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 3370356736,
+              "max_allocated": 9003350528,
+              "reserved": 3426746368
+            },
+            "memory_now": {
+              "allocated": 3629467648,
+              "max_allocated": 3846576640,
+              "reserved": 3959422976
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-4b-ft-hqq-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.228205,
+      "latency_ms_median": 467.0,
+      "first_ts": "2026-11-25T18:59:10Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T18:59:10Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-3",
+            "description": "hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 3,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 2951450624,
+              "max_allocated": 8998648320,
+              "reserved": 3200253952
+            },
+            "memory_now": {
+              "allocated": 3233153024,
+              "max_allocated": 3443421184,
+              "reserved": 3521118208
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T19:14:48Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-3",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-3",
+            "description": "hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 3,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 2951450624,
+              "max_allocated": 8998648320,
+              "reserved": 3200253952
+            },
+            "memory_now": {
+              "allocated": 3234072576,
+              "max_allocated": 3446809600,
+              "reserved": 3527409664
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "kev-4b-ft-hqq-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.194341,
+      "latency_ms_median": 397.7,
+      "first_ts": "2026-11-25T19:31:28Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T19:31:28Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 20,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 20,
+                  "requests": 20,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-2",
+            "description": "hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 2,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 2414252032,
+              "max_allocated": 8992332288,
+              "reserved": 2501902336
+            },
+            "memory_now": {
+              "allocated": 2665963520,
+              "max_allocated": 2875445760,
+              "reserved": 3070230528
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        },
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T19:44:44Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision hqq-2",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 2020,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 2020,
+                  "requests": 2020,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "hqq-2",
+            "description": "hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 2,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 248,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 2414252032,
+              "max_allocated": 8992332288,
+              "reserved": 2501902336
+            },
+            "memory_now": {
+              "allocated": 2666121216,
+              "max_allocated": 2881561088,
+              "reserved": 3076521984
+            },
+            "cuda_graphs": false,
+            "fused": false
+          }
+        }
+      ]
+    },
+    "qwen-ft-bf16": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.058304,
+      "latency_ms_median": 120.4,
+      "first_ts": "2026-11-25T16:20:02Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized)",
+          "started": "2026-11-25T16:20:01Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized)",
+          "started": "2026-11-25T16:24:02Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    },
+    "qwen-ft-bnb-int8": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.07966,
+      "latency_ms_median": 163.4,
+      "first_ts": "2026-11-25T16:28:41Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+          "started": "2026-11-25T16:28:40Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bnb-int8",
+            "description": "bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "threshold": 6.0,
+              "has_fp16_weights": false
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 4879493120,
+              "max_allocated": 8564666368,
+              "reserved": 5188354048
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+          "started": "2026-11-25T16:34:08Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bnb-int8",
+            "description": "bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "threshold": 6.0,
+              "has_fp16_weights": false
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 4879493120,
+              "max_allocated": 8564666368,
+              "reserved": 5188354048
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    },
+    "qwen-ft-bnb-nf4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.073674,
+      "latency_ms_median": 152.1,
+      "first_ts": "2026-11-25T16:40:08Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+          "started": "2026-11-25T16:40:07Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bnb-nf4",
+            "description": "bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "quant_type": "nf4",
+              "blocksize": 64,
+              "compress_statistics": false,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 3307075584,
+              "max_allocated": 8551124992,
+              "reserved": 3502243840
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+          "started": "2026-11-25T16:45:11Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bnb-nf4",
+            "description": "bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)",
+            "library": "bitsandbytes",
+            "version": "0.50.2",
+            "settings": {
+              "quant_type": "nf4",
+              "blocksize": 64,
+              "compress_statistics": false,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 3307075584,
+              "max_allocated": 8551124992,
+              "reserved": 3502243840
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    },
+    "qwen-ft-hqq-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.139365,
+      "latency_ms_median": 286.1,
+      "first_ts": "2026-11-25T16:50:58Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T16:50:57Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "hqq-4",
+            "description": "hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 4,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 3356723200,
+              "max_allocated": 8989913600,
+              "reserved": 3405774848
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T17:00:30Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "hqq-4",
+            "description": "hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 4,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 3356723200,
+              "max_allocated": 8989913600,
+              "reserved": 3405774848
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    },
+    "qwen-ft-hqq-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.148914,
+      "latency_ms_median": 305.7,
+      "first_ts": "2026-11-25T17:10:48Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T17:10:47Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "hqq-3",
+            "description": "hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 3,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 2934540288,
+              "max_allocated": 8985899520,
+              "reserved": 3181379584
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T17:21:00Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "hqq-3",
+            "description": "hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 3,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 2934540288,
+              "max_allocated": 8985899520,
+              "reserved": 3181379584
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    },
+    "qwen-ft-hqq-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute); trained_calibrated: platt fit on tune trained (5-fold CV choice)"
+      ],
+      "records": 6000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained_calibrated/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.130988,
+      "latency_ms_median": 269.1,
+      "first_ts": "2026-11-25T17:31:59Z",
+      "last_ts": "2026-11-25T19:58:34Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T17:31:58Z",
+          "split": "tune",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "hqq-2",
+            "description": "hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 2,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 2399176704,
+              "max_allocated": 8978567680,
+              "reserved": 2480930816
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        },
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+          "started": "2026-11-25T17:40:57Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "hqq-2",
+            "description": "hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)",
+            "library": "hqq",
+            "version": "0.2.8.post1",
+            "settings": {
+              "nbits": 2,
+              "group_size": 64,
+              "axis": 1,
+              "compute_dtype": "bfloat16"
+            },
+            "linear_layers": 249,
+            "quantized_layers": 248,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 2399176704,
+              "max_allocated": 8978567680,
+              "reserved": 2480930816
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6
+        }
+      ]
+    }
+  },
+  "recorded_failures": []
+}

@@ -11,7 +11,7 @@
     "source_model_versions": [
       "typesafe/jev-1.14-20261014"
     ],
-    "fitted_at": "2026-11-22T19:17:38Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "kev-0.8b": {
     "cv_log_loss": {
@@ -26,7 +26,7 @@
     "source_model_versions": [
       "jaredpalmer/kev-0.8b@v1.0 (788ddbdd; weights 9a45d25e)"
     ],
-    "fitted_at": "2026-11-22T19:17:39Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "kev-4b": {
     "cv_log_loss": {
@@ -35,13 +35,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -1.253790111319742,
-      "slope": 0.6191971329415691
+      "intercept": -1.2537901113197423,
+      "slope": 0.619197132941569
     },
     "source_model_versions": [
       "jaredpalmer/kev-4b@v1.0 (591dcb5b; weights 139fdd94)"
     ],
-    "fitted_at": "2026-11-22T19:17:39Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "laya": {
     "cv_log_loss": {
@@ -50,13 +50,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -0.49489415246041374,
-      "slope": 0.5383168529119814
+      "intercept": -0.4948941524604139,
+      "slope": 0.5383168529119813
     },
     "source_model_versions": [
       "convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1"
     ],
-    "fitted_at": "2026-11-22T19:17:39Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "qwen-logprobs": {
     "cv_log_loss": {
@@ -71,7 +71,7 @@
     "source_model_versions": [
       "Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20"
     ],
-    "fitted_at": "2026-11-22T19:17:39Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "frontier-verbal": {
     "cv_log_loss": {
@@ -85,7 +85,7 @@
     "source_model_versions": [
       "openai/gpt-6.2-sol (effort medium; prompt v1)"
     ],
-    "fitted_at": "2026-11-22T19:17:40Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "neighbours-20": {
     "cv_log_loss": {
@@ -99,7 +99,7 @@
     "source_model_versions": [
       "20 nearest train customers (amounts: sign(x)*log1p(|x|); codes as numbers; z-scored on train; Euclidean); train a71432385d26"
     ],
-    "fitted_at": "2026-11-23T19:55:33Z"
+    "fitted_at": "2026-11-25T19:58:33Z"
   },
   "kev-0.8b-ft": {
     "cv_log_loss": {
@@ -108,13 +108,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": 0.05944355513227501,
+      "intercept": 0.05944355513227494,
       "slope": 0.8180078817672709
     },
     "source_model_versions": [
       "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0"
     ],
-    "fitted_at": "2026-11-23T19:55:32Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "laya-ft": {
     "cv_log_loss": {
@@ -123,13 +123,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -0.06689810161058385,
-      "slope": 0.9063284653144504
+      "intercept": -0.06689810161058388,
+      "slope": 0.9063284653144503
     },
     "source_model_versions": [
       "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037"
     ],
-    "fitted_at": "2026-11-23T19:55:33Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "jev-examples": {
     "cv_log_loss": {
@@ -143,7 +143,7 @@
     "source_model_versions": [
       "typesafe/jev-1.14-20261014; 20 train examples (examples v1)"
     ],
-    "fitted_at": "2026-11-23T19:55:33Z"
+    "fitted_at": "2026-11-25T19:58:33Z"
   },
   "sol-examples": {
     "cv_log_loss": {
@@ -153,12 +153,12 @@
     "chosen": "platt",
     "params": {
       "intercept": -0.3440425338862224,
-      "slope": 0.7549592716212059
+      "slope": 0.754959271621206
     },
     "source_model_versions": [
       "openai/gpt-6.2-sol (effort medium; prompt v1); 20 train examples (examples v1)"
     ],
-    "fitted_at": "2026-11-23T19:55:33Z"
+    "fitted_at": "2026-11-25T19:58:33Z"
   },
   "kev-4b-ft": {
     "cv_log_loss": {
@@ -167,13 +167,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": 0.0689279573050303,
+      "intercept": 0.06892795730503015,
       "slope": 0.8772701887230344
     },
     "source_model_versions": [
       "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0"
     ],
-    "fitted_at": "2026-11-24T07:30:03Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "qwen-ft": {
     "cv_log_loss": {
@@ -182,13 +182,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -0.03186898685687514,
+      "intercept": -0.031868986856875205,
       "slope": 0.9944563544306341
     },
     "source_model_versions": [
       "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16)"
     ],
-    "fitted_at": "2026-11-24T07:30:03Z"
+    "fitted_at": "2026-11-25T19:58:32Z"
   },
   "kumo-tabular": {
     "cv_log_loss": {
@@ -197,13 +197,13 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -0.010865018174301017,
+      "intercept": -0.010865018174300942,
       "slope": 1.0029594835916258
     },
     "source_model_versions": [
       "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows)"
     ],
-    "fitted_at": "2026-11-24T07:30:03Z"
+    "fitted_at": "2026-11-25T19:58:33Z"
   },
   "tabicl-v2": {
     "cv_log_loss": {
@@ -212,12 +212,282 @@
     },
     "chosen": "platt",
     "params": {
-      "intercept": -0.019206877013176152,
-      "slope": 0.9024017987904615
+      "intercept": -0.019206877013176218,
+      "slope": 0.9024017987904613
     },
     "source_model_versions": [
       "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows)"
     ],
-    "fitted_at": "2026-11-24T07:30:03Z"
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-0.8b-ft-bf16": {
+    "cv_log_loss": {
+      "platt": 0.4292499323467628,
+      "isotonic": 0.4342088008143167
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.05866219522929175,
+      "slope": 0.8180203472428655
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-0.8b-ft-bnb-int8": {
+    "cv_log_loss": {
+      "platt": 0.4291015900729809,
+      "isotonic": 0.4446178639508881
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.07248898104231913,
+      "slope": 0.822363281439166
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-0.8b-ft-bnb-nf4": {
+    "cv_log_loss": {
+      "platt": 0.4296591558740205,
+      "isotonic": 0.44979299070497236
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.1354715522894625,
+      "slope": 0.8536486869020165
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-0.8b-ft-hqq-4": {
+    "cv_log_loss": {
+      "platt": 0.42947909571394377,
+      "isotonic": 0.43887497737178804
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.13713284318908586,
+      "slope": 1.0000984687821917
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-0.8b-ft-hqq-3": {
+    "cv_log_loss": {
+      "platt": 0.4426367777351041,
+      "isotonic": 0.4623184318887394
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.3287543102072367,
+      "slope": 1.2108964582836297
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-0.8b-ft-hqq-2": {
+    "cv_log_loss": {
+      "platt": 0.5234751983475373,
+      "isotonic": 0.5351948690139908
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -1.9507086996195107,
+      "slope": -1.146625188874857
+    },
+    "source_model_versions": [
+      "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-4b-ft-bf16": {
+    "cv_log_loss": {
+      "platt": 0.435124118385776,
+      "isotonic": 0.44659514186962
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.067932316512183,
+      "slope": 0.877035082071923
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-4b-ft-bnb-int8": {
+    "cv_log_loss": {
+      "platt": 0.4350281610765975,
+      "isotonic": 0.4450354836575913
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.07640513705056945,
+      "slope": 0.8807702810731434
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-4b-ft-bnb-nf4": {
+    "cv_log_loss": {
+      "platt": 0.43619723017927764,
+      "isotonic": 0.45662460076557576
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.09878214728818631,
+      "slope": 0.8855594289388182
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:33Z"
+  },
+  "kev-4b-ft-hqq-4": {
+    "cv_log_loss": {
+      "platt": 0.4359515718545713,
+      "isotonic": 0.4537290317347108
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.07121704647123324,
+      "slope": 0.9144320475778616
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "kev-4b-ft-hqq-3": {
+    "cv_log_loss": {
+      "platt": 0.44771223002901994,
+      "isotonic": 0.45777232025936776
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.7170383897663485,
+      "slope": 1.3463026125837847
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "kev-4b-ft-hqq-2": {
+    "cv_log_loss": {
+      "platt": 0.5201337107341166,
+      "isotonic": 0.5398404919415252
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.9744209535848828,
+      "slope": 1.0027841669499602
+    },
+    "source_model_versions": [
+      "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "qwen-ft-bf16": {
+    "cv_log_loss": {
+      "platt": 0.43573592448480536,
+      "isotonic": 0.44506320107701614
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.0406659172926773,
+      "slope": 0.993184173764998
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "qwen-ft-bnb-int8": {
+    "cv_log_loss": {
+      "platt": 0.43635772587182364,
+      "isotonic": 0.44267954389406344
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.05329217136127739,
+      "slope": 0.978197213535759
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "qwen-ft-bnb-nf4": {
+    "cv_log_loss": {
+      "platt": 0.4358220273160046,
+      "isotonic": 0.4413702296522729
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.04273625853630308,
+      "slope": 1.0128060912578476
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-nf4 (bitsandbytes 0.50.2: nf4, blocksize 64, no double quantization, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "qwen-ft-hqq-4": {
+    "cv_log_loss": {
+      "platt": 0.43589145577836164,
+      "isotonic": 0.4545307147039372
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": 0.15498881914398915,
+      "slope": 0.9794040933446658
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4 (hqq 0.2.8.post1: 4-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "qwen-ft-hqq-3": {
+    "cv_log_loss": {
+      "platt": 0.43864476558130727,
+      "isotonic": 0.45851097341209057
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -0.19638166434436025,
+      "slope": 0.9418808524773598
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
+  },
+  "qwen-ft-hqq-2": {
+    "cv_log_loss": {
+      "platt": 0.5256462871548269,
+      "isotonic": 0.5354776112733519
+    },
+    "chosen": "platt",
+    "params": {
+      "intercept": -1.1067160238288218,
+      "slope": -0.19878319399385092
+    },
+    "source_model_versions": [
+      "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-2 (hqq 0.2.8.post1: 2-bit, group size 64, axis 1, bf16 compute)"
+    ],
+    "fitted_at": "2026-11-25T19:58:34Z"
   }
 }

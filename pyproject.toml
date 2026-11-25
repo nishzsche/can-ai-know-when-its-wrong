@@ -41,6 +41,12 @@ training = [
     "peft>=0.17",
     "accelerate>=1.0",
 ]
+# Post 4: quantization of the fine-tuned models (PLAN.md §12; runners/quantize.py checks these
+# exact versions). Kev's own environment on the L4 installs the same two pins.
+quant = [
+    "bitsandbytes==0.50.2",
+    "hqq==0.2.8.post1",
+]
 # M6 Part B: tabular foundation models (PLAN.md §11). TabPFN is out (non-commercial licence).
 tabular = [
     "structured-data-models==0.3.0",

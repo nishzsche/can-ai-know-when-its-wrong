@@ -19,6 +19,9 @@ records, so it's safe to run again when a contestant (e.g. Sol) completes.
 M6 (PLAN.md §11): the contestants that learned from `train` get `trained_calibrated` the same way,
 from their `trained` probabilities, exactly as the baselines' calibrated condition is a fit on
 tune. Contestants whose runs aren't complete are skipped and picked up on a later run.
+
+Post 4 (PLAN.md §12): each fine-tuned model at each precision (runners/quantize.py, e.g.
+`kev-0.8b-ft-bnb-nf4`) gets `trained_calibrated` the same way.
 """
 
 from __future__ import annotations
@@ -30,13 +33,16 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runners"))
 
 from metrics import EPS, logit  # noqa: E402
+from quantize import all_contestants  # noqa: E402
 from records import ROOT, make_record, read_records, utc_now, write_records  # noqa: E402
 
 AI_CONTESTANTS = ("jev", "kev-0.8b", "kev-4b", "laya", "qwen-logprobs", "frontier-verbal")
 M6_CONTESTANTS = ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples",
                   "sol-examples", "neighbours-20", "kumo-tabular", "tabicl-v2")  # fmt: skip
+QUANT_CONTESTANTS = all_contestants()  # post 4
 N_CUSTOMERS = 2000
 CV_FOLDS = 5
 SEED = 20261122
@@ -138,7 +144,7 @@ def recalibrate(
 def main() -> None:
     summary = json.loads(OUT_JSON.read_text("utf-8")) if OUT_JSON.exists() else {}
     jobs = [(c, "out_of_box", "recalibrated") for c in AI_CONTESTANTS]
-    jobs += [(c, "trained", "trained_calibrated") for c in M6_CONTESTANTS]
+    jobs += [(c, "trained", "trained_calibrated") for c in M6_CONTESTANTS + QUANT_CONTESTANTS]
     for contestant, source, target in jobs:
         if not (ROOT / "results" / "predictions" / f"{contestant}.jsonl").exists():
             print(f"{contestant}: no predictions file yet")

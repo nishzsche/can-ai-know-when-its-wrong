@@ -8,6 +8,17 @@
     uv run $G python runners/qwen_ft.py --adapter /home/runs/qwen-ft --split tune
     uv run $G python runners/qwen_ft.py --adapter /home/runs/qwen-ft --split test
 
+Post 4 (`qwen-ft-<precision>`, PLAN.md §12): `--precision` merges the adapter first, as Kev's
+loader does (the base loaded in fp32 on the CPU, the LoRA added in fp32, one rounding to bf16),
+then quantizes every linear layer except lm_head and the vision tower (runners/quantize.py).
+`--precision bf16` is the merged, unquantized reference; `--reproduce-check 50` compares it with
+M6's qwen-ft predictions on 50 tune customers and stops on a mismatch:
+
+    uv run $G --group quant python runners/qwen_ft.py --adapter /home/runs/qwen-ft \\
+        --precision bf16 --reproduce-check 50
+    uv run $G --group quant python runners/qwen_ft.py --adapter /home/runs/qwen-ft \\
+        --precision hqq-4 --split tune
+
 Why not vLLM: serving a LoRA on the multimodal Qwen3.5 through vLLM is the least certain step,
 and the readout doesn't need it. The prompt is byte-identical to what jevper sent (checked on all
 8,000 M3 requests, tests/test_training.py), and P(yes) is the same quantity: each label's
@@ -31,9 +42,11 @@ from harness import (
     build_parser,
     gpu_cost,
     load_requests,
+    reproduction_check,
     resolve_args,
     run,
 )
+from quantize import PRECISIONS, after_load, contestant_name, quantize_linears
 
 if str(ROOT / "training") not in sys.path:
     sys.path.insert(0, str(ROOT / "training"))
@@ -58,15 +71,23 @@ CHECK_MAX_MEAN_ABS = 0.02
 class QwenFTPredictor:
     contestant = "qwen-ft"
 
-    def __init__(self, adapter: Path | None, device: str, usd_per_hour: float):
+    def __init__(self, adapter: Path | None, device: str, usd_per_hour: float,
+                 precision: str | None = None):  # fmt: skip
         import torch
 
         self.torch = torch
-        self.tok, model = load_base(device)
+        self.precision = precision
+        if precision is not None:
+            if adapter is None:
+                raise SystemExit("--precision needs --adapter")
+            self.tok, model = self._merged(adapter, device)
+        else:
+            self.tok, model = load_base(device)
         if adapter is not None:
             from peft import PeftModel
 
-            model = PeftModel.from_pretrained(model, adapter)
+            if precision is None:
+                model = PeftModel.from_pretrained(model, adapter)
             cfg = json.loads((adapter / "training_config.json").read_text("utf-8"))
             sha = file_sha256(adapter / "adapter_model.safetensors")
             rank = json.loads((adapter / "adapter_config.json").read_text("utf-8"))["r"]
@@ -79,12 +100,30 @@ class QwenFTPredictor:
         else:
             self.model_version = f"{MODEL}@{REVISION[:8]} (base, in-process); readout: {READOUT}"
             self.meta = {}
+        if precision is not None:
+            info = quantize_linears(model, precision, device=device)
+            self.contestant = contestant_name("qwen-ft", precision)
+            self.model_version += (f"; merged in fp32 with one rounding to bf16 (post 4); "
+                                   f"{info['description']}")  # fmt: skip
+            self.meta["quantization"] = after_load(info)
         self.model = model.eval()
         self.yes_ids, self.no_ids, _, _ = label_token_ids(self.tok)
         self.usd_per_hour = usd_per_hour
         self.meta.update({"device": device, "usd_per_hour": usd_per_hour, "readout": READOUT,
                           "yes_variants": len(self.yes_ids),
                           "no_variants": len(self.no_ids)})  # fmt: skip
+
+    @staticmethod
+    def _merged(adapter: Path, device: str):
+        """(tokenizer, model): the adapter merged into the base the way Kev's loader merges it:
+        fp32 weights (the bf16 checkpoint upcast exactly), W + delta in fp32, one rounding to
+        bf16. On the CPU, so the fp32 copy never needs GPU memory."""
+        import torch
+        from peft import PeftModel
+
+        tok, model = load_base("cpu", "fp32")
+        model = PeftModel.from_pretrained(model, adapter).merge_and_unload()
+        return tok, model.to(torch.bfloat16).to(device)
 
     def predict(self, request: dict) -> Prediction:
         ids = prompt_ids(self.tok, qwen_messages(request))
@@ -95,9 +134,11 @@ class QwenFTPredictor:
         if self.model.device.type == "cuda":
             self.torch.cuda.synchronize()
         latency_ms = (time.perf_counter() - start) * 1000
+        raw = {"prompt_tokens": len(ids), "p_yes": p}
+        if self.precision is not None and self.model.device.type == "cuda":
+            raw["gpu_max_allocated"] = self.torch.cuda.max_memory_allocated()
         return Prediction(p_default=p, latency_ms=latency_ms,
-                          cost_usd=gpu_cost(latency_ms, self.usd_per_hour),
-                          raw={"prompt_tokens": len(ids), "p_yes": p})  # fmt: skip
+                          cost_usd=gpu_cost(latency_ms, self.usd_per_hour), raw=raw)  # fmt: skip
 
 
 def zero_shot_check(n: int, device: str) -> None:
@@ -132,6 +173,11 @@ def main() -> None:
         "--adapter", type=Path, help="trained adapter directory (training/qwen_lora.py)"
     )
     ap.add_argument("--zero-shot-check", type=int, metavar="N")
+    ap.add_argument("--precision", choices=PRECISIONS, help="post 4: merge, then quantize")
+    ap.add_argument("--reproduce-check", type=int, metavar="N",
+                    help="post 4, bf16: compare N tune customers with M6, then stop")  # fmt: skip
+    ap.add_argument("--both-splits", action="store_true",
+                    help="tune, then test, in one process (the model loads once)")  # fmt: skip
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--usd-per-hour", type=float, default=L4_USD_PER_HOUR)
     args = ap.parse_args()
@@ -140,9 +186,17 @@ def main() -> None:
         return
     if args.adapter is None:
         ap.error("--adapter is required (or --zero-shot-check N)")
+    if args.reproduce_check and args.precision != "bf16":
+        ap.error("--reproduce-check runs with --precision bf16")
     args.condition = TRAINED
     args = resolve_args(args)
-    run(QwenFTPredictor(args.adapter, args.device, args.usd_per_hour), args)
+    predictor = QwenFTPredictor(args.adapter, args.device, args.usd_per_hour, args.precision)
+    if args.reproduce_check:
+        reproduction_check(predictor, "qwen-ft", args.reproduce_check)
+        return
+    for split in ("tune", "test") if args.both_splits else (args.split,):
+        args.split = split
+        run(predictor, args)
 
 
 if __name__ == "__main__":

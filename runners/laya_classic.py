@@ -60,11 +60,20 @@ class LayaPredictor:
         latency_ms = (time.perf_counter() - start) * 1000
         answers = out.get("answers", out)
         answer = answers[QUESTION_ID]
+        usage = out.get("usage") if isinstance(out.get("usage"), dict) else None
+        # Laya clamps a state that doesn't fit its context silently (laya.common); never score a
+        # cut summary. Its own count, not an estimate (post 5's formats are longer than v2).
+        if usage and usage.get("truncated"):
+            raise SystemExit(f"Laya truncated this summary ({usage.get('state_tokens_dropped')} "
+                             f"tokens dropped); this input doesn't fit its context.")  # fmt: skip
+        raw = {"answer": answer}
+        if usage:
+            raw["usage"] = usage
         return Prediction(
             p_default=float(answer["noul"]),
             latency_ms=latency_ms,
             cost_usd=gpu_cost(latency_ms, self.usd_per_hour),
-            raw={"answer": answer},
+            raw=raw,
         )
 
 

@@ -125,7 +125,7 @@ Readable at phone size; one consistent colour per contestant.
 2005 data from one Taiwanese bank; famous dataset that may have been seen in training; demographic fields deliberately excluded; undocumented repayment-status codes; zero-shot AI vs trained baselines; vendor models change over time (record versions and dates).
 
 ## 10. Parked for later posts
-- Synthetic insurance appetite set (insurance triage) and open document sets (ContractNLI, CUAD insurance clauses) → the document-pipeline series. Now planned as the documents arc, §12 posts 5–7.
+- Synthetic insurance appetite set (insurance triage) and open document sets (ContractNLI, CUAD insurance clauses) → the document-pipeline series. Now planned as the documents arc, §12 posts 7–9.
 - English vs Tamil honesty test (IndicSentiment, IndicXNLI, DravidianCodeMix) → a later post.
 - HMDA mortgage decisions (2025 data) → possible follow-up on lending.
 
@@ -184,7 +184,7 @@ AI built for tables: these models read the training rows themselves (in context,
 
 **Chosen (2026-11-24): Kumo-Tabular and TabICLv2.** TabPFN-3.5 is out on licence; Mitra is out because no v2 exists and v1 caps at 10,000 rows; LimiX-2 was never pursued (non-commercial). Conditions `trained` / `trained_calibrated`. They aren't text models, so they're compared with the baselines and the trained AI models, not with the zero-shot runs. They run in the same L4 session if the checks are done in time, otherwise in a short second one.
 
-**Not in M6: the newer open decision models (Jev alternatives).** The strongest are 27–31B and don't fit an L4, and none publishes a fine-tuning recipe, so they can't join a trained comparison. The ones that should fit one L4 suit a cheap zero-shot "round 2" (§12, post 4):
+**Not in M6: the newer open decision models (Jev alternatives).** The strongest are 27–31B and don't fit an L4, and none publishes a fine-tuning recipe, so they can't join a trained comparison. The ones that should fit one L4 suit a cheap zero-shot "round 2" (§12, smaller items):
 - Karpo Decision 4B / 2B (Apache-2.0, System One API);
 - Elephant-1 9B (MIT, about 19 GB by estimate);
 - GLiDE 9B (Fastino community licence, attribution required);
@@ -196,48 +196,163 @@ Source: a third-party round-up ([Pinggy, 2026-11-18](https://pinggy.io/blog/best
 
 ---
 
-## 12. Next posts (proposed 2026-11-23, for the author to choose; quantization and the documents arc added 2026-11-24)
+## 12. Next posts (revised 2026-11-25; first proposed 2026-11-23)
 
-Ordered so each one keeps a promise or answers a limit of the one before. Titles lead with the question, per `writeup/STYLE.md`. Where a post matches a topic on the author's Notion list ("Content Strategy: Curiosity First, Expertise Second"), its number is given.
+Numbers are the series' post numbers. Titles lead with the question, per `writeup/STYLE.md`. A Notion number is the topic's rank on the author's page "Content Strategy: Curiosity First, Expertise Second".
 
-| # | Working title | What it answers | New compute |
-|---|---|---|---|
-| 1 | **Why 99% accuracy can still be a disaster** (Notion #2) | Promised at the end of post 1. A model that says "nobody defaults" is 78% accurate here; accuracy vs ranking (AUC) vs honesty (calibration) vs what each mistake costs a bank. Built from results already in `results/` | None. It can go out while M6 runs |
-| 2 | **The fair fight: what happens when AI gets the same 20,000 customers** (Notion #3) | M6. Fine-tuned Kev, Qwen and Laya; Jev and Sol shown 20 look-alike customers; tabular foundation models; the scorecard and LightGBM. Twenty look-alikes alone already rank at AUC 0.764 and are nearly honest (ECE 0.023), so "does the AI add anything?" is the hook | One L4 session (~$3) plus ~$44 of API |
-| 3 | **Does shrinking an AI model make it less honest?** (Notion #7) | Quantization (spec below). The fair fight's trained models, re-scored at full precision, 8-bit and 4-bit on the same `test`. Does ranking hold while the percentages drift? Pairs with post 1's point that accuracy alone misses what matters | ~1 L4 hour, no API |
-| 4 | **Teaching a small model to say "I don't know"** (Notion #9) | The sequel post 1 promised. Laya and Kev-0.8B trained with a proper-scoring reward vs plain cross-entropy, plus abstention: refer the unsure cases to a person, and see what happens to approval and default rates. Builds on M6's setup; merge into post 2 if it's short | A short L4 session |
-| 5 | **Does retrieval make AI more honest, or just more confident?** (documents arc, 1 of 3) | RAG on one public document set: no retrieval, good retrieval, noisy retrieval, conflicting passages, and the whole document in context. Accuracy, honesty, "I don't know" rate and cost (spec below) | API runs on public documents; a small L4 session for the open models |
-| 6 | **Can a PDF trick an AI into making a bad decision?** (Notion #4; documents arc, 2 of 3) | Hidden instructions in the same pipeline's documents (indirect prompt injection): how often they change the answer or the confidence, and which defences hold | Same set-up as post 5, plus crafted documents |
-| 7 | **Can you trust an AI to grade an AI?** (new topic; documents arc, 3 of 3) | Post 5's answers graded by AI judges and by people: agreement beyond chance, position bias, run-to-run consistency, and whether a judge's confidence is itself honest | Judge API calls; a few hundred human labels by the author |
-| 8 | **Honesty leaderboard, round 2** | The newer open decision models that fit one L4, zero-shot, on the same `test` (§11 Part B list). A short update post, or just a new README table | ~1 L4 hour; pplx Flash is free on OpenRouter |
-| 9 | **Fresh data no model has seen** | Post 1's biggest limit: Sol knows the Taiwan file. HMDA 2025 mortgage decisions (§10) can't be memorized, and they're closer to a real lending decision | A bigger project: new data, new splits, re-run the best few |
+**The author's decisions (2026-11-25):**
+- **Order:** 4 → 5 → 6.
+- **Kev in post 4:** we quantize it ourselves, since its maker's code can't (flagged in the post 4 spec).
+- **Stress levels:** 3-bit and 2-bit are in.
 
-After that, English vs Tamil (§10). The document-pipeline series parked in §10 is now the documents arc (posts 5–7).
+| # | Working title | What it answers | New compute | Status |
+|---|---|---|---|---|
+| 2 | **Why 99% accuracy can still be a disaster** (Notion #2) | Accuracy vs ranking vs honesty vs what each mistake costs a bank | None | Published 2026-11-24 |
+| 3 | **I gave AI the same data as a bank's model. It caught up.** (Notion #3) | M6, the fair fight (§11) | Done | Draft in review |
+| 4 | **Does shrinking an AI model make it less honest?** (Notion #7, "Why cheaper AI doesn't always mean cheaper bills") | Post 3's closing promise. The fine-tuned Kev-0.8B, Kev-4B and Qwen at 8, 4, 3 and 2 bits. Does ranking hold while the percentages drift, and does the smaller model actually cost less? | L4 session A | Spec below |
+| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | L4 session A, plus about $8 of API | Spec below |
+| 6 | **Teaching a small model to say "I don't know"** (Notion #9) | Promised in posts 1 and 3. Posts 1 and 3 already asked whether its 30% is honest. This one asks whether it flags the customers unlike anyone it learned from | L4 session B | Design to settle (spec below) |
+| 7 | **Does retrieval make AI more honest, or just more confident?** (documents arc, 1 of 3) | RAG on one public document set: no retrieval, good retrieval, noisy retrieval, conflicting passages, and the whole document in context. Accuracy, honesty, "I don't know" rate and cost | API runs on public documents; a small L4 session for the open models | Choose the dataset now: it has the longest lead time |
+| 8 | **Can a PDF trick an AI into making a bad decision?** (Notion #4; documents arc, 2 of 3) | Hidden instructions in the same pipeline's documents (indirect prompt injection): how often they change the answer or the confidence, and which defences hold | Same set-up as post 7, plus crafted documents | |
+| 9 | **Can you trust an AI to grade an AI?** (documents arc, 3 of 3) | Post 7's answers graded by AI judges and by people: agreement beyond chance, position bias, run-to-run consistency, and whether a judge's confidence is itself honest | Judge API calls; a few hundred human labels by the author | |
+| 10 | **Fresh data no model has seen** | Post 1's biggest limit: Sol knows the Taiwan file. HMDA 2025 mortgage decisions (§10) can't be memorized, and they're closer to a real lending decision | A bigger project: new data, new splits, re-run the best few | |
 
-### Post 3 spec: does shrinking an AI model make it less honest? (added 2026-11-24)
+**Smaller items:**
+- **Honesty leaderboard, round 2** (the newer open decision models, zero-shot, §11 Part B list): a README table, not a post.
+- **Notion #8, "Can a tiny AI beat a giant one at one job?":** post 3 already answers it. Fine-tuned Kev-0.8B ranked at 0.790; Sol with 20 examples ranked at 0.762. It could be a LinkedIn-only piece.
+- **After post 10:** English vs Tamil (§10).
 
-**The question:** quantizing a model (storing its weights in 8 or 4 bits instead of 16) cuts its memory and serving cost, and the usual check is that accuracy holds. A model can keep its ranking while its percentages drift, which is the failure this series measures.
+**Two GPU sessions.** Session A runs post 4 and post 5's open models with one setup; a fresh L4 takes 20–30 billed minutes to set up. Session B is post 6's retraining, once its design is settled. Each session needs the author's guesses for its posts in `PREDICTIONS.md` first.
 
-**Setup:**
-- **Models:** the M6 trained models that run on a GPU (Kev-4B, Kev-0.8B, Qwen fine-tuned; weights from the `m6-weights` GitHub release). Optionally their zero-shot versions too, to see whether training makes a model more or less robust to shrinking.
-- **Precisions:** full (bf16, the M6 run itself), 8-bit and 4-bit, with standard off-the-shelf methods (e.g. bitsandbytes 8-bit and NF4). Pin each method's version, and use no calibration data from `test`.
-- **Data:** the same 2,000 `test` customers, the same template v2 summaries and the same readout as M6. Each model is compared only with itself, so nothing else changes between rows.
-- **Measures:**
-  - ranking (AUC, with a paired bootstrap against the full-precision model);
-  - honesty (ECE, with the noise floor);
-  - the post 2 lending profit, at the model's own percentages;
-  - GPU memory, latency and cost per 1,000 decisions.
-- **Fairness:** quantization is a deployment choice, not a new contestant. A quantized model that drifts can be recalibrated on `tune` like any other, so report both raw and recalibrated.
+**The reserve.** The 6,000 `reserve` customers are still untouched, while `test` has been reused across three posts and many checks. Keep them sealed for one replication of the headline numbers when the credit-card posts end.
 
-**Done when:** every model has `test` predictions at each precision, recorded with the precision in `model_version`; one table and one chart (honesty and ranking by precision, per model).
+### Post 4 spec: does shrinking an AI model make it less honest? (revised 2026-11-25)
 
-### Documents arc spec: posts 5–7 (added 2026-11-24)
+**The question:** quantizing a model (storing its weights in fewer than 16 bits) cuts its memory, and the usual check is that accuracy holds. A model can keep its ranking while its percentages drift, which is the failure this series measures. The cost angle (Notion #7): fewer bits don't automatically mean faster or cheaper answers, so measure it rather than assume it.
+
+**Models:** the fine-tuned Kev-0.8B, Kev-4B and Qwen from M6 (the `m6-weights` release). Each is compared only with its own bf16 run.
+- **Laya is out.** At 421M parameters it already runs on a laptop CPU, so shrinking isn't its deployment question.
+- **The zero-shot models are out.**
+
+**Precisions.** Every method needs no calibration data, so no data is used to quantize and nothing touches `tune` or `test`.
+
+| Tag | Method | Why |
+|---|---|---|
+| `bf16` | None, re-run through the same serving path as the others | The reference |
+| `bnb-int8` | bitsandbytes 0.50.2, LLM.int8 with outlier threshold 6.0 | The off-the-shelf 8-bit most people use |
+| `bnb-nf4` | bitsandbytes 0.50.2, NF4, blocksize 64, no double quantization, bf16 compute | The off-the-shelf 4-bit most people use |
+| `hqq-4`, `hqq-3`, `hqq-2` | HQQ 0.2.8.post1 at 4, 3 and 2 bits, its defaults (group size 64, axis 1), bf16 compute | One method all the way down, so the curve shows the bit width rather than the method. `hqq-4` against `bnb-nf4` checks how much the method matters at the same width |
+
+- **"Off the shelf" means what transformers sets.** The bitsandbytes settings are the ones transformers uses for `load_in_8bit` and for `load_in_4bit` with NF4. The bare bitsandbytes layers default to something else: plain int8 with no outlier threshold, and FP4 with double quantization (checked in the 0.50.2 source, 2026-11-25).
+- **Versions:** both libraries are pinned (pyproject's `quant` group; `runners/quantize.py` refuses any other version), and the version goes into `model_version`.
+- **GPTQ and AWQ are out:** they need calibration data, which adds a data choice this comparison doesn't need.
+- **A method that fails** on a model's architecture is recorded and reported, never silently replaced by another.
+
+**Choices that could tilt the comparison (flagged before building):**
+1. **We quantize Kev ourselves** (the author's decision, 2026-11-25). Kev's loader only offers bf16, fp16 and fp32 (`LoadOptions` in `kev/checkpoint.py`, checked 2026-11-25).
+   - **The launcher** (`runners/kev_quant_serve.py`): it loads the fine-tuned run through Kev's own `Checkpoint.load`, quantizes the backbone's linear layers, then starts Kev's own server. Request handling, the pointer head and the readout stay the maker's.
+   - **Guard:** with quantization off (`bf16`), the new path must reproduce M6's predictions on 50 `tune` customers (mean |difference| at most 0.02, as the Qwen in-process check used) before any quantized run. It catches a broken path, which would move predictions by tenths. The comparisons themselves all use the fresh bf16 run.
+2. **Merge, then quantize, for every model.** The LoRA delta goes into the base weights first, so the result is one shrunk model, which is what a deployer would ship. Both models merge the same way, in fp32 with one rounding to bf16:
+   - **Kev:** its loader's default (`KEV_MERGE`).
+   - **Qwen:** the base is loaded in fp32 on the CPU, `merge_and_unload` adds the adapter, then the model is cast to bf16.
+3. **What stays in bf16:** the readout (Kev's pointer head, which sits outside the backbone; Qwen's `lm_head`), the embeddings and the norms. Qwen's vision tower, unused here, isn't quantized either.
+4. **The same serving for every precision, bf16 included.** CUDA graphs and Kev's fused kernels are off, because neither works with quantized layers. M6 served bf16 with CUDA graphs on, so post 4 re-runs bf16 (`<model>-bf16`) rather than borrowing M6's latency: every precision's speed is then measured the same way.
+5. **Everything else as in M6:** template v2, each model's own readout, Kev served at temperature 1.0, one request at a time.
+
+**Data and conditions:**
+- `tune` and `test` at every precision.
+- Raw predictions are `trained`. M6's correction (Platt vs isotonic, chosen by 5-fold CV on `tune`) gives `trained_calibrated`.
+- Quantization is a deployment choice, not a new contestant. Each precision gets its own record name, `<model>-<tag>` (e.g. `kev-0.8b-ft-bnb-nf4`, `qwen-ft-hqq-2`), in `results/predictions/`. The published post 1 and post 3 tables list their models by name, so they don't change.
+
+**Measures (on `test`):**
+- **Drift, without labels:** mean prediction against bf16's, mean change per customer, and rank correlation with bf16.
+- **Ranking:** AUC, with a paired bootstrap against the model's own bf16 run, Holm-corrected over the 15 quantized rows.
+- **Honesty:** ECE against the noise floor, plus calibration-in-the-large and slope, raw and after the correction.
+- **Lending:** post 2's profit at the model's own percentages, with the cut-off chosen on `tune`.
+- **Cost:** GPU memory (weights and peak), median latency, and cost per 1,000 decisions at the L4 rate ($0.44/h).
+
+**Compute:** about 72,000 requests (3 models × 6 precisions, bf16 included, × 4,000 customers).
+- bitsandbytes 8-bit can be several times slower than bf16 per request. So allow 4–5 hours for post 4, plus about 1 hour for post 5's open models: 5–6 GPU hours in all, about $2.50.
+- Stop and ask if any one run's ETA is over 2 hours.
+
+**Done when:**
+- Every model has `tune` and `test` predictions at each precision, with the precision and library versions in `model_version`, or a recorded failure (`analysis/quantization.py --record-failure`).
+- `runners/manifest.py --quant` reports every pair complete or recorded as failed.
+- `analysis/quantization.py` writes `results/quantization.csv`.
+- The charts follow the `writeup/STYLE.md` budget. Candidates: honesty by bits with the noise band, ranking by bits, drift in the mean prediction, and memory/latency/cost.
+
+**Build list: done on the laptop (2026-11-25), 197 tests passing.**
+1. **`runners/quantize.py`:** the shared quantizer. All six precisions were checked on a toy bf16 model on the CPU: the right layer types, the readout kept, and the error growing as the bits shrink.
+2. **`runners/kev_quant_serve.py`:** the Kev launcher, run in Kev's environment on the L4. It reports its precision, settings and GPU memory at `/v1/quantization`. `runners/kev.py --precision <tag>` refuses a server that reports a different precision, as it already does for temperature, and reads the peak memory after each request.
+3. **`runners/qwen_ft.py --precision <tag>`:** merge in fp32, round once to bf16, quantize. `--both-splits` scores tune and test with one load.
+4. **`--reproduce-check N`** on both runners (`harness.reproduction_check`).
+5. **`analysis/recalibrate.py` and `runners/manifest.py --quant`:** the 18 record names.
+6. **`analysis/quantization.py`:** the measures above. The figures come with the draft, once the results are known, as post 3's did.
+7. **L4_RUNBOOK.md §7:** session A as copy-paste commands, with the prompt for Claude Code on the L4.
+
+**Not testable on the laptop:** the launcher inside Kev's server, and the bitsandbytes CUDA kernels. The L4 checks both with the reproduction check and a 20-customer smoke run per precision before any full run.
+
+### Post 5 spec: why AI can write code but struggle to read a table (added 2026-11-25)
+
+**The question:** if the same numbers are laid out differently, does an AI model reach a different conclusion? The series has already seen it twice: in the layout check (`--variant aligned`) and the disguise check (`data/contamination.md` §4). This post adds formats.
+
+**Formats** (`data/formats.py`, run as variants of `runners/checks/disguise.py`, each versioned as `format <name> f1`). Every format keeps v2's first line, "Credit card account summary":
+- **`prose`:** one sentence per month, after the credit limit line.
+- **`markdown`:** v2's pipe table with the header separator and the outer pipes added.
+- **`csv`:** the same table as CSV, with the amounts that contain thousands separators quoted, as CSV requires.
+- **`json`:** one compact JSON object holding the credit limit and the six months.
+
+The reference is template v2 (a pipe-separated table without the separator row), using the M3 `out_of_box` runs.
+
+**Fairness:**
+- **Same values, byte for byte:** every value string is copied from v2: the credit limit, each month's name, the amounts as written ("NT$8,617") and the repayment labels with their raw codes, with no interpretation. Only the layout changes. A unit test reads every tune and test customer back from each format and checks the values against v2's (`tests/test_formats.py`).
+- **Laya's limit:** checked (`uv run python data/formats.py --token-report`, `results/checks/formats_tokens.json`).
+  - On the 2,000 test customers, the longest summary in Laya's tokens is 183 for v2, 262 for prose, 203 for markdown, 179 for CSV and 320 for JSON. All are within the model card's 320-token budget.
+  - Laya's real room is larger. It's 512 minus the question header minus 1 (`laya.common`), about 470 for our question.
+  - `runners/laya_classic.py` now stops if Laya ever reports truncating a summary, so no truncated input is scored.
+
+**Runs:**
+- **Who and what:** the six zero-shot AI contestants (Jev, Sol, Kev-4B, Kev-0.8B, Qwen, Laya), `out_of_box`, on 2,000 `test` customers per format, into `results/checks/formats/`.
+- **A diagnostic, not a contestant condition:** nothing is tuned, and the headline results stay on v2.
+- **Noise floor:** the disguise check's 200-customer control.
+- **Sol's caveat applies:** it recognizes the dataset.
+- **Cost:** about $2 per format for Sol and cents for Jev. The open models run in session A.
+
+**Measures, per format against v2:** mean shift, AUC, ECE, and the change per customer. The tabular foundation models (0.794 with no training run) are the reference for reading the numbers directly.
+
+**Done when:** every contestant has every format that fits its context, `disguise.py --report` writes `results/checks/formats_summary.json`, and the charts follow the budget.
+
+**Built on the laptop (2026-11-25):** `data/formats.py`, the four variants and the formats report in `runners/checks/disguise.py`, and the tests. The disguise check's published summary is unchanged by the refactor.
+
+### Post 6 spec: teaching a small model to say "I don't know" (redesigned 2026-11-25; settle before session B)
+
+**Why the redesign:**
+- **The first version** compared a proper-scoring reward with cross-entropy.
+- **The flaw:** cross-entropy is already a proper scoring rule, and Laya-ft was trained with one ("rlcd"). So that contrast tests whether the percentages are honest, which posts 1 and 3 already covered.
+- **What it misses:** post 1's promise, "rewarding it for knowing when it doesn't know".
+
+**Two kinds of unsure:**
+- **The coin-flip customer:** an honest 50%. No model can do better on them.
+- **The unfamiliar customer:** nobody like them in the training data. Flagging these is what "knowing when it doesn't know" means. It also answers the post 1 reviewer's point that calibration isn't self-awareness.
+
+**Proposal:**
+1. **Free signals first** (laptop, existing predictions):
+   - how much the three seeds of Kev-0.8B and Laya disagree (`results/checks/m6_seeds/`);
+   - distance to the 20 nearest `train` customers (`data/neighbours/`);
+   - closeness to the cut-off.
+2. **The real test (session B):** retrain Kev-0.8B and Laya on `train` with one slice of customers held out, chosen from `train` statistics only (for example, the highest credit limits). On that slice in `test`, do the signals rise, and do the models' errors?
+3. **Optional, training to defer:** a "refer" answer that has a cost, against the M6 model plus a referral band.
+4. **The bank frame:** send the unsure cases to an underwriter. Report the approval rate, the default rate among approvals and the underwriter workload with 5%, 10% and 20% of customers referred. Every choice is made on `tune`.
+
+**To settle before session B:** the held-out slice, whether step 3 is in, and the referral rates.
+
+### Documents arc spec: posts 7–9 (added 2026-11-24; renumbered 2026-11-25)
 
 **Why these three:** 2026 interview guides put RAG first, then evaluation (including AI judges), agents and production judgment: cost, latency, security. These guides are career and vendor blogs, informed opinion rather than hiring data. One document pipeline, examined three ways, covers the top three areas and builds one story (Notion principle 5). It sits next to the author's insurance work, using **public data only**: nothing from an employer.
 
 **Data:** one public document set with questions whose answers are known. Candidates are CUAD (contract clauses), ContractNLI, or public insurance policy wordings with author-written questions. Check each licence before use. A frozen test split, as in post 1. Nothing is tuned on test.
 
-**Post 5, retrieval and honesty.**
+**Post 7, retrieval and honesty.**
 - **Conditions:** no retrieval (the model's own knowledge); good retrieval; noisy retrieval (irrelevant passages mixed in); conflicting passages; the whole document in context.
 - **Measures:**
   - accuracy;
@@ -250,9 +365,9 @@ After that, English vs Tamil (§10). The document-pipeline series parked in §10
   - [LaRA](https://arxiv.org/pdf/2605.10235): stronger models do better with the whole document, and retrieval handles refusals better.
   - [Token Tax, June 2026](https://arxiv.org/html/2606.20898v1): the whole document is most accurate but about ten times the cost per question.
 
-**Post 6, the PDF trick.** Same pipeline. Plant hidden instructions in some documents (white text, metadata, alt text), as in [OpenRAG-Soc, WWW '26](https://arxiv.org/pdf/2601.10923) and [Chang et al., USENIX Security '26](https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_chang.pdf). Measure how often the answer or the confidence changes, and test simple defences: strip hidden text, quote the document as data, check against the source. Plant only harmless payloads, such as "answer 'yes'" or "say you're certain"; this is a measurement of the risk, not a toolkit.
+**Post 8, the PDF trick.** Same pipeline. Plant hidden instructions in some documents (white text, metadata, alt text), as in [OpenRAG-Soc, WWW '26](https://arxiv.org/pdf/2601.10923) and [Chang et al., USENIX Security '26](https://www.usenix.org/system/files/conference/usenixsecurity26/sec26_prepub_chang.pdf). Measure how often the answer or the confidence changes, and test simple defences: strip hidden text, quote the document as data, check against the source. Plant only harmless payloads, such as "answer 'yes'" or "say you're certain"; this is a measurement of the risk, not a toolkit.
 
-**Post 7, AI grading AI.** Post 5's free-text answers graded by two or three AI judges and by the author (a few hundred labels).
+**Post 9, AI grading AI.** Post 7's free-text answers graded by two or three AI judges and by the author (a few hundred labels).
 - **Measures:**
   - agreement beyond chance (Cohen's kappa, not raw agreement);
   - position bias (swap the order);

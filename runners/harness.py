@@ -35,6 +35,7 @@ from records import (  # noqa: E402
     PREDICTIONS_DIR,
     TEST_ONLY_CONDITIONS,
     make_record,
+    read_records,
     utc_now,
     validate_record,
 )
@@ -149,6 +150,45 @@ def request_for(row: dict, condition: str) -> dict:
     if condition == TRAINED and TRAINED not in row["requests"]:
         return row["requests"]["out_of_box"]
     return row["requests"][condition]
+
+
+REPRO_MAX_MEAN_ABS = 0.02  # as the Qwen in-process check (runners/qwen_ft.py)
+REPRO_DIR = ROOT / "results" / "checks" / "quantization"
+
+
+def reproduction_check(predictor: Predictor, reference: str, n: int, *, condition: str = TRAINED,
+                       split: str = "tune", directory: Path = PREDICTIONS_DIR,
+                       out_dir: Path = REPRO_DIR,
+                       max_mean_abs: float = REPRO_MAX_MEAN_ABS) -> dict:  # fmt: skip
+    """Post 4's guard: before any quantized run, the bf16 model served through the new path must
+    reproduce `reference`'s recorded predictions on the first n customers of `split`.
+
+    It catches a broken path (a wrong merge, a lost head, the wrong temperature), which would move
+    predictions by tenths. The post's comparisons all use the fresh bf16 run, not `reference`.
+    Nothing is written to results/predictions. SystemExit if the mean difference is too large.
+    """
+    recorded = {r["id"]: r["p_default"] for r in read_records(reference, directory)
+                if r["split"] == split and r["condition"] == condition}  # fmt: skip
+    rows, diffs = [], []
+    for row in load_requests(split, n):
+        p = predictor.predict(request_for(row, condition)).p_default
+        diffs.append(abs(p - recorded[row["id"]]))
+        rows.append({"id": row["id"], "new_path": p, "reference": recorded[row["id"]]})
+    mean_abs, max_abs = sum(diffs) / len(diffs), max(diffs)
+    result = {"contestant": predictor.contestant, "model_version": predictor.model_version,
+              "reference": reference, "split": split, "condition": condition, "n": len(rows),
+              "mean_abs_diff": mean_abs, "max_abs_diff": max_abs,
+              "threshold_mean_abs": max_mean_abs, "passed": mean_abs <= max_mean_abs,
+              "checked_at": utc_now(), "rows": rows}  # fmt: skip
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"repro_{predictor.contestant}.json"
+    path.write_text(json.dumps(result, indent=1) + "\n", "utf-8")
+    print(f"{predictor.contestant} vs {reference} on {len(rows)} {split} customers: mean |diff| "
+          f"{mean_abs:.4f}, max {max_abs:.4f} -> {'PASS' if result['passed'] else 'FAIL'} "
+          f"({path.name})")  # fmt: skip
+    if not result["passed"]:
+        raise SystemExit(f"The new path doesn't reproduce {reference}; don't run any precision.")
+    return result
 
 
 def _existing(path: Path) -> tuple[set[tuple[str, str, str]], set[str]]:

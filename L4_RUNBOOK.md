@@ -1,8 +1,8 @@
-# L4 runbook: M2 smoke tests, M3 GPU runs, M6 fine-tuning
+# L4 runbook: M2 smoke tests, M3 GPU runs, M6 fine-tuning, posts 4 and 5
 
 Everything in this project that needs the GPU, in order. Read `STATUS.md` first (setup, `/home` persistence, money). The L4 bills per second, so don't leave it idle.
 
-**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Step 5 done (2026-11-22, 22:35–23:31Z)** on a new instance (`jl-584335`): the disguise check for Kev-4B, Kev-0.8B and Qwen, and the layout check (`--variant aligned`, tune) for Kev-4B, Kev-0.8B, Qwen and Laya, at the same weights and setup as M3 (Kev without flash-linear-attention, vLLM 0.34.0). Results are in `results/checks/disguise/` and `results/checks/disguise_summary.json`. **Step 6 (M6, the fair fight) is next:** fine-tune Kev-0.8B, Laya, Kev-4B and Qwen on `train` and score them (PLAN.md §11).
+**Done (2026-11-22):** steps 0–4 ran, the results are committed, and the instance was deleted. **Step 5 done (2026-11-22, 22:35–23:31Z)** on a new instance (`jl-584335`): the disguise check for Kev-4B, Kev-0.8B and Qwen, and the layout check (`--variant aligned`, tune) for Kev-4B, Kev-0.8B, Qwen and Laya, at the same weights and setup as M3 (Kev without flash-linear-attention, vLLM 0.34.0). Results are in `results/checks/disguise/` and `results/checks/disguise_summary.json`. **Step 6 (M6, the fair fight) done (2026-11-23/24)**, seed check included; the weights are in the `m6-weights` release. **Step 7 (session A, posts 4 and 5) is next.**
 
 - **API contestants** (Jev, GPT-6.2 Sol) run on the laptop, not here.
 - **No API key needed:** this runbook uses no API key, so the L4 needs no `.env`.
@@ -378,3 +378,157 @@ git add results/checks/m6_seeds results/seeds.json && git commit -m "M6: seed ch
 ```
 
 Commit the training logs too (`/home/logs/*-s1.log`, `*-s2.log` into `results/checks/m6_logs/`). No need to release these weights.
+
+## 7. Session A: posts 4 and 5 (added 2026-11-25)
+
+PLAN.md §12 has the specs. Post 4 runs the fine-tuned Kev-0.8B, Kev-4B and Qwen at six precisions (`bf16`, `bnb-int8`, `bnb-nf4`, `hqq-4`, `hqq-3`, `hqq-2`). Post 5 runs the zero-shot open models on four formats (`prose`, `markdown`, `csv`, `json`). Nothing here is tuned on `test`, and nothing needs an API key. Jev and Sol's format runs happen on the laptop.
+
+**Running Claude Code here:** after §7.0 step 1, give it this prompt:
+
+```text
+You're on a fresh JarvisLabs L4 (24 GB) for can-ai-know-when-its-wrong: session A, the GPU runs
+for posts 4 (quantization) and 5 (table formats). GPU time is billed per minute: follow the
+runbook and avoid detours.
+
+1. Read CLAUDE.md, the top section of STATUS.md ("After post 3: the plan") and PLAN.md §12 (the
+   post 4 and post 5 specs). Those specs are fixed: ask me before changing any design choice.
+2. Gate: PREDICTIONS.md must already have my post 4 and post 5 guesses committed. If it doesn't,
+   stop and tell me.
+3. Run L4_RUNBOOK.md §7 in order, one command at a time:
+   - Kev and Qwen: run the bf16 reproduction check first. If it fails, stop and report.
+   - If a precision won't load or run on a model, record it with
+     `analysis/quantization.py --record-failure`, skip that pair and tell me. Never swap in
+     another method or change its settings.
+   - Before each full run, tell me its ETA in IST (the box's clock is UTC). If any single
+     run's ETA is over 2 hours, stop and ask.
+   - Keep only one model on the GPU at a time.
+4. After each model finishes, commit and push its predictions and logs: no keys, no .env and
+   no weights. At the end, run §7.5 and report what ran, what failed, the GPU hours, the cost
+   and the finish time in IST. Then tell me it's safe to delete the instance, and remind me to
+   revoke the GitHub token used here.
+```
+
+**Gate:** `PREDICTIONS.md` has the author's post 4 and post 5 guesses, committed before any run. That includes the smoke runs and the reproduction check, because both print numbers.
+
+**Order and time** (estimates; check them in each run's first minutes): post 5's open models (~1 h), then Kev-0.8B (~30–60 min), Qwen (~1–2 h) and Kev-4B (~1.5–2.5 h). About 5–6 GPU hours in all. Post 5 goes first because its runners are already proven, so its results are banked even if a quantized model needs attention.
+
+- **ETAs:** before each full run (one precision, one split), estimate its time from the smoke run or the first minutes. If any one run would take over 2 hours, stop and ask the author. Give the author times in IST; the box's clock is UTC.
+- **A precision that fails** (it won't load, it errors, it returns NaN, or the smoke's predictions are all exactly 0 or 1): record it, then go on to the next precision. Never swap in another method or change its settings.
+  ```bash
+  uv run python analysis/quantization.py --record-failure kev-4b-ft-hqq-2 --stage load --error "<the error line>"
+  ```
+
+### 7.0 Setup (a fresh instance, about 30 billed minutes)
+
+1. §6.0 blocks 1 and 2, with the `quant` group added to both uv commands: `uv sync --group runners --group laya --group training --group quant`, and the same groups for `pytest` (197 passed). Skip `render.py --split train` and `export.py`: nothing is trained here.
+2. §6.0 block 3 (Kev's environment), then the two pinned libraries into it (`runners/quantize.py` refuses any other version):
+   ```bash
+   cd /home/kev && uv pip install bitsandbytes==0.50.2 hqq==0.2.8.post1
+   ```
+3. vLLM for Qwen's zero-shot format runs, at the version M3 used:
+   ```bash
+   uv venv /home/vllm-env --python 3.12 && VIRTUAL_ENV=/home/vllm-env uv pip install vllm==0.34.0
+   ```
+4. The M6 weights. The release is public, and each archive unpacks to `/home/runs/<model>/`:
+   ```bash
+   cd /home/runs
+   for r in kev-0.8b-ft kev-4b-ft qwen-ft; do
+     curl -sLO https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/download/m6-weights/$r.tar.gz
+     tar xzf $r.tar.gz && rm $r.tar.gz
+   done
+   ls /home/runs/kev-0.8b-ft/head.pt /home/runs/kev-4b-ft/head.pt /home/runs/qwen-ft/adapter_model.safetensors
+   mkdir -p /home/logs /home/can-ai-know-when-its-wrong/results/checks/quantization
+   ```
+
+### 7.1 Post 5: the zero-shot open models on four formats (~1 h)
+
+These are diagnostics on `test` only, out of the box, with the same servers and settings as M3. They write to `results/checks/formats/`.
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+F="prose markdown csv json"
+# Laya, in-process on the GPU as in M3. The runner stops if Laya ever reports truncating a summary.
+for f in $F; do
+  uv run --group runners --group laya python runners/checks/disguise.py --contestant laya --variant $f --device cuda
+done
+```
+
+- **Kev-4B:** start the zero-shot server exactly as in step 2 (window 1). Wait for `curl -s 127.0.0.1:8009/v1/models`, then run:
+  ```bash
+  for f in $F; do uv run --group runners python runners/checks/disguise.py --contestant kev-4b --variant $f; done
+  ```
+  Then `pkill -f "kev.serve"` on its own line.
+- **Kev-0.8B:** the same, with its step 2 server and `--contestant kev-0.8b`.
+- **Qwen:** start vLLM from `/home/vllm-env` with the exact command in STATUS.md ("Serving Qwen3.5-4B"). Wait for `curl -s 127.0.0.1:8000/v1/models`, then run:
+  ```bash
+  for f in $F; do uv run --group runners python runners/checks/disguise.py --contestant qwen-logprobs --variant $f; done
+  ```
+  Then `pkill -f "vllm serve"` on its own line.
+
+Commit and push `results/checks/formats/`.
+
+### 7.2 Post 4: Kev-0.8B at six precisions (~30–60 min)
+
+For each precision: start the launcher in window 1, then run the smoke, tune and test in window 2, then stop the launcher. Run the commands one at a time, and stop if one fails. bf16 goes first, with the reproduction check.
+
+```bash
+# window 1, Kev's environment: one precision at a time
+cd /home/kev
+P=bf16    # then bnb-int8, bnb-nf4, hqq-4, hqq-3, hqq-2
+KEV_TEMPERATURE=1.0 uv run --extra serve python /home/can-ai-know-when-its-wrong/runners/kev_quant_serve.py \
+  --precision $P --run /home/runs/kev-0.8b-ft --port 8009 2>&1 | tee /home/logs/kev-0.8b-ft-$P-serve.log
+```
+
+```bash
+# window 2, this repo, the same P
+cd /home/can-ai-know-when-its-wrong
+P=bf16
+until curl -sf 127.0.0.1:8009/v1/quantization > /dev/null; do sleep 5; done
+R="uv run --group runners python runners/kev.py --size 0.8b --finetuned /home/runs/kev-0.8b-ft --precision $P"
+$R --reproduce-check 50          # bf16 only: if it fails, stop; run no precision of this model
+$R --smoke                       # 20 tune customers -> results/smoke/; read its summary line
+$R --split tune 2>&1 | tee -a /home/logs/kev-0.8b-ft-$P-score.log
+$R --split test 2>&1 | tee -a /home/logs/kev-0.8b-ft-$P-score.log
+curl -s 127.0.0.1:8009/v1/quantization > results/checks/quantization/kev-0.8b-ft-$P.server.json
+```
+
+Then run `pkill -f kev_quant_serve` on its own line, and move to the next P.
+
+- **The serve log:** the launcher prints how many linear layers it quantized and the GPU memory after loading.
+- **The runner:** it refuses a server that reports another precision.
+
+### 7.3 Post 4: Qwen at six precisions (~1–2 h)
+
+Qwen runs in-process. Each command loads the base in fp32 on the CPU, merges the adapter, rounds once to bf16 and quantizes, which takes a few minutes. `--both-splits` then scores tune and test with that one load.
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+G="--group runners --group training --group quant"
+R="uv run $G python runners/qwen_ft.py --adapter /home/runs/qwen-ft"
+$R --precision bf16 --reproduce-check 50          # if it fails, stop; run no precision of Qwen
+P=bf16    # then bnb-int8, bnb-nf4, hqq-4, hqq-3, hqq-2, one at a time
+$R --precision $P --both-splits 2>&1 | tee /home/logs/qwen-ft-$P-score.log
+```
+
+For the ETA and a first sanity check, watch the first records: `wc -l results/predictions/qwen-ft-$P.jsonl` and `tail -2 results/predictions/qwen-ft-$P.jsonl`.
+
+### 7.4 Post 4: Kev-4B at six precisions (~1.5–2.5 h)
+
+The same as §7.2, with `--size 4b`, `--run /home/runs/kev-4b-ft`, `--finetuned /home/runs/kev-4b-ft` and `kev-4b-ft` in the log and JSON names.
+
+### 7.5 Wrap up
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+uv run python analysis/recalibrate.py          # trained_calibrated for every precision (M3/M6 rows refresh with the same values)
+uv run --group runners python runners/manifest.py --quant
+uv run python analysis/quantization.py         # -> results/quantization.csv and .json
+uv run --group runners python runners/checks/disguise.py --report   # post 5, the open models so far
+mkdir -p results/checks/quant_logs && cp /home/logs/kev-*-ft-*.log /home/logs/qwen-ft-*.log results/checks/quant_logs/
+git add results/predictions results/checks results/recalibration.json results/run_manifest_quant.json \
+  results/quantization.csv results/quantization.json
+git commit -m "Posts 4 and 5: fine-tuned models at six precisions; zero-shot open models on four formats"
+git push
+```
+
+Then delete the instance. Pausing keeps storage billing, and nothing here needs to be kept: the predictions and logs are in git, and the weights are in the `m6-weights` release.

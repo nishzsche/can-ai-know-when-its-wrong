@@ -1,6 +1,39 @@
 # Status and handoff
 
-Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+Last updated 2026-11-25. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+
+## After post 3: the plan (2026-11-25)
+
+PLAN.md §12 has the order and the specs.
+
+**The author's decisions (2026-11-25):**
+- **Order:**
+  - post 4, does shrinking a model make it less honest (quantization);
+  - post 5, why AI struggles to read a table (new: formats, plus the existing layout and disguise checks);
+  - post 6, "I don't know" (redesigned: flagging unfamiliar customers, not proper scoring);
+  - then the documents arc (posts 7–9) and fresh data (post 10).
+- **Kev in post 4:** we quantize it ourselves; its loader has no quantization (checked 2026-11-25). The guard is a bf16 reproduction check before any quantized run.
+- **Stress levels:** 3-bit and 2-bit are in (HQQ), beside bitsandbytes 8-bit and NF4.
+
+**Still open:**
+- the pace between posts;
+- post 6's design (the held-out slice, training to defer, referral rates), before session B.
+
+**Built on the laptop (2026-11-25):** posts 4 and 5's code; PLAN §12 lists what was built.
+- **Tests:** 197 passing (`uv run --group runners --group laya --group quant pytest`).
+- **Post 4:** every precision was checked on a toy bf16 model on the CPU. The launcher inside Kev's server and the bitsandbytes GPU kernels can only be checked on the L4. Their guards there are a reproduction check against M6 and a 20-customer smoke run per precision.
+- **Post 5:** the formats read back to v2's values for all 4,000 tune and test customers. All of them fit Laya's context (`results/checks/formats_tokens.json`).
+  - Laya's runner now stops if Laya ever reports truncating a summary.
+  - The plumbing was tried on one customer on the laptop. Those numbers aren't reported anywhere, so they can't steer the guesses.
+- **Session A** is L4_RUNBOOK.md §7. It starts with the prompt for Claude Code on the L4.
+
+**Next:**
+1. Post 3's X post (below).
+2. **Done (2026-11-25):** the author's post 4 and post 5 guesses are in `PREDICTIONS.md` (commit 44eee55), before any run.
+3. **Author:** check the OpenRouter balance; post 5's Jev and Sol runs need about $8.
+4. **L4 session A** (L4_RUNBOOK.md §7): posts 4 and 5 together, about 5–6 GPU hours (~$2.50).
+5. **Laptop, after the guesses:** Jev and Sol on the four formats. For each format, run `runners/checks/disguise.py --variant <format>` with `--contestant jev --workers 8`, and with `--workers 4` for Sol (the default contestant).
+6. **Meanwhile:** choose the documents arc's dataset and check its licence.
 
 ## Post 2 published (2026-11-24, 12:55 IST)
 

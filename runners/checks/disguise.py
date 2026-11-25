@@ -29,7 +29,11 @@ and the headline results are unchanged.
     # with the same month's bill). Tune first, then test, reported next to v2.
     uv run --group runners python runners/checks/disguise.py --contestant jev --variant aligned \
         --split tune   # then the same with --split test
-    # compare with the original runs
+    # post 5, formats (PLAN.md §12): the same values as sentences, a markdown table, CSV or JSON
+    # (data/formats.py), 2,000 test customers each, into results/checks/formats/
+    uv run --group runners python runners/checks/disguise.py --contestant jev --variant json \
+        --workers 8
+    # compare with the original runs (disguise, layout and formats)
     uv run --group runners python runners/checks/disguise.py --report
 """
 
@@ -48,6 +52,7 @@ sys.path.insert(0, str(HERE.parents[1]))
 sys.path.insert(0, str(HERE.parents[2] / "data"))
 sys.path.insert(0, str(HERE.parents[2] / "analysis"))
 
+from formats import FORMAT_VERSION, FORMATS, render  # noqa: E402
 from harness import L4_USD_PER_HOUR, ROOT, build_parser, load_requests, resolve_args, run  # noqa: E402
 from render import MONTHS, STATUS_TEXT  # noqa: E402
 
@@ -55,6 +60,8 @@ DISGUISE_VERSION = "d1"
 CHECK_DIR = ROOT / "results" / "checks" / "disguise"
 PROBE_JSON = ROOT / "results" / "checks" / "sol_disguise_recognition.json"
 SUMMARY_JSON = ROOT / "results" / "checks" / "disguise_summary.json"
+FORMAT_DIR = ROOT / "results" / "checks" / "formats"  # post 5
+FORMAT_SUMMARY_JSON = ROOT / "results" / "checks" / "formats_summary.json"
 CONTESTANTS = ("jev", "laya", "frontier-verbal", "kev-4b", "kev-0.8b", "qwen-logprobs")
 CONTROL_N, CONTROL_SEED = 200, 20261124
 HEADER = "Credit card account summary"
@@ -120,10 +127,19 @@ def align(state: str) -> str:
     return "\n".join(out)
 
 
+def _formatter(fmt: str):
+    def transform(state: str) -> str:
+        return render(state, fmt)
+
+    transform.__name__ = f"to_{fmt}"
+    return transform
+
+
 VARIANTS = {  # suffix -> (transform, model_version tag)
     "disguised": (disguise, f"disguise {DISGUISE_VERSION}"),
     "aligned": (align, f"layout aligned {LAYOUT_VERSION}"),
     "control": (None, "control: original summaries"),
+    **{fmt: (_formatter(fmt), f"format {fmt} {FORMAT_VERSION}") for fmt in FORMATS},  # post 5
 }
 
 
@@ -218,12 +234,15 @@ def _records(name: str, directory: Path | None = None, split: str = "test") -> d
     return {r["id"]: r for r in recs if r["split"] == split and r["condition"] == "out_of_box"}
 
 
-def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dict | None:
-    """Original vs disguised on the same customers, with the control's noise floor."""
+def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122,
+               variant: str = "disguised", directory: Path = CHECK_DIR,
+               control_prefix: str = "disguise") -> dict | None:  # fmt: skip
+    """Original vs a variant (disguised, or a post 5 format) on the same customers, with the
+    disguise check's control as the noise floor."""
     import metrics as m
 
     orig = _records(contestant)
-    disg = _records(f"{contestant}-disguised", CHECK_DIR)
+    disg = _records(f"{contestant}-{variant}", directory)
     ctrl = _records(f"{contestant}-control", CHECK_DIR)
     ids = sorted(set(orig) & set(disg))
     if not ids:
@@ -237,15 +256,15 @@ def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dic
     result = {
         "n": len(ids),
         "observed_rate": float(y.mean()),
-        "mean_predicted": {"original": float(p0.mean()), "disguised": float(p1.mean())},
+        "mean_predicted": {"original": float(p0.mean()), variant: float(p1.mean())},
         "mean_shift": {
             "estimate": float((p1 - p0).mean()),
             "lo": float(np.percentile(shifts, 2.5)),
             "hi": float(np.percentile(shifts, 97.5)),
         },  # fmt: skip
         "mean_abs_change": float(np.abs(p1 - p0).mean()),
-        "ece": {"original": m.ece(y, p0), "disguised": m.ece(y, p1)},
-        "auc": {"original": m.auc(y, p0), "disguised": m.auc(y, p1)},
+        "ece": {"original": m.ece(y, p0), variant: m.ece(y, p1)},
+        "auc": {"original": m.auc(y, p0), variant: m.auc(y, p1)},
         "spearman": float(
             np.corrcoef(np.argsort(np.argsort(p0)), np.argsort(np.argsort(p1)))[0, 1]
         ),  # fmt: skip
@@ -260,8 +279,8 @@ def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122) -> dic
             "n": len(cids),
             "noise_mean_shift": float((cc - c0).mean()),
             "noise_mean_abs_change": float(np.abs(cc - c0).mean()),
-            "disguise_mean_shift_same_customers": float((cd - c0).mean()),
-            "disguise_mean_abs_change_same_customers": float(np.abs(cd - c0).mean()),
+            f"{control_prefix}_mean_shift_same_customers": float((cd - c0).mean()),
+            f"{control_prefix}_mean_abs_change_same_customers": float(np.abs(cd - c0).mean()),
         }
     return result
 
@@ -343,16 +362,42 @@ def report() -> dict:
                   f"{k['disguise_mean_shift_same_customers']:+.3f}, |change| "
                   f"{k['disguise_mean_abs_change_same_customers']:.3f}")  # fmt: skip
     print(f"Saved -> {SUMMARY_JSON}")
+    report_formats()
     return results
+
+
+def report_formats() -> dict:
+    """Post 5: each format against v2 on the same test customers (results/checks/formats/)."""
+    out = {fmt: {c: r for c in CONTESTANTS
+                 if (r := report_one(c, variant=fmt, directory=FORMAT_DIR, control_prefix=fmt))}
+           for fmt in FORMATS}  # fmt: skip
+    if not any(out.values()):
+        return out
+    payload = {"format_version": FORMAT_VERSION, "formats": out}
+    FORMAT_SUMMARY_JSON.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    for fmt, by_contestant in out.items():
+        for c, r in by_contestant.items():
+            s = r["mean_shift"]
+            print(f"format {fmt} {c}: n={r['n']}  mean p {r['mean_predicted']['original']:.3f} -> "
+                  f"{r['mean_predicted'][fmt]:.3f}  shift {s['estimate']:+.3f} "
+                  f"[{s['lo']:+.3f}, {s['hi']:+.3f}]  |change| {r['mean_abs_change']:.3f}  ECE "
+                  f"{r['ece']['original']:.3f} -> {r['ece'][fmt]:.3f}  AUC "
+                  f"{r['auc']['original']:.3f} -> {r['auc'][fmt]:.3f}")  # fmt: skip
+            if "control" in r:
+                print(f"   noise floor (n={r['control']['n']}): |change| "
+                      f"{r['control']['noise_mean_abs_change']:.3f}")  # fmt: skip
+    print(f"Saved -> {FORMAT_SUMMARY_JSON}")
+    return out
 
 
 def main() -> None:
     ap = build_parser(__doc__)
     ap.set_defaults(split="test", condition="out_of_box")
     ap.add_argument("--contestant", choices=CONTESTANTS, default="frontier-verbal")
-    ap.add_argument("--variant", choices=("disguised", "aligned"), default="disguised",
+    ap.add_argument("--variant", choices=("disguised", "aligned", *FORMATS), default="disguised",
                     help="disguised: no NT$/dates/codes (test); aligned: each bill next to "
-                         "the next month's payment (tune, then test)")  # fmt: skip
+                         "the next month's payment (tune, then test); prose, markdown, csv, "
+                         "json: post 5's formats (test)")  # fmt: skip
     ap.add_argument("--control", action="store_true",
                     help=f"original summaries, {CONTROL_N} customers")  # fmt: skip
     ap.add_argument("--rpm", type=float, default=18.0, help="Sol's requests-per-minute cap")
@@ -370,14 +415,16 @@ def main() -> None:
         return
     if args.condition != "out_of_box":
         ap.error("these checks run on out_of_box requests only")
-    if args.variant == "disguised" and args.split != "test":
-        ap.error("the disguise check runs on test (use --variant aligned for tune)")
+    if args.variant in ("disguised", *FORMATS) and args.split != "test" and not args.smoke:
+        ap.error(f"the {args.variant} check runs on test (use --variant aligned for tune)")
+    if args.variant in FORMATS and args.control:
+        ap.error("the formats use the disguise check's control as their noise floor")
     if args.variant == "aligned" and args.control:
         ap.error(
             "--control is for the disguise check; the aligned layout uses its test noise floor"
         )
     if args.out_dir is None and not args.smoke:
-        args.out_dir = CHECK_DIR
+        args.out_dir = FORMAT_DIR if args.variant in FORMATS else CHECK_DIR
     args = resolve_args(args)
     from env import load_env
 

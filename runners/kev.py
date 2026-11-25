@@ -19,6 +19,18 @@ temperature 1.0 (PLAN.md §11, choice 3) and point the runner at it:
     KEV_TEMPERATURE=1.0 uv run --extra serve python -m kev.serve \
         --run /home/runs/kev-4b-ft --port 8009
     uv run python runners/kev.py --size 4b --finetuned /home/runs/kev-4b-ft --split test
+
+Post 4 (`kev-4b-ft-<precision>`, condition `trained`): serve the fine-tuned run through
+runners/kev_quant_serve.py at one precision (PLAN.md §12) and pass the same --precision here. The
+runner refuses a server that reports another precision, and after each request reads the server's
+peak GPU memory (outside the timed call). `--reproduce-check 50` (bf16 only) compares the first 50
+tune customers with M6's kev-<size>-ft predictions, writes nothing to results/predictions, and
+stops on a mismatch:
+
+    uv run python runners/kev.py --size 4b --finetuned /home/runs/kev-4b-ft --precision bf16 \\
+        --reproduce-check 50
+    uv run python runners/kev.py --size 4b --finetuned /home/runs/kev-4b-ft --precision bnb-nf4 \\
+        --split tune
 """
 
 from __future__ import annotations
@@ -30,7 +42,17 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from harness import L4_USD_PER_HOUR, TRAINED, Prediction, build_parser, gpu_cost, resolve_args, run
+from harness import (
+    L4_USD_PER_HOUR,
+    TRAINED,
+    Prediction,
+    build_parser,
+    gpu_cost,
+    reproduction_check,
+    resolve_args,
+    run,
+)
+from quantize import PRECISIONS, contestant_name
 
 # Kev 1.0: (Hub repo, commit the v1.0 tag points at, weights revision in the README's Kev 1.0
 # table). The tag sits on a later model-card commit; on 2026-11-22 we checked that the adapter,
@@ -69,7 +91,7 @@ def _find_key(obj, key: str) -> list:
 
 class KevPredictor:
     def __init__(self, size: str, base_url: str, usd_per_hour: float, check_version: bool = True,
-                 finetuned: Path | None = None):  # fmt: skip
+                 finetuned: Path | None = None, precision: str | None = None):  # fmt: skip
         repo, tag_commit, weights_rev = CHECKPOINTS[size]
         self.contestant = f"kev-{size}"
         self.model_version = f"{repo}@v1.0 ({tag_commit[:8]}; weights {weights_rev})"
@@ -98,6 +120,34 @@ class KevPredictor:
             )
         self.meta = {"server_models": models, "base_url": self.base_url,
                      "usd_per_hour": usd_per_hour}  # fmt: skip
+        self.precision = precision
+        if precision is not None:
+            self._check_precision(size, finetuned, precision)
+
+    def _check_precision(self, size: str, finetuned: Path | None, precision: str) -> None:
+        """Post 4: the server must be runners/kev_quant_serve.py at exactly this precision."""
+        if finetuned is None:
+            raise SystemExit("--precision is for the fine-tuned models (pass --finetuned too)")
+        try:
+            served = _http_json(f"{self.base_url}/v1/quantization", tries=1)
+        except urllib.error.URLError as exc:
+            raise SystemExit(
+                f"{self.base_url} has no /v1/quantization ({exc}); serve the run through "
+                f"runners/kev_quant_serve.py for --precision"
+            ) from None
+        if served.get("precision") != precision:
+            raise SystemExit(
+                f"The server reports precision {served.get('precision')!r}, not {precision!r}; "
+                f"restart it with --precision {precision}."
+            )
+        if served.get("cuda_graphs") is not False or served.get("fused") is not False:
+            raise SystemExit("Post 4 serves every precision without CUDA graphs or fused kernels.")
+        self.contestant = contestant_name(f"kev-{size}-ft", precision)
+        self.model_version = (
+            f"{self.model_version}; served by runners/kev_quant_serve.py "
+            f"(CUDA graphs and fused kernels off); {served['description']}"
+        )
+        self.meta["quantization"] = served
 
     def predict(self, request: dict) -> Prediction:
         body = {"model": "kev-latest", **request}
@@ -105,16 +155,16 @@ class KevPredictor:
         resp = _http_json(f"{self.base_url}/v1/systemone", body)
         latency_ms = (time.perf_counter() - start) * 1000
         p = float(resp["answers"][QUESTION_ID]["noul"])
-        return Prediction(
-            p_default=p,
-            latency_ms=latency_ms,
-            cost_usd=gpu_cost(latency_ms, self.usd_per_hour),
-            raw={
-                "answer": resp["answers"][QUESTION_ID],
-                "usage": resp.get("usage"),
-                "server_latency_ms": resp.get("latency_ms"),
-            },  # fmt: skip
-        )
+        raw = {
+            "answer": resp["answers"][QUESTION_ID],
+            "usage": resp.get("usage"),
+            "server_latency_ms": resp.get("latency_ms"),
+        }
+        if self.precision is not None:  # after the timed call, so it never counts as latency
+            memory = _http_json(f"{self.base_url}/v1/quantization")["memory_now"]
+            raw["gpu_max_allocated"] = memory.get("max_allocated")
+        return Prediction(p_default=p, latency_ms=latency_ms,
+                          cost_usd=gpu_cost(latency_ms, self.usd_per_hour), raw=raw)  # fmt: skip
 
 
 def main() -> None:
@@ -124,7 +174,15 @@ def main() -> None:
     ap.add_argument("--usd-per-hour", type=float, default=L4_USD_PER_HOUR)
     ap.add_argument("--skip-version-check", action="store_true")
     ap.add_argument("--finetuned", type=Path, help="M6: the fine-tuned run directory being served")
+    ap.add_argument("--precision", choices=PRECISIONS,
+                    help="post 4: the precision runners/kev_quant_serve.py serves")  # fmt: skip
+    ap.add_argument("--reproduce-check", type=int, metavar="N",
+                    help="post 4, bf16: compare N tune customers with M6, then stop")  # fmt: skip
     args = ap.parse_args()
+    if args.precision and args.finetuned is None:
+        ap.error("--precision needs --finetuned")
+    if args.reproduce_check and args.precision != "bf16":
+        ap.error("--reproduce-check runs with --precision bf16")
     if args.finetuned is not None:
         args.condition = TRAINED
     args = resolve_args(args)
@@ -134,7 +192,11 @@ def main() -> None:
         args.usd_per_hour,
         check_version=not args.skip_version_check,
         finetuned=args.finetuned,
+        precision=args.precision,
     )
+    if args.reproduce_check:
+        reproduction_check(predictor, f"kev-{args.size}-ft", args.reproduce_check)
+        return
     run(predictor, args)
 
 

@@ -75,3 +75,12 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)
 - `uv run python writeup/build_accuracy_carousel.py` — post 2's carousel (`writeup/accuracy_carousel.pdf`) from the `## Slides` section of `writeup/accuracy_linkedin.md` (`--png DIR` for previews). Every post gets one; see the carousel rules in `writeup/STYLE.md`.
 - `uv run python writeup/build_fair_fight_carousel.py` — post 3's carousel (`writeup/fair_fight_carousel.pdf`) from the `## Slides` section of `writeup/fair_fight_linkedin.md`, drawn from the M6 predictions through `analysis/fair_fight_figures.py` (`--png DIR` for previews; the paired test on slide 3 takes a minute or two)
+- **Posts 4 and 5 (PLAN.md §12; the GPU commands are in L4_RUNBOOK.md §7):**
+  - **Precision tags:** `bf16`, `bnb-int8`, `bnb-nf4`, `hqq-4`, `hqq-3`, `hqq-2` (`runners/quantize.py`; the pinned libraries are in `--group quant`).
+  - **Serving and scoring:**
+    - `runners/kev_quant_serve.py --precision <tag> --run DIR` serves a fine-tuned Kev with its backbone quantized; it runs in Kev's environment.
+    - `runners/kev.py --finetuned DIR --precision <tag>` and `runners/qwen_ft.py --adapter DIR --precision <tag> [--both-splits]` score the shrunk models. Run `--precision bf16 --reproduce-check 50` first.
+  - `uv run --group runners python runners/manifest.py --quant` checks post 4's coverage.
+  - `uv run python analysis/quantization.py` scores post 4 -> `results/quantization.csv`. `--record-failure NAME --stage S --error TEXT` records a precision that couldn't run.
+  - `uv run python data/formats.py --show ID` / `--token-report` show post 5's four formats for one customer / count tokens per format.
+  - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant <prose|markdown|csv|json>` runs one format on 2,000 test customers, into `results/checks/formats/` (`--report` compares each with v2).

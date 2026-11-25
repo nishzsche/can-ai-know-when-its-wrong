@@ -3,6 +3,7 @@
     uv run python runners/manifest.py                     # exit 1 if anything is missing
     uv run python runners/manifest.py --allow-incomplete  # write it anyway (e.g. on the L4)
     uv run python runners/manifest.py --m6                # M6 contestants -> run_manifest_m6.json
+    uv run python runners/manifest.py --quant             # post 4 -> run_manifest_quant.json
 
 For every contestant: are exactly the expected customers there for each (condition, split)?
 Does each file come from a single model version? Also recorded: total cost, median latency, run
@@ -20,11 +21,14 @@ import sys
 from pathlib import Path
 
 from harness import RUN_CONDITIONS, load_requests
+from quantize import all_contestants
 from records import PREDICTIONS_DIR, TEST_ONLY_CONDITIONS, read_records, utc_now
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "results" / "run_manifest.json"
 MANIFEST_M6 = ROOT / "results" / "run_manifest_m6.json"
+MANIFEST_QUANT = ROOT / "results" / "run_manifest_quant.json"
+QUANT_FAILURES = ROOT / "results" / "checks" / "quant_failures.json"
 SPLITS = ("tune", "test")
 
 AI_CONTESTANTS = ("jev", "kev-0.8b", "kev-4b", "laya", "qwen-logprobs", "frontier-verbal")
@@ -39,6 +43,11 @@ M6_GROUPS = {
     for c in ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples", "sol-examples",
               "neighbours-20", "kumo-tabular", "tabicl-v2")
 }  # fmt: skip
+# Post 4 (PLAN.md §12): every fine-tuned model at every precision, bf16 reference included.
+QUANT_GROUPS = {
+    c: [("trained", "tune"), ("trained", "test"), ("trained_calibrated", "test")]
+    for c in all_contestants()
+}
 
 
 def expected_ids() -> dict[str, list[str]]:
@@ -96,15 +105,26 @@ def _git(*args: str) -> str | None:
         return None
 
 
-def build_manifest(directory: Path = PREDICTIONS_DIR, groups: dict | None = None) -> dict:
+def recorded_failures(path: Path = QUANT_FAILURES) -> dict:
+    """Post 4 pairs that couldn't run (a method that won't load on a model), as recorded by
+    `analysis/quantization.py --record-failure`. They count as accounted for, never as done."""
+    return json.loads(path.read_text("utf-8")) if path.exists() else {}
+
+
+def build_manifest(directory: Path = PREDICTIONS_DIR, groups: dict | None = None,
+                   failures: dict | None = None) -> dict:  # fmt: skip
     expected = expected_ids()
     groups = GROUPS if groups is None else groups
     contestants = {c: summarize(c, g, expected, directory) for c, g in groups.items()}
+    for name, failure in (failures or {}).items():
+        if name in contestants and not contestants[name]["complete"]:
+            contestants[name]["recorded_failure"] = failure
+    accounted = all(s["complete"] or "recorded_failure" in s for s in contestants.values())
     splits = json.loads((ROOT / "data" / "splits" / "manifest.json").read_text("utf-8"))
     rendered = load_requests("test", 1)[0]
-    return {
+    out = {
         "written_at": utc_now(),
-        "complete": all(s["complete"] for s in contestants.values()),
+        "complete": accounted,
         "git": {
             "commit": _git("rev-parse", "HEAD"),
             "dirty": bool(_git("status", "--porcelain")),
@@ -118,6 +138,10 @@ def build_manifest(directory: Path = PREDICTIONS_DIR, groups: dict | None = None
         },
         "contestants": contestants,
     }
+    if failures is not None:  # post 4 only; the M3 and M6 manifests keep their format
+        out["recorded_failures"] = sorted(c for c, v in contestants.items()
+                                          if "recorded_failure" in v)  # fmt: skip
+    return out
 
 
 def main() -> None:
@@ -127,13 +151,23 @@ def main() -> None:
     ap.add_argument("--allow-incomplete", action="store_true")
     ap.add_argument("--predictions-dir", type=Path, default=PREDICTIONS_DIR)
     ap.add_argument("--m6", action="store_true", help="the M6 contestants (PLAN.md §11)")
+    ap.add_argument("--quant", action="store_true", help="post 4's precisions (PLAN.md §12)")
     args = ap.parse_args()
-    manifest = build_manifest(args.predictions_dir, M6_GROUPS if args.m6 else None)
-    target = MANIFEST_M6 if args.m6 else MANIFEST
+    if args.m6 and args.quant:
+        ap.error("pick one of --m6 and --quant")
+    if args.quant:
+        manifest = build_manifest(args.predictions_dir, QUANT_GROUPS, recorded_failures())
+        target = MANIFEST_QUANT
+    else:
+        manifest = build_manifest(args.predictions_dir, M6_GROUPS if args.m6 else None)
+        target = MANIFEST_M6 if args.m6 else MANIFEST
     print(
         f"{'contestant':<16} {'records':>8} {'complete':>9} {'cost $':>9} {'median ms':>10}  model"
     )
     for name, s in manifest["contestants"].items():
+        if "recorded_failure" in s:
+            print(f"{name:<16} {'-':>8} {'failed':>9}  {s['recorded_failure'].get('error', '')}")
+            continue
         if not s["present"]:
             print(f"{name:<16} {'-':>8} {'no':>9}")
             continue

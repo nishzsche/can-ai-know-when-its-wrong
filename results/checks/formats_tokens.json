@@ -1,0 +1,67 @@
+{
+  "format_version": "f1",
+  "customers": 2000,
+  "laya_state_budget": 320,
+  "tokenizers": {
+    "laya (ModernBERT)": {
+      "v2": {
+        "mean": 164.3,
+        "max": 183,
+        "over_laya_budget": 0
+      },
+      "prose": {
+        "mean": 245.1,
+        "max": 262,
+        "over_laya_budget": 0
+      },
+      "markdown": {
+        "mean": 184.3,
+        "max": 203,
+        "over_laya_budget": 0
+      },
+      "csv": {
+        "mean": 162.1,
+        "max": 179,
+        "over_laya_budget": 0
+      },
+      "json": {
+        "mean": 303.0,
+        "max": 320,
+        "over_laya_budget": 0
+      }
+    },
+    "kev (Qwen3.5)": {
+      "v2": {
+        "mean": 218.5,
+        "max": 246,
+        "over_laya_budget": 0
+      },
+      "prose": {
+        "mean": 295.4,
+        "max": 323,
+        "over_laya_budget": 5
+      },
+      "markdown": {
+        "mean": 242.5,
+        "max": 270,
+        "over_laya_budget": 0
+      },
+      "csv": {
+        "mean": 216.5,
+        "max": 243,
+        "over_laya_budget": 0
+      },
+      "json": {
+        "mean": 330.5,
+        "max": 357,
+        "over_laya_budget": 1619
+      }
+    }
+  },
+  "laya_fits": {
+    "prose": true,
+    "markdown": true,
+    "csv": true,
+    "json": true
+  }
+}

@@ -1,0 +1,6 @@
+kev-0.8b-ft-bnb-int8: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft-bnb-int8.jsonl
+  trained: 2000 new in 435.0s | mean p 0.184 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0526
+kev-0.8b-ft-bnb-int8: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bnb-int8 (bitsandbytes 0.50.2: LLM.int8, outlier threshold 6.0)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft-bnb-int8.jsonl
+  trained: 2000 new in 461.8s | mean p 0.180 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0559

@@ -1,0 +1,6 @@
+kev-0.8b-ft-bf16: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft-bf16.jsonl
+  trained: 2000 new in 126.3s | mean p 0.185 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0151
+kev-0.8b-ft-bf16: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft-bf16.jsonl
+  trained: 2000 new in 126.8s | mean p 0.181 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0152

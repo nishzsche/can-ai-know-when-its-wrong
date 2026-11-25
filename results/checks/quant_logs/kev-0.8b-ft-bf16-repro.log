@@ -1,0 +1,1 @@
+kev-0.8b-ft-bf16 vs kev-0.8b-ft on 50 tune customers: mean |diff| 0.0009, max 0.0033 -> PASS (repro_kev-0.8b-ft-bf16.json)

@@ -1,0 +1,12 @@
+qwen-logprobs-prose: Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20; format prose f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/qwen-logprobs-prose.jsonl
+  out_of_box: 2000 new in 324.2s | mean p 0.336 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0395
+qwen-logprobs-markdown: Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20; format markdown f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/qwen-logprobs-markdown.jsonl
+  out_of_box: 2000 new in 304.2s | mean p 0.339 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0371
+qwen-logprobs-csv: Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20; format csv f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/qwen-logprobs-csv.jsonl
+  out_of_box: 2000 new in 303.6s | mean p 0.366 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0370
+qwen-logprobs-json: Qwen/Qwen3.5-4B@851bf6e8; jevper 0.7.12 logprobs; thinking off; readout: label-variant logsumexp over first-token top-20; format json f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/qwen-logprobs-json.jsonl
+  out_of_box: 2000 new in 338.7s | mean p 0.273 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0413

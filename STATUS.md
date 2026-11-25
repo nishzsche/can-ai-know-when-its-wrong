@@ -1,6 +1,29 @@
 # Status and handoff
 
-Last updated 2026-11-25. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+
+## L4 session A done (2026-11-25 19:43 → 2026-11-26 01:30 IST)
+
+L4_RUNBOOK.md §7 ran in full on the resumed M6 instance: about 5.8 GPU hours, about $2.55. Nothing failed, so there are no `--record-failure` entries. Everything is pushed (last commit `84bd30b`); the instance can be deleted and its GitHub token revoked.
+
+**Post 5, the open models on four formats:** Laya, Kev-4B, Kev-0.8B and Qwen, zero-shot, `out_of_box`, 2,000 `test` customers per format, in `results/checks/formats/`. The report against v2 is `results/checks/formats_summary.json`. Jev and Sol are still to run on the laptop (Next, item 5).
+
+**Post 4, the fine-tuned models at six precisions:** Kev-0.8B, Kev-4B and Qwen at `bf16`, `bnb-int8`, `bnb-nf4`, `hqq-4`, `hqq-3` and `hqq-2`, `tune` and `test`, plus `trained_calibrated` (Platt chosen for all 18 rows).
+- **Guards:** all three bf16 reproduction checks passed against M6 (mean |difference| 0.0009 Kev-0.8B, 0.0010 Kev-4B, 0.0020 Qwen; limit 0.02). Every Kev precision passed its 20-customer smoke run first.
+- **Outputs:** `runners/manifest.py --quant` reports 18/18 complete (`results/run_manifest_quant.json`). `analysis/quantization.py` wrote `results/quantization.csv` and `.json`. Server reports and logs are in `results/checks/quantization/` and `results/checks/quant_logs/`.
+- **First read (test):**
+  - Down to 4 bits, ranking holds: AUC stays within 0.005 of each model's own bf16 run, and memory for the 4B models falls to about 40% of bf16.
+  - `hqq-3` holds for Kev-0.8B and Qwen. Kev-4B loses 0.017 AUC (Holm p 0.012).
+  - `hqq-2` breaks all three: AUC 0.43–0.60, mean prediction 0.36–0.67 against an actual 0.22.
+  - Fewer bits weren't faster on this serving path (CUDA graphs and fused kernels off). Per request, bnb-int8 and HQQ were slower than bf16, and bnb-nf4 was about the same.
+
+**Changes and caveats from the session:**
+- **Launcher fix (`a0cfa6f`):** `runners/kev_quant_serve.py` imported `runners/kev.py` instead of Kev's package and crashed before loading. It now drops `runners/` from `sys.path` before importing Kev; no design choice changed.
+- **Kev's environment:** `flash-linear-attention` is pinned back to 0.5.0, as M6 had. An unpinned install pulled 0.6.0, which fails to import with Kev's Triton. Fused kernels were off in both M6 and session A, because Kev's fused path wants 0.5.2.
+- **Logs:** the bnb-int8 logs are trimmed in the repo. bitsandbytes' `MatMul8bitLt` cast warning is kept once, with its count (about 1.5M repeats; one log was 122 MB, over GitHub's limit).
+- **Order:** for Kev-4B, the smoke run went before the reproduction check, against the runbook. The check passed before any full run.
+- **To look at on the laptop:** re-running `disguise.py --report` moved only the Spearman values in the published `results/checks/disguise_summary.json`, by at most 0.002 for 6 entries. The committed file was kept as published. A guess, not confirmed: the recalibration's 1e-16 rewrites of the M3 rows change how ties are ranked.
+- **Recalibration** rewrote the M3/M6 prediction files with identical values (timestamps and float noise of at most 2e-16 only).
 
 ## After post 3: the plan (2026-11-25)
 
@@ -31,7 +54,7 @@ PLAN.md §12 has the order and the specs.
 1. Post 3's X post (below).
 2. **Done (2026-11-25):** the author's post 4 and post 5 guesses are in `PREDICTIONS.md` (commit 44eee55), before any run.
 3. **Author:** check the OpenRouter balance; post 5's Jev and Sol runs need about $8.
-4. **L4 session A** (L4_RUNBOOK.md §7): posts 4 and 5 together, about 5–6 GPU hours (~$2.50).
+4. **Done (2026-11-26):** L4 session A (L4_RUNBOOK.md §7); results above.
 5. **Laptop, after the guesses:** Jev and Sol on the four formats. For each format, run `runners/checks/disguise.py --variant <format>` with `--contestant jev --workers 8`, and with `--workers 4` for Sol (the default contestant).
 6. **Meanwhile:** choose the documents arc's dataset and check its licence.
 

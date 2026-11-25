@@ -1,0 +1,24 @@
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 620.29it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/laya/agent.py:546: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  return super().__call__(*args, **kwargs)
+laya-prose: convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1; format prose f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/laya-prose.jsonl
+  out_of_box: 2000 new in 37.8s | mean p 0.139 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0046
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 622.52it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/laya/agent.py:546: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  return super().__call__(*args, **kwargs)
+laya-markdown: convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1; format markdown f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/laya-markdown.jsonl
+  out_of_box: 2000 new in 33.9s | mean p 0.225 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0041
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 620.24it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/laya/agent.py:546: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  return super().__call__(*args, **kwargs)
+laya-csv: convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1; format csv f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/laya-csv.jsonl
+  out_of_box: 2000 new in 33.3s | mean p 0.440 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0040
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 656.65it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/laya/agent.py:546: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  return super().__call__(*args, **kwargs)
+laya-json: convaiinnovations/laya@fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1; format json f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/formats/laya-json.jsonl
+  out_of_box: 2000 new in 40.4s | mean p 0.429 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0049

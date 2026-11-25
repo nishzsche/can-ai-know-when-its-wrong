@@ -1,0 +1,6 @@
+kev-4b-ft-hqq-3: kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-4b-ft-hqq-3.jsonl
+  trained: 2000 new in 937.8s | mean p 0.186 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.1141
+kev-4b-ft-hqq-3: kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); hqq-3 (hqq 0.2.8.post1: 3-bit, group size 64, axis 1, bf16 compute)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-4b-ft-hqq-3.jsonl
+  trained: 2000 new in 938.0s | mean p 0.183 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.1141

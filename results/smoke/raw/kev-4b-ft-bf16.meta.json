@@ -1,0 +1,115 @@
+[
+  {
+    "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+    "started": "2026-11-25T17:50:35Z",
+    "split": "tune",
+    "conditions": [
+      "trained"
+    ],
+    "limit": 20,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 595.58.03",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "server_models": {
+      "models": [
+        {
+          "name": "kev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-4b-ft",
+          "base": "Qwen/Qwen3.5-4B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch; precision bf16",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": null,
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 0,
+            "cached_states": 0,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 0,
+            "requests": 0,
+            "queued": 0
+          }
+        },
+        {
+          "name": "jev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-4b-ft",
+          "base": "Qwen/Qwen3.5-4B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch; precision bf16",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": null,
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 0,
+            "cached_states": 0,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 0,
+            "requests": 0,
+            "queued": 0
+          }
+        }
+      ]
+    },
+    "base_url": "http://127.0.0.1:8009",
+    "usd_per_hour": 0.44,
+    "quantization": {
+      "precision": "bf16",
+      "description": "bf16 (not quantized)",
+      "library": null,
+      "version": null,
+      "settings": {},
+      "linear_layers": 248,
+      "quantized_layers": 0,
+      "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+      "run": "/home/runs/kev-4b-ft",
+      "device": "cuda",
+      "torch": "2.8.0+cu128",
+      "memory_after_load": {
+        "allocated": 8525959168,
+        "max_allocated": 8842690560,
+        "reserved": 8535408640
+      },
+      "memory_now": {
+        "allocated": 8525959168,
+        "max_allocated": 8525959168,
+        "reserved": 8535408640
+      },
+      "cuda_graphs": false,
+      "fused": false
+    }
+  }
+]

@@ -16,6 +16,8 @@
 - m6_sol_neighbours.png: Sol's and Jev's answers against how many of the 20 look-alikes in
   their prompt defaulted (the neighbours-20 reference, times 20).
 
+- m6_social_card.png: the blog's 1200x630 link-preview image (light only, like posts 1 and 2's).
+
     uv run python analysis/fair_fight_figures.py cost how_close   # only these
 
 Same palette, style and dark variant as the post 1 figures (analysis/figures.py). A trained model
@@ -486,6 +488,52 @@ def ceiling(dark: bool = False) -> Path:
     return F.save(fig, "m6_ceiling.png")
 
 
+CARD_ROWS = ("kev-4b-ft", "laya-ft", "kev-0.8b-ft", "qwen-ft")  # the fine-tuned four
+
+
+def social_card() -> Path:
+    """1200x630 link-preview image in the style of posts 1 and 2: title and hook on the left, the
+    catch-up in miniature on the right (light only, like theirs)."""
+    F.set_theme(False)
+    plt = F.plt
+    fig = plt.figure(figsize=(6, 3.15))
+    t = fig.text
+    dot = "·"
+    t(0.055, 0.89, f"LEARNING CURVE  {dot}  nishzsche.github.io", fontsize=7.5, color=F.MUTED,
+      fontweight="bold", va="center")  # fmt: skip
+    t(0.055, 0.80, "I gave AI the\nsame data as a\nbank's model.", fontsize=19, fontweight="bold",
+      color=F.INK, va="top", linespacing=1.05)  # fmt: skip
+    t(0.055, 0.36, "My first test wasn't fair. So every\nmodel got the same 20,000 customers.",
+      fontsize=9.5, color=F.INK_2, va="top", linespacing=1.25)  # fmt: skip
+    t(0.055, 0.205, "It caught up.", fontsize=12, fontweight="bold", color=F.INK, va="top")
+    t(0.055, 0.075, f"8 AI models  {dot}  2,000 real credit-card customers", fontsize=7.5,
+      color=F.MUTED, va="center")  # fmt: skip
+
+    ax = fig.add_axes((0.69, 0.2, 0.27, 0.55))
+    names = {c: lab for c, _zs, lab, _how in MODELS}
+    for y, c in enumerate(CARD_ROWS):
+        col = colour(c, False)
+        zv, tv = metric(COLD[c], "out_of_box")[0], metric(c, "trained")[0]
+        ax.plot([zv, tv], [y, y], color=col, lw=2, alpha=0.35, zorder=2)
+        ax.plot(zv, y, "o", ms=5.5, color=F.SURFACE, mec=col, mew=1.5, zorder=3)
+        ax.plot(tv, y, "o", ms=5.5, color=col, zorder=4)
+    sc, gbm = metric("scorecard", "trained")[0], metric("gbm", "trained")[0]
+    ax.axvline(gbm, color=F.COLOR["gbm"], lw=1, zorder=1)
+    ax.axvline(sc, color=F.COLOR["scorecard"], lw=1, ls=(0, (4, 3)), zorder=1)
+    ax.set_yticks(range(len(CARD_ROWS)), [names[c] for c in CARD_ROWS], fontsize=7.5)
+    ax.set_ylim(len(CARD_ROWS) - 0.5, -0.6)
+    ax.set_xlim(0.57, 0.82)
+    ax.set_xticks([0.6, 0.7, 0.8])
+    ax.tick_params(axis="x", labelsize=7)
+    ax.tick_params(axis="y", length=0, labelcolor=F.INK)
+    ax.grid(axis="y", visible=False)
+    ax.set_title("Ranking (AUC)", fontsize=9, loc="left", pad=8)
+    ax.text(0, -0.2, "open: answering cold  ·  filled: trained\nlines: gradient boosting, "
+            "scorecard", transform=ax.transAxes, fontsize=6, color=F.MUTED, va="top",
+            linespacing=1.3)  # fmt: skip
+    return F.save(fig, "m6_social_card.png")
+
+
 FIGURES = (catch_up, honesty, reliability, how_close, kev_calibration, cost, sol_neighbours,
            ceiling)  # fmt: skip
 
@@ -496,6 +544,8 @@ def main() -> None:
         for fig in FIGURES:
             if not names or fig.__name__ in names:
                 print(f"Saved -> {fig(dark)}")
+    if not names or "social_card" in names:
+        print(f"Saved -> {social_card()}")
 
 
 if __name__ == "__main__":

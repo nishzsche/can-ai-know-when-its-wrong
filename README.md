@@ -8,9 +8,9 @@ It's the experiment behind a blog series. Every post uses the same customers, th
 |---|---|---|---|
 | 1 | [Can AI know when it's wrong?](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (23 November 2026) | When an AI model says "30% chance of default", is it right? Six AI models answer cold, against two models trained on 20,000 customers | [`writeup/blog.md`](writeup/blog.md); [results below](#post-1s-results); the method and every check in [the deep dive](writeup/deep_dive.md) |
 | 2 | [Why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/) (24 November 2026) | Would judging the same models by accuracy have picked the right one for a lender? | [`writeup/accuracy_post.md`](writeup/accuracy_post.md); `analysis/accuracy.py` → `results/accuracy.json` |
-| 3 | The fair fight (in review) | What happens when the AI models learn from the same 20,000 customers the trained models did | [`writeup/fair_fight_post.md`](writeup/fair_fight_post.md) (draft); `analysis/fair_fight.py` → `results/fair_fight.csv`; trained weights in the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights). Its results go here when it's published |
+| 3 | [I gave AI the same data as a bank's model. It caught up.](https://nishzsche.github.io/2026/11/25/fair-fight/) (25 November 2026) | What happens when the AI models learn from the same 20,000 customers the trained models did | [`writeup/fair_fight_post.md`](writeup/fair_fight_post.md); `analysis/fair_fight.py` → `results/fair_fight.csv`; trained weights in the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights) |
 
-Next in this repo: whether shrinking a model to 8 or 4 bits makes it less honest, and teaching a small model to say "I don't know". Both reuse these customers and post 3's trained models. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
+Next in this repo: whether shrinking a model makes it less honest, why AI struggles to read a table, and teaching a small model to say "I don't know". All three reuse these customers. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
 
 ![Promised vs actual default rate for each AI model, with the scorecard for reference](results/figures/1_promised_vs_actual.png)
 
@@ -33,6 +33,17 @@ Next in this repo: whether shrinking a model to 8 or 4 bits makes it less honest
 - **Accuracy can't tell a useful model from a useless one.** Qwen ties the scorecard on accuracy (81.9% against 81.8%). Taken at its word (approve anyone it rates under 20%), it approves 5 customers in 100 and earns 17 per 1,000, against the scorecard's 284.
 - **Honest percentages can be used as they come.** Gradient boosting, the scorecard and Sol earn about the same at their own percentages as with a cut-off chosen on the 2,000 labelled tune customers. Kev-0.8B earns 99 at its word and 306, the most of any model, with the chosen cut-off.
 - As in post 1, the scorecard and gradient boosting learned from 20,000 labelled customers and the AI models answered cold.
+
+**Post 3: the fair fight.** Every AI model gets the same 20,000 `train` customers the baselines learned from. Kev-4B, Kev-0.8B, Qwen3.5-4B and Laya are fine-tuned on them. Two tabular foundation models, Kumo-Tabular and TabICLv2, read them as examples with no training. Jev and Sol, which can't be fine-tuned, see each customer's 20 most similar `train` customers in the prompt.
+
+- **Trained, they catch up.** The six that trained or read all 20,000 rank at AUC 0.778–0.794, against gradient boosting's 0.789 and the scorecard's 0.777. Kev-4B goes from 0.594 to 0.792.
+- **Caught up, not ahead.** None of the six can be told apart from gradient boosting. Against the scorecard, only Kev-4B is clearly better (+0.015, Holm-corrected over eight models).
+- **Honest after the same correction.** Recalibrated on tune, every model is within chance of perfect calibration (ECE under 2.5 points) except Kev-4B (3.3). Sol's 1.2 carries the usual caveat: it recognizes this dataset and knows its default rate.
+- **Training is not calibration.** Straight out of fine-tuning, both Kev models under-predict (18–19% against 22.1%). Kev's maker recipe ends with a temperature fit, which wasn't applied.
+- **The tabular foundation models match the best with no training run.** They're close to calibrated out of the box (2.0 and 2.5 points) and cost under a cent per 1,000 decisions.
+- **Twenty examples aren't enough.** Sol (0.762) only matches simply averaging the outcomes of its 20 look-alikes (0.764), and Jev ranks worse (0.743). Sol costs about 10 dollars per 1,000 decisions.
+- **A ceiling:** eight very different models land within 0.02 of each other, and a scorecard trained on 2,000 customers reaches 0.758.
+- The only tuning in the contest went to gradient boosting: its number of rounds was chosen by cross-validation within `train`.
 
 ## Post 1's results
 

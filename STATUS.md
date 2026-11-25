@@ -11,15 +11,19 @@ Last updated 2026-11-23. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **LinkedIn:** the first version went up boosted, with a single image. It is being replaced by a document post, the 9-slide carousel `writeup/accuracy_carousel.pdf` (built by `writeup/build_accuracy_carousel.py` from the `## Slides` section of `writeup/accuracy_linkedin.md`). The document title is "Why 99% accuracy can still be a disaster: 8 models tested", within LinkedIn's 58-character limit.
 - **New rules in `writeup/STYLE.md`:** a chart budget (about one chart per 400–500 words, the first within 400 words), and a LinkedIn carousel for every post (8–10 slides, drawn at phone size).
 
+## Post 3 published (2026-11-25, 13:02 IST)
+
+- **Live:** [I gave AI the same data as a bank's model. It caught up.](https://nishzsche.github.io/2026/11/25/fair-fight/) (blog PR #46), from `writeup/fair_fight_post.md`. Charts and the social card (`m6_social_card.png`) come from `analysis/fair_fight_figures.py`. The review URL redirects to the post, and post 2's closing line now links to it.
+- **LinkedIn:** the post text and first comment (with the URL) are in `writeup/fair_fight_linkedin.md`. The 10-slide carousel is `writeup/fair_fight_carousel.pdf`, with the document title "I gave AI the same data as a bank's model. It caught up." (56 characters).
+- **Still to do:**
+  - the X post;
+  - the chart-rule decision on the 703 words after the last chart (proposal: exempt the closing sections from the 600-word limit).
+
 ## Post 3 (the fair fight): draft and review (2026-11-24)
 
 - **Draft:** `writeup/fair_fight_post.md`. Charts come from `analysis/fair_fight_figures.py`: `m6_catch_up` (ranking), `m6_how_close` (paired gaps to gradient boosting and the scorecard, Bonferroni-widened so the chart matches the Holm wording), `m6_honesty` (raw vs the same correction), `m6_kev_calibration` (Kev raw vs corrected), `m6_cost` (cost vs ranking), `m6_sol_neighbours` (Sol and Jev against their 20 look-alikes), `m6_ceiling` (every model that learned from the 20,000 on the full 0.5–1.0 scale, plus the scorecard trained on 2,000) and `m6_reliability` (deep dive, not in the post). The scoreboard comes from `analysis/fair_fight.py`.
 - **Review copy:** https://nishzsche.github.io/review/fair-fight/ (unlisted, noindex). Version 1 went up on 2026-11-24 (blog PR #42); version 1.1 added four charts (PR #43). Version 2 (PR #45) added the seed results, Sol's caveat beside its corrected score, the headline chart moved to the top, and the ceiling chart.
-- **Still to do:**
-  - Reviewer feedback.
-  - A decision on the chart rule: 703 words follow the last chart (the predictions, the bank advice, the limits and what's next). The proposal is to exempt the closing sections from the 600-word limit.
-  - The X post and the link-preview image. The LinkedIn post and its 10-slide carousel are built (`writeup/fair_fight_linkedin.md`, `writeup/fair_fight_carousel.pdf` from `writeup/build_fair_fight_carousel.py`; document title "I gave AI the same data as a bank's model. It caught up.", 56 characters). If review changes a number or the title, rebuild the carousel and update the post text; the first comment needs the post's URL.
-  - Publishing.
+- **Published** on 2026-11-25; see the section above.
 - **Review panel** (five agents: statistician, fact-checker, bank model-risk validator, editor, ML engineer and hiring manager). Scores as drafted were 6–7/10, about 8.5 with the fixes. No leakage was found, and every number recomputes from the raw predictions. The must-fixes:
   - **Laya:** 4 passes plus its own temperature fit on 400 train rows, not one pass.
   - **Qwen:** common LoRA settings; it has no maker recipe.

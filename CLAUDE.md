@@ -70,7 +70,7 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
   - `uv run --group runners python runners/manifest.py --m6` checks M6 coverage.
   - `uv run --group tabular python baselines/tabular_fm.py --model <kumo-tabular|tabicl-v2>` runs a tabular foundation model, with `train` as its context (GPU; `--smoke` for a quick check).
   - `uv run python analysis/fair_fight.py` builds the M6 scoreboard: zero-shot → trained per model against the baselines, with paired AUC tests -> `results/fair_fight.csv`.
-  - `uv run python analysis/fair_fight_figures.py [name ...]` draws post 3's seven charts (`results/figures/m6_*.png`, light and dark); names such as `cost how_close` redraw only those.
+  - `uv run python analysis/fair_fight_figures.py [name ...]` draws post 3's seven charts (`results/figures/m6_*.png`, light and dark) and its social card (`m6_social_card.png`); names such as `cost how_close` or `social_card` redraw only those.
 - `uv run python analysis/accuracy.py` — post 2's numbers and chart (accuracy vs a lending decision, from the M3 predictions; cut-offs chosen on tune) -> `results/accuracy.json`, `results/figures/post2_profit.png`
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)
 - `uv run python writeup/build_accuracy_carousel.py` — post 2's carousel (`writeup/accuracy_carousel.pdf`) from the `## Slides` section of `writeup/accuracy_linkedin.md` (`--png DIR` for previews). Every post gets one; see the carousel rules in `writeup/STYLE.md`.

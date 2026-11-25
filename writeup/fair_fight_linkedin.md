@@ -4,7 +4,7 @@ A document post (a swipeable PDF carousel, like posts 1 and 2): ten square slide
 
 **Attach:** `writeup/fair_fight_carousel.pdf`, as a document ("Add a document" in the post composer). Document title (LinkedIn allows 58 characters): "I gave AI the same data as a bank's model. It caught up." A post takes images or a document, not both, and its media can't be changed after it's published.
 
-**Before posting:** the blog post is still in review. If review changes a number or the title, rebuild the carousel and update this text to match. Put the post's URL in the first comment.
+**Blog post:** published 2026-11-25 at https://nishzsche.github.io/2026/11/25/fair-fight/ (from `writeup/fair_fight_post.md`). If it's ever edited in a way that changes a number, rebuild the carousel before reposting.
 
 ## Post text
 
@@ -41,7 +41,7 @@ A document post (a swipeable PDF carousel, like posts 1 and 2): ten square slide
 
 ## First comment
 
-> The full write-up: (the post's URL, once published)
+> The full write-up: https://nishzsche.github.io/2026/11/25/fair-fight/
 > The first two posts: https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/ and https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/
 > Code, every prediction and the trained models' weights: https://github.com/nishzsche/can-ai-know-when-its-wrong
 > Data: a public dataset of 30,000 Taiwanese credit-card customers from 2005 (UCI "Default of Credit Card Clients", Yeh & Lien, 2009; CC BY 4.0). No age, sex, marital status or education in any model's input.

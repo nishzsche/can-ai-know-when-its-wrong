@@ -115,7 +115,8 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
     - **Draft fix found while building:** the post's same-model-twice row now reads 0.2% / 0.4% / 1.5% at the full-size cut-off, not 0.2% / 1.4%. Review copy version 2.1 carries it (blog PR #52, on its own branch from main, because another session's PR #51 was open on `dev`).
   - **Publishing (2026-11-27):**
     - Blog PR #54 was merged at 01:00 IST while the post was dated 12:00 IST. GitHub Pages skips future-dated posts and only rebuilds on a push, so the post 404'd, and the review redirect and post 3's "Next" link led there.
-    - Blog PR #55 (the author chose to publish now) dates it 00:55 IST, same URL, and sets the chosen drawing.
+    - Blog PR #55 (the author chose to publish now) dates it 00:55 IST and sets the chosen drawing. It went live at **/2026/11/26/shrinking-ai-models/**: GitHub Pages built the URL and displayed date ("Nov 26, 2026") from UTC, despite `timezone: Asia/Kolkata`. Blog PR #58 points the review redirect and post 3's link there, and the LinkedIn first comment now uses it.
+    - **Lesson:** date posts after 05:30 IST, or the URL and date fall on the previous UTC day.
     - `_posts/2026-11-27-shrinking-ai-models.md`.
     - Charts redrawn with the new export and embedded with `chart.html` (alt plus "Chart in words"). The drift chart's numbers moved above each panel: the boxes had hidden the 60–80% customers. The honesty label and the cost footnote were re-laid.
     - Social card `results/figures/post4_social_card.png` (`quantization_figures.py social_card`).

@@ -38,11 +38,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "runners"))
 from metrics import EPS, logit  # noqa: E402
 from quantize import all_contestants  # noqa: E402
 from records import ROOT, make_record, read_records, utc_now, write_records  # noqa: E402
+from speed import FULL_RUN, all_speed_contestants  # noqa: E402
 
 AI_CONTESTANTS = ("jev", "kev-0.8b", "kev-4b", "laya", "qwen-logprobs", "frontier-verbal")
 M6_CONTESTANTS = ("kev-4b-ft", "kev-0.8b-ft", "qwen-ft", "laya-ft", "jev-examples",
                   "sol-examples", "neighbours-20", "kumo-tabular", "tabicl-v2")  # fmt: skip
-QUANT_CONTESTANTS = all_contestants()  # post 4
+QUANT_CONTESTANTS = all_contestants() + all_speed_contestants(FULL_RUN)  # post 4 and its addendum
 N_CUSTOMERS = 2000
 CV_FOLDS = 5
 SEED = 20261122

@@ -148,8 +148,14 @@ def cost(contestant: str, directory: Path = PREDICTIONS_DIR) -> dict:
 
 def score_row(model: str, precision: str, directory: Path = PREDICTIONS_DIR) -> dict | str:
     """One model at one precision, or the reason it can't be scored yet."""
-    name = contestant_name(model, precision)
-    ref = contestant_name(model, "bf16")
+    return score_pair(contestant_name(model, precision), contestant_name(model, "bf16"), model,
+                      precision, directory)  # fmt: skip
+
+
+def score_pair(name: str, ref: str, model: str, precision: str,
+               directory: Path = PREDICTIONS_DIR) -> dict | str:  # fmt: skip
+    """Record `name` scored against `ref` (its bf16 run), or the reason it can't be yet. The speed
+    addendum (analysis/speed.py) scores its tags with this too."""
     ids, y, p = split_arrays(name, "trained", "test", directory)
     if len(ids) != N_TEST:
         return f"{name}: {len(ids)} of {N_TEST} test customers"
@@ -222,8 +228,12 @@ def load_failures(path: Path = FAILURES) -> dict:
 def record_failure(name: str, stage: str, error: str, path: Path = FAILURES) -> dict:
     """Record that one model x precision couldn't run. It is reported, never replaced."""
     from quantize import split_name
+    from speed import split_speed_name
 
-    model, precision = split_name(name)
+    try:
+        model, precision = split_name(name)
+    except ValueError:  # the speed addendum's tags (runners/speed.py)
+        model, precision = split_speed_name(name)
     failures = load_failures(path)
     failures[name] = {"model": model, "precision": precision, "stage": stage, "error": error,
                       "recorded_at": utc_now()}  # fmt: skip

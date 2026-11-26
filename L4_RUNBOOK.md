@@ -532,3 +532,156 @@ git push
 ```
 
 Then delete the instance. Pausing keeps storage billing, and nothing here needs to be kept: the predictions and logs are in git, and the weights are in the `m6-weights` release.
+
+## 8. Session S: post 4's speed runs (added 2026-11-26)
+
+PLAN.md §12, "Post 4 speed addendum". The review panel found post 4's speed numbers came from an untuned setup. This session measures the same three fine-tuned models on a tuned one, at five speed tags (`runners/speed.py`):
+
+| Tag | What it is | Check | Records |
+|---|---|---|---|
+| `bf16-tuned` | Full size, fast setup: the speed reference | reproduce post 4's `bf16` on 50 tune customers | throughput only |
+| `bnb-nf4-tuned` | Post 4's NF4, fast setup | reproduce post 4's `bnb-nf4` on 50 tune customers | throughput only |
+| `hqq-4-aoint4` | Post 4's HQQ 4-bit weights on PyTorch's fused int4 matmul | smoke | tune + test, then throughput |
+| `hqq-4-gemlite` | The same weights on GemLite (fp16 compute) | smoke | tune + test, then throughput |
+| `fp8-dynamic` | FP8 weights and activations, dynamic scales (torchao), no data | smoke | tune + test, then throughput |
+
+"Fast setup":
+- the `causal-conv1d` and flash-linear-attention kernels are installed;
+- Kev runs with CUDA graphs on, plus its fused kernels for `bf16-tuned` if its pinned FLA version imports;
+- Qwen runs through `torch.compile`.
+
+Throughput uses the same 500 tune customers at 1, 8 and 32 at a time (`runners/throughput.py`); its batch-1 time is the per-answer figure the post compares. Nothing here is tuned on `test`, and nothing needs an API key.
+
+**Running Claude Code here:** after §8.0 step 1, give it this prompt:
+
+```text
+You're on a fresh JarvisLabs L4 (24 GB) for can-ai-know-when-its-wrong: session S, the speed runs
+for post 4 (PLAN.md §12, "Post 4 speed addendum"). GPU time is billed per minute: follow the
+runbook and avoid detours.
+
+1. Read CLAUDE.md, the top of STATUS.md ("Post 4 draft") and PLAN.md §12's post 4 spec and its
+   speed addendum. The design is fixed: ask me before changing any choice.
+2. Gate: PREDICTIONS.md must already have my "Post 4 speed addendum" guesses committed (commit
+   9f415ea). If it doesn't, stop and tell me.
+3. Run L4_RUNBOOK.md §8 in order, one command at a time:
+   - Install the fast libraries as §8.0 says, choosing each version to match that environment's
+     torch, and write the versions you installed into STATUS.md before any run.
+   - bf16-tuned and bnb-nf4-tuned: run the reproduction check first. If it fails, stop and report.
+   - If a tag won't load, won't capture, errors, returns NaN, or its smoke run's answers are all
+     exactly 0 or 1, record it with `analysis/quantization.py --record-failure`, skip it and tell
+     me. Never swap in another method, backend or setting.
+   - Before each full run, tell me its ETA in IST (the box's clock is UTC). If any single run's
+     ETA is over 2 hours, stop and ask.
+   - Keep only one model on the GPU at a time.
+4. After each model, commit and push its predictions, throughput files and logs: no keys, no .env
+   and no weights. At the end, run §8.4 and report what ran, what failed, the GPU hours, the cost
+   and the finish time in IST. Then tell me it's safe to delete the instance, and remind me to
+   revoke the GitHub token used here.
+```
+
+**Gate:** `PREDICTIONS.md` has the author's speed-run guesses, committed before any run (commit `9f415ea`). That includes smoke runs, reproduction checks and throughput, because all of them print numbers.
+
+**Order and time** (estimates; check them in each run's first minutes): Kev-0.8B (~30–45 min), Qwen (~45–75 min), Kev-4B (~45–75 min). About 2–3 GPU hours plus 30 minutes of setup, about $1–1.50.
+
+**A tag that fails** is recorded, then you go on to the next tag:
+```bash
+uv run python analysis/quantization.py --record-failure kev-4b-ft-fp8-dynamic --stage load --error "<the error line>"
+```
+
+### 8.0 Setup (a fresh instance, about 30 billed minutes)
+
+1. §7.0 steps 1, 2 and 4: this repo with the `quant` group (tests: 213 passed), Kev's environment with the two post 4 pins, and the M6 weights. vLLM isn't needed.
+2. **The fast libraries in this repo's environment.** Install them with `uv pip`, then run every command below with `uv run --no-sync`, so uv leaves them in place.
+   - First check the environment's torch: `uv run --no-sync python -c "import torch; print(torch.__version__)"`.
+   - Pick the torchao release whose notes list that torch, and the newest GemLite, `causal-conv1d` and `flash-linear-attention` that build and import with it.
+   ```bash
+   cd /home/can-ai-know-when-its-wrong
+   uv pip install "torchao==<matching>" "gemlite==<v>" "causal-conv1d==<v>" "flash-linear-attention==<v>"
+   uv run --no-sync python -c "import torchao, gemlite, causal_conv1d, fla; print(torchao.__version__, gemlite.__version__, fla.__version__)"
+   ```
+3. **The same in Kev's environment** (torch 2.8 in session A, which pairs with torchao 0.13).
+   - **Flash-linear-attention:** try 0.5.2 first. It's the version Kev's fused kernels pin, and session A found 0.6.0 fails to import with Kev's Triton. If 0.5.2 fails too, go back to 0.5.0 (as M6 had); `bf16-tuned` then runs without fused kernels, and the records say so.
+   - **causal-conv1d** may build from source; allow about 10 minutes.
+   ```bash
+   cd /home/kev
+   uv pip install "torchao==0.13.0" "gemlite==<v>" "causal-conv1d==<v>" "flash-linear-attention==0.5.2"
+   uv run --extra serve python -c "import torchao, gemlite, causal_conv1d, fla; print(fla.__version__)"
+   ```
+4. Write the installed versions into STATUS.md ("Session S"). Every record carries them in `model_version`, and the launcher reports any fast-layer kernel still missing.
+   ```bash
+   mkdir -p /home/logs /home/can-ai-know-when-its-wrong/results/checks/speed
+   ```
+
+### 8.1 Kev-0.8B (~30–45 min)
+
+For each tag: start the launcher in window 1, run the commands in window 2, then stop the launcher. The tags go in table order. Run the commands one at a time, and stop if one fails.
+
+```bash
+# window 1, Kev's environment: one tag at a time (the launcher sets KEV_CUDA_GRAPHS)
+cd /home/kev
+T=bf16-tuned    # then bnb-nf4-tuned, hqq-4-aoint4, hqq-4-gemlite, fp8-dynamic
+KEV_TEMPERATURE=1.0 uv run --extra serve python /home/can-ai-know-when-its-wrong/runners/kev_quant_serve.py \
+  --precision $T --run /home/runs/kev-0.8b-ft --port 8009 2>&1 | tee /home/logs/kev-0.8b-ft-$T-serve.log
+```
+
+```bash
+# window 2, this repo, the same T
+cd /home/can-ai-know-when-its-wrong
+T=bf16-tuned
+until curl -sf 127.0.0.1:8009/v1/quantization > /dev/null; do sleep 5; done
+R="uv run --no-sync python runners/kev.py --size 0.8b --finetuned /home/runs/kev-0.8b-ft --precision $T"
+# bf16-tuned and bnb-nf4-tuned: the reproduction check, then go straight to throughput
+$R --reproduce-check 50
+# hqq-4-aoint4, hqq-4-gemlite, fp8-dynamic: the smoke, then tune and test
+$R --smoke
+$R --split tune 2>&1 | tee -a /home/logs/kev-0.8b-ft-$T-score.log
+$R --split test 2>&1 | tee -a /home/logs/kev-0.8b-ft-$T-score.log
+# every tag: throughput on 500 tune customers at 1, 8 and 32 at a time
+uv run --no-sync python runners/throughput.py --kev 0.8b --finetuned /home/runs/kev-0.8b-ft --precision $T \
+  2>&1 | tee -a /home/logs/kev-0.8b-ft-$T-throughput.log
+curl -s 127.0.0.1:8009/v1/quantization > results/checks/speed/kev-0.8b-ft-$T.server.json
+```
+
+Then run `pkill -f kev_quant_serve` on its own line, and move to the next tag.
+
+- **The server JSON** has Kev's CUDA graph stats (captured, kept, pending, failed). Graphs that fail to capture keep running without them. If `failed` is above zero, say so in STATUS; it isn't a run failure.
+- **The throughput log** prints, at each batch size, the largest difference from the one-at-a-time answers. Above 0.01, say so in STATUS.
+
+### 8.2 Qwen (~45–75 min)
+
+In-process, as in §7.3. Each command loads the base, merges, shrinks, sets up the tag and compiles, which takes a few minutes.
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+R="uv run --no-sync python runners/qwen_ft.py --adapter /home/runs/qwen-ft"
+$R --precision bf16-tuned --reproduce-check 50
+$R --precision bnb-nf4-tuned --reproduce-check 50
+for T in hqq-4-aoint4 hqq-4-gemlite fp8-dynamic; do       # one at a time; stop if one fails
+  $R --precision $T --both-splits 2>&1 | tee /home/logs/qwen-ft-$T-score.log
+done
+for T in bf16-tuned bnb-nf4-tuned hqq-4-aoint4 hqq-4-gemlite fp8-dynamic; do
+  uv run --no-sync python runners/throughput.py --qwen /home/runs/qwen-ft --precision $T \
+    2>&1 | tee /home/logs/qwen-ft-$T-throughput.log
+done
+```
+
+If `torch.compile` fails for a tag, record the failure, and don't rerun with `--no-compile` unless the author agrees.
+
+### 8.3 Kev-4B (~45–75 min)
+
+The same as §8.1, with `--size 4b`, `--run /home/runs/kev-4b-ft`, `--finetuned /home/runs/kev-4b-ft`, `--kev 4b`, and `kev-4b-ft` in the log and JSON names.
+
+### 8.4 Wrap up
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+uv run --no-sync python analysis/recalibrate.py      # trained_calibrated for the three full-run tags
+uv run --no-sync python analysis/speed_report.py     # -> results/speed.csv, speed_throughput.csv, speed.json
+mkdir -p results/checks/speed_logs && cp /home/logs/*-tuned-*.log /home/logs/*-aoint4-*.log \
+  /home/logs/*-gemlite-*.log /home/logs/*-fp8-dynamic-*.log results/checks/speed_logs/
+git add results/predictions results/checks results/recalibration.json results/speed*.csv results/speed.json STATUS.md
+git commit -m "Post 4 speed runs: tuned full size, NF4, fast 4-bit and FP8; throughput at 1, 8 and 32"
+git push
+```
+
+Then delete the instance, and revoke the GitHub token. The predictions, throughput files and logs are in git, and the weights are in the `m6-weights` release.

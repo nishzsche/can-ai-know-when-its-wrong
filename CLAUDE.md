@@ -83,5 +83,9 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
   - `uv run --group runners python runners/manifest.py --quant` checks post 4's coverage.
   - `uv run python analysis/quantization.py` scores post 4 -> `results/quantization.csv`. `--record-failure NAME --stage S --error TEXT` records a precision that couldn't run.
   - `uv run python analysis/quantization_figures.py [name ...]` draws post 4's four charts (`results/figures/post4_*.png`, light and dark); names such as `drift cost` redraw only those.
+  - **Post 4 speed addendum (L4_RUNBOOK.md §8):**
+    - **Speed tags** (`runners/speed.py`): `bf16-tuned`, `bnb-nf4-tuned`, `hqq-4-aoint4`, `hqq-4-gemlite`, `fp8-dynamic`. The launcher, `runners/kev.py` and `runners/qwen_ft.py` take them as `--precision`, and `--reproduce-check 50` works for the two tuned tags.
+    - `runners/throughput.py --kev <size> --finetuned DIR --precision <tag>` (or `--qwen ADAPTER`) measures 500 tune customers at 1, 8 and 32 at a time -> `results/checks/speed/`.
+    - `uv run python analysis/speed_report.py` -> `results/speed.csv`, `results/speed_throughput.csv`, `results/speed.json`.
   - `uv run python data/formats.py --show ID` / `--token-report` show post 5's four formats for one customer / count tokens per format.
   - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant <prose|markdown|csv|json>` runs one format on 2,000 test customers, into `results/checks/formats/` (`--report` compares each with v2).

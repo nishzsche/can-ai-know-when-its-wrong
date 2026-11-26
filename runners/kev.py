@@ -53,6 +53,7 @@ from harness import (
     run,
 )
 from quantize import PRECISIONS, contestant_name
+from speed import SPEED_TAGS, speed_name
 
 # Kev 1.0: (Hub repo, commit the v1.0 tag points at, weights revision in the README's Kev 1.0
 # table). The tag sits on a later model-card commit; on 2026-11-22 we checked that the adapter,
@@ -140,12 +141,22 @@ class KevPredictor:
                 f"The server reports precision {served.get('precision')!r}, not {precision!r}; "
                 f"restart it with --precision {precision}."
             )
-        if served.get("cuda_graphs") is not False or served.get("fused") is not False:
-            raise SystemExit("Post 4 serves every precision without CUDA graphs or fused kernels.")
-        self.contestant = contestant_name(f"kev-{size}-ft", precision)
+        if precision in SPEED_TAGS:  # the speed addendum: Kev's fast setup, as the server reports
+            graphs = served.get("cuda_graphs")
+            if not isinstance(graphs, dict):
+                raise SystemExit("The speed tags run with Kev's CUDA graphs; the server has none.")
+            self.contestant = speed_name(f"kev-{size}-ft", precision)
+            setup = f"CUDA graphs on, fused kernels {'on' if served.get('fused') else 'off'}"
+            if served.get("fast_layers_missing"):
+                setup += f"; fast-layer kernels missing: {', '.join(served['fast_layers_missing'])}"
+        else:
+            if served.get("cuda_graphs") is not False or served.get("fused") is not False:
+                raise SystemExit("Post 4 serves its precisions without CUDA graphs or fusion.")
+            self.contestant = contestant_name(f"kev-{size}-ft", precision)
+            setup = "CUDA graphs and fused kernels off"
         self.model_version = (
-            f"{self.model_version}; served by runners/kev_quant_serve.py "
-            f"(CUDA graphs and fused kernels off); {served['description']}"
+            f"{self.model_version}; served by runners/kev_quant_serve.py ({setup}); "
+            f"{served['description']}"
         )
         self.meta["quantization"] = served
 
@@ -161,8 +172,10 @@ class KevPredictor:
             "server_latency_ms": resp.get("latency_ms"),
         }
         if self.precision is not None:  # after the timed call, so it never counts as latency
-            memory = _http_json(f"{self.base_url}/v1/quantization")["memory_now"]
-            raw["gpu_max_allocated"] = memory.get("max_allocated")
+            served = _http_json(f"{self.base_url}/v1/quantization")
+            raw["gpu_max_allocated"] = served["memory_now"].get("max_allocated")
+            if isinstance(served.get("cuda_graphs"), dict):
+                raw["cuda_graphs"] = served["cuda_graphs"]
         return Prediction(p_default=p, latency_ms=latency_ms,
                           cost_usd=gpu_cost(latency_ms, self.usd_per_hour), raw=raw)  # fmt: skip
 
@@ -174,15 +187,17 @@ def main() -> None:
     ap.add_argument("--usd-per-hour", type=float, default=L4_USD_PER_HOUR)
     ap.add_argument("--skip-version-check", action="store_true")
     ap.add_argument("--finetuned", type=Path, help="M6: the fine-tuned run directory being served")
-    ap.add_argument("--precision", choices=PRECISIONS,
-                    help="post 4: the precision runners/kev_quant_serve.py serves")  # fmt: skip
+    ap.add_argument("--precision", choices=(*PRECISIONS, *SPEED_TAGS),
+                    help="post 4: the precision or speed tag the launcher serves")  # fmt: skip
     ap.add_argument("--reproduce-check", type=int, metavar="N",
-                    help="post 4, bf16: compare N tune customers with M6, then stop")  # fmt: skip
+                    help="bf16: compare N tune customers with M6; bf16-tuned / bnb-nf4-tuned: "
+                         "with post 4's bf16 / bnb-nf4 run; then stop")  # fmt: skip
     args = ap.parse_args()
     if args.precision and args.finetuned is None:
         ap.error("--precision needs --finetuned")
-    if args.reproduce_check and args.precision != "bf16":
-        ap.error("--reproduce-check runs with --precision bf16")
+    reference = reproduce_reference(f"kev-{args.size}-ft", args.precision)
+    if args.reproduce_check and reference is None:
+        ap.error("--reproduce-check runs with --precision bf16, bf16-tuned or bnb-nf4-tuned")
     if args.finetuned is not None:
         args.condition = TRAINED
     args = resolve_args(args)
@@ -195,9 +210,21 @@ def main() -> None:
         precision=args.precision,
     )
     if args.reproduce_check:
-        reproduction_check(predictor, f"kev-{args.size}-ft", args.reproduce_check)
+        reproduction_check(predictor, reference, args.reproduce_check)
         return
     run(predictor, args)
+
+
+def reproduce_reference(model: str, precision: str | None) -> str | None:
+    """The run a reproduction check compares with: M6's for bf16, post 4's for the two tuned tags
+    whose arithmetic doesn't change (runners/speed.py REPRODUCE); None if there isn't one."""
+    from speed import REPRODUCE
+
+    if precision == "bf16":
+        return model
+    if precision in REPRODUCE:
+        return contestant_name(model, REPRODUCE[precision])
+    return None
 
 
 if __name__ == "__main__":

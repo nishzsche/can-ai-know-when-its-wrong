@@ -325,9 +325,16 @@ Numbers are the series' post numbers. Titles lead with the question, per `writeu
 - Kev is the risky one: its graph capture and its fused path may not accept the new layers. If so, record the failure and keep Qwen's result.
 - The author's guesses for these runs go in `PREDICTIONS.md` before any run.
 
+**Built on the laptop (2026-11-26), 213 tests passing:**
+- `runners/speed.py`: the five tags. The tuned reference is `bf16-tuned`; `bnb-nf4-tuned` is NF4 on the fast setup; the HQQ fast kernels split into `hqq-4-aoint4` (PyTorch's int4 matmul, few rows at a time) and `hqq-4-gemlite` (more rows at a time), so neither backend is chosen in advance.
+- The Kev launcher's speed mode; the runners' `--precision` for the tags; Qwen's `predict_batch`.
+- `runners/throughput.py`, `analysis/speed_report.py` (its own Holm family), and recalibration for the full-run tags.
+- L4_RUNBOOK.md §8, with the prompt for Claude Code on the L4.
+- **Not testable on the laptop:** the fast kernels, CUDA graph capture of shrunk layers, `torch.compile`, and which library versions install with each environment's torch. §8 checks them on the L4 with a reproduction check or smoke run first, and records failures.
+
 **Done when:**
 - Each new tag has its records or a recorded failure.
-- `analysis/quantization.py` scores the new tags against the tuned reference.
+- `analysis/speed_report.py` scores the new tags against the model's post 4 bf16 run.
 - A throughput table exists.
 - The post's speed section, title and pending lines are rewritten from these results.
 

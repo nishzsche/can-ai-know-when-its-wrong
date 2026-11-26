@@ -28,6 +28,9 @@ Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` befor
     - "ranking held to 3 bits".
   - **Bank advice:** rewritten around governance (material model change, tolerances, day-one score migration, re-set cut-offs through approval, record GPU, kernels and drivers). New limitations: an unsupported vendor use, fair lending, keeping the update unmerged.
 - **The author's decision (2026-11-26): hold post 4 for extra speed runs** (PLAN.md §12, post 4 speed addendum). The title, subtitle, speed section, one predictions row and the speed bullets are marked PENDING in the draft. The live review copy is still version 1.
+  - **Guesses:** committed before any speed run (9f415ea).
+  - **Code:** built on the laptop, 213 tests (PLAN.md §12, the addendum's "Built" note).
+  - **Next:** L4 session S (L4_RUNBOOK.md §8), about 2–3 GPU hours plus setup, about $1–1.50. Then rewrite the speed section, title and pending lines; update the review copy to version 2; then the LinkedIn post, carousel, X post and social card.
 - **Still to do after the author's review:** the LinkedIn post and its carousel (`writeup/STYLE.md`: 8–10 slides, a builder script), the X post, the social card, and the README and PLAN status.
 
 ## L4 session A done (2026-11-25 19:43 → 2026-11-26 01:30 IST)

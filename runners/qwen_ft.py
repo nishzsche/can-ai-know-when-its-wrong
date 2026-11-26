@@ -19,6 +19,12 @@ M6's qwen-ft predictions on 50 tune customers and stops on a mismatch:
     uv run $G --group quant python runners/qwen_ft.py --adapter /home/runs/qwen-ft \\
         --precision hqq-4 --split tune
 
+Post 4 speed addendum (runners/speed.py, PLAN.md §12): `--precision` also takes the speed tags. The
+model is merged and shrunk exactly as above, then set up for speed (speed.apply) and its forward
+pass compiled with torch.compile (dynamic shapes; `--no-compile` to compare). `--reproduce-check`
+with bf16-tuned or bnb-nf4-tuned compares with post 4's bf16 / bnb-nf4 run. `predict_batch` scores
+several customers in one left-padded pass, for runners/throughput.py.
+
 Why not vLLM: serving a LoRA on the multimodal Qwen3.5 through vLLM is the least certain step,
 and the readout doesn't need it. The prompt is byte-identical to what jevper sent (checked on all
 8,000 M3 requests, tests/test_training.py), and P(yes) is the same quantity: each label's
@@ -47,6 +53,8 @@ from harness import (
     run,
 )
 from quantize import PRECISIONS, after_load, contestant_name, quantize_linears
+from speed import REPRODUCE, SPEED_TAGS, speed_name
+from speed import apply as speed_apply
 
 if str(ROOT / "training") not in sys.path:
     sys.path.insert(0, str(ROOT / "training"))
@@ -72,7 +80,7 @@ class QwenFTPredictor:
     contestant = "qwen-ft"
 
     def __init__(self, adapter: Path | None, device: str, usd_per_hour: float,
-                 precision: str | None = None):  # fmt: skip
+                 precision: str | None = None, compile_model: bool = True):  # fmt: skip
         import torch
 
         self.torch = torch
@@ -100,7 +108,17 @@ class QwenFTPredictor:
         else:
             self.model_version = f"{MODEL}@{REVISION[:8]} (base, in-process); readout: {READOUT}"
             self.meta = {}
-        if precision is not None:
+        if precision in SPEED_TAGS:
+            info = speed_apply(model, precision, device=device)
+            self.contestant = speed_name("qwen-ft", precision)
+            setup = "torch.compile (dynamic shapes)" if compile_model else "not compiled"
+            self.model_version += (f"; merged in fp32 with one rounding to bf16 (post 4); "
+                                   f"{info['description']}; {setup}")  # fmt: skip
+            info["compiled"] = compile_model
+            self.meta["quantization"] = after_load(info)
+            if compile_model:  # the forward only, so the module keeps its attributes (device)
+                model.forward = torch.compile(model.forward, dynamic=True)
+        elif precision is not None:
             info = quantize_linears(model, precision, device=device)
             self.contestant = contestant_name("qwen-ft", precision)
             self.model_version += (f"; merged in fp32 with one rounding to bf16 (post 4); "
@@ -140,6 +158,39 @@ class QwenFTPredictor:
         return Prediction(p_default=p, latency_ms=latency_ms,
                           cost_usd=gpu_cost(latency_ms, self.usd_per_hour), raw=raw)  # fmt: skip
 
+    def predict_batch(self, requests: list[dict]) -> tuple[list[float], float]:
+        """(P(yes) per request, milliseconds for the whole batch): one left-padded forward pass.
+
+        Left padding keeps every prompt's last token in the last column, which is where the
+        readout looks; the attention mask hides the pads (rotary positions only shift, which
+        attention doesn't see). runners/throughput.py compares the answers with one at a time."""
+        torch = self.torch
+        ids = [prompt_ids(self.tok, qwen_messages(r)) for r in requests]
+        width = max(len(x) for x in ids)
+        pad = self.tok.pad_token_id if self.tok.pad_token_id is not None else self.tok.eos_token_id
+        rows = [[pad] * (width - len(x)) + x for x in ids]
+        mask = [[0] * (width - len(x)) + [1] * len(x) for x in ids]
+        dev = self.model.device
+        start = time.perf_counter()
+        with torch.inference_mode():
+            logits = self.model(input_ids=torch.tensor(rows, device=dev),
+                                attention_mask=torch.tensor(mask, device=dev),
+                                logits_to_keep=1).logits[:, -1].float()  # fmt: skip
+            ps = [p_yes(row, self.yes_ids, self.no_ids) for row in logits]
+        if dev.type == "cuda":
+            torch.cuda.synchronize()
+        return ps, (time.perf_counter() - start) * 1000
+
+
+def reproduce_reference(precision: str | None) -> str | None:
+    """The run a reproduction check compares with: M6's qwen-ft for bf16, post 4's run for the
+    two tuned tags whose arithmetic doesn't change; None otherwise."""
+    if precision == "bf16":
+        return "qwen-ft"
+    if precision in REPRODUCE:
+        return contestant_name("qwen-ft", REPRODUCE[precision])
+    return None
+
 
 def zero_shot_check(n: int, device: str) -> None:
     """Base model in-process vs M3's recorded zero-shot P(yes) on the first n tune customers."""
@@ -173,9 +224,13 @@ def main() -> None:
         "--adapter", type=Path, help="trained adapter directory (training/qwen_lora.py)"
     )
     ap.add_argument("--zero-shot-check", type=int, metavar="N")
-    ap.add_argument("--precision", choices=PRECISIONS, help="post 4: merge, then quantize")
+    ap.add_argument("--precision", choices=(*PRECISIONS, *SPEED_TAGS),
+                    help="post 4: merge, then quantize (or a speed tag: speed.py)")  # fmt: skip
     ap.add_argument("--reproduce-check", type=int, metavar="N",
-                    help="post 4, bf16: compare N tune customers with M6, then stop")  # fmt: skip
+                    help="bf16: compare N tune customers with M6; bf16-tuned / bnb-nf4-tuned: "
+                         "with post 4's bf16 / bnb-nf4 run; then stop")  # fmt: skip
+    ap.add_argument("--no-compile", action="store_true",
+                    help="speed tags: skip torch.compile (recorded in model_version)")  # fmt: skip
     ap.add_argument("--both-splits", action="store_true",
                     help="tune, then test, in one process (the model loads once)")  # fmt: skip
     ap.add_argument("--device", default="cuda")
@@ -186,13 +241,15 @@ def main() -> None:
         return
     if args.adapter is None:
         ap.error("--adapter is required (or --zero-shot-check N)")
-    if args.reproduce_check and args.precision != "bf16":
-        ap.error("--reproduce-check runs with --precision bf16")
+    reference = reproduce_reference(args.precision)
+    if args.reproduce_check and reference is None:
+        ap.error("--reproduce-check runs with --precision bf16, bf16-tuned or bnb-nf4-tuned")
     args.condition = TRAINED
     args = resolve_args(args)
-    predictor = QwenFTPredictor(args.adapter, args.device, args.usd_per_hour, args.precision)
+    predictor = QwenFTPredictor(args.adapter, args.device, args.usd_per_hour, args.precision,
+                                compile_model=not args.no_compile)  # fmt: skip
     if args.reproduce_check:
-        reproduction_check(predictor, "qwen-ft", args.reproduce_check)
+        reproduction_check(predictor, reference, args.reproduce_check)
         return
     for split in ("tune", "test") if args.both_splits else (args.split,):
         args.split = split

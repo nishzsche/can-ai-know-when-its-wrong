@@ -111,7 +111,8 @@ def test_launcher_reports_what_the_model_actually_runs_with():
 
 
 def _fake_server(precision="fp8-dynamic", graphs=True, p=0.3):
-    quant = {"precision": precision, "description": sp.describe(precision, {"torchao": "0.13.0"}),
+    quant = {"precision": sp.BASE[precision], "tag": precision,  # as speed.apply reports
+             "description": sp.describe(precision, {"torchao": "0.13.0"}),
              "cuda_graphs": {"captured": 2, "kept": 2, "pending": 0, "failed": 0} if graphs
              else False, "fused": False, "fast_layers_missing": [],
              "memory_now": {"max_allocated": 5 * 1024**3}}  # fmt: skip

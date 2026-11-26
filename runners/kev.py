@@ -136,9 +136,12 @@ class KevPredictor:
                 f"{self.base_url} has no /v1/quantization ({exc}); serve the run through "
                 f"runners/kev_quant_serve.py for --precision"
             ) from None
-        if served.get("precision") != precision:
+        # A speed tag's server reports its base precision under "precision" and the tag under
+        # "tag" (speed.apply); post 4's servers have no "tag".
+        reported = served.get("tag", served.get("precision"))
+        if reported != precision:
             raise SystemExit(
-                f"The server reports precision {served.get('precision')!r}, not {precision!r}; "
+                f"The server reports precision {reported!r}, not {precision!r}; "
                 f"restart it with --precision {precision}."
             )
         if precision in SPEED_TAGS:  # the speed addendum: Kev's fast setup, as the server reports

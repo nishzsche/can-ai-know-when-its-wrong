@@ -1,0 +1,145 @@
+[
+  {
+    "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-aoint4 (post 4's hqq-4 weights on aten._weight_int4pack_mm (HQQ torchao_int4 backend, bf16); hqq 0.2.8.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+    "started": "2026-11-26T15:50:24Z",
+    "split": "tune",
+    "conditions": [
+      "trained"
+    ],
+    "limit": 20,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-5.15.0-202-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 580.196.07",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "server_models": {
+      "models": [
+        {
+          "name": "kev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-0.8b-ft",
+          "base": "Qwen/Qwen3.5-0.8B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch; precision hqq-4-aoint4",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 0,
+            "kept": 0,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 0,
+            "cached_states": 0,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 0,
+            "requests": 0,
+            "queued": 0
+          }
+        },
+        {
+          "name": "jev-latest",
+          "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+          "release_date": "2026-11-23",
+          "run": "/home/runs/kev-0.8b-ft",
+          "base": "Qwen/Qwen3.5-0.8B-Base",
+          "lora": 16,
+          "device": "cuda",
+          "backend": "torch; precision hqq-4-aoint4",
+          "dtype": "bfloat16",
+          "temperature": 1.0,
+          "max_state_tokens": 65536,
+          "truncate_states": false,
+          "cuda_graphs": {
+            "captured": 0,
+            "kept": 0,
+            "pending": 0,
+            "failed": 0
+          },
+          "prefix_cache": {
+            "size": 4,
+            "min_state_tokens": 0,
+            "max_tokens": 65536,
+            "hits": 0,
+            "misses": 0,
+            "cached_states": 0,
+            "oom_retries": 0
+          },
+          "batches": {
+            "count": 0,
+            "requests": 0,
+            "queued": 0
+          }
+        }
+      ]
+    },
+    "base_url": "http://127.0.0.1:8009",
+    "usd_per_hour": 0.44,
+    "quantization": {
+      "precision": "hqq-4",
+      "description": "hqq-4-aoint4 (post 4's hqq-4 weights on aten._weight_int4pack_mm (HQQ torchao_int4 backend, bf16); hqq 0.2.8.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+      "library": "hqq",
+      "version": "0.2.8.post1",
+      "settings": {
+        "nbits": 4,
+        "group_size": 64,
+        "axis": 1,
+        "compute_dtype": "bfloat16"
+      },
+      "linear_layers": 186,
+      "quantized_layers": 186,
+      "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+      "tag": "hqq-4-aoint4",
+      "base_precision": "hqq-4",
+      "versions": {
+        "hqq": "0.2.8.post1",
+        "causal-conv1d": "1.7.0",
+        "flash-linear-attention": "0.5.2",
+        "torch": "2.8.0"
+      },
+      "fast_layers_missing": [],
+      "hqq_backend": "torchao_int4",
+      "run": "/home/runs/kev-0.8b-ft",
+      "device": "cuda",
+      "torch": "2.8.0+cu128",
+      "memory_after_load": {
+        "allocated": 3046552576,
+        "max_allocated": 3912345088,
+        "reserved": 3336568832
+      },
+      "memory_now": {
+        "allocated": 3046552576,
+        "max_allocated": 3046552576,
+        "reserved": 3336568832
+      },
+      "cuda_graphs": {
+        "captured": 0,
+        "kept": 0,
+        "pending": 0,
+        "failed": 0
+      },
+      "fused": false
+    }
+  }
+]

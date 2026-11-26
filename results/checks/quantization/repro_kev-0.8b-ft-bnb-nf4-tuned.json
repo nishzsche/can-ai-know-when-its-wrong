@@ -1,0 +1,265 @@
+{
+ "contestant": "kev-0.8b-ft-bnb-nf4-tuned",
+ "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); bnb-nf4-tuned (post 4's bnb-nf4, fast setup; bitsandbytes 0.50.2, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+ "reference": "kev-0.8b-ft-bnb-nf4",
+ "split": "tune",
+ "condition": "trained",
+ "n": 50,
+ "mean_abs_diff": 0.0011160000000000018,
+ "max_abs_diff": 0.006400000000000017,
+ "threshold_mean_abs": 0.02,
+ "passed": true,
+ "checked_at": "2026-11-26T15:49:08Z",
+ "rows": [
+  {
+   "id": "cust_00005",
+   "new_path": 0.058,
+   "reference": 0.059
+  },
+  {
+   "id": "cust_00006",
+   "new_path": 0.1183,
+   "reference": 0.1172
+  },
+  {
+   "id": "cust_00007",
+   "new_path": 0.0661,
+   "reference": 0.0674
+  },
+  {
+   "id": "cust_00038",
+   "new_path": 0.0619,
+   "reference": 0.0623
+  },
+  {
+   "id": "cust_00057",
+   "new_path": 0.0364,
+   "reference": 0.036
+  },
+  {
+   "id": "cust_00066",
+   "new_path": 0.1508,
+   "reference": 0.1502
+  },
+  {
+   "id": "cust_00074",
+   "new_path": 0.1318,
+   "reference": 0.1302
+  },
+  {
+   "id": "cust_00106",
+   "new_path": 0.0762,
+   "reference": 0.076
+  },
+  {
+   "id": "cust_00113",
+   "new_path": 0.8318,
+   "reference": 0.8336
+  },
+  {
+   "id": "cust_00135",
+   "new_path": 0.1201,
+   "reference": 0.1195
+  },
+  {
+   "id": "cust_00136",
+   "new_path": 0.165,
+   "reference": 0.1656
+  },
+  {
+   "id": "cust_00143",
+   "new_path": 0.4265,
+   "reference": 0.4226
+  },
+  {
+   "id": "cust_00148",
+   "new_path": 0.1599,
+   "reference": 0.1622
+  },
+  {
+   "id": "cust_00155",
+   "new_path": 0.088,
+   "reference": 0.0867
+  },
+  {
+   "id": "cust_00159",
+   "new_path": 0.8413,
+   "reference": 0.8393
+  },
+  {
+   "id": "cust_00217",
+   "new_path": 0.3166,
+   "reference": 0.3183
+  },
+  {
+   "id": "cust_00265",
+   "new_path": 0.0629,
+   "reference": 0.0637
+  },
+  {
+   "id": "cust_00291",
+   "new_path": 0.1273,
+   "reference": 0.1275
+  },
+  {
+   "id": "cust_00335",
+   "new_path": 0.1376,
+   "reference": 0.1375
+  },
+  {
+   "id": "cust_00363",
+   "new_path": 0.661,
+   "reference": 0.6575
+  },
+  {
+   "id": "cust_00368",
+   "new_path": 0.3815,
+   "reference": 0.3821
+  },
+  {
+   "id": "cust_00379",
+   "new_path": 0.0276,
+   "reference": 0.028
+  },
+  {
+   "id": "cust_00397",
+   "new_path": 0.0504,
+   "reference": 0.0506
+  },
+  {
+   "id": "cust_00423",
+   "new_path": 0.0761,
+   "reference": 0.0774
+  },
+  {
+   "id": "cust_00424",
+   "new_path": 0.714,
+   "reference": 0.7132
+  },
+  {
+   "id": "cust_00429",
+   "new_path": 0.1193,
+   "reference": 0.12
+  },
+  {
+   "id": "cust_00432",
+   "new_path": 0.0616,
+   "reference": 0.0619
+  },
+  {
+   "id": "cust_00438",
+   "new_path": 0.0355,
+   "reference": 0.0365
+  },
+  {
+   "id": "cust_00450",
+   "new_path": 0.0833,
+   "reference": 0.0833
+  },
+  {
+   "id": "cust_00454",
+   "new_path": 0.0776,
+   "reference": 0.078
+  },
+  {
+   "id": "cust_00470",
+   "new_path": 0.0656,
+   "reference": 0.0659
+  },
+  {
+   "id": "cust_00479",
+   "new_path": 0.2314,
+   "reference": 0.2378
+  },
+  {
+   "id": "cust_00483",
+   "new_path": 0.0933,
+   "reference": 0.0931
+  },
+  {
+   "id": "cust_00517",
+   "new_path": 0.1131,
+   "reference": 0.1138
+  },
+  {
+   "id": "cust_00520",
+   "new_path": 0.0291,
+   "reference": 0.0289
+  },
+  {
+   "id": "cust_00548",
+   "new_path": 0.2488,
+   "reference": 0.2487
+  },
+  {
+   "id": "cust_00565",
+   "new_path": 0.659,
+   "reference": 0.661
+  },
+  {
+   "id": "cust_00581",
+   "new_path": 0.2747,
+   "reference": 0.2736
+  },
+  {
+   "id": "cust_00597",
+   "new_path": 0.05,
+   "reference": 0.0483
+  },
+  {
+   "id": "cust_00601",
+   "new_path": 0.0366,
+   "reference": 0.0362
+  },
+  {
+   "id": "cust_00606",
+   "new_path": 0.4999,
+   "reference": 0.4969
+  },
+  {
+   "id": "cust_00616",
+   "new_path": 0.0343,
+   "reference": 0.0357
+  },
+  {
+   "id": "cust_00638",
+   "new_path": 0.0524,
+   "reference": 0.0525
+  },
+  {
+   "id": "cust_00647",
+   "new_path": 0.6926,
+   "reference": 0.6936
+  },
+  {
+   "id": "cust_00655",
+   "new_path": 0.1048,
+   "reference": 0.1022
+  },
+  {
+   "id": "cust_00675",
+   "new_path": 0.0309,
+   "reference": 0.0305
+  },
+  {
+   "id": "cust_00681",
+   "new_path": 0.0372,
+   "reference": 0.0375
+  },
+  {
+   "id": "cust_00688",
+   "new_path": 0.0907,
+   "reference": 0.0902
+  },
+  {
+   "id": "cust_00701",
+   "new_path": 0.0989,
+   "reference": 0.0999
+  },
+  {
+   "id": "cust_00730",
+   "new_path": 0.4056,
+   "reference": 0.4069
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+kev-0.8b-ft-fp8-dynamic: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); fp8-dynamic (FP8 e4m3 weights and activations, dynamic per-row scales (torchao), no data used; torchao 0.16.0, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+20 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/smoke/kev-0.8b-ft-fp8-dynamic.jsonl
+Traceback (most recent call last):
+  File "/home/can-ai-know-when-its-wrong/runners/kev.py", line 234, in <module>
+    main()
+  File "/home/can-ai-know-when-its-wrong/runners/kev.py", line 218, in main
+    run(predictor, args)
+  File "/home/can-ai-know-when-its-wrong/runners/harness.py", line 305, in run
+    for row, pred, exc in results:
+                          ^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/runners/harness.py", line 296, in attempt
+    return row, predictor.predict(request_for(row, condition)), None
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/runners/kev.py", line 169, in predict
+    resp = _http_json(f"{self.base_url}/v1/systemone", body)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/runners/kev.py", line 73, in _http_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310 (local URL)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 1386, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/urllib/request.py", line 1361, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/http/client.py", line 1478, in getresponse
+    response.begin()
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/http/client.py", line 343, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/http/client.py", line 304, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/uv-python/cpython-3.12.16-linux-x86_64-gnu/lib/python3.12/socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out

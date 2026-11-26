@@ -1,0 +1,9 @@
+kev-0.8b-ft-hqq-4-aoint4: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-aoint4 (post 4's hqq-4 weights on aten._weight_int4pack_mm (HQQ torchao_int4 backend, bf16); hqq 0.2.8.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+20 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/smoke/kev-0.8b-ft-hqq-4-aoint4.jsonl
+  trained: 20 new in 1.2s | mean p 0.253 vs actual 0.200 | exactly 0 or 1: 0 | cost $0.0001
+kev-0.8b-ft-hqq-4-aoint4: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-aoint4 (post 4's hqq-4 weights on aten._weight_int4pack_mm (HQQ torchao_int4 backend, bf16); hqq 0.2.8.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft-hqq-4-aoint4.jsonl
+  trained: 2000 new in 79.2s | mean p 0.203 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0093
+kev-0.8b-ft-hqq-4-aoint4: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-aoint4 (post 4's hqq-4 weights on aten._weight_int4pack_mm (HQQ torchao_int4 backend, bf16); hqq 0.2.8.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-0.8b-ft-hqq-4-aoint4.jsonl
+  trained: 2000 new in 80.2s | mean p 0.200 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0094

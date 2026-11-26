@@ -1,0 +1,78 @@
+{
+  "contestant": "kev-0.8b-ft-bnb-nf4-tuned",
+  "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); bnb-nf4-tuned (post 4's bnb-nf4, fast setup; bitsandbytes 0.50.2, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 11.618699530999038,
+      "customers_per_second": 43.034076117209594,
+      "cost_per_1000_usd": 0.0028401265520219873,
+      "latency_ms_median": 22.903910000195538,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 8.19649738399903,
+      "customers_per_second": 61.00166651380696,
+      "cost_per_1000_usd": 0.0020035882494219854,
+      "latency_ms_median": 125.22891699973115,
+      "max_abs_diff_vs_batch_1": 0.006900000000000017
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 7.792096831998606,
+      "customers_per_second": 64.16758040617859,
+      "cost_per_1000_usd": 0.0019047347811552147,
+      "latency_ms_median": 461.3243379999403,
+      "max_abs_diff_vs_batch_1": 0.007500000000000007
+    }
+  },
+  "quantization": {
+    "precision": "bnb-nf4",
+    "description": "bnb-nf4-tuned (post 4's bnb-nf4, fast setup; bitsandbytes 0.50.2, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+    "library": "bitsandbytes",
+    "version": "0.50.2",
+    "settings": {
+      "quant_type": "nf4",
+      "blocksize": 64,
+      "compress_statistics": false,
+      "compute_dtype": "bfloat16"
+    },
+    "linear_layers": 186,
+    "quantized_layers": 186,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+    "tag": "bnb-nf4-tuned",
+    "base_precision": "bnb-nf4",
+    "versions": {
+      "bitsandbytes": "0.50.2",
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.5.2",
+      "torch": "2.8.0"
+    },
+    "fast_layers_missing": [],
+    "run": "/home/runs/kev-0.8b-ft",
+    "device": "cuda",
+    "torch": "2.8.0+cu128",
+    "memory_after_load": {
+      "allocated": 3044157440,
+      "max_allocated": 3793495040,
+      "reserved": 3506438144
+    },
+    "memory_now": {
+      "allocated": 3150790656,
+      "max_allocated": 3347149312,
+      "reserved": 3951034368
+    },
+    "cuda_graphs": {
+      "captured": 4,
+      "kept": 4,
+      "pending": 0,
+      "failed": 0
+    },
+    "fused": false
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T15:49:54Z"
+}

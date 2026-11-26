@@ -1,0 +1,80 @@
+{
+  "contestant": "kev-0.8b-ft-hqq-4-gemlite",
+  "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.5.1.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 12.172397048999755,
+      "customers_per_second": 41.07654375611142,
+      "cost_per_1000_usd": 0.00297547483419994,
+      "latency_ms_median": 24.145461499983867,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 8.333829841999886,
+      "customers_per_second": 59.99642535058215,
+      "cost_per_1000_usd": 0.0020371584058221943,
+      "latency_ms_median": 128.12078749993816,
+      "max_abs_diff_vs_batch_1": 0.005900000000000016
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 8.106331046999912,
+      "customers_per_second": 61.68018516651204,
+      "cost_per_1000_usd": 0.001981547589266645,
+      "latency_ms_median": 487.35418249975737,
+      "max_abs_diff_vs_batch_1": 0.005900000000000016
+    }
+  },
+  "quantization": {
+    "precision": "hqq-4",
+    "description": "hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.5.1.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+    "library": "hqq",
+    "version": "0.2.8.post1",
+    "settings": {
+      "nbits": 4,
+      "group_size": 64,
+      "axis": 1,
+      "compute_dtype": "bfloat16"
+    },
+    "linear_layers": 186,
+    "quantized_layers": 186,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+    "tag": "hqq-4-gemlite",
+    "base_precision": "hqq-4",
+    "versions": {
+      "hqq": "0.2.8.post1",
+      "gemlite": "0.5.1.post1",
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.5.2",
+      "torch": "2.8.0"
+    },
+    "fast_layers_missing": [],
+    "hqq_backend": "gemlite",
+    "run": "/home/runs/kev-0.8b-ft",
+    "device": "cuda",
+    "torch": "2.8.0+cu128",
+    "memory_after_load": {
+      "allocated": 3044908032,
+      "max_allocated": 3912345088,
+      "reserved": 3332374528
+    },
+    "memory_now": {
+      "allocated": 3151614976,
+      "max_allocated": 3404716544,
+      "reserved": 3764387840
+    },
+    "cuda_graphs": {
+      "captured": 4,
+      "kept": 4,
+      "pending": 0,
+      "failed": 0
+    },
+    "fused": false
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T15:59:59Z"
+}

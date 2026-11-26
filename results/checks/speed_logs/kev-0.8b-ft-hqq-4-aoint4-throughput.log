@@ -1,0 +1,5 @@
+kev-0.8b-ft-hqq-4-aoint4: 500 tune customers at (1, 8, 32) at a time
+   1 at a time: 25.4 customers/s, $0.0048 per 1,000, max |diff| vs one at a time 0.0000
+   8 at a time: 27.8 customers/s, $0.0044 per 1,000, max |diff| vs one at a time 0.0032
+  32 at a time: 25.3 customers/s, $0.0048 per 1,000, max |diff| vs one at a time 0.0032
+Saved -> /home/can-ai-know-when-its-wrong/results/checks/speed/kev-0.8b-ft-hqq-4-aoint4.json

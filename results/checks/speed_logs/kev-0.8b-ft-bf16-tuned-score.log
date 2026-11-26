@@ -1,0 +1,2 @@
+The server reports precision 'bf16', not 'bf16-tuned'; restart it with --precision bf16-tuned.
+kev-0.8b-ft-bf16-tuned vs kev-0.8b-ft-bf16 on 50 tune customers: mean |diff| 0.0013, max 0.0056 -> PASS (repro_kev-0.8b-ft-bf16-tuned.json)

@@ -11,13 +11,23 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
 | Environment | torch / Triton | torchao | GemLite | flash-linear-attention | causal-conv1d |
 |---|---|---|---|---|---|
 | This repo (`uv run --no-sync`) | 2.15.0+cu132 / 3.9.0 | 0.18.0 | 0.6.0.post2 | 0.6.0 (fla-core 0.6.0) | 1.7.0 (built from source, sm_89) |
-| Kev (`/home/kev`, 65b1e76) | 2.8.0+cu128 / 3.4.0 | 0.13.0 | 0.5.1.post1 | 0.5.2 (fla-core 0.5.2) | 1.7.0 |
+| Kev (`/home/kev`, 65b1e76) | 2.8.0+cu128 / 3.4.0 | 0.16.0 (not the runbook's 0.13.0; see below) | 0.5.1.post1 | 0.5.2 (fla-core 0.5.2) | 1.7.0 |
 
 - **Post 4's pins are unchanged:** bitsandbytes 0.50.2 and hqq 0.2.8.post1 in both environments.
 - **torchao 0.18.0 in this repo:** no torchao release lists torch 2.15. torchao's compatibility table (pytorch/ao#2919) says the CUDA kernels are ABI-stable from 0.17 (0.17 is listed for "torch 2.11.0+"). So the newest release, 0.18.0 (CI pinned to torch 2.13), is the match for 2.15. It imports, and its FP8 dynamic setting loads.
 - **GemLite differs between the environments:** GemLite 0.6.x requires a newer Triton, and installing it into Kev's environment would replace Triton 3.4 with 3.9, which breaks torch 2.8. Kev therefore has 0.5.1.post1, the newest that leaves Triton 3.4 in place. This repo (Qwen) has 0.6.0.post2. Each record's `model_version` carries its own version.
+- **torchao 0.16.0 in Kev, not 0.13.0 (the author's decision, 2026-11-26):** with 0.13.0 installed, Kev's launcher crashed on load at every tag, `bf16-tuned` included. Kev's PEFT 0.21.0 raises `ImportError` for any torchao below 0.16.0 while it loads the LoRA adapter. torchao's table lists 0.16.0 for torch 2.8 through its Python API only, without torchao's own C++ kernels. FP8 dynamic runs on torch's built-in `_scaled_mm`, and only Kev's `fp8-dynamic` uses torchao. The install left torch 2.8 and Triton 3.4 unchanged.
 - **FLA 0.5.2 imports with Kev's Triton**, unlike session A's 0.6.0. Kev's fused path, which pins 0.5.2, is therefore available for `bf16-tuned`.
 - **Tests:** 212 passed, 1 skipped (`test_training.py` needs the train split rendered, which §7.0 skips).
+- **Runner fix (no design change):** `runners/kev.py` refused every speed-tag server. The launcher reports the base precision under `precision` (e.g. `bf16`) and the tag under `tag` (`speed.apply`), but the runner compared `precision` with the tag. The tests' fake server had reported the tag as `precision`. The runner now checks `tag` and falls back to `precision` for post 4's servers, and the fake server now reports what the real one does.
+
+**Kev-0.8B (done, 21:17–21:35 IST):**
+- **Reproduction checks:** `bf16-tuned` against `bf16`, mean |diff| 0.0013 (max 0.0056). `bnb-nf4-tuned` against `bnb-nf4`, 0.0011 (max 0.0064). Both PASS.
+- **Fused kernels:** on for `bf16-tuned`. The launcher turns them off for the shrunk tags.
+- **CUDA graphs:** none failed. `hqq-4-aoint4` ended with 1 pending.
+- **Batching:** every batch-size difference was at most 0.0075.
+- **Full runs:** `hqq-4-aoint4` and `hqq-4-gemlite` completed tune and test.
+- **`fp8-dynamic` failed (recorded, stage smoke):** the server produced a NaN on the first request (`ValueError: Out of range float values are not JSON compliant: nan`). It ran torchao 0.16.0's Python API on torch 2.8, with CUDA graphs on. Skipped, not replaced.
 
 ## Post 4 draft (2026-11-26): in the author's review
 

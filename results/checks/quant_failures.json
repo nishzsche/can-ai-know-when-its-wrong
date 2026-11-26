@@ -1,0 +1,9 @@
+{
+  "kev-0.8b-ft-fp8-dynamic": {
+    "model": "kev-0.8b-ft",
+    "precision": "fp8-dynamic",
+    "stage": "smoke",
+    "error": "ValueError: Out of range float values are not JSON compliant: nan (Kev's server produced a NaN answer on the first smoke request; torchao 0.16.0 Python API with torch 2.8.0, CUDA graphs on; the runner then timed out)",
+    "recorded_at": "2026-11-26T16:04:50Z"
+  }
+}

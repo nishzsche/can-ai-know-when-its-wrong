@@ -75,7 +75,7 @@ To see what that means for a lender, I used the setup from [post 2](https://nish
 
 | Version | Approve/decline decisions that differ from full size, at the full-size cut-off |
 |---|---|
-| The same full-size model, run again through the new code | 0.2% (both Kev models), 1.4% (Qwen) |
+| The same full-size model, run again through the new code | 0.2% (Kev-4B), 0.4% (Kev-0.8B), 1.5% (Qwen) |
 | 8 bits | 0.9–3.3% |
 | 4 bits, NF4 | 1.5–3.4% |
 | 4 bits, HQQ | 2.6–7.1% |
@@ -130,7 +130,7 @@ Before any of these runs, I [wrote down](https://github.com/nishzsche/can-ai-kno
 - **Treat shrinking as a material model change, not an IT change.** Agree tolerances first: how many decisions may change, how far any one customer may move, how far the calibration slope and the spread of scores may shift. Most of this needs no outcomes: score the same customers with both versions on day one. Then revalidate, and re-set the cut-off and any calibration through the usual approval process.
 - **8 bits and the common 4-bit format passed here.** The average customer moved less than a point, though a few moved up to 9. That tells you where to start testing, not whether to skip it.
 - **The tool matters as much as the size, at least here.** At the same 4 bits, HQQ moved the answers 1.5 to 3.2 times as much as NF4. One likely reason: NF4 spaces its 16 levels to match the bell-shaped spread of a model's numbers, while HQQ spaces them evenly.
-- **Record the whole setup with every score.** Each prediction here carries its size and library versions. Record the GPU, the kernels and the drivers too, and treat a library upgrade as a model change: the same full-size Qwen, run a second way, changed 1.4% of decisions. Even the batch size matters: scoring Qwen 8 or 32 customers at a time moved its answers by up to 3 points (5 with FP8), against under 1 for Kev.
+- **Record the whole setup with every score.** Each prediction here carries its size and library versions. Record the GPU, the kernels and the drivers too, and treat a library upgrade as a model change: the same full-size Qwen, run a second way, changed 1.5% of decisions. Even the batch size matters: scoring Qwen 8 or 32 customers at a time moved its answers by up to 3 points (5 with FP8), against under 1 for Kev.
 - **Price the saving on your own setup before counting on it.** Shrinking cut memory by more than half every time. On a tuned GPU it beat full size's speed in one case out of nine, by 11%, and matched it in one more. Tuning the setup changed speed by up to three times, more than any size did. If the reason to shrink is cost, the saving comes from a smaller or shared GPU, so that's what to price.
 
 ## What this test can't tell you

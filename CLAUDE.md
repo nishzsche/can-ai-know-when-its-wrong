@@ -75,6 +75,7 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
 - `uv run python writeup/build_carousel.py` — the LinkedIn carousel PDF (`writeup/carousel.pdf`) from `writeup/carousel.md` and the results (`--png DIR` for slide previews)
 - `uv run python writeup/build_accuracy_carousel.py` — post 2's carousel (`writeup/accuracy_carousel.pdf`) from the `## Slides` section of `writeup/accuracy_linkedin.md` (`--png DIR` for previews). Every post gets one; see the carousel rules in `writeup/STYLE.md`.
 - `uv run python writeup/build_fair_fight_carousel.py` — post 3's carousel (`writeup/fair_fight_carousel.pdf`) from the `## Slides` section of `writeup/fair_fight_linkedin.md`, drawn from the M6 predictions through `analysis/fair_fight_figures.py` (`--png DIR` for previews; the paired test on slide 3 takes a minute or two)
+- `uv run python writeup/build_quantization_carousel.py` — post 4's carousel (`writeup/quantization_carousel.pdf`) from the `## Slides` section of `writeup/quantization_linkedin.md`, drawn from `results/quantization.csv`, the speed results and the predictions through `analysis/quantization_figures.py` (`--png DIR` for previews)
 - **Posts 4 and 5 (PLAN.md §12; the GPU commands are in L4_RUNBOOK.md §7):**
   - **Precision tags:** `bf16`, `bnb-int8`, `bnb-nf4`, `hqq-4`, `hqq-3`, `hqq-2` (`runners/quantize.py`; the pinned libraries are in `--group quant`).
   - **Serving and scoring:**

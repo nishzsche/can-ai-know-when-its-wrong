@@ -29,6 +29,14 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
 - **Full runs:** `hqq-4-aoint4` and `hqq-4-gemlite` completed tune and test.
 - **`fp8-dynamic` failed (recorded, stage smoke):** the server produced a NaN on the first request (`ValueError: Out of range float values are not JSON compliant: nan`). It ran torchao 0.16.0's Python API on torch 2.8, with CUDA graphs on. Skipped, not replaced.
 
+**Qwen (done, 21:35–23:03 IST, with an interruption):**
+- **Reproduction checks:** `bf16-tuned` against `bf16`, mean |diff| 0.0052 (max 0.0310). `bnb-nf4-tuned` against `bnb-nf4`, 0.0058 (max 0.0278). Both PASS on the mean (limit 0.02), although single customers differ by up to 0.03.
+- **`hqq-4-aoint4` failed (recorded, stage load):** HQQ 0.2.8.post1's `torchao_int4` backend passes non-uint8 weights to torch 2.15's int4 packing op (`RuntimeError: Expected in.dtype() == at::kByte`). Kev's torch 2.8 accepted them. Skipped, not replaced. No throughput run.
+- **Full runs:** `hqq-4-gemlite` and `fp8-dynamic` completed tune and test.
+- **Instance reboot:** the instance went down at 16:20 UTC and came back at 16:57, during `hqq-4-gemlite`'s test split. At that point tune was complete and test had 11 of 2,000 records. At 16:58 something outside the session re-synced this repo's `.venv` without the runner groups, which removed torch. The environment was restored to the same versions (the same `uv sync` groups, then the same four fast libraries). The run resumed from its saved records: all 4,000 share one `model_version`, with no duplicates and no NaN. The ~45 idle minutes are billed.
+- **Batching moves Qwen's answers by more than 0.01:** up to 0.031 for `bf16-tuned`, `bnb-nf4-tuned` and `hqq-4-gemlite`, and 0.052 (8 at a time) for `fp8-dynamic`. Batches are left-padded, one forward pass each. Kev stayed at 0.0075 or less.
+- **Throughput, one at a time:** customers per second, `bf16-tuned` 12.8, `bnb-nf4-tuned` 9.2, `hqq-4-gemlite` 11.8, `fp8-dynamic` 12.9. Batching barely helps, and at 32 at a time it is slower for three of the four tags.
+
 ## Post 4 draft (2026-11-26): in the author's review
 
 `writeup/quantization_post.md`, "I shrank AI models to save money. They stayed honest, and got slower." About 2,400 words with tables and four charts (`analysis/quantization_figures.py` → `results/figures/post4_{ranking,honesty,drift,cost}.png`, light and dark).

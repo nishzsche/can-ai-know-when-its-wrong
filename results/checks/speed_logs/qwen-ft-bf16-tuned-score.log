@@ -1,0 +1,5 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 1/426 [00:00<01:09,  6.13it/s]Loading weights:  35%|███▍      | 148/426 [00:00<00:00, 687.97it/s]Loading weights:  55%|█████▌    | 235/426 [00:00<00:00, 739.13it/s]Loading weights:  75%|███████▍  | 319/426 [00:00<00:00, 743.07it/s]Loading weights:  94%|█████████▍| 400/426 [00:00<00:00, 743.86it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 684.78it/s]
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/triton/knobs.py:504: UserWarning: TRITON_DEFAULT_FP_FUSION is unset: defaulting to FP fusion ENABLED for backward compatibility in Triton 3.9. The default will change to DISABLED in Triton 3.10; set TRITON_DEFAULT_FP_FUSION=1 to keep fusion enabled or =0 to adopt the new default early and silence this warning.
+  warn_once(FP_FUSION_DEFAULT_WARNING)
+qwen-ft-bf16-tuned vs qwen-ft-bf16 on 50 tune customers: mean |diff| 0.0052, max 0.0310 -> PASS (repro_qwen-ft-bf16-tuned.json)

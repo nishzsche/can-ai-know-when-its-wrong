@@ -1,0 +1,61 @@
+{
+  "contestant": "qwen-ft-bnb-nf4-tuned",
+  "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bnb-nf4-tuned (post 4's bnb-nf4, fast setup; bitsandbytes 0.50.2, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0); torch.compile (dynamic shapes)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 54.56591259799916,
+      "customers_per_second": 9.163229866301808,
+      "cost_per_1000_usd": 0.013338334190622017,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 40.676558502999114,
+      "customers_per_second": 12.292092015678628,
+      "cost_per_1000_usd": 0.00994315874517756,
+      "max_abs_diff_vs_batch_1": 0.031209051609039307
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 40.25773330500033,
+      "customers_per_second": 12.419973976475621,
+      "cost_per_1000_usd": 0.009840779252333414,
+      "max_abs_diff_vs_batch_1": 0.031209051609039307
+    }
+  },
+  "quantization": {
+    "precision": "bnb-nf4",
+    "description": "bnb-nf4-tuned (post 4's bnb-nf4, fast setup; bitsandbytes 0.50.2, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0)",
+    "library": "bitsandbytes",
+    "version": "0.50.2",
+    "settings": {
+      "quant_type": "nf4",
+      "blocksize": 64,
+      "compress_statistics": false,
+      "compute_dtype": "bfloat16"
+    },
+    "linear_layers": 249,
+    "quantized_layers": 248,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+    "tag": "bnb-nf4-tuned",
+    "base_precision": "bnb-nf4",
+    "versions": {
+      "bitsandbytes": "0.50.2",
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.6.0",
+      "torch": "2.15.0"
+    },
+    "fast_layers_missing": [],
+    "compiled": true,
+    "memory_after_load": {
+      "allocated": 3307075584,
+      "max_allocated": 8551124992,
+      "reserved": 3502243840
+    }
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T17:24:18Z"
+}

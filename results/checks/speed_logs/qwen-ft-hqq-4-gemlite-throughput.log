@@ -1,0 +1,7 @@
+Loaded /home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/gemlite/configs/l4.json config.
+qwen-ft-hqq-4-gemlite: 500 tune customers at (1, 8, 32) at a time
+   1 at a time: 11.8 customers/s, $0.0104 per 1,000, max |diff| vs one at a time 0.0000
+   8 at a time: 10.2 customers/s, $0.0120 per 1,000, max |diff| vs one at a time 0.0312
+  32 at a time: 8.9 customers/s, $0.0137 per 1,000, max |diff| vs one at a time 0.0312
+Saved -> /home/can-ai-know-when-its-wrong/results/checks/speed/qwen-ft-hqq-4-gemlite.json
+EXIT 0

@@ -1,0 +1,6 @@
+qwen-ft-fp8-dynamic: 500 tune customers at (1, 8, 32) at a time
+   1 at a time: 12.9 customers/s, $0.0095 per 1,000, max |diff| vs one at a time 0.0000
+   8 at a time: 11.6 customers/s, $0.0105 per 1,000, max |diff| vs one at a time 0.0519
+  32 at a time: 10.0 customers/s, $0.0122 per 1,000, max |diff| vs one at a time 0.0278
+Saved -> /home/can-ai-know-when-its-wrong/results/checks/speed/qwen-ft-fp8-dynamic.json
+EXIT 0

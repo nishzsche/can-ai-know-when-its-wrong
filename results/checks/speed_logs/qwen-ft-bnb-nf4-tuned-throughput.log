@@ -1,0 +1,6 @@
+qwen-ft-bnb-nf4-tuned: 500 tune customers at (1, 8, 32) at a time
+   1 at a time: 9.2 customers/s, $0.0133 per 1,000, max |diff| vs one at a time 0.0000
+   8 at a time: 12.3 customers/s, $0.0099 per 1,000, max |diff| vs one at a time 0.0312
+  32 at a time: 12.4 customers/s, $0.0098 per 1,000, max |diff| vs one at a time 0.0312
+Saved -> /home/can-ai-know-when-its-wrong/results/checks/speed/qwen-ft-bnb-nf4-tuned.json
+EXIT 0

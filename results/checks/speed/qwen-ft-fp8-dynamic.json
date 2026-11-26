@@ -1,0 +1,56 @@
+{
+  "contestant": "qwen-ft-fp8-dynamic",
+  "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); fp8-dynamic (FP8 e4m3 weights and activations, dynamic per-row scales (torchao), no data used; torchao 0.18.0, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0); torch.compile (dynamic shapes)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 38.664112635000265,
+      "customers_per_second": 12.93188866689211,
+      "cost_per_1000_usd": 0.009451227533000064,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 43.03556793999837,
+      "customers_per_second": 11.618296770176629,
+      "cost_per_1000_usd": 0.010519805496444047,
+      "max_abs_diff_vs_batch_1": 0.05187976360321045
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 49.85293474899845,
+      "customers_per_second": 10.029499818163565,
+      "cost_per_1000_usd": 0.012186272938644065,
+      "max_abs_diff_vs_batch_1": 0.027823418378829956
+    }
+  },
+  "quantization": {
+    "precision": "bf16",
+    "description": "fp8-dynamic (FP8 e4m3 weights and activations, dynamic per-row scales (torchao), no data used; torchao 0.18.0, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0)",
+    "library": "torchao",
+    "version": "0.18.0",
+    "settings": {},
+    "linear_layers": 249,
+    "quantized_layers": 248,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+    "tag": "fp8-dynamic",
+    "base_precision": "bf16",
+    "versions": {
+      "torchao": "0.18.0",
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.6.0",
+      "torch": "2.15.0"
+    },
+    "fast_layers_missing": [],
+    "compiled": true,
+    "memory_after_load": {
+      "allocated": 4878444544,
+      "max_allocated": 8776893440,
+      "reserved": 5192548352
+    }
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T17:33:23Z"
+}

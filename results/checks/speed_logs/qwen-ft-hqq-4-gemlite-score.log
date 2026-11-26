@@ -1,0 +1,20 @@
+Loaded /home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/gemlite/configs/l4.json config.
+Traceback (most recent call last):
+  File "/home/can-ai-know-when-its-wrong/runners/qwen_ft.py", line 260, in <module>
+    main()
+  File "/home/can-ai-know-when-its-wrong/runners/qwen_ft.py", line 249, in main
+    predictor = QwenFTPredictor(args.adapter, args.device, args.usd_per_hour, args.precision,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/runners/qwen_ft.py", line 84, in __init__
+    import torch
+ModuleNotFoundError: No module named 'torch'
+EXIT 0
+--- resumed 2026-11-26T17:05:32Z after the instance rebooted (16:20-16:57 UTC) ---
+Loaded /home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/gemlite/configs/l4.json config.
+qwen-ft-hqq-4-gemlite: qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.6.0.post2, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0); torch.compile (dynamic shapes)
+2000 tune customers x 1 condition(s); 2011 records already in /home/can-ai-know-when-its-wrong/results/predictions/qwen-ft-hqq-4-gemlite.jsonl
+  trained: nothing new
+qwen-ft-hqq-4-gemlite: qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.6.0.post2, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0); torch.compile (dynamic shapes)
+2000 test customers x 1 condition(s); 2011 records already in /home/can-ai-know-when-its-wrong/results/predictions/qwen-ft-hqq-4-gemlite.jsonl
+  trained: 1989 new in 246.2s | mean p 0.193 vs actual 0.220 | exactly 0 or 1: 0 | cost $0.0298
+EXIT 0

@@ -1,0 +1,55 @@
+{
+  "contestant": "qwen-ft-bf16-tuned",
+  "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16-tuned (bf16, not quantized, fast setup; causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0); torch.compile (dynamic shapes)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 38.93063399699827,
+      "customers_per_second": 12.843356212450903,
+      "cost_per_1000_usd": 0.009516377199266244,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 38.34097227200027,
+      "customers_per_second": 13.040879517944335,
+      "cost_per_1000_usd": 0.009372237666488955,
+      "max_abs_diff_vs_batch_1": 0.03120899200439453
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 47.56267061899962,
+      "customers_per_second": 10.512445863379831,
+      "cost_per_1000_usd": 0.011626430595755462,
+      "max_abs_diff_vs_batch_1": 0.03120875358581543
+    }
+  },
+  "quantization": {
+    "precision": "bf16",
+    "description": "bf16-tuned (bf16, not quantized, fast setup; causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0)",
+    "library": null,
+    "version": null,
+    "settings": {},
+    "linear_layers": 249,
+    "quantized_layers": 0,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+    "tag": "bf16-tuned",
+    "base_precision": "bf16",
+    "versions": {
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.6.0",
+      "torch": "2.15.0"
+    },
+    "fast_layers_missing": [],
+    "compiled": true,
+    "memory_after_load": {
+      "allocated": 8512194560,
+      "max_allocated": 8512194560,
+      "reserved": 8514437120
+    }
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T17:20:55Z"
+}

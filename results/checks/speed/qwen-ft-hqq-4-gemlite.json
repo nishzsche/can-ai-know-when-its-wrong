@@ -1,0 +1,63 @@
+{
+  "contestant": "qwen-ft-hqq-4-gemlite",
+  "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.6.0.post2, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0); torch.compile (dynamic shapes)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 42.40683692799803,
+      "customers_per_second": 11.790551623761587,
+      "cost_per_1000_usd": 0.01036611569351063,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 48.90910748200008,
+      "customers_per_second": 10.223044863045477,
+      "cost_per_1000_usd": 0.011955559606711132,
+      "max_abs_diff_vs_batch_1": 0.031209081411361694
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 55.88202978800018,
+      "customers_per_second": 8.947420161666486,
+      "cost_per_1000_usd": 0.013660051725955602,
+      "max_abs_diff_vs_batch_1": 0.031208902597427368
+    }
+  },
+  "quantization": {
+    "precision": "hqq-4",
+    "description": "hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.6.0.post2, causal-conv1d 1.7.0, flash-linear-attention 0.6.0, torch 2.15.0)",
+    "library": "hqq",
+    "version": "0.2.8.post1",
+    "settings": {
+      "nbits": 4,
+      "group_size": 64,
+      "axis": 1,
+      "compute_dtype": "bfloat16"
+    },
+    "linear_layers": 249,
+    "quantized_layers": 248,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+    "tag": "hqq-4-gemlite",
+    "base_precision": "hqq-4",
+    "versions": {
+      "hqq": "0.2.8.post1",
+      "gemlite": "0.6.0.post2",
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.6.0",
+      "torch": "2.15.0"
+    },
+    "fast_layers_missing": [],
+    "hqq_backend": "gemlite",
+    "compiled": true,
+    "memory_after_load": {
+      "allocated": 3357108736,
+      "max_allocated": 8989913600,
+      "reserved": 3412066304
+    }
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T17:29:00Z"
+}

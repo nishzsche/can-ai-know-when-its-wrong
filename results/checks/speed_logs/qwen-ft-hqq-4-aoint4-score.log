@@ -1,0 +1,40 @@
+Loaded /home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/gemlite/configs/l4.json config.
+Traceback (most recent call last):
+  File "/home/can-ai-know-when-its-wrong/runners/qwen_ft.py", line 260, in <module>
+    main()
+  File "/home/can-ai-know-when-its-wrong/runners/qwen_ft.py", line 249, in main
+    predictor = QwenFTPredictor(args.adapter, args.device, args.usd_per_hour, args.precision,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/runners/qwen_ft.py", line 112, in __init__
+    info = speed_apply(model, precision, device=device)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/runners/speed.py", line 151, in apply
+    prepare_for_inference(model, backend=HQQ_BACKEND[tag])
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/utils/patching.py", line 161, in prepare_for_inference
+    patch_linearlayers(model, patch_hqq_to_aoint4, verbose=verbose)
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/utils/patching.py", line 35, in patch_linearlayers
+    _patch_linear(model)
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/utils/patching.py", line 33, in _patch_linear
+    _patch_linear(layer)
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/utils/patching.py", line 33, in _patch_linear
+    _patch_linear(layer)
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/utils/patching.py", line 33, in _patch_linear
+    _patch_linear(layer)
+  [Previous line repeated 1 more time]
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/utils/patching.py", line 31, in _patch_linear
+    setattr(model, name, fct(layer, patch_param))
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/backends/torchao.py", line 324, in patch_hqq_to_aoint4
+    hqq_aoint4_layer.initialize_with_hqq_quants(
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/backends/torchao.py", line 91, in initialize_with_hqq_quants
+    self.process_hqq_quants(W_q, meta)
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 158, in no_grad
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/hqq/backends/torchao.py", line 193, in process_hqq_quants
+    self.weight_int4pack = torch.ops.aten._convert_weight_to_int4pack(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/torch/_ops.py", line 1350, in __call__
+    return self._op(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected in.dtype() == at::kByte to be true, but got false.  (Could this error message be improved?  If so, please report an enhancement request to PyTorch.)

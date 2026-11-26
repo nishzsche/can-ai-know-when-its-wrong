@@ -142,3 +142,37 @@ To be fair to readers, this is the information visible before writing:
 **Which kind of zero-shot model will be most sensitive to the format?**
 
 > **A small open model** (Kev-0.8B or Laya).
+
+# Post 4 speed addendum predictions (written before any speed run)
+
+**Written 2026-11-26, before any run in PLAN.md §12's "Post 4 speed addendum".** The author answered these in a Q&A with Claude Code on the laptop. The answers are recorded verbatim.
+
+## What was already known when this was written
+
+- **All of post 4's first runs** (`results/quantization.csv`). Those were the untuned setup: every version, full size included, ran two kinds of layers on slow reference code, and the shrunk versions used the libraries' generic paths.
+  - **Median time per answer, full size:** 62 ms (Kev-0.8B), 111 ms (Kev-4B), 120 ms (Qwen).
+  - **4-bit NF4:** 81, 139 and 152 ms.
+  - **4-bit HQQ:** 111, 426 and 286 ms.
+  - **8-bit:** 215, 289 and 164 ms.
+  - **Honesty:** 8-bit and NF4 stayed within half a point of full size.
+- **Post 3's full-size Kev with CUDA graphs on:** 24 ms (Kev-0.8B), 106 ms (Kev-4B).
+- **The review panel's reasoning** (STATUS.md), which the author saw: fused kernels or FP8 "could plausibly win", and a ~250-token prompt is "bandwidth-bound in principle" on the L4.
+- **No run of the new tags** (`bf16-tuned`, `hqq-4-fast`, `fp8-dynamic`), and no throughput run.
+
+## My guesses
+
+**With fast fused kernels and Kev's shortcut back on, will 4-bit (HQQ) answer one customer faster or slower than a properly tuned full-size model?**
+
+> **Faster.**
+
+**Will FP8 (weights and arithmetic both in 8 bits) answer one customer faster or slower than the tuned full-size model?**
+
+> **Faster.**
+
+**Will FP8 change the models' honesty more or less than bitsandbytes 8-bit did (within half a point of full size)?**
+
+> **Less or the same.**
+
+**Scoring 32 customers at a time, which version will cost least per 1,000 decisions?**
+
+> **4-bit NF4.**

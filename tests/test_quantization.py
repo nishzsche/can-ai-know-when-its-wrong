@@ -318,6 +318,17 @@ def test_analysis_scores_against_the_models_own_bf16(tmp_path, monkeypatch):
     assert shrunk["cost_per_1000_usd"] == pytest.approx(0.01)
     assert out["not_scored"]["kev-4b-ft-hqq-2"] == {"recorded_failure": {"error": "load failed"}}
     assert "incomplete" in out["not_scored"]["qwen-ft-bf16"]
+    # Decisions: every customer moved 5 points; swapped in at bf16's cut-off, fewer are approved.
+    from accuracy import tune_cutoff
+
+    cut_ref = tune_cutoff(y_tu.astype(float), p_tu, qa.LOSS)
+    swapped = np.clip(p_te + 0.05, 0, 1) <= cut_ref
+    assert shrunk["moved_5pts_share"] == 1.0
+    assert shrunk["approve_bf16_cutoff"] == pytest.approx(swapped.mean())
+    assert shrunk["decisions_changed_bf16_cutoff"] == pytest.approx(
+        np.mean(swapped != (p_te <= cut_ref)))  # fmt: skip
+    assert shrunk["decisions_changed_vs_bf16"] < shrunk["decisions_changed_bf16_cutoff"]
+    assert "decisions_changed_vs_bf16" not in rows["kev-0.8b-ft-bf16"]
 
 
 def test_record_failure_writes_one_entry_per_pair(tmp_path):

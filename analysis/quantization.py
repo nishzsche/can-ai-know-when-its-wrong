@@ -18,6 +18,9 @@ Per row:
   correction fitted on tune (`trained_calibrated`, analysis/recalibrate.py);
 - lending (post 2, loss ratio 4:1): profit per 1,000 customers approving at the model's own
   percentages (p < 20%), and at the cut-off that maximizes profit on tune;
+- decisions (added while writing, after the runs): the share of approve/decline decisions that
+  differ from bf16's, each at its own tune cut-off; the same model swapped in at bf16's tune
+  cut-off (approval, profit, decisions changed); and the share of customers moved 5+ points;
 - cost: median latency, cost per 1,000 decisions at the L4 rate, the GPU memory the model holds
   after loading (weights), and the peak while scoring.
 """
@@ -87,6 +90,19 @@ def lending(y: np.ndarray, p: np.ndarray, y_tune: np.ndarray, p_tune: np.ndarray
             "profit_tune_cutoff": profit(y, tuned, loss)}  # fmt: skip
 
 
+def decisions(y: np.ndarray, p: np.ndarray, p_ref: np.ndarray, cut: float, cut_ref: float,
+              loss: float = LOSS) -> dict:  # fmt: skip
+    """What changes for a lender (added while writing post 4, after the runs). Each model approves
+    at its own tune cut-off; "swapped in" keeps the bf16 run's tune cut-off, as a lender would who
+    replaced the model without re-checking it. Nothing here is chosen on test."""
+    ref, own, swapped = p_ref <= cut_ref, p <= cut, p <= cut_ref
+    return {"decisions_changed_vs_bf16": float((own != ref).mean()),
+            "approve_bf16_cutoff": float(swapped.mean()),
+            "profit_bf16_cutoff": profit(y, swapped, loss),
+            "decisions_changed_bf16_cutoff": float((swapped != ref).mean()),
+            "moved_5pts_share": float((np.abs(p - p_ref) >= 0.05 - 1e-9).mean())}  # fmt: skip
+
+
 def cost(contestant: str, directory: Path = PREDICTIONS_DIR) -> dict:
     """Latency and cost from the test records; memory from the run metadata and raw records."""
     test = [r for r in read_records(contestant, directory)
@@ -142,6 +158,10 @@ def score_row(model: str, precision: str, directory: Path = PREDICTIONS_DIR) -> 
                     "auc_vs_bf16_hi": hi, "auc_vs_bf16_p": d["p_value"]})  # fmt: skip
     if len(y_tu) == N_TEST:
         row.update(lending(y, p, y_tu, p_tu))
+        _, y_tu_ref, p_tu_ref = split_arrays(ref, "trained", "tune", directory)
+        if precision != "bf16" and len(p_tu_ref) == N_TEST:
+            row.update(decisions(y, p, p_ref, row["tune_cutoff"],
+                                 tune_cutoff(y_tu_ref, p_tu_ref, LOSS)))  # fmt: skip
     row.update(cost(name, directory))
     return row
 

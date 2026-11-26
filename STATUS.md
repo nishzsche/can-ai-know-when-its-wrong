@@ -2,6 +2,13 @@
 
 Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
+## Post 4 draft (2026-11-26): in the author's review
+
+`writeup/quantization_post.md`, "I shrank AI models to save money. They stayed honest, and got slower." About 2,400 words with tables and four charts (`analysis/quantization_figures.py` → `results/figures/post4_{ranking,honesty,drift,cost}.png`, light and dark).
+- **New measures, added while writing (the post says so):** `analysis/quantization.py` now also reports the lending-decision counts. These are the share of approve/decline decisions that differ from bf16 (each at its own tune cut-off), the shrunk model swapped in at bf16's tune cut-off (approval, profit, decisions changed), and the share of customers moved 5+ points. All existing columns are unchanged. The noise floor quoted in the post is two full-size runs (M6 against the session A bf16 re-run): 0.2% of decisions change for Kev and 1.4% for Qwen. It was computed in the session and isn't a column.
+- **Review copy:** https://nishzsche.github.io/review/shrinking-ai-models/ (unlisted, noindex), as post 3's was. It's on the blog's `dev` branch as `review/shrinking-ai-models.md`, with the charts in `public/images/shrinking-ai-models/`. Blog PR #47 must be merged to `main` before the URL goes live.
+- **Still to do after the author's review:** the LinkedIn post and its carousel (`writeup/STYLE.md`: 8–10 slides, a builder script), the X post, the social card, and the README and PLAN status.
+
 ## L4 session A done (2026-11-25 19:43 → 2026-11-26 01:30 IST)
 
 L4_RUNBOOK.md §7 ran in full on the resumed M6 instance: about 5.8 GPU hours, about $2.55. Nothing failed, so there are no `--record-failure` entries. Everything is pushed (last commit `84bd30b`); the instance can be deleted and its GitHub token revoked.

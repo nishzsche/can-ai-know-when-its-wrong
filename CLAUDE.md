@@ -82,5 +82,6 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
     - `runners/kev.py --finetuned DIR --precision <tag>` and `runners/qwen_ft.py --adapter DIR --precision <tag> [--both-splits]` score the shrunk models. Run `--precision bf16 --reproduce-check 50` first.
   - `uv run --group runners python runners/manifest.py --quant` checks post 4's coverage.
   - `uv run python analysis/quantization.py` scores post 4 -> `results/quantization.csv`. `--record-failure NAME --stage S --error TEXT` records a precision that couldn't run.
+  - `uv run python analysis/quantization_figures.py [name ...]` draws post 4's four charts (`results/figures/post4_*.png`, light and dark); names such as `drift cost` redraw only those.
   - `uv run python data/formats.py --show ID` / `--token-report` show post 5's four formats for one customer / count tokens per format.
   - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant <prose|markdown|csv|json>` runs one format on 2,000 test customers, into `results/checks/formats/` (`--report` compares each with v2).

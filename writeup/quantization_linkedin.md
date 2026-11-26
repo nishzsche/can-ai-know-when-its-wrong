@@ -4,7 +4,7 @@ A document post (a swipeable PDF carousel, like posts 1–3): nine square slides
 
 **Attach:** `writeup/quantization_carousel.pdf`, as a document ("Add a document" in the post composer). Document title (LinkedIn allows 58 characters): "I shrank AI models. It saved memory, not time." A post takes images or a document, not both, and its media can't be changed after it's published.
 
-**Blog post:** https://nishzsche.github.io/2026/11/27/shrinking-ai-models/ once blog PR #54 is merged (after 12:00 IST on 27 November; the review URL then redirects to it). If it's ever edited in a way that changes a number, rebuild the carousel before reposting.
+**Blog post:** https://nishzsche.github.io/2026/11/27/shrinking-ai-models/ (blog PRs #54 and #55; dated 00:55 IST on 27 November, and the review URL redirects to it). If it's ever edited in a way that changes a number, rebuild the carousel before reposting.
 
 ## Post text
 

@@ -2,9 +2,26 @@
 
 Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
-## L4 session S (2026-11-26, from 20:59 IST): post 4's speed runs, in progress
+## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:03 IST): post 4's speed runs
 
 L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PREDICTIONS.md` (9f415ea) before any run.
+
+**Outcome:**
+- **Ran:** all three models at `bf16-tuned` and `bnb-nf4-tuned` (reproduction check plus throughput), and at `hqq-4-gemlite` (tune, test, throughput).
+  - `hqq-4-aoint4` ran for Kev-0.8B and Kev-4B.
+  - `fp8-dynamic` ran for Qwen.
+- **Recorded failures (3):** `kev-0.8b-ft-fp8-dynamic` and `kev-4b-ft-fp8-dynamic`, which returned NaN on Kev's server (torchao 0.16.0 Python API, torch 2.8), and `qwen-ft-hqq-4-aoint4`, which failed at load because HQQ 0.2.8's packing is rejected by torch 2.15. These are in `results/checks/quant_failures.json`.
+- **Outputs:**
+  - `analysis/recalibrate.py`: Platt for all six full-run tags. It rewrote the other prediction files with identical values (max |change| 0; timestamps only).
+  - `analysis/speed_report.py` wrote `results/speed.csv`, `results/speed_throughput.csv` and `results/speed.json`.
+  - Logs are in `results/checks/speed_logs/`.
+- **First read (test, against each model's post 4 bf16):**
+  - **Ranking:** every scored tag keeps AUC within 0.003.
+  - **Honesty:** ECE changes from −2.2 points (Kev-0.8B, both HQQ backends) to +0.55 (Qwen GemLite). Qwen FP8 is at ECE 1.6 (−0.76).
+  - **Speed, one at a time:** GemLite 4-bit beats `bf16-tuned` only for Kev-4B (12.1 vs 10.7 per second). `bf16-tuned` is fastest everywhere else, and at 32 at a time.
+  - **Qwen:** batching doesn't speed it up here.
+- **GPU time:** the box was up 15:09–18:33 UTC, about 3.4 h, about $1.50 at $0.44/h. That includes ~30 min of setup and the 16:20–16:57 reboot gap. If the gap wasn't billed, it's about 2.8 h, about $1.23. The JarvisLabs bill is the authority.
+- **Box note:** after the reboot, `/home/env.sh` had been rewritten without `GH_CONFIG_DIR`. Pushes used `GH_CONFIG_DIR=/home/gh-config` explicitly.
 
 **Fast libraries installed (§8.0), before any run.** Each was chosen to match that environment's torch:
 

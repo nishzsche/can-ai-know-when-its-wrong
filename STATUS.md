@@ -2,6 +2,23 @@
 
 Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
+## L4 session S (2026-11-26, from 20:59 IST): post 4's speed runs, in progress
+
+L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PREDICTIONS.md` (9f415ea) before any run.
+
+**Fast libraries installed (§8.0), before any run.** Each was chosen to match that environment's torch:
+
+| Environment | torch / Triton | torchao | GemLite | flash-linear-attention | causal-conv1d |
+|---|---|---|---|---|---|
+| This repo (`uv run --no-sync`) | 2.15.0+cu132 / 3.9.0 | 0.18.0 | 0.6.0.post2 | 0.6.0 (fla-core 0.6.0) | 1.7.0 (built from source, sm_89) |
+| Kev (`/home/kev`, 65b1e76) | 2.8.0+cu128 / 3.4.0 | 0.13.0 | 0.5.1.post1 | 0.5.2 (fla-core 0.5.2) | 1.7.0 |
+
+- **Post 4's pins are unchanged:** bitsandbytes 0.50.2 and hqq 0.2.8.post1 in both environments.
+- **torchao 0.18.0 in this repo:** no torchao release lists torch 2.15. torchao's compatibility table (pytorch/ao#2919) says the CUDA kernels are ABI-stable from 0.17 (0.17 is listed for "torch 2.11.0+"). So the newest release, 0.18.0 (CI pinned to torch 2.13), is the match for 2.15. It imports, and its FP8 dynamic setting loads.
+- **GemLite differs between the environments:** GemLite 0.6.x requires a newer Triton, and installing it into Kev's environment would replace Triton 3.4 with 3.9, which breaks torch 2.8. Kev therefore has 0.5.1.post1, the newest that leaves Triton 3.4 in place. This repo (Qwen) has 0.6.0.post2. Each record's `model_version` carries its own version.
+- **FLA 0.5.2 imports with Kev's Triton**, unlike session A's 0.6.0. Kev's fused path, which pins 0.5.2, is therefore available for `bf16-tuned`.
+- **Tests:** 212 passed, 1 skipped (`test_training.py` needs the train split rendered, which §7.0 skips).
+
 ## Post 4 draft (2026-11-26): in the author's review
 
 `writeup/quantization_post.md`, "I shrank AI models to save money. They stayed honest, and got slower." About 2,400 words with tables and four charts (`analysis/quantization_figures.py` → `results/figures/post4_{ranking,honesty,drift,cost}.png`, light and dark).

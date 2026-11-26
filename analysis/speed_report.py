@@ -37,6 +37,8 @@ OUT_JSON = ROOT / "results" / "speed.json"
 def throughput_rows(directory: Path = SPEED_DIR) -> list[dict]:
     rows = []
     for path in sorted(directory.glob("*.json")) if directory.exists() else []:
+        if path.name.endswith(".server.json"):  # the launcher's stats, saved alongside
+            continue
         d = json.loads(path.read_text("utf-8"))
         for batch, b in d["by_batch"].items():
             rows.append({"contestant": d["contestant"], "batch": int(batch),

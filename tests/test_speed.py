@@ -269,10 +269,14 @@ def test_report_scores_full_runs_against_bf16_and_reads_throughput(tmp_path):
         "contestant": "kev-0.8b-ft-fp8-dynamic", "by_batch": {"1": {
             "customers": 500, "seconds": 10.0, "customers_per_second": 50.0,
             "cost_per_1000_usd": 0.0024, "max_abs_diff_vs_batch_1": 0.0}}}), "utf-8")  # fmt: skip
+    # The runbook saves the launcher's stats alongside; the report must skip them.
+    (speed_dir / "kev-0.8b-ft-fp8-dynamic.server.json").write_text(
+        json.dumps({"tag": "fp8-dynamic", "cuda_graphs": {"captured": 1}}), "utf-8")
     out = sr.build(preds, speed_dir, tmp_path / "repro")
     (row,) = out["honesty"]
     assert row["contestant"] == "kev-0.8b-ft-fp8-dynamic"
     assert row["mean_shift_vs_bf16"] == pytest.approx(0.01, abs=1e-3)
     assert "ece_vs_bf16_p_holm" in row and "auc_vs_bf16_p_holm" in row
+    assert len(out["throughput"]) == 1
     assert out["throughput"][0]["customers_per_second"] == 50.0
     assert "qwen-ft-hqq-4-aoint4" in out["not_scored"]

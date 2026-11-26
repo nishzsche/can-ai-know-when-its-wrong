@@ -1,14 +1,12 @@
-# I shrank AI models to save money. They stayed honest, and got slower.
+# I shrank AI models. It saved memory, not time.
 
-<!-- PENDING (2026-11-26): title, subtitle and the speed section wait for the extra speed runs (STATUS.md, PLAN.md §12 post 4 addendum). The review panel found "stayed honest" overclaims (both Kev models are outside the chance band at full size) and the title is over LinkedIn's 58-character document limit. -->
-
-*Three trained models, squeezed to 8, 4, 3 and 2 bits. Their percentages held up longer than I expected, their speed didn't, and the summary scores hid how far each customer's number moved.*
+*Three trained models, squeezed to 8, 4, 3 and 2 bits. Their percentages held up to 4 bits, but the summary scores hid how far each customer's number moved. And even on a tuned GPU, the smaller models were rarely faster.*
 
 Save a photo at a lower quality setting and, for a while, you can't tell the difference. Then, past some point, it turns into blocks.
 
 AI models get compressed the same way. A model is billions of numbers, each normally stored in 16 bits, enough for about 65,000 different values. Shrinking a model rounds those numbers more coarsely, like rounding every price in a shop to the nearest ten cents, then the nearest dollar, then the nearest ten dollars. It's called [quantization](https://huggingface.co/docs/transformers/main/en/quantization/overview), and it lets a model fit on a smaller, cheaper GPU, the chip that runs it. The usual check afterwards is whether the model still gets the answers right.
 
-This series checks something else: whether a model's percentages come true. In [my last post](https://nishzsche.github.io/2026/11/25/fair-fight/), I trained four AI models on 20,000 credit-card customers whose outcomes were known, and they ranked customers about as well as the models banks use. This time I shrank three of them, and asked the same 2,000 test customers the same question: how likely is this customer to miss next month's payment? Would the shrunk models still be honest, and would they really be cheaper to run?
+This series checks something else: whether a model's percentages come true. In [my last post](https://nishzsche.github.io/2026/11/25/fair-fight/), I trained four AI models on 20,000 credit-card customers whose outcomes were known, and they ranked customers about as well as the models banks use. This time I shrank three of them, and asked the same 2,000 test customers the same question: how likely is this customer to miss next month's payment? Would the shrunk models' percentages hold up, and would they really be cheaper to run?
 
 | Size | Values each number can take | Memory for the two 4B models' numbers |
 |---|---|---|
@@ -88,51 +86,61 @@ Even 8 bits changed more decisions than running the same model twice. At 3 bits,
 
 If the lender instead re-chooses each version's cut-off on customers whose outcomes are known, every version down to 3 bits earns about the same: 282 to 304 per 1,000, against 287 to 300 at full size. At 2 bits, little or nothing: −10 to 73.
 
-## Smaller, but slower
+## Smaller, but not faster
 
-<!-- PENDING (2026-11-26): this section is rewritten after the extra speed runs. The review panel found the setup untuned: every version, full size included, ran two kinds of layers (causal_conv1d, chunk_gated_delta_rule) on slow reference code, the shrunk versions used no fused low-bit kernels, and post 3's Kev-4B gained only 5% from CUDA graphs (106 vs 111 ms), so the earlier overhead explanation was wrong and has been removed. The numbers below are from that setup. -->
+Now the reason to shrink a model at all: cost. A rented GPU bills by the minute, so the faster a model answers, the cheaper each decision.
 
-Now the reason to shrink a model at all: cost.
+My first runs said every shrunk version was slower, some up to 4 times. A review of my draft pointed out that the setup held every version back, full size included. Two kinds of layers in these models ran on slow stand-in code, the shrunk versions used each library's general-purpose route, and Kev's server shortcut was off. (The shortcut, CUDA graphs, records the GPU's sequence of steps once and replays it for every request.)
 
-![GPU memory at peak and median time per answer at each size. Memory falls with every step: the 4B models go from 8.7 to 8.9 GB at full size to 3.5 to 3.9 GB at 4 bits and 2.6 to 2.9 GB at 2 bits, and Kev-0.8B from 1.7 GB to under 1 GB at 4 bits. Time per answer rises at every shrunk size: at full size, 62 ms for Kev-0.8B, 111 ms for Kev-4B and 120 ms for Qwen; at 4-bit NF4, 81, 139 and 152 ms; at 8 bits up to 289 ms; at HQQ 3 bits up to 467 ms for Kev-4B.](../results/figures/post4_cost.png)
+So I rented the GPU again and set it up the way you would before deploying:
+
+- **Fast versions of those layers,** small programs written for one job on the GPU, for every model. Kev's shortcut was on for every version; its server offers it only at full size, so I switched it on for the shrunk ones myself. Kev's own combined kernels, which work only on full-size numbers, were on at full size. Qwen was compiled for the GPU.
+- **The same 4-bit HQQ numbers on two faster routes:** GemLite, a library built for fast low-bit maths, and PyTorch's own 4-bit route.
+- **FP8,** where the GPU does its arithmetic in 8 bits, not just stores the numbers that way. The L4 has hardware for it, and it needs no data either.
+
+![GPU memory at peak and time per answer, one customer at a time, on the tuned setup. Memory: the 4B models need 8.7 to 8.9 GB at full size and 3.5 to 3.9 GB at 4 bits; Kev-0.8B 1.7 GB and about 1 GB; Qwen with FP8 5.1 GB. Time per answer at full size: 20 ms for Kev-0.8B, 93 for Kev-4B and 78 for Qwen, down from 62, 111 and 120 in my first runs. 4-bit NF4: 23, 131 and 109 ms, down from 81, 139 and 152. 4-bit HQQ on GemLite: 24, 83 and 85 ms. On PyTorch's 4-bit route: 39 ms for Kev-0.8B and 242 for Kev-4B; Qwen wouldn't load. FP8: 77 ms for Qwen; both Kev models gave no answers.](../results/figures/post4_cost.png)
 
 - **Memory fell as promised.** At 4 bits the two 4B models needed 3.5 to 3.9 GB at peak instead of 8.7 to 8.9, less than half.
-- **On this setup, every shrunk version was slower.**
-  - 4-bit NF4 was a quarter to a third slower: Kev-4B went from 111 to 139 milliseconds per answer, Qwen from 120 to 152 and Kev-0.8B from 62 to 81.
-  - 8 bits took 1.4 to 3.5 times as long.
-  - HQQ took up to about 4 times as long: 426 milliseconds for Kev-4B at 4 bits, 467 at 3.
+- **Tuning the setup mattered more than shrinking.** At full size, Kev-0.8B went from 62 milliseconds per answer to 20, Qwen from 120 to 78 and Kev-4B from 111 to 93. (The first runs timed answers during scoring, the new ones in a separate timing run, so take those gaps as rough.)
+- **Once tuned, shrinking still rarely saved time.** NF4 was 18% slower than full size for Kev-0.8B and 40% slower for the two 4B models. The fastest 4-bit route, GemLite, beat full size only for Kev-4B, by 11% (83 milliseconds against 93), and was slower for Kev-0.8B (24 against 20) and Qwen (85 against 78). FP8 ran Qwen at the same speed as full size, 77 milliseconds against 78.
+- **Three runs failed, and I recorded them rather than swapping in something else.** FP8 gave no answers on either Kev model (NaN, "not a number"), and PyTorch's 4-bit route wouldn't load Qwen with the newer PyTorch it needs. Where that route did run, it was the slowest: 2 to 2.6 times as long as full size.
+- **The fast routes gave the same answers.** On GemLite and on PyTorch's route, both Kev models' answers were 0.1 points from the slow route's on average; Qwen's on GemLite, 0.5. FP8 moved Qwen's answers about as much as 8 bits did, 1.0 points per customer against 0.8, and its honesty change was within chance: 2.4 points off at full size, 1.6 with FP8.
 
-A rented GPU bills by the minute, so per decision, slower means more expensive. Kev-4B cost 1.3 cents per 1,000 decisions at full size, and 5.2 cents at 4-bit HQQ.
+What about scoring many customers at once, as an overnight batch would? At 32 at a time, full size was still the cheapest for both Kev models: 0.67 cents per 1,000 answers for Kev-4B, against 0.90 for its fastest 4-bit version. Qwen got no faster in batches in my setup, so its cheapest was one at a time: 0.95 cents per 1,000, at full size or with FP8.
 
-Kev's own server also has a shortcut, called CUDA graphs, that records the GPU's sequence of steps once and replays it for every request. It offers it only for full-size models. With it on, the last post's full-size Kev-0.8B answered in 24 milliseconds instead of 62. Kev-4B gained much less: 106 instead of 111. (To compare sizes fairly, I measured every version here with the shortcut off.)
+So the saving is memory, and memory pays only if it lets you rent a smaller GPU or fit more models on one. Here, all three already fit on the L4 at full size. Why shrinking didn't buy speed, I can't say: I didn't measure where the time goes.
 
 ## I got most of my predictions wrong, again
 
-Before any of these runs, I [wrote down](https://github.com/nishzsche/can-ai-know-when-its-wrong/blob/main/PREDICTIONS.md) what I expected:
+Before any of these runs, I [wrote down](https://github.com/nishzsche/can-ai-know-when-its-wrong/blob/main/PREDICTIONS.md) what I expected. After the first runs, and before the speed re-runs, I added four guesses about speed:
 
 | My guess | What happened |
 |---|---|
 | Honesty would get clearly worse already at 8 bits | ✗ At 8 bits every model stayed within half a point of full size. Above 2 bits, the only honesty change bigger than chance was an improvement. The first clear break came at 2 bits |
 | Ranking would hold at 4 bits for all three | ✓ Within 0.005, with either tool |
-| 4-bit NF4 would be faster than full size | ✗ A quarter to a third slower, for all three, on the setup tested <!-- PENDING: revisit after the speed runs --> |
+| 4-bit NF4 would be faster than full size | ✗ Slower for all three, by 18 to 40% on the tuned setup |
 | Qwen would hold up best, its percentages changing least | ✗ Not quite. Kev-4B changed least at 8 and 4 bits (0.3 to 1.1 points per customer). Qwen changed least at 3 bits (4.0 points), then broke hardest at 2 (49) |
+| With fast routes, 4 bits would answer one customer faster than a tuned full-size model | ✗ Only Kev-4B on GemLite, by 11%. Kev-0.8B and Qwen stayed slower |
+| FP8 would be faster than full size | ✗ The same speed for Qwen. It gave no answers on either Kev model |
+| FP8 would change honesty no more than 8 bits did | ✓ For Qwen, the only model it ran on: a change within chance, as with 8 bits, and answers moving about as far (1.0 points per customer against 0.8) |
+| 4-bit NF4 would be cheapest at 32 customers at a time | ✗ Full size was, for both Kev models. NF4 was cheapest only for Qwen, whose other versions slowed down in batches |
 
 ## What I'd tell a bank
 
 - **Treat shrinking as a material model change, not an IT change.** Agree tolerances first: how many decisions may change, how far any one customer may move, how far the calibration slope and the spread of scores may shift. Most of this needs no outcomes: score the same customers with both versions on day one. Then revalidate, and re-set the cut-off and any calibration through the usual approval process.
 - **8 bits and the common 4-bit format passed here.** The average customer moved less than a point, though a few moved up to 9. That tells you where to start testing, not whether to skip it.
 - **The tool matters as much as the size, at least here.** At the same 4 bits, HQQ moved the answers 1.5 to 3.2 times as much as NF4. One likely reason: NF4 spaces its 16 levels to match the bell-shaped spread of a model's numbers, while HQQ spaces them evenly.
-- **Record the whole setup with every score.** Each prediction here carries its size and library versions. Record the GPU, the kernels and the drivers too, and treat a library upgrade as a model change: the same full-size Qwen, run a second way, changed 1.4% of decisions.
-
-<!-- PENDING: a speed and cost bullet, after the speed runs. -->
+- **Record the whole setup with every score.** Each prediction here carries its size and library versions. Record the GPU, the kernels and the drivers too, and treat a library upgrade as a model change: the same full-size Qwen, run a second way, changed 1.4% of decisions. Even the batch size matters: scoring Qwen 8 or 32 customers at a time moved its answers by up to 3 points (5 with FP8), against under 1 for Kev.
+- **Price the saving on your own setup before counting on it.** Shrinking cut memory by more than half every time. On a tuned GPU it beat full size's speed in one case out of nine, by 11%, and matched it in one more. Tuning the setup changed speed by up to three times, more than any size did. If the reason to shrink is cost, the saving comes from a smaller or shared GPU, so that's what to price.
 
 ## What this test can't tell you
 
-- **Three models, one dataset, one way of serving:** a bank in Taiwan in 2005, one NVIDIA L4 GPU, one customer at a time. <!-- PENDING: speed limitations after the speed runs. -->
+- **Three models, one dataset, one GPU:** a bank in Taiwan in 2005 and one NVIDIA L4.
+- **Speed depends on the whole setup.** A bigger GPU, a serving engine such as vLLM, or methods with their own fast kernels could change which version is fastest. Each speed figure is one timing run over 500 customers, so a gap like Kev-4B's 11% is a single measurement. Qwen's batches ran through my own code, which may be why batching didn't speed it up.
 - **Only methods that need no data.** Methods that tune their rounding on sample data, such as GPTQ and AWQ, often do better at 3 and 4 bits. I didn't test them.
 - **One training run per model.** Retraining alone moved Kev-0.8B's honesty by 1.2 to 1.5 points in the last post, as much as most of the shrinking did here.
 - **Shrunk after training.** Training a model that's already shrunk, or keeping the training update separate and full size, could behave differently.
-- **A use its maker doesn't support.** Kev's maker doesn't offer shrinking, so I wrapped its loader myself. Running a vendor's model in a way it doesn't support is a risk of its own.
+- **A use its maker doesn't support.** Kev's maker doesn't offer shrinking, so I wrapped its loader myself, and switched on its server's shortcut for the shrunk versions. Running a vendor's model in a way it doesn't support is a risk of its own.
 - **Fair lending isn't tested.** At 3 bits, 10 to 20 in 100 decisions changed. I haven't checked whether those customers differ by group.
 - **Small gaps between models are hard to see.** With 2,000 test customers, ranking gaps under about 0.02 between different models can't be told apart; a model compared with itself is measured far more precisely, to about 0.004. These test customers have also now been used in four posts. 6,000 customers that no model has seen are kept aside for one final replication.
 - **"Default" is the dataset's label:** missing next month's payment, not the 90-days-overdue definition banks use for capital.
@@ -140,6 +148,8 @@ Before any of these runs, I [wrote down](https://github.com/nishzsche/can-ai-kno
 ## How I ran it
 
 Each model was merged with its training update first and then shrunk, so the result is one model, as you'd deploy it. The part of each model that turns its reading into a probability stays full size. Both tools' versions are pinned and recorded in every prediction. Before any full run of a shrunk model, the full-size version had to reproduce the last post's predictions through the new code, and it did: on 50 check customers, within 0.002 on average. Scoring took 72,000 predictions and about 4.3 hours of GPU time, about $1.90. The measures were fixed before the runs, except three I added later: the lending-decision counts and the share of customers moving 5 points or more, while writing, and the paired test of honesty changes, after review.
+
+The speed re-runs used the same shrunk numbers, on a fresh GPU. Before any timing, the tuned full-size and NF4 versions had to reproduce the first runs' answers on 50 check customers, and they did: about 0.001 apart on average for Kev, 0.005 to 0.006 for Qwen. Each version was timed on the same 500 check customers, not test customers, at 1, 8 and 32 at a time. The re-runs took about 3.4 hours on the rented GPU, setup and a 37-minute restart included, about $1.50. Every library version is recorded with each prediction, and the three failures are recorded in the repository.
 
 ## What's next
 

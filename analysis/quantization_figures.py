@@ -7,7 +7,8 @@
   in by chance; the 2-bit values are off the scale and written out.
 - post4_drift.png: Kev-0.8B's answer for each test customer, full size against four shrunk
   versions, with how far the answers moved and the ranking and honesty that hid it.
-- post4_cost.png: GPU memory at peak and median time per answer at each size.
+- post4_cost.png: GPU memory at peak and time per answer on the tuned setup (the speed addendum,
+  results/speed_throughput.csv), with the first runs' times for the same weights as hollow dots.
 
     uv run python analysis/quantization_figures.py drift cost   # only these
 
@@ -240,49 +241,97 @@ def drift(dark: bool = False) -> Path:
     return F.save(fig, "post4_drift.png")
 
 
-# ---- 4. memory and time per answer ---------------------------------------------------------------
+# ---- 4. memory and time per answer, on the tuned setup (the speed addendum) ---------------------
 
 COST_DY = {"kev-4b-ft": -0.2, "kev-0.8b-ft": 0.0, "qwen-ft": 0.2}  # row offsets, so dots don't hide
+SPEED_ROWS = (  # (speed tag, post 4 weights it uses, row label)
+    ("bf16-tuned", "bf16", "Full size (16-bit)"),
+    ("bnb-nf4-tuned", "bnb-nf4", "4-bit, NF4"),
+    ("hqq-4-gemlite", "hqq-4", "4-bit, HQQ\non GemLite"),
+    ("hqq-4-aoint4", "hqq-4", "4-bit, HQQ on\nPyTorch int4"),
+    ("fp8-dynamic", None, "FP8"),
+)
+SPEED_THROUGHPUT = Q.ROOT / "results" / "speed_throughput.csv"
+SPEED_CSV = Q.ROOT / "results" / "speed.csv"
+
+
+@cache
+def speed_ms() -> dict[str, float]:
+    """Average time per answer, one customer at a time, on the tuned setup: {contestant: ms}."""
+    with SPEED_THROUGHPUT.open(encoding="utf-8") as f:
+        return {r["contestant"]: 1000 / float(r["customers_per_second"])
+                for r in csv.DictReader(f) if r["batch"] == "1"}  # fmt: skip
+
+
+@cache
+def speed_peak_gib() -> dict[str, float]:
+    with SPEED_CSV.open(encoding="utf-8") as f:
+        return {r["contestant"]: float(r["gpu_peak_gb"]) for r in csv.DictReader(f)}
 
 
 def cost(dark: bool = False) -> Path:
     F.set_theme(dark)
     plt = F.plt
-    fig, (left, right) = plt.subplots(1, 2, figsize=(7.6, 6.4), sharey=True)
-    fig.subplots_adjust(left=0.2, right=0.97, top=0.73, bottom=0.2, wspace=0.12)
+    fig, (left, right) = plt.subplots(1, 2, figsize=(7.6, 6.6), sharey=True)
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.71, bottom=0.2, wspace=0.12)
+    ms, peak = speed_ms(), speed_peak_gib()
     for model, key, _name in MODELS:
         col = F.COLOR[key]
-        for y, size in enumerate(SIZES):
+        for y, (tag, base, _label) in enumerate(SPEED_ROWS):
             yy = y + COST_DY[model]
-            left.plot(GB * value(model, size, "gpu_peak_gb"), yy, "o", ms=8, color=col,
-                      mec=F.SURFACE, mew=1.2, zorder=3)  # fmt: skip
-            right.plot(value(model, size, "latency_ms_median"), yy, "o", ms=8, color=col,
-                       mec=F.SURFACE, mew=1.2, zorder=3)  # fmt: skip
+            # Memory: the first runs' measurement of the same weights (every version served the
+            # same way there); FP8 has no first run, so its own run (Qwen, in-process).
+            gib = value(model, base, "gpu_peak_gb") if base else peak.get(f"{model}-{tag}")
+            if gib is not None:
+                left.plot(GB * gib, yy, "o", ms=8, color=col, mec=F.SURFACE, mew=1.2, zorder=3)
+            t = ms.get(f"{model}-{tag}")
+            if t is not None:
+                right.plot(t, yy, "o", ms=8, color=col, mec=F.SURFACE, mew=1.2, zorder=3)
+            if tag in ("bf16-tuned", "bnb-nf4-tuned"):  # the same weights, timed in the first runs
+                t0 = value(model, base, "latency_ms_median")
+                right.plot(t0, yy, "o", ms=7, mfc="none", mec=col, mew=1.3, zorder=3)
+                right.annotate("", (t, yy), xytext=(t0, yy), zorder=2,
+                               arrowprops={"arrowstyle": "-|>", "color": col, "lw": 1,
+                                           "alpha": 0.6, "shrinkA": 4, "shrinkB": 5})  # fmt: skip
+    failed = {"hqq-4-aoint4": (COST_DY["qwen-ft"], "Qwen3.5-4B: wouldn't load"),
+              "fp8-dynamic": (-0.1, "Both Kev models: no answers (NaN)")}  # fmt: skip
+    for y, (tag, _base, _label) in enumerate(SPEED_ROWS):
+        if tag in failed:
+            dy, text = failed[tag]
+            x0 = 5 if tag == "fp8-dynamic" else 52
+            right.text(x0, y + dy, text, fontsize=8.5, color=F.INK_2, va="center")
+    left.text(0.4, len(SPEED_ROWS) - 1 - 0.1, "Kev: no FP8 run", fontsize=8.5, color=F.INK_2,
+              va="center")  # fmt: skip
     for ax in (left, right):
         ax.grid(axis="y", visible=False)
         ax.tick_params(axis="y", length=0, labelsize=10, labelcolor=F.INK)
-    left.set_yticks(range(len(SIZES)), [ROW[s] for s in SIZES])
-    left.set_ylim(len(SIZES) - 0.5, -0.6)
+    left.set_yticks(range(len(SPEED_ROWS)), [label for _t, _b, label in SPEED_ROWS])
+    left.set_ylim(len(SPEED_ROWS) - 0.5, -0.6)
     left.set_xlim(0, 10)
     left.set_xlabel("GPU memory at peak (GB)")
-    right.set_xlim(0, 500)
+    right.set_xlim(0, 260)
     right.set_xlabel("Time per answer (milliseconds)")
     left.set_title("Memory", loc="left", fontsize=11.5)
-    right.set_title("Time", loc="left", fontsize=11.5)
+    right.set_title("Time, tuned setup", loc="left", fontsize=11.5)
     handles = [plt.Line2D([], [], marker="o", ls="none", ms=8, color=F.COLOR[key], label=name)
                for _model, key, name in MODELS]  # fmt: skip
-    left.legend(handles=handles, loc="lower left", bbox_to_anchor=(-0.36, 1.08), ncol=3,
-                fontsize=10, handletextpad=0.3, columnspacing=1.4)  # fmt: skip
-    F.header(fig, "Smaller, but slower",
-             "GPU memory and time per answer at each size, one customer at a time on an\n"
-             "NVIDIA L4. Shrinking cut the 4B models' memory by more than half. Every\n"
-             "shrunk version took longer to answer than its full size.")  # fmt: skip
+    handles.append(plt.Line2D([], [], marker="o", ls="none", ms=7, mfc="none", mec=F.INK_2,
+                              mew=1.3, label="first runs"))  # fmt: skip
+    left.legend(handles=handles, loc="lower left", bbox_to_anchor=(-0.36, 1.08), ncol=4,
+                fontsize=9.5, handletextpad=0.3, columnspacing=1.1)  # fmt: skip
+    gain = ms["kev-4b-ft-hqq-4-gemlite"] / ms["kev-4b-ft-bf16-tuned"]
+    F.header(fig, "Shrinking saved memory, not time",
+             "GPU memory and time per answer, one customer at a time on an NVIDIA L4,\n"
+             "with the setup tuned. 4 bits cut the 4B models' memory by more than half.\n"
+             "Only one shrunk version answered faster than its full size: Kev-4B on\n"
+             f"GemLite, by {100 * (1 - gain):.0f}%. Hollow dots: my first, untuned runs.",
+             )  # fmt: skip
     F.footer(fig, "\n".join((
-        TEST_LINE,
-        "Median time over the 2,000 test answers. Every size served the same way, with Kev's "
-        "speed-up (CUDA graphs)",
-        "off: its server offers it only at full size. At $0.44 per GPU hour, 100 ms per answer "
-        "is about 1.2 cents per 1,000.",
+        "Time: average over 500 customers (first runs: median over 2,000). Tuned: fast kernels, "
+        "Kev's CUDA graphs on",
+        "(its fused kernels need full-size weights), Qwen compiled. Memory: the first runs; FP8 "
+        "from its own run.",
+        "At $0.44 per GPU hour, 100 ms per answer is about 1.2 cents per 1,000 answers.",
     )))  # fmt: skip
     return F.save(fig, "post4_cost.png")
 

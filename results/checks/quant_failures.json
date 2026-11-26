@@ -12,5 +12,12 @@
     "stage": "load",
     "error": "RuntimeError: Expected in.dtype() == at::kByte to be true, but got false. (in HQQ 0.2.8.post1 prepare_for_inference backend torchao_int4 -> hqq/backends/torchao.py process_hqq_quants, the int4 packing op of torch 2.15.0)",
     "recorded_at": "2026-11-26T16:16:05Z"
+  },
+  "kev-4b-ft-fp8-dynamic": {
+    "model": "kev-4b-ft",
+    "precision": "fp8-dynamic",
+    "stage": "smoke",
+    "error": "ValueError: Out of range float values are not JSON compliant: nan (Kev's server produced a NaN answer on the first smoke request; torchao 0.16.0 Python API with torch 2.8.0, CUDA graphs on; the runner then timed out)",
+    "recorded_at": "2026-11-26T18:28:23Z"
   }
 }

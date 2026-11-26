@@ -1,0 +1,265 @@
+{
+ "contestant": "kev-4b-ft-bnb-nf4-tuned",
+ "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); bnb-nf4-tuned (post 4's bnb-nf4, fast setup; bitsandbytes 0.50.2, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+ "reference": "kev-4b-ft-bnb-nf4",
+ "split": "tune",
+ "condition": "trained",
+ "n": 50,
+ "mean_abs_diff": 0.0010679999999999989,
+ "max_abs_diff": 0.0038000000000000256,
+ "threshold_mean_abs": 0.02,
+ "passed": true,
+ "checked_at": "2026-11-26T17:40:22Z",
+ "rows": [
+  {
+   "id": "cust_00005",
+   "new_path": 0.0993,
+   "reference": 0.0992
+  },
+  {
+   "id": "cust_00006",
+   "new_path": 0.1044,
+   "reference": 0.1042
+  },
+  {
+   "id": "cust_00007",
+   "new_path": 0.0672,
+   "reference": 0.0657
+  },
+  {
+   "id": "cust_00038",
+   "new_path": 0.0958,
+   "reference": 0.0948
+  },
+  {
+   "id": "cust_00057",
+   "new_path": 0.0614,
+   "reference": 0.0619
+  },
+  {
+   "id": "cust_00066",
+   "new_path": 0.2241,
+   "reference": 0.2251
+  },
+  {
+   "id": "cust_00074",
+   "new_path": 0.1663,
+   "reference": 0.1657
+  },
+  {
+   "id": "cust_00106",
+   "new_path": 0.1312,
+   "reference": 0.1308
+  },
+  {
+   "id": "cust_00113",
+   "new_path": 0.7731,
+   "reference": 0.7717
+  },
+  {
+   "id": "cust_00135",
+   "new_path": 0.1193,
+   "reference": 0.1186
+  },
+  {
+   "id": "cust_00136",
+   "new_path": 0.2346,
+   "reference": 0.2353
+  },
+  {
+   "id": "cust_00143",
+   "new_path": 0.3941,
+   "reference": 0.3968
+  },
+  {
+   "id": "cust_00148",
+   "new_path": 0.178,
+   "reference": 0.1776
+  },
+  {
+   "id": "cust_00155",
+   "new_path": 0.0928,
+   "reference": 0.0921
+  },
+  {
+   "id": "cust_00159",
+   "new_path": 0.7696,
+   "reference": 0.7721
+  },
+  {
+   "id": "cust_00217",
+   "new_path": 0.321,
+   "reference": 0.3173
+  },
+  {
+   "id": "cust_00265",
+   "new_path": 0.0777,
+   "reference": 0.0788
+  },
+  {
+   "id": "cust_00291",
+   "new_path": 0.1275,
+   "reference": 0.128
+  },
+  {
+   "id": "cust_00335",
+   "new_path": 0.1118,
+   "reference": 0.1125
+  },
+  {
+   "id": "cust_00363",
+   "new_path": 0.6384,
+   "reference": 0.6392
+  },
+  {
+   "id": "cust_00368",
+   "new_path": 0.5319,
+   "reference": 0.5281
+  },
+  {
+   "id": "cust_00379",
+   "new_path": 0.0559,
+   "reference": 0.0561
+  },
+  {
+   "id": "cust_00397",
+   "new_path": 0.0745,
+   "reference": 0.0751
+  },
+  {
+   "id": "cust_00423",
+   "new_path": 0.0882,
+   "reference": 0.0893
+  },
+  {
+   "id": "cust_00424",
+   "new_path": 0.6747,
+   "reference": 0.6766
+  },
+  {
+   "id": "cust_00429",
+   "new_path": 0.0773,
+   "reference": 0.0754
+  },
+  {
+   "id": "cust_00432",
+   "new_path": 0.061,
+   "reference": 0.0617
+  },
+  {
+   "id": "cust_00438",
+   "new_path": 0.0658,
+   "reference": 0.0663
+  },
+  {
+   "id": "cust_00450",
+   "new_path": 0.1154,
+   "reference": 0.1158
+  },
+  {
+   "id": "cust_00454",
+   "new_path": 0.0886,
+   "reference": 0.089
+  },
+  {
+   "id": "cust_00470",
+   "new_path": 0.0787,
+   "reference": 0.0787
+  },
+  {
+   "id": "cust_00479",
+   "new_path": 0.2065,
+   "reference": 0.2093
+  },
+  {
+   "id": "cust_00483",
+   "new_path": 0.1138,
+   "reference": 0.1137
+  },
+  {
+   "id": "cust_00517",
+   "new_path": 0.0751,
+   "reference": 0.0738
+  },
+  {
+   "id": "cust_00520",
+   "new_path": 0.0559,
+   "reference": 0.0563
+  },
+  {
+   "id": "cust_00548",
+   "new_path": 0.3015,
+   "reference": 0.3013
+  },
+  {
+   "id": "cust_00565",
+   "new_path": 0.6261,
+   "reference": 0.6295
+  },
+  {
+   "id": "cust_00581",
+   "new_path": 0.2756,
+   "reference": 0.2744
+  },
+  {
+   "id": "cust_00597",
+   "new_path": 0.0649,
+   "reference": 0.0642
+  },
+  {
+   "id": "cust_00601",
+   "new_path": 0.0658,
+   "reference": 0.065
+  },
+  {
+   "id": "cust_00606",
+   "new_path": 0.6054,
+   "reference": 0.6092
+  },
+  {
+   "id": "cust_00616",
+   "new_path": 0.0685,
+   "reference": 0.0682
+  },
+  {
+   "id": "cust_00638",
+   "new_path": 0.0933,
+   "reference": 0.0929
+  },
+  {
+   "id": "cust_00647",
+   "new_path": 0.6848,
+   "reference": 0.6818
+  },
+  {
+   "id": "cust_00655",
+   "new_path": 0.1089,
+   "reference": 0.1088
+  },
+  {
+   "id": "cust_00675",
+   "new_path": 0.0575,
+   "reference": 0.0571
+  },
+  {
+   "id": "cust_00681",
+   "new_path": 0.059,
+   "reference": 0.059
+  },
+  {
+   "id": "cust_00688",
+   "new_path": 0.0621,
+   "reference": 0.061
+  },
+  {
+   "id": "cust_00701",
+   "new_path": 0.0972,
+   "reference": 0.0969
+  },
+  {
+   "id": "cust_00730",
+   "new_path": 0.4039,
+   "reference": 0.4035
+  }
+ ]
+}

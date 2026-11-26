@@ -1,0 +1,5 @@
+kev-4b-ft-bf16-tuned: 500 tune customers at (1, 8, 32) at a time
+   1 at a time: 10.7 customers/s, $0.0114 per 1,000, max |diff| vs one at a time 0.0000
+   8 at a time: 15.3 customers/s, $0.0080 per 1,000, max |diff| vs one at a time 0.0059
+  32 at a time: 18.2 customers/s, $0.0067 per 1,000, max |diff| vs one at a time 0.0073
+Saved -> /home/can-ai-know-when-its-wrong/results/checks/speed/kev-4b-ft-bf16-tuned.json

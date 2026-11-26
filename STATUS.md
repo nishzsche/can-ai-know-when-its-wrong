@@ -37,6 +37,23 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
 - **Batching moves Qwen's answers by more than 0.01:** up to 0.031 for `bf16-tuned`, `bnb-nf4-tuned` and `hqq-4-gemlite`, and 0.052 (8 at a time) for `fp8-dynamic`. Batches are left-padded, one forward pass each. Kev stayed at 0.0075 or less.
 - **Throughput, one at a time:** customers per second, `bf16-tuned` 12.8, `bnb-nf4-tuned` 9.2, `hqq-4-gemlite` 11.8, `fp8-dynamic` 12.9. Batching barely helps, and at 32 at a time it is slower for three of the four tags.
 
+**Kev-4B (done, 23:06–23:58 IST):**
+- **Reproduction checks:** `bf16-tuned` against `bf16`, mean |diff| 0.0010 (max 0.0045). `bnb-nf4-tuned` against `bnb-nf4`, 0.0011 (max 0.0038). Both PASS.
+- **Fused kernels:** on for `bf16-tuned`.
+- **CUDA graphs:** none failed.
+- **Batching:** every batch-size difference was at most 0.0073.
+- **Full runs:** `hqq-4-aoint4` and `hqq-4-gemlite` completed tune and test.
+- **Throughput, customers per second, 1 / 32 at a time:**
+
+  | Tag | 1 at a time | 32 at a time |
+  |---|---|---|
+  | `bf16-tuned` | 10.7 | 18.2 |
+  | `bnb-nf4-tuned` | 7.6 | 13.2 |
+  | `hqq-4-aoint4` | 4.1 | 3.8 |
+  | `hqq-4-gemlite` | 12.1 | 13.5 |
+
+- **`fp8-dynamic` failed (recorded, stage smoke)** the same way as Kev-0.8B: a NaN on the first request. Skipped.
+
 ## Post 4 draft (2026-11-26): in the author's review
 
 `writeup/quantization_post.md`, "I shrank AI models to save money. They stayed honest, and got slower." About 2,400 words with tables and four charts (`analysis/quantization_figures.py` → `results/figures/post4_{ranking,honesty,drift,cost}.png`, light and dark).

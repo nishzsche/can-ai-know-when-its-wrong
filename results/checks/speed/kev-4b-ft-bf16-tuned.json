@@ -1,0 +1,72 @@
+{
+  "contestant": "kev-4b-ft-bf16-tuned",
+  "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels on); bf16-tuned (bf16, not quantized, fast setup; causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+  "split": "tune",
+  "by_batch": {
+    "1": {
+      "customers": 500,
+      "seconds": 46.62562511299939,
+      "customers_per_second": 10.723716814267403,
+      "cost_per_1000_usd": 0.011397375027622073,
+      "latency_ms_median": 93.10717099992871,
+      "max_abs_diff_vs_batch_1": 0.0
+    },
+    "8": {
+      "customers": 500,
+      "seconds": 32.57724095700087,
+      "customers_per_second": 15.34813831103612,
+      "cost_per_1000_usd": 0.007963325567266878,
+      "latency_ms_median": 499.2023629997675,
+      "max_abs_diff_vs_batch_1": 0.005900000000000016
+    },
+    "32": {
+      "customers": 500,
+      "seconds": 27.45724987000085,
+      "customers_per_second": 18.21012673764856,
+      "cost_per_1000_usd": 0.006711772190444653,
+      "latency_ms_median": 1700.464624999995,
+      "max_abs_diff_vs_batch_1": 0.007299999999999973
+    }
+  },
+  "quantization": {
+    "precision": "bf16",
+    "description": "bf16-tuned (bf16, not quantized, fast setup; causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)",
+    "library": null,
+    "version": null,
+    "settings": {},
+    "linear_layers": 64,
+    "quantized_layers": 0,
+    "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+    "tag": "bf16-tuned",
+    "base_precision": "bf16",
+    "versions": {
+      "causal-conv1d": "1.7.0",
+      "flash-linear-attention": "0.5.2",
+      "torch": "2.8.0"
+    },
+    "fast_layers_missing": [],
+    "run": "/home/runs/kev-4b-ft",
+    "device": "cuda",
+    "torch": "2.8.0+cu128",
+    "memory_after_load": {
+      "allocated": 14339939328,
+      "max_allocated": 14393285632,
+      "reserved": 14587789312
+    },
+    "memory_now": {
+      "allocated": 14593643520,
+      "max_allocated": 14678938112,
+      "reserved": 15019802624
+    },
+    "cuda_graphs": {
+      "captured": 4,
+      "kept": 4,
+      "pending": 0,
+      "failed": 0
+    },
+    "fused": true
+  },
+  "usd_per_hour": 0.44,
+  "warmup_customers": 64,
+  "measured_at": "2026-11-26T17:39:22Z"
+}

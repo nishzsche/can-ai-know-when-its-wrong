@@ -1,0 +1,11 @@
+kev-4b-ft-hqq-4-gemlite: kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.5.1.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+20 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/smoke/kev-4b-ft-hqq-4-gemlite.jsonl
+  trained: 20 new in 24.9s | mean p 0.244 vs actual 0.200 | exactly 0 or 1: 0 | cost $0.0030
+kev-4b-ft-hqq-4-gemlite: kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.5.1.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+2000 tune customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-4b-ft-hqq-4-gemlite.jsonl
+  trained: 2000 new in 179.7s | mean p 0.198 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0215
+EXIT_tune 0
+kev-4b-ft-hqq-4-gemlite: kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs on, fused kernels off); hqq-4-gemlite (post 4's hqq-4 weights on GemLite (HQQ gemlite backend, fp16 compute); hqq 0.2.8.post1, gemlite 0.5.1.post1, causal-conv1d 1.7.0, flash-linear-attention 0.5.2, torch 2.8.0)
+2000 test customers x 1 condition(s); 2000 records already in /home/can-ai-know-when-its-wrong/results/predictions/kev-4b-ft-hqq-4-gemlite.jsonl
+  trained: 2000 new in 171.3s | mean p 0.194 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0205
+EXIT_test 0

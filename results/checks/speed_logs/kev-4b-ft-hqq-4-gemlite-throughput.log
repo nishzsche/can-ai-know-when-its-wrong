@@ -1,0 +1,5 @@
+kev-4b-ft-hqq-4-gemlite: 500 tune customers at (1, 8, 32) at a time
+   1 at a time: 12.1 customers/s, $0.0101 per 1,000, max |diff| vs one at a time 0.0000
+   8 at a time: 14.5 customers/s, $0.0084 per 1,000, max |diff| vs one at a time 0.0051
+  32 at a time: 13.5 customers/s, $0.0090 per 1,000, max |diff| vs one at a time 0.0050
+Saved -> /home/can-ai-know-when-its-wrong/results/checks/speed/kev-4b-ft-hqq-4-gemlite.json

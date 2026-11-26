@@ -2,7 +2,7 @@
 
 Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
-## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:03 IST): post 4's speed runs
+## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:00 IST): post 4's speed runs
 
 L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PREDICTIONS.md` (9f415ea) before any run.
 
@@ -20,7 +20,7 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
   - **Honesty:** ECE changes from −2.2 points (Kev-0.8B, both HQQ backends) to +0.55 (Qwen GemLite). Qwen FP8 is at ECE 1.6 (−0.76).
   - **Speed, one at a time:** GemLite 4-bit beats `bf16-tuned` only for Kev-4B (12.1 vs 10.7 per second). `bf16-tuned` is fastest everywhere else, and at 32 at a time.
   - **Qwen:** batching doesn't speed it up here.
-- **GPU time:** the box was up 15:09–18:33 UTC, about 3.4 h, about $1.50 at $0.44/h. That includes ~30 min of setup and the 16:20–16:57 reboot gap. If the gap wasn't billed, it's about 2.8 h, about $1.23. The JarvisLabs bill is the authority.
+- **GPU time:** the box was up 15:09–18:30 UTC, about 3.35 h, about $1.47 at $0.44/h. That includes ~30 min of setup and the 16:20–16:57 reboot gap. If the gap wasn't billed, it's about 2.7 h, about $1.20. The JarvisLabs bill is the authority.
 - **Box note:** after the reboot, `/home/env.sh` had been rewritten without `GH_CONFIG_DIR`. Pushes used `GH_CONFIG_DIR=/home/gh-config` explicitly.
 
 **Fast libraries installed (§8.0), before any run.** Each was chosen to match that environment's torch:

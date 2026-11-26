@@ -116,3 +116,27 @@ def test_report_waits_for_a_complete_run(tmp_path, monkeypatch, capsys):
     out = disguise.report_formats()
     assert not any(out.values()) and not (tmp_path / "summary.json").exists()
     assert "jev-json (3 of 2000)" in capsys.readouterr().out
+
+
+def test_rank_correlation_gives_ties_their_average_rank(tmp_path):
+    import sys
+
+    import numpy as np
+    import records as rc
+    from scipy.stats import spearmanr
+
+    sys.path.insert(0, str(ROOT / "runners" / "checks"))
+    import disguise
+
+    orig = disguise._records("jev")
+    ids = sorted(orig)
+    p0 = np.array([orig[i]["p_default"] for i in ids])
+    p1 = np.round(p0, 1)  # a heavily tied variant, like Jev's and Sol's round answers
+    recs = [rc.make_record(id=i, split="test", contestant="jev-json", condition="out_of_box",
+                           model_version="jev; format json f1", p_default=float(p),
+                           label=orig[i]["label"], latency_ms=1.0, cost_usd=0.0,
+                           ts=rc.utc_now()) for i, p in zip(ids, p1, strict=True)]  # fmt: skip
+    rc.write_records("jev-json", recs, tmp_path)
+    r = disguise.report_one("jev", variant="json", directory=tmp_path, control_prefix="json")
+    assert len(np.unique(p1)) < 12
+    assert r["spearman"] == pytest.approx(spearmanr(p0, p1)[0], abs=1e-12)

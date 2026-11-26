@@ -240,6 +240,7 @@ def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122,
     """Original vs a variant (disguised, or a post 5 format) on the same customers, with the
     disguise check's control as the noise floor."""
     import metrics as m
+    from scipy.stats import spearmanr
 
     orig = _records(contestant)
     disg = _records(f"{contestant}-{variant}", directory)
@@ -265,9 +266,8 @@ def report_one(contestant: str, n_boot: int = 1000, seed: int = 20261122,
         "mean_abs_change": float(np.abs(p1 - p0).mean()),
         "ece": {"original": m.ece(y, p0), variant: m.ece(y, p1)},
         "auc": {"original": m.auc(y, p0), variant: m.auc(y, p1)},
-        "spearman": float(
-            np.corrcoef(np.argsort(np.argsort(p0)), np.argsort(np.argsort(p1)))[0, 1]
-        ),  # fmt: skip
+        # Tie-aware (average ranks), so the same on every machine; Jev and Sol tie a lot.
+        "spearman": float(spearmanr(p0, p1)[0]),
         "cost_usd": float(sum(disg[i]["cost_usd"] for i in ids)),
     }
     cids = sorted(set(orig) & set(ctrl) & set(disg))

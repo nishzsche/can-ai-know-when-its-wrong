@@ -12,7 +12,14 @@ contrast on the light surface). Sized for phones (4:5 portrait or 1:1).
 
 Each figure is drawn twice: light, and a `-dark.png` version for the blog's dark mode, using the
 palette's dark steps of the same hues on the blog's dark background (validated with the dataviz
-skill's validate_palette.js against #18181b: all checks pass).
+skill's validate_palette.js against #18181b: all checks pass. The blog's dark page is now #171614,
+slightly darker, so every colour's contrast against it is about 2% higher).
+
+Exported for the blog (save()): on the page's own colours, so a chart sits on the page with no box;
+at 180 dpi, so a 7.2 in chart is 1296 px, twice the blog's 646 px text column; with no text below
+10.5 pt, which shows at about 13 px in the column; and quantized to 256 colours, which keeps files
+small with no visible change. Wider figures grow past the column on big screens (the blog's
+chart.html), so their text shows at the same size.
 """
 
 from __future__ import annotations
@@ -20,13 +27,16 @@ from __future__ import annotations
 import csv
 import json
 import sys
+import textwrap
 from pathlib import Path
 
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.text  # noqa: E402
 from matplotlib.ticker import FuncFormatter, PercentFormatter  # noqa: E402
+from PIL import Image  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from records import ROOT  # noqa: E402
@@ -36,7 +46,7 @@ DETAIL_JSON = ROOT / "results" / "summary_detail.json"
 FIG_DIR = ROOT / "results" / "figures"
 
 # ---- tokens (reference palette, light) ----------------------------------------------------------
-SURFACE = "#fcfcfb"
+SURFACE = "#faf8f3"  # the blog's paper
 INK = "#0b0b0b"
 INK_2 = "#52514e"
 MUTED = "#898781"
@@ -71,7 +81,7 @@ NAME = {
 LIGHT = {"SURFACE": SURFACE, "INK": INK, "INK_2": INK_2, "MUTED": MUTED, "GRID": GRID,
          "AXIS": AXIS, "COLOR": dict(COLOR)}  # fmt: skip
 DARK = {
-    "SURFACE": "#18181b",  # the blog's dark background, so the chart sits flush on the page
+    "SURFACE": "#171614",  # the blog's dark background, so the chart sits flush on the page
     "INK": "#f0efec", "INK_2": "#c3c2b7", "MUTED": "#898781", "GRID": "#2c2c2a", "AXIS": "#4a4a46",
     "COLOR": {
         "jev": "#3987e5", "kev-4b": "#d95926", "kev-0.8b": "#199e70", "laya": "#c98500",
@@ -136,11 +146,70 @@ def footer(fig, text: str = FOOTNOTE) -> None:
     fig.text(0.04, 0.012, text, fontsize=8.5, color=MUTED, va="bottom")
 
 
-def save(fig, name: str) -> Path:
+DPI = 180  # 7.2 in -> 1296 px: twice the blog's 646 px text column, sharp on high-density screens
+MIN_TEXT_PT = 10.5  # at DPI and 2 px per CSS px, 10.5 pt shows at about 13 px
+EDGE_IN = 0.1  # figure-level text keeps this far from the right edge
+
+
+def _fit_width(fig) -> None:
+    """Re-wrap figure-level text (header, footnotes) that now runs past the right edge. Wrapped
+    footnotes grow upward from the bottom, so check the chart still clears them."""
+    renderer = fig.canvas.get_renderer()
+    right = fig.bbox.x1 - EDGE_IN * fig.dpi
+    for t in fig.texts:
+        text, out = t.get_text(), []
+        if t.get_window_extent(renderer).x1 <= right:
+            continue
+        for line in text.split("\n"):  # wrap only the lines that are too long
+            width, pieces = len(line), [line]
+            while width > 20:
+                pieces = textwrap.wrap(line, width) or [""]
+                fits = True
+                for piece in pieces:
+                    t.set_text(piece)
+                    fits = fits and t.get_window_extent(renderer).x1 <= right
+                if fits:
+                    break
+                width -= 2
+            out += pieces
+        t.set_text("\n".join(out))
+
+
+def _warn_outside(fig, name: str) -> None:
+    renderer = fig.canvas.get_renderer()
+    # Skip tick labels: matplotlib keeps some outside the axis range that are never drawn, and
+    # the floor doesn't change them (they are 11 pt already)
+    ticks = {id(lab) for ax in fig.axes for axis in (ax.xaxis, ax.yaxis)
+             for tick in axis.get_major_ticks() for lab in (tick.label1, tick.label2)}  # fmt: skip
+    for t in fig.findobj(matplotlib.text.Text):
+        if not t.get_text() or not t.get_visible() or id(t) in ticks:
+            continue
+        box = t.get_window_extent(renderer)
+        if box.x0 < fig.bbox.x0 or box.x1 > fig.bbox.x1 or box.y0 < fig.bbox.y0 \
+                or box.y1 > fig.bbox.y1:  # fmt: skip
+            print(f"warning: {name}: text runs off the figure: {t.get_text()[:50]!r}")
+
+
+def save(fig, name: str, card: bool = False) -> Path:
+    """Save a blog chart (see the module docstring), or with card=True a 1200x630 social card,
+    which keeps 200 dpi and its own small text."""
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     path = FIG_DIR / name.replace(".png", f"{SUFFIX}.png")
-    fig.savefig(path, dpi=200)
+    if not card:
+        fig.set_dpi(DPI)  # measure text as it will be saved: at screen dpi it comes out wider
+        fig.canvas.draw()  # creates every tick label, so the floor below reaches them too
+        for t in fig.findobj(matplotlib.text.Text):
+            if t.get_text() and t.get_fontsize() < MIN_TEXT_PT:
+                t.set_fontsize(MIN_TEXT_PT)
+        _fit_width(fig)
+        _warn_outside(fig, path.name)
+    fig.savefig(path, dpi=200 if card else DPI)
     plt.close(fig)
+    if not card:
+        with Image.open(path) as im:
+            small = im.convert("RGB").quantize(256, method=Image.Quantize.MEDIANCUT,
+                                               dither=Image.Dither.NONE)  # fmt: skip
+        small.save(path, optimize=True)
     return path
 
 
@@ -152,7 +221,7 @@ PCT = PercentFormatter(1.0, decimals=0)
 
 def fig_reliability(rows, detail, condition: str = "out_of_box") -> Path:
     fig, axes = plt.subplots(3, 2, figsize=(7.2, 9.0), sharex=True, sharey=True)
-    fig.subplots_adjust(left=0.11, right=0.97, top=0.86, bottom=0.12, hspace=0.32, wspace=0.12)
+    fig.subplots_adjust(left=0.11, right=0.97, top=0.86, bottom=0.14, hspace=0.32, wspace=0.12)
     ref = detail.get("scorecard", {}).get("trained", {}).get("deciles")
     top = max(max(x["promised"], x["actual"]) for c in (*AI, "scorecard") for d in
               detail.get(c, {}).values() for x in d["deciles"])  # fmt: skip
@@ -244,8 +313,9 @@ def fig_honesty_arc(rows) -> Path:
         # Shade where a perfectly calibrated model lands by chance on these 2,000 customers
         # (95th percentile of simulated ECE, worst case over the contestants and stages shown).
         ax.axvspan(-0.01, floor, color=GRID, alpha=0.55, lw=0, zorder=0)
-        ax.text(floor + 0.004, -0.42, f"Shaded: a perfectly honest model can score up to "
-                f"{floor:.3f} by chance", color=INK_2, fontsize=9, va="center")  # fmt: skip
+        ax.text(1, -0.42, f"Shaded: a perfectly honest model can score up to "
+                f"{floor:.3f} by chance", color=INK_2, fontsize=9, va="center", ha="right",
+                transform=ax.get_yaxis_transform())  # fmt: skip
     ref = rows.get(("scorecard", "trained"))
     if ref:
         ax.axvline(ref["ece"], color=COLOR["scorecard"], lw=1.2, zorder=1)

@@ -234,7 +234,7 @@ def social_card(res: dict, loss: str = "4") -> Path:
     ax.set_title("Profit per 1,000 customers", fontsize=9, loc="left", pad=8)
     ax.text(0, -0.2, "lending on each model's own percentages", transform=ax.transAxes,
             fontsize=6.5, color=F.MUTED)  # fmt: skip
-    return F.save(fig, "post2_social_card.png")
+    return F.save(fig, "post2_social_card.png", card=True)
 
 
 FOOT = ("Test set: 2,000 real credit-card customers (UCI, Taiwan 2005), 22.1% defaulted.\n"

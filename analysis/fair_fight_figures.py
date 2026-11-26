@@ -106,7 +106,7 @@ def catch_up(dark: bool = False) -> Path:
     F.set_theme(dark)
     plt = F.plt
     fig, ax = plt.subplots(figsize=(7.6, 6.6))
-    fig.subplots_adjust(left=0.2, right=0.96, top=0.71, bottom=0.17)
+    fig.subplots_adjust(left=0.2, right=0.96, top=0.71, bottom=0.23)
     refs = {"scorecard": metric("scorecard", "trained")[0], "gbm": metric("gbm", "trained")[0],
             "neighbours": metric("neighbours-20", "trained")[0]}  # fmt: skip
     for y, (c, zs, _label, _how) in enumerate(MODELS):
@@ -295,10 +295,11 @@ def kev_calibration(dark: bool = False) -> Path:
         ax.plot(rx, ry, "o", ms=7, color=F.SURFACE, mec=col, mew=1.8, zorder=3)
         ax.plot(cx, cy, color=col, lw=2, zorder=4)
         ax.plot(cx, cy, "o", ms=7, color=col, mec=F.SURFACE, mew=1.2, zorder=5)
-        ax.set_title(name, loc="left", fontsize=12, pad=18)
-        ax.text(0, 1.03, f"{rs['ece'] * 100:.1f} points off straight out of training, "
+        ax.set_title(name, loc="left", fontsize=12, pad=8)
+        # In the empty top-left corner, like post 1's panels: above the axes it ran off the edge
+        ax.text(0.03, 0.97, f"{rs['ece'] * 100:.1f} points off straight out of training,\n"
                 f"{cs['ece'] * 100:.1f} after the correction", transform=ax.transAxes,
-                fontsize=8.5, color=F.INK_2)  # fmt: skip
+                fontsize=10.5, color=F.INK_2, va="top", linespacing=1.35)  # fmt: skip
         ax.set_xlim(0, 0.8)
         ax.set_ylim(0, 0.8)
         ax.set_xticks([0, 0.2, 0.4, 0.6, 0.8])
@@ -334,7 +335,7 @@ def cost_per_1000(contestant: str, condition: str = "trained") -> float:
 
 
 COST_LABEL = {  # (dx, dy) label offsets in points, placed by eye to avoid collisions
-    "kumo-tabular": (0, 11), "tabicl-v2": (0, 11), "kev-4b-ft": (0, 11),
+    "kumo-tabular": (0, 11), "tabicl-v2": (0, 11), "kev-4b-ft": (10, 0),
     "kev-0.8b-ft": (0, -14), "qwen-ft": (9, -11), "laya-ft": (0, -14),
     "sol-examples": (-10, 0), "jev-examples": (10, 0),
     "gbm": (10, 0), "scorecard": (10, 0), "neighbours-20": (10, 0),
@@ -531,7 +532,7 @@ def social_card() -> Path:
     ax.text(0, -0.2, "open: answering cold  ·  filled: trained\nlines: gradient boosting, "
             "scorecard", transform=ax.transAxes, fontsize=6, color=F.MUTED, va="top",
             linespacing=1.3)  # fmt: skip
-    return F.save(fig, "m6_social_card.png")
+    return F.save(fig, "m6_social_card.png", card=True)
 
 
 FIGURES = (catch_up, honesty, reliability, how_close, kev_calibration, cost, sol_neighbours,

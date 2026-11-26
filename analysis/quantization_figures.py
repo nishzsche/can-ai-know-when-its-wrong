@@ -47,8 +47,9 @@ CHANCE = 0.025  # ECE a perfectly honest model stays below in 95 of 100 samples 
 TEST_LINE = "Test set: 2,000 real credit-card customers (UCI, Taiwan 2005), 22.1% defaulted."
 TRAINED_LINE = ("All three were fine-tuned on the 20,000 customers the scorecard learned from "
                 "(post 3).")  # fmt: skip
-METHOD_LINE = ("8-bit and NF4: bitsandbytes, as most people get it. HQQ: one method from 4 bits "
-               "to 2. No data used to shrink.")  # fmt: skip
+METHOD_LINE = ("8-bit and NF4: bitsandbytes (LLM.int8; NF4, the common 4-bit recipe). HQQ: one "
+               "method from 4 bits to 2. No data used.")  # fmt: skip
+GB = 1024**3 / 1e9  # the CSV's memory columns are GiB; the charts show decimal GB, like the post
 POINTS = FuncFormatter(lambda v, _: f"{100 * v:.0f}")
 
 
@@ -119,10 +120,10 @@ def ranking(dark: bool = False) -> Path:
     method_brackets(ax)
     ax.set_ylim(0.38, 0.86)
     ax.set_ylabel("Ranking (AUC): how often a defaulter is rated riskier")
-    F.header(fig, "Ranking held to 3 bits, then fell off a cliff",
+    F.header(fig, "Ranking held to 4 bits, and collapsed at 2",
              "Each trained model's ranking at each size, on the same 2,000 customers.\n"
              "Down to 4 bits, all three stay within 0.005 of full size. At 3 bits only\n"
-             "Kev-4B slips (0.017). At 2 bits, two rank worse than a coin flip.")  # fmt: skip
+             "Kev-4B slips, to 0.776. At 2 bits, two rank worse than a coin flip.")  # fmt: skip
     F.footer(fig, "\n".join((TEST_LINE, TRAINED_LINE, METHOD_LINE)))
     return F.save(fig, "post4_ranking.png")
 
@@ -155,6 +156,13 @@ def honesty(dark: bool = False) -> Path:
         ax.annotate(f"{name}, full size {100 * ys[0]:.1f}", (x[0], ys[0]), xytext=(-8, dy),
                     textcoords="offset points", ha="left", va="bottom" if dy > 0 else "top",
                     fontsize=9.5, color=F.INK)  # fmt: skip
+    # The one change above 2 bits that the paired test (Holm over 15) finds bigger than chance.
+    sig = [(m_, s) for m_, _k, _n in MODELS for s in SIZES[1:-1]
+           if value(m_, s, "ece_vs_bf16_p_holm") < 0.05]  # fmt: skip
+    for m_, s in sig:
+        ax.annotate("bigger than\nchance", (SIZES.index(s), value(m_, s, "ece")), xytext=(0, -12),
+                    textcoords="offset points", ha="center", va="top", fontsize=8.5,
+                    color=F.INK_2, linespacing=1.1)  # fmt: skip
     off_text = "\n".join(f"{name}: {100 * v:.0f} points off" for v, name in sorted(off))
     ax.text(0.05, top * 0.97, f"Off the scale at 2 bits:\n{off_text}", ha="left", va="top",
             fontsize=9, color=F.INK_2, linespacing=1.35)  # fmt: skip
@@ -163,13 +171,13 @@ def honesty(dark: bool = False) -> Path:
     ax.set_ylim(0, top)
     ax.yaxis.set_major_formatter(POINTS)
     ax.set_ylabel("Calibration error: points off, on average")
-    F.header(fig, "Honesty held too, but drifted in directions nobody chose",
-             "Each trained model's calibration error at each size. 4-bit HQQ made Kev-0.8B\n"
-             "more honest and Qwen less, shifts like those retraining caused in post 3.\n"
-             "At 2 bits, all three broke.")  # fmt: skip
+    F.header(fig, "Honesty held, with one change bigger than chance",
+             "Each trained model's calibration error at each size. Above 2 bits, only one\n"
+             "change is bigger than chance, and it's an improvement: 4-bit HQQ made\n"
+             "Kev-0.8B more honest. At 2 bits, all three broke.")  # fmt: skip
     F.footer(fig, "\n".join((TEST_LINE, TRAINED_LINE,
-                             "Raw output, before any correction. Calibration error (ECE) "
-                             "x 100, ten equal-width risk groups.")))  # fmt: skip
+                             "Raw output. Calibration error (ECE) × 100, ten equal-width risk "
+                             "groups. Changes: paired bootstrap, Holm over 15.")))  # fmt: skip
     return F.save(fig, "post4_honesty.png")
 
 
@@ -222,10 +230,11 @@ def drift(dark: bool = False) -> Path:
         ax.set_ylabel("Shrunk answer")
     F.header(fig, "The scores held while the customers moved",
              f"Each dot is one test customer: {name}'s full-size answer against its shrunk\n"
-             f"answer. At 3 bits, 6 in 10 customers moved by 5 points or more, while its\n"
-             f"ranking and honesty looked as good as full size "
-             f"({value(model, 'bf16', 'auc'):.3f}, {100 * value(model, 'bf16', 'ece'):.1f} "
-             f"points off).")  # fmt: skip
+             f"answer. At 3 bits, 6 in 10 customers moved by 5 points or more, yet its\n"
+             f"ranking and honesty looked as good as full size ({value(model, 'hqq-3', 'auc'):.3f} "
+             f"and {100 * value(model, 'hqq-3', 'ece'):.1f} off,\nagainst "
+             f"{value(model, 'bf16', 'auc'):.3f} and {100 * value(model, 'bf16', 'ece'):.1f} at "
+             f"full size).")  # fmt: skip
     F.footer(fig, "\n".join((TEST_LINE,
                              "Dashed line: no change. Raw output, before any correction.")))
     return F.save(fig, "post4_drift.png")
@@ -245,7 +254,7 @@ def cost(dark: bool = False) -> Path:
         col = F.COLOR[key]
         for y, size in enumerate(SIZES):
             yy = y + COST_DY[model]
-            left.plot(value(model, size, "gpu_peak_gb"), yy, "o", ms=8, color=col,
+            left.plot(GB * value(model, size, "gpu_peak_gb"), yy, "o", ms=8, color=col,
                       mec=F.SURFACE, mew=1.2, zorder=3)  # fmt: skip
             right.plot(value(model, size, "latency_ms_median"), yy, "o", ms=8, color=col,
                        mec=F.SURFACE, mew=1.2, zorder=3)  # fmt: skip
@@ -254,7 +263,7 @@ def cost(dark: bool = False) -> Path:
         ax.tick_params(axis="y", length=0, labelsize=10, labelcolor=F.INK)
     left.set_yticks(range(len(SIZES)), [ROW[s] for s in SIZES])
     left.set_ylim(len(SIZES) - 0.5, -0.6)
-    left.set_xlim(0, 9)
+    left.set_xlim(0, 10)
     left.set_xlabel("GPU memory at peak (GB)")
     right.set_xlim(0, 500)
     right.set_xlabel("Time per answer (milliseconds)")
@@ -272,8 +281,8 @@ def cost(dark: bool = False) -> Path:
         TEST_LINE,
         "Median time over the 2,000 test answers. Every size served the same way, with Kev's "
         "speed-up (CUDA graphs)",
-        "off, since shrunk weights can't use it. At $0.44 per GPU hour, 100 ms per answer is "
-        "about 1.2 cents per 1,000.",
+        "off: its server offers it only at full size. At $0.44 per GPU hour, 100 ms per answer "
+        "is about 1.2 cents per 1,000.",
     )))  # fmt: skip
     return F.save(fig, "post4_cost.png")
 

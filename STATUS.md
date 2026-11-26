@@ -7,6 +7,27 @@ Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` befor
 `writeup/quantization_post.md`, "I shrank AI models to save money. They stayed honest, and got slower." About 2,400 words with tables and four charts (`analysis/quantization_figures.py` → `results/figures/post4_{ranking,honesty,drift,cost}.png`, light and dark).
 - **New measures, added while writing (the post says so):** `analysis/quantization.py` now also reports the lending-decision counts. These are the share of approve/decline decisions that differ from bf16 (each at its own tune cut-off), the shrunk model swapped in at bf16's tune cut-off (approval, profit, decisions changed), and the share of customers moved 5+ points. All existing columns are unchanged. The noise floor quoted in the post is two full-size runs (M6 against the session A bf16 re-run): 0.2% of decisions change for Kev and 1.4% for Qwen. It was computed in the session and isn't a column.
 - **Review copy:** https://nishzsche.github.io/review/shrinking-ai-models/ (unlisted, noindex), as post 3's was. It's on the blog's `dev` branch as `review/shrinking-ai-models.md`, with the charts in `public/images/shrinking-ai-models/`. Version 1 went live on 2026-11-26 (blog PR #47).
+- **Review panel (2026-11-26).** Five agents: statistician, fact-checker, bank model-risk validator, editor, and ML engineer with hiring manager. Scores as drafted were 6.5–7 (hiring manager 7.5, "would interview"), and 8.5–9.5 with the fixes. Every number reproduced from the raw predictions. The drift section was called the best idea in the series. Must-fixes, now applied to the draft:
+  - **Decisions table:** each row now sits at the full-size model's cut-off (`decisions_changed_bf16_cutoff`). Re-choosing the cut-off on tune flips 3.4% of Kev-0.8B's decisions on its own (post 3 against the bf16 re-run, at their own cut-offs), so the earlier own-cut-off rows were mostly cut-off noise.
+  - **Honesty changes:** a paired bootstrap of the ECE change, Holm over 15, is now in `analysis/quantization.py` (`ece_vs_bf16*`). Above 2 bits, only Kev-0.8B at hqq-4 changed by more than chance (−2.2 points, Holm p 0.024). Qwen's hqq-4 rise (+0.8) and every 3-bit change are within chance. Qwen's mean shift (22.1% to 19.2%) is label-free and solid.
+  - **Speed explanation:** it was wrong and has been removed. Post 3's Kev-4B gained only 5% from CUDA graphs (106 vs 111 ms). Every version, full size included, ran `causal_conv1d` and Qwen's `chunk_gated_delta_rule` on slow reference code (the logs say so). Each Kev request is two backbone passes (about 245 tokens in, 23 out). The CUDA-graph limit belongs to Kev's server, not to quantization.
+  - **Facts:**
+    - Post 3 trained four models.
+    - Post 4's own GPU time is 4.3 h, about $1.90.
+    - NF4 is the common recipe, not transformers' default (FP4, fp32 compute).
+    - Kev-4B costs 1.3 cents per 1,000.
+    - Memory is now in decimal GB (the CSV columns are GiB).
+    - "Within 0.002" was on 50 tune customers.
+    - The "moved 5+ points" share was also added after the runs.
+  - **Overclaims:**
+    - "a dashboard would have passed it" (calibration slope went 0.86 to 1.31);
+    - "earns nothing";
+    - "perfectly honest";
+    - "safe";
+    - "0.02 can't be told apart" (between models; a model against itself resolves about 0.004);
+    - "ranking held to 3 bits".
+  - **Bank advice:** rewritten around governance (material model change, tolerances, day-one score migration, re-set cut-offs through approval, record GPU, kernels and drivers). New limitations: an unsupported vendor use, fair lending, keeping the update unmerged.
+- **The author's decision (2026-11-26): hold post 4 for extra speed runs** (PLAN.md §12, post 4 speed addendum). The title, subtitle, speed section, one predictions row and the speed bullets are marked PENDING in the draft. The live review copy is still version 1.
 - **Still to do after the author's review:** the LinkedIn post and its carousel (`writeup/STYLE.md`: 8–10 slides, a builder script), the X post, the social card, and the README and PLAN status.
 
 ## L4 session A done (2026-11-25 19:43 → 2026-11-26 01:30 IST)

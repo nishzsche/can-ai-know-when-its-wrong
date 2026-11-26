@@ -54,6 +54,10 @@
       "auc_vs_bf16_lo": -0.001628095091928461,
       "auc_vs_bf16_hi": 0.0006989392193918337,
       "auc_vs_bf16_p": 0.468,
+      "ece_vs_bf16": 0.003095049999999995,
+      "ece_vs_bf16_lo": -0.0011029512500000031,
+      "ece_vs_bf16_hi": 0.005573897500000004,
+      "ece_vs_bf16_p": 0.2,
       "approve_own": 0.763,
       "profit_own": 303.0,
       "tune_cutoff": 0.1432,
@@ -68,7 +72,8 @@
       "cost_per_1000_usd": 0.027939737692776707,
       "gpu_weights_gb": 0.9796905517578125,
       "gpu_peak_gb": 1.0970005989074707,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-0.8b-ft",
@@ -96,6 +101,10 @@
       "auc_vs_bf16_lo": -0.0025300796908327423,
       "auc_vs_bf16_hi": 0.002271309025082871,
       "auc_vs_bf16_p": 0.893,
+      "ece_vs_bf16": 0.0016765499999999711,
+      "ece_vs_bf16_lo": -0.0036418575000000024,
+      "ece_vs_bf16_hi": 0.006114548750000017,
+      "ece_vs_bf16_p": 0.506,
       "approve_own": 0.7695,
       "profit_own": 289.5,
       "tune_cutoff": 0.147,
@@ -110,7 +119,8 @@
       "cost_per_1000_usd": 0.009958233129388342,
       "gpu_weights_gb": 0.7576971054077148,
       "gpu_peak_gb": 0.8787593841552734,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-0.8b-ft",
@@ -138,6 +148,10 @@
       "auc_vs_bf16_lo": -0.001744201181578801,
       "auc_vs_bf16_hi": 0.004034177865539443,
       "auc_vs_bf16_p": 0.466,
+      "ece_vs_bf16": -0.0216681,
+      "ece_vs_bf16_lo": -0.027686260000000018,
+      "ece_vs_bf16_hi": -0.008517887499999986,
+      "ece_vs_bf16_p": 0.002,
       "approve_own": 0.7395,
       "profit_own": 302.0,
       "tune_cutoff": 0.1939,
@@ -152,7 +166,8 @@
       "cost_per_1000_usd": 0.013628503135146134,
       "gpu_weights_gb": 0.7550449371337891,
       "gpu_peak_gb": 0.9041423797607422,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 0.024
     },
     {
       "model": "kev-0.8b-ft",
@@ -180,6 +195,10 @@
       "auc_vs_bf16_lo": -0.014465745574890589,
       "auc_vs_bf16_hi": 0.006649754678455527,
       "auc_vs_bf16_p": 0.469,
+      "ece_vs_bf16": -0.013220250000000003,
+      "ece_vs_bf16_lo": -0.02714667625000002,
+      "ece_vs_bf16_hi": 0.00863979499999999,
+      "ece_vs_bf16_p": 0.222,
       "approve_own": 0.6815,
       "profit_own": 301.5,
       "tune_cutoff": 0.2018,
@@ -194,7 +213,8 @@
       "cost_per_1000_usd": 0.020745749034581887,
       "gpu_weights_gb": 0.712517261505127,
       "gpu_peak_gb": 0.8622002601623535,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-0.8b-ft",
@@ -222,6 +242,10 @@
       "auc_vs_bf16_lo": -0.3808429774156651,
       "auc_vs_bf16_hi": -0.3000991914611461,
       "auc_vs_bf16_p": 0.0,
+      "ece_vs_bf16": 0.10644949999999997,
+      "ece_vs_bf16_lo": 0.07174822624999999,
+      "ece_vs_bf16_hi": 0.1306231525,
+      "ece_vs_bf16_p": 0.0,
       "approve_own": 0.0005,
       "profit_own": 0.5,
       "tune_cutoff": 0.2256,
@@ -236,7 +260,8 @@
       "cost_per_1000_usd": 0.015427468084920999,
       "gpu_weights_gb": 0.6351566314697266,
       "gpu_peak_gb": 0.7842540740966797,
-      "auc_vs_bf16_p_holm": 0.0
+      "auc_vs_bf16_p_holm": 0.0,
+      "ece_vs_bf16_p_holm": 0.0
     },
     {
       "model": "kev-4b-ft",
@@ -292,6 +317,10 @@
       "auc_vs_bf16_lo": -0.0025496707307260964,
       "auc_vs_bf16_hi": 0.001005982699232888,
       "auc_vs_bf16_p": 0.388,
+      "ece_vs_bf16": -0.0010162499999999616,
+      "ece_vs_bf16_lo": -0.005305032500000008,
+      "ece_vs_bf16_hi": 0.005688587500000014,
+      "ece_vs_bf16_p": 0.942,
       "approve_own": 0.763,
       "profit_own": 290.5,
       "tune_cutoff": 0.1232,
@@ -306,7 +335,8 @@
       "cost_per_1000_usd": 0.035349984280803215,
       "gpu_weights_gb": 4.557201385498047,
       "gpu_peak_gb": 4.880716800689697,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-4b-ft",
@@ -334,6 +364,10 @@
       "auc_vs_bf16_lo": -0.002202488066350978,
       "auc_vs_bf16_hi": 0.0017702614061547357,
       "auc_vs_bf16_p": 0.876,
+      "ece_vs_bf16": 0.0031867000000000076,
+      "ece_vs_bf16_lo": -0.003234849999999998,
+      "ece_vs_bf16_hi": 0.00945813750000002,
+      "ece_vs_bf16_p": 0.333,
       "approve_own": 0.7635,
       "profit_own": 291.0,
       "tune_cutoff": 0.1231,
@@ -348,7 +382,8 @@
       "cost_per_1000_usd": 0.01688594568771142,
       "gpu_weights_gb": 3.09521484375,
       "gpu_peak_gb": 3.416810989379883,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-4b-ft",
@@ -376,6 +411,10 @@
       "auc_vs_bf16_lo": -0.0035926024060039643,
       "auc_vs_bf16_hi": 0.0007805825727128401,
       "auc_vs_bf16_p": 0.222,
+      "ece_vs_bf16": -0.007440549999999966,
+      "ece_vs_bf16_lo": -0.01305399250000002,
+      "ece_vs_bf16_hi": 0.001785706250000016,
+      "ece_vs_bf16_p": 0.112,
       "approve_own": 0.75,
       "profit_own": 300.0,
       "tune_cutoff": 0.129,
@@ -390,7 +429,8 @@
       "cost_per_1000_usd": 0.052112616607824264,
       "gpu_weights_gb": 3.1388893127441406,
       "gpu_peak_gb": 3.5824036598205566,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-4b-ft",
@@ -418,6 +458,10 @@
       "auc_vs_bf16_lo": -0.02519164233219177,
       "auc_vs_bf16_hi": -0.007937309190824212,
       "auc_vs_bf16_p": 0.001,
+      "ece_vs_bf16": 0.009329400000000022,
+      "ece_vs_bf16_lo": -0.006991409999999992,
+      "ece_vs_bf16_hi": 0.02522096,
+      "ece_vs_bf16_p": 0.306,
       "approve_own": 0.7155,
       "profit_own": 293.0,
       "tune_cutoff": 0.1704,
@@ -432,7 +476,8 @@
       "cost_per_1000_usd": 0.05706080758697224,
       "gpu_weights_gb": 2.7487525939941406,
       "gpu_peak_gb": 3.2117929458618164,
-      "auc_vs_bf16_p_holm": 0.012
+      "auc_vs_bf16_p_holm": 0.012,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "kev-4b-ft",
@@ -460,6 +505,10 @@
       "auc_vs_bf16_lo": -0.22979856458395323,
       "auc_vs_bf16_hi": -0.15941729230973528,
       "auc_vs_bf16_p": 0.0,
+      "ece_vs_bf16": 0.1644691,
+      "ece_vs_bf16_lo": 0.130210845,
+      "ece_vs_bf16_hi": 0.19116213,
+      "ece_vs_bf16_p": 0.0,
       "approve_own": 0.0025,
       "profit_own": 0.0,
       "tune_cutoff": 0.4108,
@@ -474,7 +523,8 @@
       "cost_per_1000_usd": 0.04870681229884051,
       "gpu_weights_gb": 2.2484474182128906,
       "gpu_peak_gb": 2.6836628913879395,
-      "auc_vs_bf16_p_holm": 0.0
+      "auc_vs_bf16_p_holm": 0.0,
+      "ece_vs_bf16_p_holm": 0.0
     },
     {
       "model": "qwen-ft",
@@ -530,6 +580,10 @@
       "auc_vs_bf16_lo": -0.002463891718753755,
       "auc_vs_bf16_hi": 0.00624597870295697,
       "auc_vs_bf16_p": 0.377,
+      "ece_vs_bf16": 0.0006334906369447821,
+      "ece_vs_bf16_lo": -0.006518569569289689,
+      "ece_vs_bf16_hi": 0.008868350478913623,
+      "ece_vs_bf16_p": 0.863,
       "approve_own": 0.6245,
       "profit_own": 284.5,
       "tune_cutoff": 0.20181451737880707,
@@ -544,7 +598,8 @@
       "cost_per_1000_usd": 0.019967549265118498,
       "gpu_weights_gb": 4.544382095336914,
       "gpu_peak_gb": 4.706435680389404,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "qwen-ft",
@@ -572,6 +627,10 @@
       "auc_vs_bf16_lo": 0.00012182658608797022,
       "auc_vs_bf16_hi": 0.009221204520998737,
       "auc_vs_bf16_p": 0.046,
+      "ece_vs_bf16": -0.0017981386668980033,
+      "ece_vs_bf16_lo": -0.00968096425151452,
+      "ece_vs_bf16_hi": 0.006990719785261904,
+      "ece_vs_bf16_p": 0.725,
       "approve_own": 0.6155,
       "profit_own": 288.0,
       "tune_cutoff": 0.20181472599506378,
@@ -586,7 +645,8 @@
       "cost_per_1000_usd": 0.0184432986677482,
       "gpu_weights_gb": 3.079954147338867,
       "gpu_peak_gb": 3.2417984008789062,
-      "auc_vs_bf16_p_holm": 0.506
+      "auc_vs_bf16_p_holm": 0.506,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "qwen-ft",
@@ -614,6 +674,10 @@
       "auc_vs_bf16_lo": -0.0016318519615484807,
       "auc_vs_bf16_hi": 0.00894999436028912,
       "auc_vs_bf16_p": 0.161,
+      "ece_vs_bf16": 0.007764166707173,
+      "ece_vs_bf16_lo": -0.01266819573454558,
+      "ece_vs_bf16_hi": 0.023624334483919665,
+      "ece_vs_bf16_p": 0.53,
       "approve_own": 0.692,
       "profit_own": 304.5,
       "tune_cutoff": 0.18242712318897247,
@@ -628,7 +692,8 @@
       "cost_per_1000_usd": 0.034839854661150214,
       "gpu_weights_gb": 3.126192092895508,
       "gpu_peak_gb": 3.3419113159179688,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "qwen-ft",
@@ -656,6 +721,10 @@
       "auc_vs_bf16_lo": -0.013501538571457925,
       "auc_vs_bf16_hi": 0.011745197280325501,
       "auc_vs_bf16_p": 0.926,
+      "ece_vs_bf16": -0.0090808985941112,
+      "ece_vs_bf16_lo": -0.021613646727707235,
+      "ece_vs_bf16_hi": 0.01030800648313016,
+      "ece_vs_bf16_p": 0.513,
       "approve_own": 0.678,
       "profit_own": 298.0,
       "tune_cutoff": 0.22270183265209198,
@@ -670,7 +739,8 @@
       "cost_per_1000_usd": 0.03721921940288998,
       "gpu_weights_gb": 2.733003616333008,
       "gpu_peak_gb": 2.9415626525878906,
-      "auc_vs_bf16_p_holm": 1.0
+      "auc_vs_bf16_p_holm": 1.0,
+      "ece_vs_bf16_p_holm": 1.0
     },
     {
       "model": "qwen-ft",
@@ -698,6 +768,10 @@
       "auc_vs_bf16_lo": -0.39386869678395675,
       "auc_vs_bf16_hi": -0.3073056066445682,
       "auc_vs_bf16_p": 0.0,
+      "ece_vs_bf16": 0.43924065693467856,
+      "ece_vs_bf16_lo": 0.41144446139046925,
+      "ece_vs_bf16_hi": 0.4585222536961082,
+      "ece_vs_bf16_p": 0.0,
       "approve_own": 0.017,
       "profit_own": -8.0,
       "tune_cutoff": 0.14123554527759552,
@@ -712,7 +786,8 @@
       "cost_per_1000_usd": 0.03276224627278861,
       "gpu_weights_gb": 2.234407424926758,
       "gpu_peak_gb": 2.4490013122558594,
-      "auc_vs_bf16_p_holm": 0.0
+      "auc_vs_bf16_p_holm": 0.0,
+      "ece_vs_bf16_p_holm": 0.0
     }
   ],
   "not_scored": {},

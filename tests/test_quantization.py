@@ -329,6 +329,10 @@ def test_analysis_scores_against_the_models_own_bf16(tmp_path, monkeypatch):
         np.mean(swapped != (p_te <= cut_ref)))  # fmt: skip
     assert shrunk["decisions_changed_vs_bf16"] < shrunk["decisions_changed_bf16_cutoff"]
     assert "decisions_changed_vs_bf16" not in rows["kev-0.8b-ft-bf16"]
+    # The paired ECE change: shrunk minus bf16, with an interval around it and a Holm p-value.
+    assert shrunk["ece_vs_bf16"] == pytest.approx(shrunk["ece"] - rows["kev-0.8b-ft-bf16"]["ece"])
+    assert shrunk["ece_vs_bf16_lo"] <= shrunk["ece_vs_bf16_hi"]
+    assert 0 <= shrunk["ece_vs_bf16_p"] <= shrunk["ece_vs_bf16_p_holm"] <= 1
 
 
 def test_record_failure_writes_one_entry_per_pair(tmp_path):

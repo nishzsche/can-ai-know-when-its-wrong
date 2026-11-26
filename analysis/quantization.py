@@ -15,7 +15,8 @@ Per row:
   bf16 run (Holm over the 15 quantized rows);
 - honesty: ECE (10 equal-width bins, and equal-mass), the noise floor a perfectly calibrated model
   would score (95th percentile), calibration-in-the-large and slope, raw and after the same
-  correction fitted on tune (`trained_calibrated`, analysis/recalibrate.py);
+  correction fitted on tune (`trained_calibrated`, analysis/recalibrate.py); and the change in ECE
+  from bf16 with a paired bootstrap, Holm over the 15 quantized rows (added after the review panel);
 - lending (post 2, loss ratio 4:1): profit per 1,000 customers approving at the model's own
   percentages (p < 20%), and at the cut-off that maximizes profit on tune;
 - decisions (added while writing, after the runs): the share of approve/decline decisions that
@@ -90,6 +91,23 @@ def lending(y: np.ndarray, p: np.ndarray, y_tune: np.ndarray, p_tune: np.ndarray
             "profit_tune_cutoff": profit(y, tuned, loss)}  # fmt: skip
 
 
+def paired_ece(y: np.ndarray, p_ref: np.ndarray, p: np.ndarray, n_boot: int = 2000,
+               seed: int = 20261126) -> dict:  # fmt: skip
+    """Change in ECE (shrunk minus bf16) with a paired bootstrap over customers: the same
+    resamples for both, and the same two-sided p-value as robustness.paired_auc. The noise floor
+    (ece_noise_p95) is for the level of ECE; this tests the change. Added after the review panel."""
+    rng = np.random.default_rng(seed)
+    diffs = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, len(y), len(y))
+        diffs.append(m.ece(y[idx], p[idx]) - m.ece(y[idx], p_ref[idx]))
+    diffs = np.array(diffs)
+    pval = float(min(1.0, 2 * min((diffs <= 0).mean(), (diffs >= 0).mean())))
+    return {"ece_vs_bf16": m.ece(y, p) - m.ece(y, p_ref),
+            "ece_vs_bf16_lo": float(np.percentile(diffs, 2.5)),
+            "ece_vs_bf16_hi": float(np.percentile(diffs, 97.5)), "ece_vs_bf16_p": pval}  # fmt: skip
+
+
 def decisions(y: np.ndarray, p: np.ndarray, p_ref: np.ndarray, cut: float, cut_ref: float,
               loss: float = LOSS) -> dict:  # fmt: skip
     """What changes for a lender (added while writing post 4, after the runs). Each model approves
@@ -156,6 +174,7 @@ def score_row(model: str, precision: str, directory: Path = PREDICTIONS_DIR) -> 
         lo, hi = sorted((-d["lo"], -d["hi"]))
         row.update({"auc_vs_bf16": -d["difference"], "auc_vs_bf16_lo": lo,
                     "auc_vs_bf16_hi": hi, "auc_vs_bf16_p": d["p_value"]})  # fmt: skip
+        row.update(paired_ece(y, p_ref, p))
     if len(y_tu) == N_TEST:
         row.update(lending(y, p, y_tu, p_tu))
         _, y_tu_ref, p_tu_ref = split_arrays(ref, "trained", "tune", directory)
@@ -182,8 +201,10 @@ def build(directory: Path = PREDICTIONS_DIR, failures: dict | None = None) -> di
                 rows.append(out)
     family = [r for r in rows if r["precision"] in QUANTIZED]
     adjusted = holm({r["contestant"]: r["auc_vs_bf16_p"] for r in family})
+    adjusted_ece = holm({r["contestant"]: r["ece_vs_bf16_p"] for r in family})
     for r in family:
         r["auc_vs_bf16_p_holm"] = adjusted[r["contestant"]]
+        r["ece_vs_bf16_p_holm"] = adjusted_ece[r["contestant"]]
     repro = {}
     for path in sorted(REPRO_DIR.glob("repro_*.json")) if REPRO_DIR.exists() else []:
         d = json.loads(path.read_text("utf-8"))

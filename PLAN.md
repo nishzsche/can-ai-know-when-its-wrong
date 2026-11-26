@@ -292,6 +292,45 @@ Numbers are the series' post numbers. Titles lead with the question, per `writeu
 
 **Not testable on the laptop:** the launcher inside Kev's server, and the bitsandbytes CUDA kernels. The L4 checks both with the reproduction check and a 20-customer smoke run per precision before any full run.
 
+### Post 4 speed addendum (added 2026-11-26, after the review panel; the author's decision: hold post 4 for it)
+
+**Why:** post 4's speed section rests on an untuned setup.
+- Every version, full size included, ran two kinds of layers on slow reference code: `causal_conv1d`, and Qwen's `chunk_gated_delta_rule` without flash-linear-attention.
+- The shrunk versions used the libraries' generic paths, which unpack the weights before multiplying (bnb NF4, HQQ's PyTorch backend) or split out outliers (LLM.int8).
+- Nothing was measured with more than one customer at a time.
+- So "every shrunk version was slower" describes those tools on that setup, not shrinking.
+
+**The question:** with a tuned setup, does any shrunk version answer faster or cost less per decision than full size, and does it stay as honest?
+
+**Runs** (one L4 session, about 2 hours). Each is compared like for like, on the same serving path:
+1. **A tuned full-size reference (`bf16-tuned`).**
+   - The fast `causal-conv1d` and flash-linear-attention kernels are installed. Kev's versions must import with its Triton: FLA 0.6.0 doesn't, and Kev's fused path wants 0.5.2.
+   - Kev runs with CUDA graphs on (its default, as in M6); Qwen runs with `torch.compile`.
+   - **Guard:** a reproduction check against `<model>-bf16` on 50 tune customers. If it fails, run the full 4,000 instead.
+2. **Fast 4-bit (`hqq-4-fast`).** The same HQQ 4-bit weights, switched to a fused kernel through HQQ's own `prepare_for_inference`.
+   - torchao int4 (bf16 compute) is preferred. GemLite computes in fp16, so if it is used instead, the record says so.
+   - CUDA graphs on where the server allows.
+   - Full tune and test (4,000), because the arithmetic changes.
+3. **FP8 (`fp8-dynamic`).** Weights and activations in 8-bit floating point with dynamic per-row scales (torchao), which the L4's FP8 tensor cores run natively. The scales come from the weights and from each request at run time, so no data is used.
+   - Static FP8 and SmoothQuant would need calibration data, so they're out.
+   - Full tune and test (4,000).
+4. **Throughput.** 1, 8 and 32 customers at a time, for `bf16-tuned`, `bnb-nf4`, `hqq-4-fast` and `fp8-dynamic`, on 500 tune customers each. Measures: customers per second and cost per 1,000 at $0.44/h.
+   - Qwen is batched in-process.
+   - Kev takes concurrent requests, and whatever its server does with them is recorded.
+
+**Rules, as in the main spec:**
+- No data is used to quantize, and nothing is tuned on test.
+- Library versions are pinned and recorded in `model_version`.
+- A method that fails on a model is recorded with `--record-failure`, never replaced.
+- Kev is the risky one: its graph capture and its fused path may not accept the new layers. If so, record the failure and keep Qwen's result.
+- The author's guesses for these runs go in `PREDICTIONS.md` before any run.
+
+**Done when:**
+- Each new tag has its records or a recorded failure.
+- `analysis/quantization.py` scores the new tags against the tuned reference.
+- A throughput table exists.
+- The post's speed section, title and pending lines are rewritten from these results.
+
 ### Post 5 spec: why AI can write code but struggle to read a table (added 2026-11-25)
 
 **The question:** if the same numbers are laid out differently, does an AI model reach a different conclusion? The series has already seen it twice: in the layout check (`--variant aligned`) and the disguise check (`data/contamination.md` §4). This post adds formats.

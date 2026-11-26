@@ -9,6 +9,7 @@
   versions, with how far the answers moved and the ranking and honesty that hid it.
 - post4_cost.png: GPU memory at peak and time per answer on the tuned setup (the speed addendum,
   results/speed_throughput.csv), with the first runs' times for the same weights as hollow dots.
+- post4_social_card.png: the blog's 1200x630 link-preview image (light only, like posts 1-3's).
 
     uv run python analysis/quantization_figures.py drift cost   # only these
 
@@ -161,9 +162,9 @@ def honesty(dark: bool = False) -> Path:
     sig = [(m_, s) for m_, _k, _n in MODELS for s in SIZES[1:-1]
            if value(m_, s, "ece_vs_bf16_p_holm") < 0.05]  # fmt: skip
     for m_, s in sig:
-        ax.annotate("bigger than\nchance", (SIZES.index(s), value(m_, s, "ece")), xytext=(0, -12),
+        ax.annotate("bigger than chance", (SIZES.index(s), value(m_, s, "ece")), xytext=(0, -12),
                     textcoords="offset points", ha="center", va="top", fontsize=8.5,
-                    color=F.INK_2, linespacing=1.1)  # fmt: skip
+                    color=F.INK_2)  # fmt: skip
     off_text = "\n".join(f"{name}: {100 * v:.0f} points off" for v, name in sorted(off))
     ax.text(0.05, top * 0.97, f"Off the scale at 2 bits:\n{off_text}", ha="left", va="top",
             fontsize=9, color=F.INK_2, linespacing=1.35)  # fmt: skip
@@ -200,8 +201,8 @@ def drift(dark: bool = False) -> Path:
     model, key, name = DRIFT_MODEL
     col = F.COLOR[key]
     ids0, _, p0 = Q.split_arrays(f"{model}-bf16", "trained", "test")
-    fig, axes = plt.subplots(2, 2, figsize=(7.6, 8.4), sharex=True, sharey=True)
-    fig.subplots_adjust(left=0.12, right=0.96, top=0.79, bottom=0.14, hspace=0.32, wspace=0.1)
+    fig, axes = plt.subplots(2, 2, figsize=(7.6, 9.4), sharex=True, sharey=True)
+    fig.subplots_adjust(left=0.12, right=0.96, top=0.745, bottom=0.12, hspace=0.62, wspace=0.1)
     for ax, size in zip(axes.flat, DRIFT_SIZES, strict=True):
         ids, _, p = Q.split_arrays(f"{model}-{size}", "trained", "test")
         assert ids == ids0
@@ -209,15 +210,14 @@ def drift(dark: bool = False) -> Path:
         ax.plot([0, 1], [0, 1], color=F.INK_2, lw=1.1, ls=(0, (4, 3)), zorder=3)
         moved = value(model, size, "mean_abs_change_vs_bf16")
         big = value(model, size, "moved_5pts_share")
-        ax.set_title(ROW[size], loc="left", fontsize=11.5, pad=6)
-        ax.text(0.03, 0.97, f"Average move: {100 * moved:.1f} pts\n"
+        # The numbers sit above each panel, not inside it, so no customer is hidden behind them.
+        ax.set_title(ROW[size], loc="left", fontsize=11.5, pad=52)
+        ax.text(0, 1.03, f"Average move: {100 * moved:.1f} pts\n"
                 f"Moved 5+ pts: {share_text(big)}\n"
-                f"Ranking {value(model, size, 'auc'):.3f}\n"
+                f"Ranking {value(model, size, 'auc'):.3f}, "
                 f"{100 * value(model, size, 'ece'):.1f} pts off",
-                transform=ax.transAxes, ha="left", va="top", fontsize=8.8, color=F.INK,
-                linespacing=1.35,
-                bbox={"boxstyle": "round,pad=0.3", "fc": F.SURFACE, "ec": "none",
-                      "alpha": 0.85})  # fmt: skip
+                transform=ax.transAxes, ha="left", va="bottom", fontsize=10.5, color=F.INK_2,
+                linespacing=1.3)  # fmt: skip
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
         ax.set_xticks([0, 0.25, 0.5, 0.75, 1])
@@ -273,7 +273,7 @@ def cost(dark: bool = False) -> Path:
     F.set_theme(dark)
     plt = F.plt
     fig, (left, right) = plt.subplots(1, 2, figsize=(7.6, 6.6), sharey=True)
-    fig.subplots_adjust(left=0.2, right=0.97, top=0.71, bottom=0.2, wspace=0.12)
+    fig.subplots_adjust(left=0.2, right=0.97, top=0.71, bottom=0.27, wspace=0.12)
     ms, peak = speed_ms(), speed_peak_gib()
     for model, key, _name in MODELS:
         col = F.COLOR[key]
@@ -327,24 +327,81 @@ def cost(dark: bool = False) -> Path:
              f"GemLite, by {100 * (1 - gain):.0f}%. Hollow dots: my first, untuned runs.",
              )  # fmt: skip
     F.footer(fig, "\n".join((
-        "Time: average over 500 customers (first runs: median over 2,000). Tuned: fast kernels, "
-        "Kev's CUDA graphs on",
-        "(its fused kernels need full-size weights), Qwen compiled. Memory: the first runs; FP8 "
-        "from its own run.",
+        "Time: average over 500 customers (first runs: median over 2,000 answers).",
+        "Tuned: fast kernels, Kev's CUDA graphs on (fused kernels at full size only), "
+        "Qwen compiled.",
+        "Memory: from the first runs, and FP8 from its own run.",
         "At $0.44 per GPU hour, 100 ms per answer is about 1.2 cents per 1,000 answers.",
     )))  # fmt: skip
     return F.save(fig, "post4_cost.png")
+
+
+# ---- the blog's link-preview image ---------------------------------------------------------------
+
+
+def social_card() -> Path:
+    """1200x630 link-preview image in the style of posts 1-3: title and hook on the left, and on
+    the right, memory and time per answer at full size (open) and 4-bit HQQ on GemLite (filled),
+    on the tuned setup (light only, like theirs)."""
+    F.set_theme(False)
+    plt = F.plt
+    fig = plt.figure(figsize=(6, 3.15))
+    t = fig.text
+    dot = "·"
+    t(0.055, 0.89, f"LEARNING CURVE  {dot}  nishzsche.github.io", fontsize=7.5, color=F.MUTED,
+      fontweight="bold", va="center")  # fmt: skip
+    t(0.055, 0.80, "I shrank\nAI models.", fontsize=21, fontweight="bold", color=F.INK, va="top",
+      linespacing=1.05)  # fmt: skip
+    t(0.055, 0.47, "Their percentages held to 4 bits.\nBut on a tuned GPU, the smaller\n"
+      "models were rarely faster.", fontsize=9.5, color=F.INK_2, va="top",
+      linespacing=1.25)  # fmt: skip
+    t(0.055, 0.205, "It saved memory, not time.", fontsize=12, fontweight="bold", color=F.INK,
+      va="top")  # fmt: skip
+    t(0.055, 0.075, f"3 trained AI models  {dot}  2,000 real credit-card customers", fontsize=7.5,
+      color=F.MUTED, va="center")  # fmt: skip
+
+    ms = speed_ms()
+    def peak_gb(m_: str, size: str) -> float:
+        return GB * value(m_, size, "gpu_peak_gb")
+
+    panels = (
+        ("Memory at peak (GB)", (0, 10), [0, 5, 10],
+         lambda m_: (peak_gb(m_, "bf16"), peak_gb(m_, "hqq-4"))),
+        ("Time per answer (ms)", (0, 120), [0, 50, 100],
+         lambda m_: (ms[f"{m_}-bf16-tuned"], ms[f"{m_}-hqq-4-gemlite"])),
+    )  # fmt: skip
+    for k, (title, xlim, ticks, pair) in enumerate(panels):
+        ax = fig.add_axes((0.69, 0.6 - k * 0.37, 0.27, 0.2))
+        for y, (m_, key, _name) in enumerate(MODELS):
+            full, small = pair(m_)
+            col = F.COLOR[key]
+            ax.plot([full, small], [y, y], color=col, lw=2, alpha=0.35, zorder=2)
+            ax.plot(full, y, "o", ms=5.5, color=F.SURFACE, mec=col, mew=1.5, zorder=3)
+            ax.plot(small, y, "o", ms=5.5, color=col, zorder=4)
+        ax.set_yticks(range(len(MODELS)), [name for _m, _k, name in MODELS], fontsize=7.5)
+        ax.set_ylim(len(MODELS) - 0.5, -0.6)
+        ax.set_xlim(*xlim)
+        ax.set_xticks(ticks)
+        ax.tick_params(axis="x", labelsize=7)
+        ax.tick_params(axis="y", length=0, labelcolor=F.INK)
+        ax.grid(axis="y", visible=False)
+        ax.set_title(title, fontsize=9, loc="left", pad=6)
+    fig.text(0.69 - 0.13, 0.08, "open: full size  ·  filled: 4 bits (HQQ on GemLite)",
+             fontsize=6, color=F.MUTED, va="center")  # fmt: skip
+    return F.save(fig, "post4_social_card.png", card=True)
 
 
 FIGURES = (ranking, honesty, drift, cost)
 
 
 def main() -> None:
-    names = set(sys.argv[1:])  # optional: only these, e.g. `drift cost`
+    names = set(sys.argv[1:])  # optional: only these, e.g. `drift cost` or `social_card`
     for dark in (False, True):
         for fig in FIGURES:
             if not names or fig.__name__ in names:
                 print(f"Saved -> {fig(dark)}")
+    if not names or "social_card" in names:
+        print(f"Saved -> {social_card()}")
 
 
 if __name__ == "__main__":

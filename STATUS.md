@@ -113,7 +113,14 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
     - The decisions slide computes the same-model-twice floor itself.
     - The carousel picks up whatever `analysis/figures.py` has; it was built with the blog session's uncommitted warm-paper surface (#faf8f3).
     - **Draft fix found while building:** the post's same-model-twice row now reads 0.2% / 0.4% / 1.5% at the full-size cut-off, not 0.2% / 1.4%. Review copy version 2.1 carries it (blog PR #52, on its own branch from main, because another session's PR #51 was open on `dev`).
-  - **Next:** the author reviews the LinkedIn draft, then the X post and social card. The blog session is moving `analysis/figures.py` to the new blog design (warm paper, larger small text). Post 4's charts stay in the current look until that design launches; then redraw them and check the layouts.
+  - **Ready to publish (2026-11-27, blog PR #54, open):**
+    - `_posts/2026-11-27-shrinking-ai-models.md`, dated 12:00 IST, so merge after noon (GitHub Pages skips future-dated posts).
+    - Charts redrawn with the new export and embedded with `chart.html` (alt plus "Chart in words"). The drift chart's numbers moved above each panel: the boxes had hidden the 60–80% customers. The honesty label and the cost footnote were re-laid.
+    - Social card `results/figures/post4_social_card.png` (`quantization_figures.py social_card`).
+    - Drawing `20261009-163715.jpg` (Hanuman bowing to a stick of RAM), the author's choice, relayed by the blog session. On main it's also post 1's icon until the blog's design Phase 3 reassigns icons and adds `icon_caption:`.
+    - The review URL redirects, and post 3's closing line links to post 4.
+    - The LinkedIn first comment now carries the URL.
+  - **Next:** the author merges PR #54 after 12:00 IST (posts 2 and 3 went up around 13:00 IST), then posts on LinkedIn with `writeup/quantization_carousel.pdf`. X post optional (post 3's was never written). Open rule question: exempt closing sections from the 600-word chart limit. The blog session is moving `analysis/figures.py` to the new blog design (warm paper, larger small text). Post 4's charts stay in the current look until that design launches; then redraw them and check the layouts.
 - **Still to do after the author's review:** the LinkedIn post and its carousel (`writeup/STYLE.md`: 8–10 slides, a builder script), the X post, the social card, and the README and PLAN status.
 
 ## L4 session A done (2026-11-25 19:43 → 2026-11-26 01:30 IST)

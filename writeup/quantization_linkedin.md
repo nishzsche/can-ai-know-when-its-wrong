@@ -4,7 +4,7 @@ A document post (a swipeable PDF carousel, like posts 1–3): nine square slides
 
 **Attach:** `writeup/quantization_carousel.pdf`, as a document ("Add a document" in the post composer). Document title (LinkedIn allows 58 characters): "I shrank AI models. It saved memory, not time." A post takes images or a document, not both, and its media can't be changed after it's published.
 
-**Blog post:** not published yet. The review copy is at https://nishzsche.github.io/review/shrinking-ai-models/. When it's published, put its URL in the first comment, and rebuild the carousel if any number changed.
+**Blog post:** https://nishzsche.github.io/2026/11/27/shrinking-ai-models/ once blog PR #54 is merged (after 12:00 IST on 27 November; the review URL then redirects to it). If it's ever edited in a way that changes a number, rebuild the carousel before reposting.
 
 ## Post text
 
@@ -34,7 +34,7 @@ A document post (a swipeable PDF carousel, like posts 1–3): nine square slides
 
 ## First comment
 
-> The full write-up: [the published URL]
+> The full write-up: https://nishzsche.github.io/2026/11/27/shrinking-ai-models/
 > The first three posts: https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/, https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/ and https://nishzsche.github.io/2026/11/25/fair-fight/
 > Code and every prediction, with the library versions behind it: https://github.com/nishzsche/can-ai-know-when-its-wrong
 > Data: a public dataset of 30,000 Taiwanese credit-card customers from 2005 (UCI "Default of Credit Card Clients", Yeh & Lien, 2009; CC BY 4.0). No age, sex, marital status or education in any model's input.

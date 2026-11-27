@@ -176,3 +176,28 @@ To be fair to readers, this is the information visible before writing:
 **Scoring 32 customers at a time, which version will cost least per 1,000 decisions?**
 
 > **4-bit NF4.**
+
+# Post 5 addendum predictions: the table models rearranged, and the trained models in five layouts (written before any run)
+
+**Written 2026-11-27, before any run in PLAN.md §12's "Post 5 addendum".** The author answered these in a Q&A with Claude Code on the laptop. The answers are recorded verbatim.
+
+## What was already known when this was written
+
+- **All of post 5** (`results/layouts.csv`, published 2026-11-27): the six zero-shot AI models in five layouts. Laya moved 26 points per customer (CSV, JSON) and ranked from 0.716 to 0.478; Kev-4B rose from 0.594 to 0.729 with JSON; Kev-0.8B (2.6–5.5 points) and Sol (2.6–2.9) moved least.
+- **Post 3's trained models and table models on the original layout** (`results/fair_fight.csv`): Kumo-Tabular and TabICL-v2 at 0.794; fine-tuned Kev-0.8B at 0.790.
+- **Post 4:** two full-size runs of the same trained model, on different setups, changed 0.15% to 1.5% of decisions.
+- **No run** of any arrangement or of a trained model in a new layout.
+
+## My guesses
+
+**When the same 19 numbers are rearranged (column order, month order, context row order, units), will any arrangement move Kumo-Tabular's or TabICL-v2's answers more than simply changing their random seed does?**
+
+> **No, only seed-level noise.**
+
+**Will post 3's trained AI models be sturdier to layout (answers move less) than the same models were answering cold in post 5?**
+
+> **Much sturdier.**
+
+**Which trained model's answers will move most across the five layouts?**
+
+> **Laya.**

@@ -1,0 +1,898 @@
+<title>Shrinking the Credit Models</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column on the blog's paper; the two interactive benches (the weight lab and the
+   results explorer) sit on a slightly deeper paper. Model colours are the series palette from post 1. */
+:root {
+  --bg: #faf8f3;
+  --panel: #f1eee6;
+  --panel-2: #e6e2d6;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #84827c;
+  --grid: #e1ded4;
+  --axis: #c3c2b7;
+  --kev08: #1baf7a;
+  --kev4: #eb6834;
+  --qwen: #e87ba4;
+  --m: var(--kev4);
+  --f-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --f-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171614; --panel: #201f1c; --panel-2: #2d2c28; --ink: #f0efec; --ink-2: #c3c2b7;
+    --muted: #8f8d87; --grid: #2c2c2a; --axis: #4a4a46;
+    --kev08: #199e70; --kev4: #d95926; --qwen: #d55181;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171614; --panel: #201f1c; --panel-2: #2d2c28; --ink: #f0efec; --ink-2: #c3c2b7;
+  --muted: #8f8d87; --grid: #2c2c2a; --axis: #4a4a46;
+  --kev08: #199e70; --kev4: #d95926; --qwen: #d55181;
+  color-scheme: dark;
+}
+[data-model="kev-0.8b-ft"] { --m: var(--kev08); }
+[data-model="kev-4b-ft"] { --m: var(--kev4); }
+[data-model="qwen-ft"] { --m: var(--qwen); }
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.6 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--f-display); color: var(--ink); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(34px, 6.4vw, 56px); line-height: 1.02; font-weight: 600; letter-spacing: -0.025em; }
+h2 { font-size: clamp(24px, 3.6vw, 32px); line-height: 1.12; font-weight: 600; letter-spacing: -0.015em; }
+h3 { font-size: 17px; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+.eyebrow { font: 500 12px/1.4 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+header { padding-block: 52px 8px; display: grid; gap: 18px; }
+.lead { font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: 64ch; }
+
+section { padding-block: 44px 0; display: grid; gap: 16px; }
+.prose { color: var(--ink-2); max-width: 66ch; }
+
+.bench { background: var(--panel); border-radius: 16px; padding: 20px; display: grid; gap: 18px; }
+@media (max-width: 560px) { .bench { padding: 14px 12px; border-radius: 12px; } }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+.ctl-group { display: grid; gap: 6px; }
+.ctl-label { font-size: 12px; color: var(--ink-2); letter-spacing: 0.02em; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button, .btn {
+  font: 500 13px/1 var(--f-body); color: var(--ink); background: var(--bg);
+  border: 1px solid var(--axis); border-radius: 999px; padding: 8px 13px; min-height: 34px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+}
+.seg button:hover, .btn:hover { border-color: var(--ink-2); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.toggle::before {
+  content: ""; width: 11px; height: 11px; border-radius: 3px; border: 1.5px solid var(--ink-2);
+}
+.btn.toggle[aria-pressed="true"]::before { background: var(--ink); border-color: var(--ink); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+button:focus-visible, svg:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.sw { width: 9px; height: 9px; border-radius: 50%; background: var(--m); flex: none; }
+.seg button[aria-pressed="true"] .sw { box-shadow: 0 0 0 1.5px var(--bg); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--ink-2); align-items: center; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.key { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.key.open { border: 1.5px solid var(--ink-2); background: var(--panel); }
+.key.fill { background: var(--ink); }
+.key.lvl { width: 16px; height: 0; border-radius: 0; border-top: 1px solid var(--axis); }
+.key.m-open { border: 2px solid var(--m); background: var(--panel); }
+.key.m-fill { background: var(--m); }
+.key.m-line { width: 16px; height: 0; border-radius: 0; border-top: 2px solid var(--m); opacity: 0.6; }
+.key.dash { width: 16px; height: 0; border-radius: 0; border-top: 1.5px dashed var(--ink-2); }
+
+.chart { min-width: 0; position: relative; }
+.chart svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+svg text { font-family: var(--f-body); }
+svg .tk { fill: var(--muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+svg .tk.on { fill: var(--ink); font-weight: 600; }
+svg .ax { fill: var(--ink-2); font-size: 12px; }
+svg .an { fill: var(--ink-2); font-size: 12px; }
+
+/* weight lab */
+.lab-grid { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 22px; align-items: start; }
+@media (max-width: 780px) { .lab-grid { grid-template-columns: minmax(0, 1fr); } }
+.side { display: grid; gap: 16px; min-width: 0; }
+.stats { display: grid; gap: 12px; margin: 0; }
+.stats div { display: grid; gap: 1px; }
+.stats dt { font-size: 12px; color: var(--ink-2); }
+.stats dd { margin: 0; font: 500 19px/1.25 var(--f-mono); font-variant-numeric: tabular-nums; }
+.stats dd small { font: 400 12.5px/1.4 var(--f-body); color: var(--ink-2); display: block; }
+.method { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.method b { color: var(--ink); font-weight: 600; }
+.flag { font-size: 13px; line-height: 1.5; color: var(--ink); background: var(--panel-2); border-radius: 8px; padding: 8px 10px; }
+
+.bits-head { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: space-between; }
+.stepper { display: inline-flex; gap: 6px; align-items: center; }
+.stepper .btn { padding: 8px 11px; }
+.table-scroll { overflow-x: auto; min-width: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { font: 500 12px/1.3 var(--f-body); color: var(--ink-2); text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--axis); white-space: nowrap; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.num, th.num { text-align: right; }
+td.mono { font-family: var(--f-mono); font-size: 12.5px; }
+tr.on td { background: var(--panel-2); }
+.rowbtn { font: 500 13.5px/1.2 var(--f-body); color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+.rowbtn:hover { text-decoration: underline; text-underline-offset: 3px; }
+.note { font-size: 12.5px; line-height: 1.5; color: var(--ink-2); max-width: 80ch; }
+
+/* anatomy */
+.anat-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 780px) { .anat-grid { grid-template-columns: minmax(0, 1fr); } }
+.stack { display: grid; gap: 8px; }
+.blk { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--axis); background: var(--bg); }
+.blk.shrunk { border: 1.5px solid var(--ink); }
+.blk .nm { font-weight: 600; font-size: 14.5px; }
+.blk .wh { grid-column: 1; font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+.blk .chip { grid-column: 2; grid-row: 1 / span 2; }
+.chip { font: 500 11.5px/1 var(--f-mono); padding: 5px 8px; border-radius: 999px; border: 1px solid var(--ink-2); color: var(--ink-2); white-space: nowrap; }
+.chip.fill { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.rep { display: grid; gap: 8px; padding: 10px; border-radius: 12px; border: 1px dashed var(--axis); }
+.rep-label { font: 500 11.5px/1.3 var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.count { font-size: 14px; color: var(--ink); }
+.mem { display: grid; gap: 10px; }
+.mrows { display: grid; gap: 4px; }
+.mrow { display: grid; grid-template-columns: 92px minmax(0, 1fr) 128px; gap: 10px; align-items: center; font: inherit; color: var(--ink-2); background: none; border: 0; padding: 5px 4px; border-radius: 6px; cursor: pointer; text-align: left; }
+.mrow:hover { background: var(--panel); }
+.mrow.on { color: var(--ink); font-weight: 600; }
+.mrow .ml { font-size: 13px; }
+.mtrack { height: 14px; position: relative; }
+.mbar { height: 100%; background: var(--m); border-radius: 0 4px 4px 0; opacity: 0.45; transition: width 0.25s ease; }
+.mrow.on .mbar { opacity: 1; }
+.mrow .mv { font: 500 12.5px/1 var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+@media (max-width: 420px) { .mrow { grid-template-columns: 74px minmax(0, 1fr) 110px; gap: 8px; } }
+
+/* steps */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; }
+.steps li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; padding-block: 16px; border-top: 1px solid var(--grid); }
+.steps .n { font: 500 13px/1.5 var(--f-mono); color: var(--ink-2); padding-top: 1px; }
+.steps .body { display: grid; gap: 6px; min-width: 0; }
+.steps p { color: var(--ink-2); max-width: 66ch; }
+.repro { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 18px; align-items: center; margin-top: 8px; }
+@media (max-width: 640px) { .repro { grid-template-columns: minmax(0, 1fr); } }
+.repro-side { display: grid; gap: 10px; }
+
+/* results */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 700px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tile { background: var(--bg); border-radius: 10px; padding: 12px 14px; display: grid; gap: 3px; align-content: start; min-width: 0; }
+.tile .k { font-size: 12px; color: var(--ink-2); }
+.tile .v { font: 500 24px/1.2 var(--f-mono); font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.tile .s { font-size: 12.5px; line-height: 1.4; color: var(--ink-2); }
+@media (max-width: 420px) { .tile .v { font-size: 20px; } }
+.res-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 780px) { .res-grid { grid-template-columns: minmax(0, 1fr); } }
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; align-content: start; }
+figure p { font-size: 13px; color: var(--ink-2); }
+.takeaway { font-size: 15px; line-height: 1.55; color: var(--ink); max-width: 72ch; }
+details { border-top: 1px solid var(--grid); padding-top: 12px; }
+summary { cursor: pointer; font-weight: 500; font-size: 14.5px; }
+details .table-scroll { margin-top: 12px; }
+details table { min-width: 760px; }
+
+footer { padding-block: 48px 0; display: grid; gap: 8px; }
+footer p { font-size: 13px; color: var(--ink-2); max-width: 80ch; }
+footer a { color: var(--ink); }
+
+#tip {
+  position: fixed; z-index: 20; pointer-events: none; left: 0; top: 0;
+  background: var(--ink); color: var(--bg); border-radius: 8px; padding: 8px 10px;
+  font-size: 12.5px; line-height: 1.5; max-width: 270px; box-shadow: 0 6px 18px rgb(0 0 0 / 0.18);
+}
+#tip .h { font-weight: 600; margin-bottom: 2px; }
+#tip b { font-family: var(--f-mono); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .mbar { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Can AI know when it's wrong? · Post 4, how the shrinking worked</p>
+    <h1>Shrinking the credit models</h1>
+    <p class="lead">Quantization stores a model's weights in fewer bits so it needs less memory. Post 4 did this to three AI models fine-tuned on 20,000 credit-card customers: Kev-0.8B, Kev-4B and Qwen3.5-4B, at 8, 4, 3 and 2 bits. Every version then estimated the chance of default for the same 2,000 test customers. Start with what happens to one small group of weights.</p>
+  </header>
+
+  <section id="lab" aria-labelledby="lab-h">
+    <h2 id="lab-h">Rounding 64 weights</h2>
+    <p class="prose">Each weight matrix is cut into groups of 64, and each group is rounded on its own. Pick a precision. The open dots are the original 16-bit weights, the filled dots are what gets stored, and the grey lines are the only values that precision can store.</p>
+    <div class="bench">
+      <div class="controls">
+        <div class="ctl-group">
+          <span class="ctl-label" id="lab-prec-l">Precision</span>
+          <div class="seg" data-key="prec" aria-labelledby="lab-prec-l"></div>
+        </div>
+        <div class="ctl-group">
+          <span class="ctl-label">Try</span>
+          <div class="seg">
+            <button type="button" class="btn" id="btn-new">New weights</button>
+            <button type="button" class="btn toggle" id="btn-outlier" aria-pressed="false">Add one large weight</button>
+            <button type="button" class="btn toggle" id="btn-solver" aria-pressed="true">HQQ's solver</button>
+          </div>
+        </div>
+      </div>
+      <div class="lab-grid">
+        <figure>
+          <div class="legend" aria-hidden="true">
+            <span><i class="key open"></i>Original weight</span>
+            <span><i class="key fill"></i>Stored value</span>
+            <span><i class="key lvl"></i>Values it can store</span>
+          </div>
+          <div class="chart" id="lab-chart"></div>
+        </figure>
+        <div class="side">
+          <dl class="stats" id="lab-stats"></dl>
+          <p class="flag" id="lab-flag" hidden>The large weight stretches the group's range, so the other 63 share fewer useful levels. That is why each group is only 64 weights.</p>
+          <p class="method" id="lab-method"></p>
+        </div>
+      </div>
+      <div class="bits-head">
+        <h3 id="bits-h">Weight 1 at every precision</h3>
+        <div class="stepper">
+          <button type="button" class="btn" id="sel-prev" aria-label="Previous weight">◀</button>
+          <button type="button" class="btn" id="sel-next" aria-label="Next weight">▶</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table aria-labelledby="bits-h">
+          <thead><tr><th>Precision</th><th>Stored bits</th><th>How it decodes</th><th class="num">Value</th><th class="num">Error</th></tr></thead>
+          <tbody id="bits-body"></tbody>
+        </table>
+      </div>
+      <p class="note">Click a column in the chart (or use the arrows) to pick a weight. The weights are simulated with the bell-shaped spread of a trained layer. The rounding follows each library's recipe with post 4's settings, and the HQQ solver is a simplified copy of HQQ's own. In the real models the 8-bit scale comes from a whole row of the matrix rather than from 64 weights.</p>
+    </div>
+  </section>
+
+  <section id="anatomy" aria-labelledby="anat-h">
+    <h2 id="anat-h">What got shrunk</h2>
+    <p class="prose">Only the linear layers were rounded: the large weight matrices inside every layer of the model, which hold almost all of its weights. The parts that read the text in and the answer out stayed at 16 bits, so the shrunk model takes the same input and gives the same kind of answer.</p>
+    <div class="controls">
+      <div class="ctl-group">
+        <span class="ctl-label" id="anat-model-l">Model</span>
+        <div class="seg" data-key="model" aria-labelledby="anat-model-l"></div>
+      </div>
+    </div>
+    <div class="anat-grid">
+      <div class="stack-wrap" style="display:grid;gap:10px">
+        <div class="stack" id="stack"></div>
+        <p class="count" id="anat-count"></p>
+      </div>
+      <div class="mem">
+        <h3>GPU memory the weights take</h3>
+        <div class="mrows" id="mem-rows"></div>
+        <p class="note">Measured on the L4 right after loading. Memory falls by less than the bits do, because the 16-bit parts don't shrink and every group of 64 stores its own scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="checks" aria-labelledby="checks-h">
+    <h2 id="checks-h">How every run was checked</h2>
+    <p class="prose">The same seven steps ran for each model at each precision.</p>
+    <ol class="steps">
+      <li><span class="n">01</span><div class="body"><h3>Merge the fine-tune into the model</h3><p>Each model was fine-tuned with a LoRA, a small set of weight changes kept beside the model. Those changes were added to the base weights in 32-bit and rounded once to 16-bit. That leaves one model to shrink, the way it would ship.</p></div></li>
+      <li><span class="n">02</span><div class="body"><h3>Swap in the shrunk layers</h3><p>Each 16-bit linear layer was replaced by a bitsandbytes or HQQ layer at the chosen precision. No customer data is used to do this. The code refuses any library version except the pinned ones, bitsandbytes 0.50.2 and HQQ 0.2.8.post1.</p></div></li>
+      <li><span class="n">03</span><div class="body"><h3>Serve every precision the same way</h3><p>Full size was run again on the same serving path as the shrunk versions, rather than borrowing post 3's faster setup, so the timings compare like with like.</p></div></li>
+      <li><span class="n">04</span><div class="body"><h3>Check the path before shrinking anything</h3><p>Full size, served through the new code, had to repeat post 3's answers for 50 tune customers, no more than 0.02 apart on average. A broken merge or a lost readout would move answers by tenths.</p>
+        <div class="repro">
+          <div class="chart" id="repro-chart"></div>
+          <div class="repro-side">
+            <div class="ctl-group">
+              <span class="ctl-label" id="repro-model-l">Model</span>
+              <div class="seg" data-key="model" aria-labelledby="repro-model-l"></div>
+            </div>
+            <p class="count" id="repro-cap"></p>
+          </div>
+        </div>
+      </div></li>
+      <li><span class="n">05</span><div class="body"><h3>Score 4,000 customers at each precision</h3><p>A 20-customer smoke test first, then 2,000 tune and 2,000 test customers, one at a time. All 18 runs (three models, six precisions) finished, and none failed.</p></div></li>
+      <li><span class="n">06</span><div class="body"><h3>Fit the correction on tune</h3><p>Each run also got the series' usual correction: Platt or isotonic, chosen by 5-fold cross-validation on the tune customers. Platt won for all 18.</p></div></li>
+      <li><span class="n">07</span><div class="body"><h3>Compare with the model's own full-size run</h3><p>On the same 2,000 test customers: how far the answers moved, ranking (AUC), calibration, lending profit, memory and time.</p></div></li>
+    </ol>
+  </section>
+
+  <section id="results" aria-labelledby="res-h">
+    <h2 id="res-h">What it did to the answers</h2>
+    <p class="prose">Pick a model and a precision. Each version is compared with its own full-size run on the same 2,000 test customers, 22.1% of whom defaulted.</p>
+    <div class="bench">
+      <div class="controls">
+        <div class="ctl-group">
+          <span class="ctl-label" id="res-model-l">Model</span>
+          <div class="seg" data-key="model" aria-labelledby="res-model-l"></div>
+        </div>
+        <div class="ctl-group">
+          <span class="ctl-label" id="res-prec-l">Precision</span>
+          <div class="seg" data-key="prec" aria-labelledby="res-prec-l"></div>
+        </div>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="res-grid">
+        <figure>
+          <h3>Do the percentages come true?</h3>
+          <div class="legend" id="cal-legend"></div>
+          <div class="chart" id="cal-chart"></div>
+          <p>Customers grouped into 10-point bands by their predicted chance. On the dashed line, a band's prediction matched what happened.</p>
+        </figure>
+        <figure>
+          <h3>Follow 40 customers</h3>
+          <div class="legend" aria-hidden="true">
+            <span><i class="key m-line"></i>One customer</span>
+            <span><i class="key dash"></i>Actual default rate, 22.1%</span>
+          </div>
+          <div class="chart" id="cust-chart"></div>
+          <p>40 test customers spread evenly across full size's predictions. A flat line means shrinking left that customer's answer alone.</p>
+        </figure>
+      </div>
+      <p class="takeaway">8-bit and 4-bit barely moved anything. At 3 bits the order of customers starts to shuffle. At 2 bits all three models break: AUC falls to between 0.43 and 0.60, near a coin flip, and the average prediction jumps to 36–67%.</p>
+      <details>
+        <summary>All 18 runs as a table</summary>
+        <div class="table-scroll"><table id="runs"></table></div>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <p>Data: <a href="https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients" target="_blank" rel="noopener">UCI Default of Credit Card Clients</a> (Yeh &amp; Lien, 2009), CC BY 4.0. No demographic fields go into any model. All three models were fine-tuned on the same 20,000 customers the scorecard learned from (post 3).</p>
+    <p>Times here come from the first runs, served without CUDA graphs at every precision. A later re-run on a tuned setup found full size fastest in most cases. 4-bit on GemLite kernels was faster only for Kev-4B.</p>
+  </footer>
+</div>
+<div id="tip" role="tooltip" hidden></div>
+
+<script type="application/json" id="quant-data">{"models":{"kev-0.8b-ft":{"per":{"bf16":{"rel":[[0.0548,0.0841,999],[0.1352,0.1931,523],[0.2435,0.3689,122],[0.3506,0.4118,102],[0.4379,0.3824,34],[0.5297,0.5294,34],[0.6574,0.6885,61],[0.7439,0.7571,70],[0.8402,0.7885,52],[0.9037,1.0,3]],"auc":0.79031,"ece":0.04437,"ece_cal":0.01503,"noise":0.02377,"mean":0.18122,"chg":null,"moved5":null,"rho":null,"lat":61.77345,"mem":1.54059},"bnb-int8":{"rel":[[0.0558,0.0874,1018],[0.1348,0.187,508],[0.2429,0.3983,118],[0.3487,0.4095,105],[0.4455,0.3636,33],[0.5356,0.5429,35],[0.6588,0.6923,65],[0.7459,0.7812,64],[0.839,0.7647,51],[0.9039,1.0,3]],"auc":0.78987,"ece":0.04747,"ece_cal":0.01416,"noise":0.02448,"mean":0.18003,"chg":0.0036,"moved5":0.0,"rho":0.99887,"lat":215.30175,"mem":1.05193},"bnb-nf4":{"rel":[[0.0587,0.0866,1039],[0.1337,0.204,500],[0.243,0.3628,113],[0.3441,0.4112,107],[0.458,0.4333,30],[0.5429,0.5429,35],[0.6585,0.7027,74],[0.7452,0.7818,55],[0.8347,0.8085,47]],"auc":0.79014,"ece":0.04605,"ece_cal":0.01851,"noise":0.02426,"mean":0.17692,"chg":0.00929,"moved5":0.005,"rho":0.99515,"lat":81.25235,"mem":0.81357},"hqq-4":{"rel":[[0.0686,0.069,681],[0.1406,0.1604,798],[0.2434,0.3034,145],[0.3427,0.43,100],[0.44,0.4483,58],[0.54,0.5763,59],[0.6475,0.7403,77],[0.7542,0.7692,65],[0.8285,0.7647,17]],"auc":0.79144,"ece":0.0227,"ece_cal":0.01499,"noise":0.02494,"mean":0.19938,"chg":0.02991,"moved5":0.0845,"rho":0.99407,"lat":111.2119,"mem":0.81072},"hqq-3":{"rel":[[0.0912,0.0421,309],[0.1334,0.1319,1054],[0.2347,0.2551,243],[0.3519,0.4823,141],[0.4505,0.5,86],[0.5523,0.6383,94],[0.6474,0.791,67],[0.7046,0.6667,6]],"auc":0.78639,"ece":0.03115,"ece_cal":0.01891,"noise":0.02497,"mean":0.20683,"chg":0.06556,"moved5":0.6165,"rho":0.90128,"lat":169.037,"mem":0.76506},"hqq-2":{"rel":[[0.1917,0.0,1],[0.2774,0.3333,192],[0.3519,0.2205,1383],[0.4274,0.1731,416],[0.5225,0.125,8]],"auc":0.4503,"ece":0.15082,"ece_cal":0.01003,"noise":0.02568,"mean":0.36107,"chg":0.26642,"moved5":0.9615,"rho":-0.19246,"lat":125.9437,"mem":0.68199}},"cust":[{"id":"cust_26990","y":0,"p":[0.0227,0.0251,0.0266,0.0442,0.0881,0.3451]},{"id":"cust_04662","y":0,"p":[0.0254,0.0264,0.0332,0.0495,0.093,0.3615]},{"id":"cust_18713","y":0,"p":[0.0275,0.0287,0.0308,0.0459,0.0912,0.3074]},{"id":"cust_19575","y":0,"p":[0.0295,0.0305,0.0358,0.0567,0.0952,0.4865]},{"id":"cust_24527","y":0,"p":[0.0316,0.0315,0.0382,0.0534,0.0846,0.4201]},{"id":"cust_01097","y":0,"p":[0.0347,0.036,0.0363,0.0551,0.115,0.3341]},{"id":"cust_21701","y":0,"p":[0.0379,0.0399,0.0444,0.0744,0.1028,0.3862]},{"id":"cust_03409","y":0,"p":[0.0419,0.044,0.045,0.0728,0.104,0.373]},{"id":"cust_16369","y":0,"p":[0.0461,0.05,0.0588,0.079,0.1001,0.4631]},{"id":"cust_08044","y":1,"p":[0.0503,0.0531,0.0516,0.0795,0.1146,0.3093]},{"id":"cust_15638","y":0,"p":[0.0548,0.0559,0.0521,0.0788,0.1557,0.327]},{"id":"cust_07329","y":0,"p":[0.0589,0.0601,0.0693,0.0969,0.1568,0.3701]},{"id":"cust_04540","y":0,"p":[0.0626,0.0589,0.0567,0.0899,0.1398,0.2537]},{"id":"cust_29431","y":0,"p":[0.0662,0.0646,0.068,0.105,0.1325,0.3199]},{"id":"cust_06759","y":1,"p":[0.0705,0.0774,0.092,0.1206,0.169,0.415]},{"id":"cust_17210","y":0,"p":[0.0765,0.0739,0.0801,0.1058,0.1618,0.309]},{"id":"cust_00683","y":0,"p":[0.0819,0.0821,0.088,0.1105,0.148,0.4123]},{"id":"cust_23289","y":0,"p":[0.0871,0.0824,0.0951,0.1146,0.1242,0.349]},{"id":"cust_11567","y":0,"p":[0.0911,0.0952,0.0978,0.1237,0.1927,0.3682]},{"id":"cust_13025","y":1,"p":[0.0969,0.0917,0.1004,0.1348,0.1537,0.3457]},{"id":"cust_29699","y":0,"p":[0.1027,0.1052,0.1173,0.1411,0.1736,0.452]},{"id":"cust_21854","y":1,"p":[0.1092,0.1076,0.1095,0.1397,0.1291,0.3478]},{"id":"cust_04330","y":0,"p":[0.1154,0.112,0.1123,0.1417,0.22,0.3517]},{"id":"cust_10394","y":0,"p":[0.1211,0.1134,0.1214,0.1391,0.1113,0.3001]},{"id":"cust_09419","y":0,"p":[0.1269,0.1206,0.146,0.1694,0.292,0.3673]},{"id":"cust_26496","y":0,"p":[0.1325,0.1314,0.1368,0.1657,0.1726,0.323]},{"id":"cust_05387","y":1,"p":[0.1387,0.1398,0.1267,0.175,0.2089,0.3007]},{"id":"cust_03691","y":0,"p":[0.1465,0.1539,0.1664,0.1634,0.2391,0.4027]},{"id":"cust_11280","y":0,"p":[0.1574,0.1501,0.1366,0.1675,0.2428,0.373]},{"id":"cust_16441","y":1,"p":[0.1771,0.1628,0.1529,0.2183,0.261,0.3529]},{"id":"cust_17138","y":1,"p":[0.2035,0.1925,0.1772,0.2272,0.2195,0.286]},{"id":"cust_15584","y":1,"p":[0.2409,0.2395,0.2069,0.2594,0.2482,0.4087]},{"id":"cust_24505","y":1,"p":[0.2771,0.2823,0.274,0.3149,0.3627,0.3721]},{"id":"cust_29831","y":1,"p":[0.3413,0.3286,0.3323,0.3312,0.3562,0.3246]},{"id":"cust_11969","y":1,"p":[0.3746,0.3722,0.3757,0.4104,0.4301,0.3646]},{"id":"cust_24441","y":0,"p":[0.4923,0.4873,0.4852,0.5044,0.5626,0.2336]},{"id":"cust_23167","y":1,"p":[0.6289,0.6346,0.6428,0.5939,0.5515,0.4407]},{"id":"cust_26711","y":1,"p":[0.7089,0.7053,0.6597,0.6307,0.5363,0.4137]},{"id":"cust_09585","y":1,"p":[0.7728,0.7733,0.7348,0.7203,0.5708,0.3338]},{"id":"cust_20524","y":1,"p":[0.8486,0.8491,0.8385,0.7848,0.6326,0.2868]}],"observed":0.221},"kev-4b-ft":{"per":{"bf16":{"rel":[[0.0718,0.0878,1037],[0.1347,0.1988,488],[0.2526,0.3629,124],[0.3545,0.4146,82],[0.4492,0.38,50],[0.5607,0.5769,26],[0.6656,0.64,75],[0.7521,0.7863,117],[0.8044,1.0,1]],"auc":0.79223,"ece":0.0382,"ece_cal":0.03285,"noise":0.0234,"mean":0.18818,"chg":null,"moved5":null,"rho":null,"lat":110.9084,"mem":8.52596},"bnb-int8":{"rel":[[0.0717,0.0872,1044],[0.1359,0.2033,482],[0.2539,0.3689,122],[0.3509,0.4,80],[0.4413,0.36,50],[0.5572,0.5667,30],[0.6637,0.7,80],[0.7534,0.7545,110],[0.8013,1.0,2]],"auc":0.79143,"ece":0.03719,"ece_cal":0.02822,"noise":0.02374,"mean":0.18788,"chg":0.00344,"moved5":0.0005,"rho":0.99737,"lat":289.06515,"mem":4.89326},"bnb-nf4":{"rel":[[0.0719,0.087,1057],[0.1335,0.2064,470],[0.2428,0.3878,98],[0.3453,0.3958,96],[0.4433,0.3208,53],[0.5587,0.6512,43],[0.6513,0.6667,87],[0.754,0.7708,96]],"auc":0.79207,"ece":0.04139,"ece_cal":0.03022,"noise":0.02321,"mean":0.1861,"chg":0.00693,"moved5":0.011,"rho":0.99688,"lat":138.8273,"mem":3.32346},"hqq-4":{"rel":[[0.0769,0.0858,956],[0.1337,0.1801,544],[0.2504,0.3623,138],[0.3499,0.3875,80],[0.4465,0.3962,53],[0.5581,0.5349,43],[0.6547,0.6989,93],[0.7573,0.7742,93]],"auc":0.79092,"ece":0.03076,"ece_cal":0.03281,"noise":0.02413,"mean":0.1939,"chg":0.01069,"moved5":0.01,"rho":0.99591,"lat":426.47255,"mem":3.37036},"hqq-3":{"rel":[[0.0891,0.0713,533],[0.1383,0.1459,898],[0.244,0.3432,271],[0.343,0.5333,150],[0.4512,0.5909,66],[0.5599,0.7424,66],[0.6208,0.75,16]],"auc":0.77557,"ece":0.04753,"ece_cal":0.01662,"noise":0.02348,"mean":0.18297,"chg":0.05909,"moved5":0.3115,"rho":0.92279,"lat":467.11875,"mem":2.95145},"hqq-2":{"rel":[[0.1855,0.2,5],[0.2662,0.1404,114],[0.3593,0.1578,621],[0.4482,0.2345,951],[0.5333,0.3299,291],[0.6309,0.4444,18]],"auc":0.597,"ece":0.20267,"ece_cal":0.00998,"noise":0.02886,"mean":0.4236,"chg":0.2875,"moved5":0.9695,"rho":0.14358,"lat":398.87795,"mem":2.41425}},"cust":[{"id":"cust_18713","y":0,"p":[0.0542,0.055,0.0548,0.0629,0.0899,0.3701]},{"id":"cust_20892","y":0,"p":[0.0563,0.0567,0.0567,0.0648,0.0873,0.558]},{"id":"cust_15539","y":0,"p":[0.0578,0.0567,0.0582,0.0655,0.0889,0.4128]},{"id":"cust_27180","y":0,"p":[0.0589,0.0553,0.0588,0.0662,0.0885,0.4227]},{"id":"cust_23931","y":0,"p":[0.0601,0.0585,0.061,0.0676,0.0808,0.466]},{"id":"cust_06728","y":0,"p":[0.0613,0.0609,0.0638,0.0686,0.0801,0.4547]},{"id":"cust_28142","y":0,"p":[0.0624,0.0607,0.0635,0.07,0.0838,0.3912]},{"id":"cust_24105","y":0,"p":[0.0637,0.0637,0.062,0.0682,0.1196,0.4797]},{"id":"cust_25880","y":0,"p":[0.065,0.0645,0.0672,0.072,0.1263,0.2291]},{"id":"cust_08044","y":1,"p":[0.0664,0.0644,0.0649,0.0746,0.1284,0.3823]},{"id":"cust_09752","y":0,"p":[0.0682,0.0676,0.0675,0.073,0.1115,0.4357]},{"id":"cust_02147","y":0,"p":[0.0705,0.0689,0.0693,0.0757,0.1226,0.219]},{"id":"cust_17173","y":0,"p":[0.0721,0.0714,0.0662,0.0794,0.0882,0.3188]},{"id":"cust_09781","y":0,"p":[0.0749,0.0792,0.0747,0.0823,0.1296,0.2625]},{"id":"cust_08607","y":1,"p":[0.0785,0.0791,0.0741,0.0851,0.0934,0.4648]},{"id":"cust_24059","y":0,"p":[0.0818,0.0831,0.0822,0.0933,0.1277,0.5451]},{"id":"cust_16338","y":1,"p":[0.0858,0.0865,0.0835,0.0919,0.1769,0.5081]},{"id":"cust_13105","y":0,"p":[0.0893,0.0863,0.0894,0.0959,0.0977,0.4475]},{"id":"cust_23848","y":0,"p":[0.0921,0.0973,0.0885,0.0973,0.1405,0.4242]},{"id":"cust_13708","y":0,"p":[0.0951,0.0941,0.0949,0.096,0.1432,0.2889]},{"id":"cust_00909","y":0,"p":[0.0989,0.0962,0.0982,0.1025,0.1235,0.5022]},{"id":"cust_11981","y":1,"p":[0.1031,0.1041,0.1047,0.1124,0.1442,0.5163]},{"id":"cust_05824","y":0,"p":[0.1064,0.1072,0.1111,0.1099,0.12,0.4152]},{"id":"cust_04299","y":0,"p":[0.1122,0.1129,0.1149,0.1212,0.1778,0.4121]},{"id":"cust_22018","y":0,"p":[0.1178,0.1176,0.1034,0.1194,0.1667,0.2694]},{"id":"cust_10100","y":1,"p":[0.1266,0.1287,0.1113,0.1379,0.1711,0.4181]},{"id":"cust_01234","y":0,"p":[0.1384,0.1322,0.1289,0.1346,0.1822,0.3284]},{"id":"cust_01079","y":0,"p":[0.1494,0.1526,0.1303,0.1327,0.1849,0.3215]},{"id":"cust_03637","y":0,"p":[0.1617,0.1663,0.1648,0.1745,0.164,0.5325]},{"id":"cust_26920","y":1,"p":[0.1773,0.1783,0.1833,0.1929,0.1949,0.5287]},{"id":"cust_07673","y":1,"p":[0.2022,0.2069,0.2084,0.2159,0.2546,0.3317]},{"id":"cust_15137","y":0,"p":[0.2404,0.2372,0.2374,0.2465,0.216,0.5331]},{"id":"cust_23155","y":0,"p":[0.293,0.2983,0.3031,0.2886,0.2801,0.4114]},{"id":"cust_13196","y":1,"p":[0.354,0.3373,0.3657,0.3428,0.3283,0.301]},{"id":"cust_16782","y":0,"p":[0.3928,0.4154,0.4116,0.4211,0.3372,0.4062]},{"id":"cust_19358","y":0,"p":[0.4948,0.4952,0.4442,0.4415,0.2853,0.4034]},{"id":"cust_27931","y":0,"p":[0.6481,0.6589,0.6046,0.597,0.2973,0.4078]},{"id":"cust_24014","y":1,"p":[0.6977,0.6881,0.6746,0.6626,0.4177,0.5867]},{"id":"cust_27161","y":1,"p":[0.7376,0.735,0.7614,0.7403,0.5971,0.5402]},{"id":"cust_14440","y":1,"p":[0.7897,0.7888,0.7835,0.7859,0.6189,0.4692]}],"observed":0.221},"qwen-ft":{"per":{"bf16":{"rel":[[0.0829,0.0777,824],[0.1425,0.1719,413],[0.2353,0.198,298],[0.3528,0.3306,121],[0.4432,0.4091,132],[0.5505,0.5,24],[0.6543,0.7396,96],[0.7285,0.7717,92]],"auc":0.78009,"ece":0.02406,"ece_cal":0.01628,"noise":0.02596,"mean":0.22075,"chg":null,"moved5":null,"rho":null,"lat":120.402,"mem":8.51219},"bnb-int8":{"rel":[[0.0828,0.0744,833],[0.1404,0.1779,416],[0.235,0.1993,286],[0.3557,0.3577,123],[0.4473,0.4046,131],[0.5536,0.5,22],[0.6574,0.7216,97],[0.7351,0.7717,92]],"auc":0.782,"ece":0.0247,"ece_cal":0.02148,"noise":0.02507,"mean":0.22024,"chg":0.00783,"moved5":0.0045,"rho":0.97117,"lat":163.6639,"mem":4.87949},"bnb-nf4":{"rel":[[0.0854,0.0769,780],[0.1397,0.1574,451],[0.2382,0.2014,293],[0.3542,0.3521,142],[0.4437,0.4035,114],[0.5341,0.4516,31],[0.6527,0.7172,99],[0.7295,0.7889,90]],"auc":0.78455,"ece":0.02227,"ece_cal":0.01729,"noise":0.02597,"mean":0.22354,"chg":0.00936,"moved5":0.006,"rho":0.97452,"lat":152.26615,"mem":3.30708},"hqq-4":{"rel":[[0.0721,0.083,964],[0.1394,0.1786,420],[0.237,0.267,206],[0.3417,0.4118,136],[0.4388,0.3974,78],[0.5764,0.6383,47],[0.6513,0.7596,104],[0.7204,0.8,45]],"auc":0.7838,"ece":0.03183,"ece_cal":0.01919,"noise":0.02442,"mean":0.1924,"chg":0.02841,"moved5":0.1815,"rho":0.97,"lat":286.1119,"mem":3.35672},"hqq-3":{"rel":[[0.0954,0.0698,43],[0.1229,0.1135,1313],[0.2393,0.2234,188],[0.3577,0.3645,107],[0.4553,0.4216,102],[0.5604,0.4138,58],[0.6586,0.6364,11],[0.7563,0.7531,162],[0.8176,0.8125,16]],"auc":0.77918,"ece":0.01498,"ece_cal":0.02683,"noise":0.02471,"mean":0.23526,"chg":0.04017,"moved5":0.2605,"rho":0.83808,"lat":305.63055,"mem":2.93454},"hqq-2":{"rel":[[0.0682,0.4286,7],[0.1526,0.2593,27],[0.2612,0.3617,47],[0.3572,0.3404,94],[0.4549,0.2737,179],[0.5538,0.2612,245],[0.6529,0.2053,375],[0.7528,0.2009,468],[0.8456,0.1635,416],[0.9288,0.2183,142]],"auc":0.42944,"ece":0.4633,"ece_cal":0.00686,"noise":0.03141,"mean":0.67418,"chg":0.48899,"moved5":0.962,"rho":-0.15804,"lat":269.2554,"mem":2.39918}},"cust":[{"id":"cust_25780","y":0,"p":[0.0759,0.0851,0.0851,0.0675,0.1067,0.7123]},{"id":"cust_08670","y":1,"p":[0.0759,0.0851,0.0851,0.0675,0.1067,0.6239]},{"id":"cust_15179","y":0,"p":[0.0759,0.0851,0.0851,0.0675,0.1067,0.6304]},{"id":"cust_00433","y":0,"p":[0.0759,0.0759,0.0851,0.0675,0.1067,0.9042]},{"id":"cust_25026","y":0,"p":[0.0759,0.0759,0.0759,0.0675,0.1067,0.4798]},{"id":"cust_16974","y":0,"p":[0.0759,0.0759,0.0851,0.0601,0.1067,0.7233]},{"id":"cust_16431","y":0,"p":[0.0759,0.0851,0.0759,0.0601,0.1067,0.5837]},{"id":"cust_03732","y":0,"p":[0.0851,0.0851,0.0759,0.0675,0.1192,0.8167]},{"id":"cust_26343","y":0,"p":[0.0851,0.0851,0.0851,0.0675,0.1192,0.7057]},{"id":"cust_20961","y":0,"p":[0.0851,0.0851,0.0851,0.0675,0.1192,0.7093]},{"id":"cust_23540","y":0,"p":[0.0851,0.0851,0.0851,0.0675,0.1192,0.3812]},{"id":"cust_14503","y":0,"p":[0.0851,0.0851,0.0851,0.0675,0.1192,0.7183]},{"id":"cust_03480","y":0,"p":[0.0851,0.0759,0.0851,0.0675,0.1192,0.8543]},{"id":"cust_23800","y":0,"p":[0.0851,0.0851,0.0954,0.0759,0.133,0.4766]},{"id":"cust_06610","y":0,"p":[0.0954,0.0954,0.1067,0.0759,0.133,0.8352]},{"id":"cust_28867","y":0,"p":[0.0954,0.0954,0.0954,0.0759,0.133,0.0747]},{"id":"cust_29245","y":0,"p":[0.1067,0.1067,0.1192,0.0954,0.133,0.5354]},{"id":"cust_08261","y":0,"p":[0.1067,0.1192,0.1067,0.0954,0.1481,0.8589]},{"id":"cust_26482","y":0,"p":[0.1192,0.133,0.1192,0.1067,0.133,0.4583]},{"id":"cust_11981","y":1,"p":[0.133,0.133,0.1192,0.1067,0.1645,0.7377]},{"id":"cust_11669","y":0,"p":[0.133,0.133,0.1192,0.0954,0.1067,0.5069]},{"id":"cust_03550","y":0,"p":[0.148,0.1192,0.133,0.1067,0.1067,0.6107]},{"id":"cust_29407","y":0,"p":[0.1645,0.148,0.1645,0.1067,0.1067,0.8233]},{"id":"cust_14703","y":0,"p":[0.1824,0.2018,0.2018,0.148,0.2018,0.7047]},{"id":"cust_30000","y":1,"p":[0.1824,0.1824,0.2018,0.133,0.1067,0.7441]},{"id":"cust_11898","y":0,"p":[0.2018,0.2227,0.2018,0.1645,0.2018,0.4469]},{"id":"cust_10936","y":0,"p":[0.2227,0.2451,0.2689,0.2018,0.2227,0.6491]},{"id":"cust_00100","y":1,"p":[0.2227,0.2227,0.2227,0.1824,0.1192,0.8212]},{"id":"cust_28286","y":1,"p":[0.2451,0.2451,0.2451,0.2018,0.1645,0.6833]},{"id":"cust_26920","y":1,"p":[0.2689,0.2451,0.2942,0.1824,0.3208,0.5292]},{"id":"cust_20090","y":0,"p":[0.2942,0.2942,0.2942,0.2227,0.2451,0.5487]},{"id":"cust_18493","y":0,"p":[0.3486,0.3208,0.3208,0.2942,0.2942,0.4915]},{"id":"cust_06501","y":1,"p":[0.3775,0.3775,0.4073,0.3486,0.4073,0.6804]},{"id":"cust_13196","y":1,"p":[0.4073,0.4073,0.3775,0.3208,0.3775,0.5634]},{"id":"cust_25306","y":1,"p":[0.4378,0.4688,0.4688,0.4073,0.5,0.3064]},{"id":"cust_17872","y":1,"p":[0.5,0.4688,0.5,0.4688,0.5622,0.3106]},{"id":"cust_08444","y":0,"p":[0.6225,0.6225,0.6225,0.5927,0.7549,0.742]},{"id":"cust_20396","y":0,"p":[0.6792,0.6792,0.6792,0.5927,0.7311,0.426]},{"id":"cust_17757","y":1,"p":[0.7058,0.7311,0.7058,0.6792,0.7982,0.6374]},{"id":"cust_06583","y":1,"p":[0.7549,0.7549,0.7549,0.7311,0.7982,0.762]}],"observed":0.221}},"repro":{"kev-0.8b-ft":{"mean":0.00093,"max":0.0033,"rows":[[0.06,0.0626],[0.1241,0.1241],[0.0757,0.0754],[0.0711,0.0711],[0.0353,0.035],[0.1458,0.1458],[0.1247,0.1266],[0.0792,0.0773],[0.8682,0.8682],[0.123,0.1225],[0.1718,0.1696],[0.4195,0.4173],[0.1564,0.1565],[0.0885,0.0888],[0.8714,0.8686],[0.3108,0.308],[0.0669,0.0658],[0.1459,0.1426],[0.1439,0.1442],[0.6552,0.6565],[0.4536,0.4527],[0.0225,0.0227],[0.0433,0.0434],[0.0855,0.0862],[0.7611,0.7625],[0.1336,0.1319],[0.0569,0.0563],[0.028,0.0281],[0.0862,0.0845],[0.0616,0.0597],[0.0681,0.0679],[0.255,0.2551],[0.0956,0.0981],[0.1354,0.1357],[0.0229,0.0229],[0.2496,0.2501],[0.6586,0.6596],[0.2944,0.2952],[0.0449,0.0447],[0.0308,0.0304],[0.5142,0.5115],[0.0306,0.0304],[0.0597,0.0593],[0.7226,0.723],[0.1003,0.101],[0.0249,0.0246],[0.0298,0.0298],[0.0938,0.0943],[0.1004,0.099],[0.4452,0.4446]]},"kev-4b-ft":{"mean":0.00103,"max":0.004,"rows":[[0.0949,0.0949],[0.1072,0.1073],[0.0631,0.0631],[0.0958,0.0952],[0.0611,0.0608],[0.1898,0.1929],[0.1779,0.1784],[0.127,0.1262],[0.7852,0.7866],[0.1127,0.112],[0.2261,0.2256],[0.3803,0.3821],[0.1647,0.1646],[0.0916,0.0929],[0.7837,0.787],[0.3078,0.3052],[0.0814,0.0826],[0.1329,0.1313],[0.1161,0.1158],[0.6489,0.6486],[0.5118,0.511],[0.0553,0.0551],[0.0724,0.073],[0.0886,0.0875],[0.6911,0.6902],[0.0786,0.0794],[0.0614,0.0611],[0.0632,0.0639],[0.1104,0.11],[0.0891,0.0894],[0.0825,0.0834],[0.2138,0.2137],[0.1104,0.1095],[0.0801,0.0805],[0.0552,0.055],[0.297,0.2939],[0.6489,0.6514],[0.2931,0.2891],[0.064,0.0645],[0.066,0.067],[0.5837,0.5867],[0.067,0.0657],[0.091,0.0909],[0.7072,0.7049],[0.1144,0.1158],[0.0566,0.0575],[0.0584,0.0583],[0.0605,0.0617],[0.0989,0.0986],[0.4291,0.4296]]},"qwen-ft":{"mean":0.002,"max":0.031,"rows":[[0.1645,0.1645],[0.1824,0.1824],[0.0954,0.0954],[0.0851,0.0851],[0.0851,0.0759],[0.2451,0.2451],[0.2451,0.2451],[0.1192,0.1192],[0.7549,0.7549],[0.1824,0.1824],[0.3208,0.3208],[0.4688,0.4688],[0.3208,0.3208],[0.2451,0.2451],[0.7058,0.7058],[0.3208,0.3208],[0.0851,0.0851],[0.1192,0.1192],[0.2451,0.2451],[0.6225,0.6514],[0.4378,0.4688],[0.0851,0.0851],[0.0851,0.0851],[0.0954,0.1067],[0.7058,0.7058],[0.1192,0.1192],[0.0759,0.0759],[0.0851,0.0851],[0.133,0.133],[0.0954,0.0954],[0.0851,0.0851],[0.2942,0.2942],[0.148,0.148],[0.0851,0.0954],[0.0759,0.0759],[0.3775,0.3775],[0.7058,0.7058],[0.2689,0.2689],[0.0759,0.0759],[0.0851,0.0851],[0.5622,0.5622],[0.0851,0.0851],[0.148,0.148],[0.6792,0.6792],[0.2227,0.2227],[0.0851,0.0759],[0.0759,0.0759],[0.0851,0.0851],[0.1067,0.1067],[0.4073,0.4073]]}}}</script>
+<script>
+(() => {
+  "use strict";
+  const D = JSON.parse(document.getElementById("quant-data").textContent);
+  const PRECS = ["bf16", "bnb-int8", "bnb-nf4", "hqq-4", "hqq-3", "hqq-2"];
+  const PNAME = { "bf16": "Full size (16-bit)", "bnb-int8": "8-bit (LLM.int8)", "bnb-nf4": "4-bit NF4",
+    "hqq-4": "4-bit HQQ", "hqq-3": "3-bit HQQ", "hqq-2": "2-bit HQQ" };
+  const PBTN = { "bf16": "Full size", "bnb-int8": "8-bit", "bnb-nf4": "4-bit NF4",
+    "hqq-4": "4-bit HQQ", "hqq-3": "3-bit HQQ", "hqq-2": "2-bit HQQ" };
+  const PTICK = ["16", "8", "4 NF4", "4 HQQ", "3", "2"];
+  const MODELS = ["kev-0.8b-ft", "kev-4b-ft", "qwen-ft"];
+  const MNAME = { "kev-0.8b-ft": "Kev-0.8B", "kev-4b-ft": "Kev-4B", "qwen-ft": "Qwen3.5-4B" };
+  const state = { prec: "hqq-4", model: "kev-4b-ft", sel: 21, seed: 11, outlier: false, solver: true };
+
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+  const NS = "http://www.w3.org/2000/svg";
+  function S(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs || {}) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function T(parent, x, y, text, attrs) {
+    const t = S("text", Object.assign({ x, y }, attrs || {}), parent);
+    t.textContent = text;
+    return t;
+  }
+  function newSvg(box, W, H, label) {
+    box.replaceChildren();
+    const s = S("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": label });
+    box.appendChild(s);
+    return s;
+  }
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  const minus = (s) => s.replace("-", "−");
+  const fw = (x) => minus((Math.abs(x) < 5e-6 ? 0 : x).toFixed(5));
+  const fs = (x) => minus(Number(x).toPrecision(3));
+  const pc = (x, d) => (x * 100).toFixed(d == null ? 1 : d) + "%";
+
+  /* ---------- tooltip ---------- */
+  const tip = $("#tip");
+  function showTip(e, head, rows) {
+    tip.replaceChildren();
+    tip.appendChild(el("div", "h", head));
+    for (const [v, label] of rows) {
+      const d = el("div");
+      const b = el("b", null, v);
+      d.append(b, document.createTextNode(" " + label));
+      tip.appendChild(d);
+    }
+    tip.hidden = false;
+    const pad = 10, r = tip.getBoundingClientRect();
+    let x = e.clientX + 14, y = e.clientY + 14;
+    if (x + r.width > innerWidth - pad) x = e.clientX - 14 - r.width;
+    if (y + r.height > innerHeight - pad) y = e.clientY - 14 - r.height;
+    tip.style.left = Math.max(pad, x) + "px";
+    tip.style.top = Math.max(pad, y) + "px";
+  }
+  const hideTip = () => { tip.hidden = true; };
+  function bindPointer(svg, onMove) {
+    const h = (e) => {
+      const r = svg.getBoundingClientRect();
+      const vb = svg.viewBox.baseVal;
+      onMove(e, (e.clientX - r.left) * vb.width / r.width, (e.clientY - r.top) * vb.height / r.height);
+    };
+    svg.addEventListener("pointermove", h);
+    svg.addEventListener("pointerdown", h);
+    svg.addEventListener("pointerleave", hideTip);
+  }
+
+  /* ---------- bf16 and the weights ---------- */
+  const f32 = new Float32Array(1), u32 = new Uint32Array(f32.buffer);
+  function toBf16(x) { f32[0] = x; const u = u32[0]; return ((u + 0x7fff + ((u >>> 16) & 1)) >>> 0) >>> 16; }
+  function fromBf16(b) { u32[0] = (b << 16) >>> 0; return f32[0]; }
+  function bits16(x) { const b = toBf16(x).toString(2).padStart(16, "0"); return b[0] + " " + b.slice(1, 9) + " " + b.slice(9); }
+  function rng(a) {
+    return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  function makeWeights(seed, outlier) {
+    const r = rng(seed * 7919 + 1), s = 0.018, w = [];
+    for (let i = 0; i < 64; i++) {
+      let u = 0; while (u === 0) u = r();
+      const g = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r());
+      w.push(Math.max(-3.2, Math.min(3.2, g)) * s);
+    }
+    if (outlier) { const k = Math.floor(r() * 64); w[k] = (r() < 0.5 ? -1 : 1) * s * 7.5; }
+    return w.map((x) => fromBf16(toBf16(x)));
+  }
+  const absmax = (w) => w.reduce((m, x) => Math.max(m, Math.abs(x)), 0);
+  const rms = (a) => Math.sqrt(a.reduce((s, x) => s + x * x, 0) / a.length);
+
+  /* ---------- the six recipes ---------- */
+  const NF4 = [-1, -0.6961928009986877, -0.5250730514526367, -0.39491748809814453, -0.28444138169288635,
+    -0.18477343022823334, -0.09105003625154495, 0, 0.07958029955625534, 0.16093020141124725,
+    0.24611230194568634, 0.33791524171829224, 0.44070982933044434, 0.5626170039176941, 0.7229568362236023, 1];
+  function quantize(w, prec, solver) {
+    if (prec === "bf16") {
+      return { deq: w.slice(), levels: null, code: (i) => bits16(w[i]), how: () => "the number itself" };
+    }
+    if (prec === "bnb-int8") {
+      const sc = absmax(w) / 127, c = w.map((x) => Math.round(x / sc)), levels = [];
+      for (let k = -127; k <= 127; k++) levels.push(k * sc);
+      return { deq: c.map((k) => k * sc), levels,
+        code: (i) => ((c[i] + 256) % 256).toString(2).padStart(8, "0"),
+        how: (i) => `${minus(String(c[i]))} × ${fs(sc)}` };
+    }
+    if (prec === "bnb-nf4") {
+      const am = absmax(w);
+      const idx = w.map((x) => { let b = 0, bd = Infinity;
+        NF4.forEach((t, j) => { const d = Math.abs(x / am - t); if (d < bd) { bd = d; b = j; } }); return b; });
+      return { deq: idx.map((j) => NF4[j] * am), levels: NF4.map((t) => t * am),
+        code: (i) => idx[i].toString(2).padStart(4, "0"),
+        how: (i) => `${minus(NF4[idx[i]].toFixed(4))} × ${fs(am)}` };
+    }
+    const n = Number(prec.split("-")[1]), maxv = 2 ** n - 1;
+    let mn = Infinity, mx = -Infinity;
+    for (const x of w) { mn = Math.min(mn, x); mx = Math.max(mx, x); }
+    const s = maxv / (mx - mn);
+    let z = -mn * s;
+    if (n === 4) z = Math.round(z);
+    const q = (zz) => w.map((x) => Math.min(maxv, Math.max(0, Math.round(x * s + zz))));
+    const errOf = (Wq, zz) => rms(w.map((x, i) => x - (Wq[i] - zz) / s));
+    const errPlain = errOf(q(z), z);
+    if (solver) { // HQQ's half-quadratic solver: lp-norm 0.7, beta 10, kappa 1.01, up to 20 steps
+      let beta = 10, best = 1e4;
+      for (let it = 0; it < 20; it++) {
+        const Wq = q(z), Wr = Wq.map((k) => (k - z) / s);
+        const We = w.map((x, i) => { const e = x - Wr[i], a = Math.abs(e), t = a - (1 / beta) * Math.pow(a, -0.3);
+          return t > 0 ? Math.sign(e) * t : 0; });
+        z = Wq.reduce((acc, k, i) => acc + (k - (w[i] - We[i]) * s), 0) / w.length;
+        beta *= 1.01;
+        const cur = w.reduce((a, x, i) => a + Math.abs(x - Wr[i]), 0) / w.length;
+        if (cur < best) best = cur; else break;
+      }
+    }
+    const Wq = q(z), levels = [];
+    for (let k = 0; k <= maxv; k++) levels.push((k - z) / s);
+    return { deq: Wq.map((k) => (k - z) / s), levels, errPlain,
+      code: (i) => Wq[i].toString(2).padStart(n, "0"),
+      how: (i) => `(${Wq[i]} − ${minus(z.toFixed(2))}) × ${fs(1 / s)}` };
+  }
+  const STORE = { "bf16": "16 bits", "bnb-int8": "8 bits", "bnb-nf4": "4 bits", "hqq-4": "4 bits", "hqq-3": "3 bits", "hqq-2": "2 bits" };
+  const STORE_EXTRA = { "bf16": "no shared numbers", "bnb-int8": "plus one scale per row",
+    "bnb-nf4": "plus one scale per 64 weights", "hqq-4": "plus a scale and a zero point per 64",
+    "hqq-3": "plus a scale and a zero point per 64", "hqq-2": "plus a scale and a zero point per 64" };
+  const LEVELS = { "bf16": ["65,536", "every 16-bit number"], "bnb-int8": ["255", "−127 to 127, times the row's scale"],
+    "bnb-nf4": ["16", "fixed, spaced like a bell curve"], "hqq-4": ["16", "evenly spaced in each group"],
+    "hqq-3": ["8", "evenly spaced in each group"], "hqq-2": ["4", "evenly spaced in each group"] };
+  const METHOD = {
+    "bf16": [["Full size. ", "Each weight is a bfloat16 number: 1 sign bit, 8 exponent bits and 7 fraction bits. This is the reference, and nothing is rounded."]],
+    "bnb-int8": [["bitsandbytes LLM.int8. ", "Each weight becomes a whole number from −127 to 127, and one scale per row turns it back (code × scale). While the model runs, any input value above 6.0 is multiplied in 16-bit instead, which protects the rare large values and costs time."]],
+    "bnb-nf4": [["bitsandbytes NF4. ", "16 fixed levels, packed closer together near zero, where most weights are. Each block of 64 stores its largest absolute weight, and each weight stores the 4-bit number of its nearest level. Blocks of 64, no double quantization, 16-bit arithmetic."]],
+    "hqq": [["HQQ. ", "Evenly spaced levels between each group's smallest and largest weight, with a scale and a zero point per group of 64. HQQ's solver then nudges the zero point to cut the rounding error, using only the weights, so no data is needed. Group size 64, 16-bit arithmetic."]],
+  };
+
+  /* ---------- weight lab ---------- */
+  let LW = [], LQ = null, labGeom = null;
+  function renderLab() {
+    LW = makeWeights(state.seed, state.outlier);
+    LQ = quantize(LW, state.prec, state.solver);
+    drawLab();
+    const st = $("#lab-stats");
+    st.replaceChildren();
+    const add = (k, v, small) => {
+      const d = el("div"), dt = el("dt", null, k), dd = el("dd", null, v);
+      if (small) dd.appendChild(el("small", null, small));
+      d.append(dt, dd); st.appendChild(d);
+    };
+    const lv = LEVELS[state.prec];
+    add("Values it can store", lv[0], lv[1]);
+    add("Stored per weight", STORE[state.prec], STORE_EXTRA[state.prec]);
+    const ma = rms(LW);
+    if (state.prec === "bf16") add("Typical rounding error", "none", "this is the reference");
+    else {
+      const e = rms(LW.map((x, i) => x - LQ.deq[i])) / ma;
+      add("Typical rounding error", pc(e), "of a typical weight's size (root mean square)");
+      if (state.prec.startsWith("hqq")) {
+        add(state.solver ? "Without HQQ's solver" : "Solver is off", pc(LQ.errPlain / ma), state.solver ? "plain rounding between min and max" : "turn it on to compare");
+      }
+    }
+    const m = $("#lab-method");
+    m.replaceChildren();
+    for (const [b, t] of METHOD[state.prec.startsWith("hqq") ? "hqq" : state.prec]) {
+      m.append(el("b", null, b), document.createTextNode(t));
+    }
+    $("#lab-flag").hidden = !state.outlier;
+    $("#btn-outlier").setAttribute("aria-pressed", String(state.outlier));
+    $("#btn-solver").setAttribute("aria-pressed", String(state.solver));
+    $("#btn-solver").disabled = !state.prec.startsWith("hqq");
+    renderBits();
+  }
+  function niceRange(v) {
+    const steps = [0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1, 0.12, 0.15, 0.2, 0.25, 0.3, 0.4];
+    return steps.find((s) => s >= v) || v;
+  }
+  function drawLab() {
+    const box = $("#lab-chart");
+    const W = Math.max(280, Math.floor(box.clientWidth || 600)), narrow = W < 520;
+    const m = { l: narrow ? 48 : 56, r: 6, t: 10 };
+    const H1 = narrow ? 210 : 270, gap = 34, H2 = narrow ? 54 : 66, H = m.t + H1 + gap + H2 + 10;
+    const iw = W - m.l - m.r, dx = iw / 64, X = (i) => m.l + (i + 0.5) * dx;
+    const R = niceRange(absmax(LW) * 1.08);
+    const Y = (v) => m.t + H1 / 2 - (v / R) * (H1 / 2);
+    const E2 = 0.02, y2 = m.t + H1 + gap, Y2 = (e) => y2 + H2 - (Math.min(e, E2) / E2) * H2;
+    const svg = newSvg(box, W, H, `Chart: 64 weights at ${PNAME[state.prec]}, with each weight's rounding error`);
+    svg.setAttribute("tabindex", "0");
+    labGeom = { m, dx, W, H };
+    S("rect", { x: X(state.sel) - dx / 2, y: m.t, width: dx, height: H - m.t - 6, rx: 3, style: "fill:var(--panel-2)" }, svg);
+    for (const v of [-R, -R / 2, 0, R / 2, R]) {
+      T(svg, m.l - 8, Y(v) + 4, minus(String(+v.toFixed(3))), { class: "tk", "text-anchor": "end" });
+    }
+    if (LQ.levels) {
+      const dense = LQ.levels.length > 16;
+      for (const v of LQ.levels) {
+        if (Math.abs(v) > R) continue;
+        S("line", { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v),
+          style: `stroke:var(--axis);stroke-width:${dense ? 0.6 : 1};opacity:${dense ? 0.55 : 1}` }, svg);
+      }
+    }
+    S("line", { x1: m.l, x2: W - m.r, y1: Y(0), y2: Y(0), style: "stroke:var(--muted);stroke-dasharray:2 3" }, svg);
+    const rr = Math.max(2.2, Math.min(4, dx * 0.32));
+    LW.forEach((w, i) => {
+      const d = LQ.deq[i];
+      if (Math.abs(Y(w) - Y(d)) > 1) S("line", { x1: X(i), x2: X(i), y1: Y(w), y2: Y(d), style: "stroke:var(--ink-2);stroke-width:1.5" }, svg);
+    });
+    LW.forEach((w, i) => {
+      const big = i === state.sel ? 1.6 : 0;
+      S("circle", { cx: X(i), cy: Y(w), r: rr + big, style: "fill:var(--panel);stroke:var(--ink-2);stroke-width:1.5" }, svg);
+      S("circle", { cx: X(i), cy: Y(LQ.deq[i]), r: rr * 0.78 + big * 0.8, style: "fill:var(--ink)" }, svg);
+    });
+    T(svg, m.l, y2 - 10, "Rounding error per weight", { class: "an" });
+    T(svg, m.l - 8, y2 + H2 + 4, "0", { class: "tk", "text-anchor": "end" });
+    T(svg, m.l - 8, Y2(E2) + 4, "0.02", { class: "tk", "text-anchor": "end" });
+    S("line", { x1: m.l, x2: W - m.r, y1: Y2(E2), y2: Y2(E2), style: "stroke:var(--grid)" }, svg);
+    S("line", { x1: m.l, x2: W - m.r, y1: y2 + H2, y2: y2 + H2, style: "stroke:var(--axis)" }, svg);
+    const bw = Math.max(1.5, dx * 0.55);
+    LW.forEach((w, i) => {
+      const e = Math.abs(w - LQ.deq[i]);
+      if (e <= 0) return;
+      const top = Y2(e), h = Math.max(1, y2 + H2 - top);
+      S("rect", { x: X(i) - bw / 2, y: y2 + H2 - h, width: bw, height: h, rx: Math.min(1.5, bw / 2),
+        style: `fill:${e > E2 ? "var(--ink)" : "var(--ink-2)"}` }, svg);
+    });
+    bindPointer(svg, (e, px) => {
+      const i = Math.floor((px - m.l) / dx);
+      if (i < 0 || i > 63) { hideTip(); return; }
+      if (e.type === "pointerdown") { state.sel = i; renderLab(); return; }
+      const d = LQ.deq[i];
+      showTip(e, `Weight ${i + 1} of 64 · ${PBTN[state.prec]}`,
+        [[fw(LW[i]), "original"], [fw(d), "stored"], [fw(Math.abs(LW[i] - d)), "error"]]);
+    });
+    svg.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        state.sel = (state.sel + (e.key === "ArrowLeft" ? 63 : 1)) % 64;
+        renderLab();
+        $("#lab-chart svg").focus();
+      }
+    });
+  }
+  function renderBits() {
+    $("#bits-h").textContent = `Weight ${state.sel + 1} at every precision`;
+    const body = $("#bits-body");
+    body.replaceChildren();
+    const w = LW[state.sel];
+    for (const p of PRECS) {
+      const q = p === state.prec ? LQ : quantize(LW, p, state.solver);
+      const tr = el("tr");
+      if (p === state.prec) tr.className = "on";
+      const td0 = el("td"), b = el("button", "rowbtn", PNAME[p]);
+      b.type = "button";
+      b.addEventListener("click", () => setState({ prec: p }));
+      td0.appendChild(b);
+      const d = q.deq[state.sel];
+      tr.append(td0, el("td", "mono", q.code(state.sel)), el("td", "mono", q.how(state.sel)),
+        el("td", "mono num", fw(d)), el("td", "mono num", p === "bf16" ? "—" : fw(Math.abs(w - d))));
+      body.appendChild(tr);
+    }
+  }
+  $("#btn-new").addEventListener("click", () => { state.seed += 1; renderLab(); });
+  $("#btn-outlier").addEventListener("click", () => { state.outlier = !state.outlier; renderLab(); });
+  $("#btn-solver").addEventListener("click", () => { state.solver = !state.solver; renderLab(); });
+  $("#sel-prev").addEventListener("click", () => { state.sel = (state.sel + 63) % 64; renderLab(); });
+  $("#sel-next").addEventListener("click", () => { state.sel = (state.sel + 1) % 64; renderLab(); });
+
+  /* ---------- anatomy ---------- */
+  function renderAnatomy() {
+    const mdl = state.model, p = state.prec, shrunkLabel = p === "bf16" ? "16-bit" : PBTN[p];
+    const stack = $("#stack");
+    stack.replaceChildren();
+    const blk = (name, what, shrunk) => {
+      const b = el("div", "blk" + (shrunk ? " shrunk" : ""));
+      b.append(el("span", "nm", name), el("span", "chip" + (shrunk ? " fill" : ""), shrunk ? shrunkLabel : "stays 16-bit"),
+        el("span", "wh", what));
+      return b;
+    };
+    stack.appendChild(blk("Embeddings", "turn each token of the summary into numbers", false));
+    const rep = el("div", "rep");
+    rep.appendChild(el("span", "rep-label", "Repeated in every layer"));
+    rep.append(blk("Norms", "rescale the numbers between steps", false),
+      blk("Mixing layers", "linear layers that combine information across tokens", true),
+      blk("Feed-forward", "linear layers that transform each token (gate, up, down)", true));
+    stack.appendChild(rep);
+    if (mdl === "qwen-ft") {
+      stack.appendChild(blk("lm_head (readout)", "turns the last token into the yes/no answer", false));
+      stack.appendChild(blk("Vision tower", "unused here, left as it was", false));
+    } else {
+      stack.appendChild(blk("Pointer head (readout)", "Kev's answer head, which sits outside the backbone", false));
+    }
+    $("#anat-count").textContent = mdl === "qwen-ft"
+      ? "Qwen3.5-4B: every linear layer except lm_head and the vision tower."
+      : `${MNAME[mdl]}: ${mdl === "kev-4b-ft" ? "248 of 248" : "186 of 186"} linear layers in the backbone, as Kev's server reported after loading.`;
+    const rows = $("#mem-rows");
+    rows.replaceChildren();
+    const per = D.models[mdl].per, full = per.bf16.mem;
+    for (const q of PRECS) {
+      const v = per[q].mem;
+      const b = el("button", "mrow" + (q === p ? " on" : ""));
+      b.type = "button";
+      b.setAttribute("aria-label", `${PNAME[q]}: ${v.toFixed(2)} GB`);
+      const track = el("span", "mtrack"), bar = el("span", "mbar");
+      bar.style.display = "block";
+      bar.style.width = (100 * v / full).toFixed(1) + "%";
+      track.appendChild(bar);
+      b.append(el("span", "ml", PBTN[q]), track,
+        el("span", "mv", q === "bf16" ? `${v.toFixed(2)} GB` : `${v.toFixed(2)} GB · ${Math.round(100 * v / full)}%`));
+      b.addEventListener("click", () => setState({ prec: q }));
+      rows.appendChild(b);
+    }
+  }
+
+  /* ---------- reproduction check ---------- */
+  function renderRepro() {
+    const r = D.repro[state.model], box = $("#repro-chart");
+    const W = Math.max(240, Math.min(300, Math.floor(box.clientWidth || 300))), H = W;
+    const m = { l: 46, r: 18, t: 8, b: 40 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const top = Math.max(0.3, Math.ceil(Math.max(...r.rows.flat()) * 10) / 10);
+    const X = (v) => m.l + (v / top) * iw, Y = (v) => m.t + ih - (v / top) * ih;
+    const svg = newSvg(box, W, H, `Scatter: ${MNAME[state.model]} at full size, new serving path against post 3's answers for 50 tune customers`);
+    const step = top > 0.6 ? 0.2 : 0.1;
+    for (let v = 0; v <= top + 1e-9; v += step) {
+      S("line", { x1: X(v), x2: X(v), y1: m.t, y2: m.t + ih, style: "stroke:var(--grid)" }, svg);
+      S("line", { x1: m.l, x2: m.l + iw, y1: Y(v), y2: Y(v), style: "stroke:var(--grid)" }, svg);
+      T(svg, X(v), m.t + ih + 15, pc(v, 0), { class: "tk", "text-anchor": "middle" });
+      T(svg, m.l - 6, Y(v) + 4, pc(v, 0), { class: "tk", "text-anchor": "end" });
+    }
+    S("line", { x1: X(0), y1: Y(0), x2: X(top), y2: Y(top), style: "stroke:var(--ink-2);stroke-dasharray:4 4" }, svg);
+    for (const [a, b] of r.rows) S("circle", { cx: X(a), cy: Y(b), r: 4, style: "fill:var(--m);stroke:var(--bg);stroke-width:1.5" }, svg);
+    T(svg, m.l + iw / 2, H - 6, "Post 3's recorded answer", { class: "ax", "text-anchor": "middle" });
+    T(svg, 12, m.t + ih / 2, "New serving path", { class: "ax", "text-anchor": "middle", transform: `rotate(-90 12 ${m.t + ih / 2})` });
+    bindPointer(svg, (e, px, py) => {
+      let best = null, bd = 24;
+      r.rows.forEach(([a, b]) => { const d = Math.hypot(X(a) - px, Y(b) - py); if (d < bd) { bd = d; best = [a, b]; } });
+      if (!best) { hideTip(); return; }
+      showTip(e, `${MNAME[state.model]}, one tune customer`, [[pc(best[0]), "post 3"], [pc(best[1]), "new path"], [Math.abs(best[1] - best[0]).toFixed(4), "apart"]]);
+    });
+    $("#repro-cap").textContent = `${MNAME[state.model]}: answers ${r.mean.toFixed(4)} apart on average, ${r.max.toFixed(3)} at most, against a limit of 0.02. Passed, so its shrunk versions could run.`;
+  }
+
+  /* ---------- results ---------- */
+  function tile(k, v, s, chip) {
+    const t = el("div", "tile"), vv = el("div", "v", v);
+    if (chip) vv.appendChild(el("span", "chip" + (chip.bad ? " fill" : ""), chip.text));
+    t.append(el("div", "k", k), vv, el("div", "s", s));
+    return t;
+  }
+  function renderTiles() {
+    const md = D.models[state.model], c = md.per[state.prec], b = md.per.bf16, isB = state.prec === "bf16";
+    const t = $("#tiles");
+    t.replaceChildren(
+      tile("GPU memory for the weights", `${c.mem.toFixed(2)} GB`, isB ? "full size" : `${Math.round(100 * c.mem / b.mem)}% of full size (${b.mem.toFixed(2)} GB)`),
+      tile("Time per customer", `${Math.round(c.lat)} ms`, isB ? "median, same serving for every precision" : `full size: ${Math.round(b.lat)} ms`),
+      tile("Ranking (AUC)", c.auc.toFixed(3), isB ? "0.5 is a coin flip" : `full size: ${b.auc.toFixed(3)} · 0.5 is a coin flip`),
+      tile("Calibration error (ECE)", `${(c.ece * 100).toFixed(1)} pts`,
+        `${(c.ece_cal * 100).toFixed(1)} after the tune correction · a perfectly honest model stays under ${(c.noise * 100).toFixed(1)}`,
+        { text: c.ece <= c.noise ? "within chance" : "above chance", bad: c.ece > c.noise }),
+      tile("Average predicted default", pc(c.mean), `actually defaulted: ${pc(md.observed)}`),
+      tile("Customers moved 5+ points", isB ? "—" : pc(c.moved5), isB ? "the reference" : `average move: ${(c.chg * 100).toFixed(1)} pts`)
+    );
+  }
+  function renderCal() {
+    const md = D.models[state.model], box = $("#cal-chart");
+    const W = Math.max(260, Math.floor(box.clientWidth || 420)), H = Math.min(W, 360);
+    const m = { l: 48, r: 20, t: 10, b: 42 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const X = (v) => m.l + v * iw, Y = (v) => m.t + ih - v * ih;
+    const svg = newSvg(box, W, H, `Calibration chart for ${MNAME[state.model]} at ${PNAME[state.prec]} against full size`);
+    for (let v = 0; v <= 1.0001; v += 0.2) {
+      S("line", { x1: X(v), x2: X(v), y1: m.t, y2: m.t + ih, style: "stroke:var(--grid)" }, svg);
+      S("line", { x1: m.l, x2: m.l + iw, y1: Y(v), y2: Y(v), style: "stroke:var(--grid)" }, svg);
+      T(svg, X(v), m.t + ih + 16, pc(v, 0), { class: "tk", "text-anchor": "middle" });
+      T(svg, m.l - 6, Y(v) + 4, pc(v, 0), { class: "tk", "text-anchor": "end" });
+    }
+    S("line", { x1: X(0), y1: Y(0), x2: X(1), y2: Y(1), style: "stroke:var(--ink-2);stroke-dasharray:4 4" }, svg);
+    const series = [];
+    if (state.prec !== "bf16") series.push({ rel: md.per.bf16.rel, open: true, name: PNAME.bf16 });
+    series.push({ rel: md.per[state.prec].rel, open: false, name: PNAME[state.prec] });
+    const maxN = Math.max(...series.flatMap((s) => s.rel.map((r) => r[2])));
+    const rad = (n) => 3 + 5.5 * Math.sqrt(n / maxN);
+    const pts = [];
+    for (const s of series) {
+      S("polyline", { points: s.rel.map((r) => `${X(r[0])},${Y(r[1])}`).join(" "),
+        style: s.open ? "fill:none;stroke:var(--m);stroke-width:1.5;stroke-dasharray:3 3;opacity:0.7" : "fill:none;stroke:var(--m);stroke-width:2" }, svg);
+    }
+    for (const s of series) {
+      for (const r of s.rel) {
+        S("circle", { cx: X(r[0]), cy: Y(r[1]), r: rad(r[2]),
+          style: s.open ? "fill:var(--panel);stroke:var(--m);stroke-width:2" : "fill:var(--m);stroke:var(--panel);stroke-width:2" }, svg);
+        pts.push({ x: X(r[0]), y: Y(r[1]), r, name: s.name });
+      }
+    }
+    T(svg, m.l + iw / 2, H - 6, "Predicted chance of default", { class: "ax", "text-anchor": "middle" });
+    T(svg, 12, m.t + ih / 2, "Share who defaulted", { class: "ax", "text-anchor": "middle", transform: `rotate(-90 12 ${m.t + ih / 2})` });
+    bindPointer(svg, (e, px, py) => {
+      let best = null, bd = 24;
+      for (const p of pts) { const d = Math.hypot(p.x - px, p.y - py); if (d < bd) { bd = d; best = p; } }
+      if (!best) { hideTip(); return; }
+      showTip(e, best.name, [[pc(best.r[0]), "predicted on average"], [pc(best.r[1]), "actually defaulted"], [best.r[2].toLocaleString("en-US"), "customers"]]);
+    });
+    const lg = $("#cal-legend");
+    lg.replaceChildren();
+    const item = (cls, text) => { const s = el("span"); s.append(el("i", "key " + cls), document.createTextNode(text)); return s; };
+    if (state.prec !== "bf16") lg.appendChild(item("m-open", "Full size"));
+    lg.appendChild(item("m-fill", PNAME[state.prec]));
+    lg.appendChild(el("span", null, "Dot size: customers in the band"));
+  }
+  function renderCust() {
+    const md = D.models[state.model], box = $("#cust-chart");
+    const W = Math.max(260, Math.floor(box.clientWidth || 420)), H = Math.min(W, 360);
+    const m = { l: 48, r: 14, t: 10, b: 42 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+    const X = (k) => m.l + (k * iw) / 5, Y = (v) => m.t + ih - v * ih;
+    const ks = PRECS.indexOf(state.prec);
+    const svg = newSvg(box, W, H, `40 customers' predicted chance of default at each precision, ${MNAME[state.model]}`);
+    S("rect", { x: X(ks) - 15, y: m.t, width: 30, height: ih, rx: 4, style: "fill:var(--panel-2)" }, svg);
+    for (let v = 0; v <= 1.0001; v += 0.2) {
+      S("line", { x1: m.l, x2: m.l + iw, y1: Y(v), y2: Y(v), style: "stroke:var(--grid)" }, svg);
+      T(svg, m.l - 6, Y(v) + 4, pc(v, 0), { class: "tk", "text-anchor": "end" });
+    }
+    PTICK.forEach((t, k) => T(svg, X(k), m.t + ih + 16, t, { class: "tk" + (k === ks ? " on" : ""), "text-anchor": "middle" }));
+    const obs = md.observed;
+    S("line", { x1: m.l, x2: m.l + iw, y1: Y(obs), y2: Y(obs), style: "stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:5 4" }, svg);
+    const g = S("g", {}, svg);
+    for (const c of md.cust) {
+      S("polyline", { points: c.p.map((v, k) => `${X(k)},${Y(v)}`).join(" "), style: "fill:none;stroke:var(--m);stroke-width:1.4;opacity:0.4" }, g);
+    }
+    const hl = S("g", {}, svg);
+    T(svg, m.l + iw / 2, H - 6, "Bits per weight", { class: "ax", "text-anchor": "middle" });
+    T(svg, 12, m.t + ih / 2, "Predicted chance of default", { class: "ax", "text-anchor": "middle", transform: `rotate(-90 12 ${m.t + ih / 2})` });
+    bindPointer(svg, (e, px, py) => {
+      const t = Math.max(0, Math.min(5, (px - m.l) / (iw / 5)));
+      const k0 = Math.min(4, Math.floor(t)), f = t - k0;
+      let best = null, bd = 14;
+      for (const c of md.cust) {
+        const yv = Y(c.p[k0] * (1 - f) + c.p[k0 + 1] * f), d = Math.abs(yv - py);
+        if (d < bd) { bd = d; best = c; }
+      }
+      hl.replaceChildren();
+      if (!best) { hideTip(); return; }
+      S("polyline", { points: best.p.map((v, k) => `${X(k)},${Y(v)}`).join(" "), style: "fill:none;stroke:var(--m);stroke-width:2.6" }, hl);
+      best.p.forEach((v, k) => S("circle", { cx: X(k), cy: Y(v), r: 4, style: "fill:var(--m);stroke:var(--panel);stroke-width:2" }, hl));
+      showTip(e, `Test customer ${best.id.replace("cust_", "")} · ${best.y ? "defaulted" : "did not default"}`,
+        best.p.map((v, k) => [pc(v), PNAME[PRECS[k]]]));
+    });
+    svg.addEventListener("pointerleave", () => hl.replaceChildren());
+  }
+  function buildTable() {
+    const t = $("#runs");
+    const head = el("thead"), hr = el("tr");
+    const cols = [["Model", ""], ["Precision", ""], ["Weights (GB)", "num"], ["Median ms", "num"], ["AUC", "num"],
+      ["ECE (pts)", "num"], ["ECE corrected", "num"], ["Avg predicted", "num"], ["Moved 5+ pts", "num"], ["Rank corr. vs full", "num"]];
+    for (const [c, cls] of cols) hr.appendChild(el("th", cls, c));
+    head.appendChild(hr);
+    const body = el("tbody");
+    for (const mdl of MODELS) for (const p of PRECS) {
+      const c = D.models[mdl].per[p], tr = el("tr");
+      tr.dataset.key = mdl + "|" + p;
+      tr.append(el("td", null, MNAME[mdl]), el("td", null, PNAME[p]), el("td", "num", c.mem.toFixed(2)),
+        el("td", "num", String(Math.round(c.lat))), el("td", "num", c.auc.toFixed(3)), el("td", "num", (c.ece * 100).toFixed(1)),
+        el("td", "num", (c.ece_cal * 100).toFixed(1)), el("td", "num", pc(c.mean)),
+        el("td", "num", p === "bf16" ? "—" : pc(c.moved5)), el("td", "num", p === "bf16" ? "—" : c.rho.toFixed(3)));
+      body.appendChild(tr);
+    }
+    t.append(head, body);
+  }
+  function renderResults() {
+    renderTiles(); renderCal(); renderCust();
+    $$("#runs tbody tr").forEach((tr) => tr.classList.toggle("on", tr.dataset.key === state.model + "|" + state.prec));
+  }
+
+  /* ---------- controls and state ---------- */
+  function buildSegs() {
+    $$(".seg[data-key]").forEach((c) => {
+      const key = c.dataset.key, opts = key === "prec" ? PRECS : MODELS;
+      c.setAttribute("role", "group");
+      for (const v of opts) {
+        const b = el("button");
+        b.type = "button";
+        b.dataset.value = v;
+        if (key === "model") { const sw = el("span", "sw"); sw.dataset.model = v; b.appendChild(sw); }
+        b.appendChild(document.createTextNode(key === "prec" ? PBTN[v] : MNAME[v]));
+        b.addEventListener("click", () => setState({ [key]: v }));
+        c.appendChild(b);
+      }
+    });
+  }
+  function syncSegs() {
+    $$(".seg[data-key]").forEach((c) => c.querySelectorAll("button").forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.value === state[c.dataset.key]))));
+  }
+  function renderAll() {
+    document.body.dataset.model = state.model;
+    syncSegs(); renderLab(); renderAnatomy(); renderRepro(); renderResults();
+  }
+  function setState(patch) { Object.assign(state, patch); hideTip(); renderAll(); }
+
+  buildSegs();
+  buildTable();
+  renderAll();
+
+  const widths = new Map();
+  const redraw = { "lab-chart": drawLab, "repro-chart": renderRepro, "cal-chart": renderCal, "cust-chart": renderCust };
+  if ("ResizeObserver" in window) {
+    const ro = new ResizeObserver((entries) => {
+      for (const en of entries) {
+        const id = en.target.id, w = Math.floor(en.contentRect.width);
+        if (widths.get(id) === w) continue;
+        const first = !widths.has(id);
+        widths.set(id, w);
+        if (!first) requestAnimationFrame(() => redraw[id]());
+      }
+    });
+    Object.keys(redraw).forEach((id) => ro.observe(document.getElementById(id)));
+  }
+})();
+</script>

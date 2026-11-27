@@ -348,16 +348,61 @@ def row_pieces(dark: bool = False) -> Path:
     return F.save(fig, "post5_pieces.png")
 
 
+def social_card() -> Path:
+    """1200x630 link-preview image in the style of posts 1-4: title and hook on the left, and on
+    the right each model's ranking with the original table (open) and the other layouts (filled),
+    light only like theirs."""
+    F.set_theme(False)
+    fig = F.plt.figure(figsize=(6, 3.15))
+    t = fig.text
+    dot = "·"
+    t(0.055, 0.89, f"LEARNING CURVE  {dot}  nishzsche.github.io", fontsize=7.5, color=F.MUTED,
+      fontweight="bold", va="center")  # fmt: skip
+    t(0.055, 0.80, "Why AI can write\ncode but struggle\nto read a table", fontsize=17,
+      fontweight="bold", color=F.INK, va="top", linespacing=1.05)  # fmt: skip
+    t(0.055, 0.425, "Six AI models read the same customers\nas a table, sentences, CSV and JSON.\n"
+      "Not one number changed.", fontsize=8.5, color=F.INK_2, va="top",
+      linespacing=1.25)  # fmt: skip
+    t(0.055, 0.2, "The answers did.", fontsize=12, fontweight="bold", color=F.INK, va="top")
+    t(0.055, 0.075, f"6 AI models, answering cold  {dot}  2,000 real credit-card customers",
+      fontsize=7.5, color=F.MUTED, va="center")  # fmt: skip
+    t(0.56, 0.875, "Ranking (AUC) by layout", fontsize=9, fontweight="bold", color=F.INK,
+      va="center")  # fmt: skip
+    t(0.56, 0.815, "open: the original table  ·  filled: other layouts", fontsize=6.5,
+      color=F.MUTED, va="center")  # fmt: skip
+    ax = fig.add_axes((0.71, 0.2, 0.25, 0.54))
+    ax.axvline(0.5, color=F.MUTED, lw=0.8, ls=(0, (1, 2)), zorder=1)
+    ax.text(0.505, len(ORDER) - 0.35, "coin flip", fontsize=6, color=F.MUTED, va="center")
+    for i, c in enumerate(ORDER):
+        col = F.COLOR[c]
+        vals = {lay: value(c, lay, "auc") for lay in LAYOUT}
+        ax.plot([min(vals.values()), max(vals.values())], [i, i], color=tint(col, 0.45), lw=1.6,
+                zorder=2, solid_capstyle="round")  # fmt: skip
+        for lay in L.LAYOUTS:
+            ax.plot(vals[lay], i, "o", ms=4.5, color=col, mec=F.SURFACE, mew=0.6, zorder=3)
+        ax.plot(vals["v2"], i, "o", ms=5.5, mfc=F.SURFACE, mec=col, mew=1.4, zorder=4)
+    ax.set_yticks(range(len(ORDER)), [NAME[c] for c in ORDER], fontsize=7.5)
+    ax.set_ylim(len(ORDER) - 0.1, -0.6)
+    ax.set_xlim(0.44, 0.8)
+    ax.set_xticks([0.5, 0.6, 0.7, 0.8])
+    ax.tick_params(axis="x", labelsize=7)
+    ax.tick_params(axis="y", length=0, labelcolor=F.INK)
+    ax.grid(axis="y", visible=False)
+    return F.save(fig, "post5_social_card.png", card=True)
+
+
 FIGURES = (ranking, moved, customers, promised, row_pieces)
 
 
 def main() -> None:
-    wanted = set(sys.argv[1:])
+    wanted = set(sys.argv[1:])  # optional: only these, e.g. `moved row_pieces` or `social_card`
     for fig in FIGURES:
         if wanted and fig.__name__ not in wanted:
             continue
         for dark in (False, True):
             print(fig(dark))
+    if not wanted or "social_card" in wanted:
+        print(social_card())
 
 
 if __name__ == "__main__":

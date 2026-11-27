@@ -2,7 +2,7 @@
 
 Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
-## Post 5: first draft (2026-11-27), review copy up
+## Post 5: published (2026-11-27 16:55 IST); LinkedIn post and carousel drafted
 
 **Draft:** `writeup/formats_post.md`, "Why AI can write code but struggle to read a table" (the title post 4 promised), about 2,700 words, five charts. No runs were needed: all six zero-shot models already had all four formats (session A and the laptop, below), and the realigned table comes from post 1's layout check.
 
@@ -26,12 +26,18 @@ Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 **Review copy:** https://nishzsche.github.io/review/reading-tables/ (unlisted, noindex), once blog PR #61 is merged. It's `review/reading-tables.md` on its own branch, `review-post5`, from `main`, so it doesn't touch the blog session's uncommitted design work in the `dev` working copy. The charts are in `public/images/reading-tables/`, embedded with `chart.html`, and their sizes are in `_data/charts.yml`. It was built locally with Jekyll and checked: five charts, both tables, and it isn't in the home page, feed or sitemap. It's generated from the draft (headline removed, links made relative, a one-sentence alt plus "Chart in words" per chart), so draft edits need regenerating into it. The review note asks about the title, the moved-but-ranking-held section, the bank advice, and where readers got lost.
 
-**For the author to decide:**
-1. **The title:** keep the promised one, or use a result title like posts 1, 3 and 4 (e.g. "I reformatted a table. AI changed its answers."). The review note asks readers.
-2. **The chart rule:** the closing sections run about 1,075 words without a chart. This is the open rule question from post 4.
-3. **The drawing** (`icon:`, `icon_caption:`) for publishing.
+**Published:** https://nishzsche.github.io/2026/11/27/reading-tables/ (blog PR #63, merged 2026-11-27; `_posts/2026-11-27-reading-tables.md`, dated 16:55 IST so Pages built it on merge). The author asked to publish before the review came back, so the title stayed as promised.
+- The review URL redirects to the post. The social card is `results/figures/post5_social_card.png` (`layouts_figures.py social_card`), published as `public/images/reading-tables/social-card.png`.
+- **Drawing:** #10 Mystical (telescope and constellations, "the same stars, joined up into different pictures"), my pick, flagged in the PR for the author to swap.
+- **Methods page:** the shared caveat "changing the wording moved results by up to 13 points" now adds that layout alone moved one model's ranking from 0.716 to 0.478, linking post 5.
+- **Rounding:** two cells of the post's decisions table are exact halves shown rounded down: Qwen with Markdown, 197 of 2,000, shows as 9.8%, and Sol with the realigned table, 87 of 2,000, as 4.3%. Post 4 rounded halves up. It was left as published (no correction note for 0.05 points), and the carousel rounds the same way as the post.
 
-**Then:** the LinkedIn post and carousel, the social card and the publishing PR, as for post 4.
+**LinkedIn draft (2026-11-27):**
+- `writeup/formats_linkedin.md`: post text of 2,238 characters, the first comment (with the published URL) and 10 slides.
+- `writeup/build_formats_carousel.py` builds `writeup/formats_carousel.pdf`: hook, the layouts, ranking, answers moved, customers (Laya and Sol with JSON), promised risk, the decisions grid, the pieces, the bank and the limits. Every slide was checked as a PNG.
+- Following the blog's new rule, it doesn't promise post 6. The closing line is the post's: "Change the layout and you've changed the model. Test it like one."
+
+**Still open:** the chart rule (the closing sections run about 1,075 words without a chart), and posting on LinkedIn (the author).
 
 ## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:00 IST): post 4's speed runs
 

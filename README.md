@@ -10,8 +10,9 @@ It's the experiment behind a blog series. Every post uses the same customers, th
 | 2 | [Why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/) (24 November 2026) | Would judging the same models by accuracy have picked the right one for a lender? | [`writeup/accuracy_post.md`](writeup/accuracy_post.md); `analysis/accuracy.py` → `results/accuracy.json` |
 | 3 | [I gave AI the same data as a bank's model. It caught up.](https://nishzsche.github.io/2026/11/25/fair-fight/) (25 November 2026) | What happens when the AI models learn from the same 20,000 customers the trained models did | [`writeup/fair_fight_post.md`](writeup/fair_fight_post.md); `analysis/fair_fight.py` → `results/fair_fight.csv`; trained weights in the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights) |
 | 4 | [I shrank AI models. It saved memory, not time.](https://nishzsche.github.io/2026/11/27/shrinking-ai-models/) (27 November 2026) | Do post 3's trained models stay honest when shrunk to 8, 4, 3 and 2 bits, and are they cheaper to run? | [`writeup/quantization_post.md`](writeup/quantization_post.md); `analysis/quantization.py` → `results/quantization.csv`; `analysis/speed_report.py` → `results/speed.csv`, `results/speed_throughput.csv` |
+| 5 | [Why AI can write code but struggle to read a table](https://nishzsche.github.io/2026/11/27/reading-tables/) (27 November 2026) | Does writing the same numbers in another layout (Markdown, CSV, JSON, sentences, a realigned table) change what six zero-shot AI models conclude? | [`writeup/formats_post.md`](writeup/formats_post.md); `analysis/layouts.py` → `results/layouts.csv` |
 
-Next in this repo: why AI struggles to read a table, and teaching a small model to say "I don't know". Both reuse these customers. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
+Next in this repo: teaching a small model to say "I don't know", on the same customers. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
 
 ![Promised vs actual default rate for each AI model, with the scorecard for reference](results/figures/1_promised_vs_actual.png)
 
@@ -55,6 +56,13 @@ Next in this repo: why AI struggles to read a table, and teaching a small model 
 - **It saved memory, not time.** At 4 bits the 4B models needed 3.5–3.9 GB at peak instead of 8.7–8.9. On a tuned GPU, only Kev-4B on GemLite answered faster than full size (83 ms against 93); tuning the setup made full size up to 3 times faster. FP8 matched full size for Qwen and gave no answers on either Kev model. Failures are recorded in `results/checks/quant_failures.json`.
 - As in post 3, all three models learned from the same 20,000 `train` customers as the scorecard.
 
+**Post 5: the same customers in other layouts.** The six zero-shot AI models from post 1, on the same 2,000 test customers with the same values in four formats (Markdown, CSV, JSON, sentences; `data/formats.py`, checked character for character by `tests/test_formats.py`) plus post 1's realigned table, each compared with its own run on the original table.
+
+- **Ranking depended on the layout for two models.** Laya ranged from 0.716 (sentences) to 0.478 (JSON, worse than a coin flip); Kev-4B rose from 0.594 to 0.729 with JSON. Kev-0.8B and Sol showed no change bigger than chance. In all, 11 of 30 AUC changes and 17 of 30 ECE changes were bigger than chance (paired bootstrap, Holm over 30).
+- **Answers moved even where the ranking held.** Laya's moved 26 points per customer with CSV and JSON (rank correlation with the original 0.08 for JSON), four times post 4's 3-bit shrinking. Sol moved 2.6 to 2.9 points, about its own run-to-run noise (2.5); it knows this dataset.
+- **Lending decisions changed.** At the cut-off chosen on tune for the original table, up to 63% of decisions changed (Laya with JSON, which approves nobody); Kev-0.8B with CSV changed 25% although its ranking held. Asking the original table again changed 0 to 3.5%.
+- No layout was chosen on test: the headline results in every post stay on the original table, fixed before any run.
+
 ## Post 1's results
 
 Test set: 2,000 customers, 22.1% of whom defaulted. **The baselines learned from 20,000 labelled customers. The AI contestants are zero-shot:** each sees one customer's summary, with no labelled examples.
@@ -95,7 +103,7 @@ Test set: 2,000 customers, 22.1% of whom defaulted. **The baselines learned from
 4. [What a bank would see](results/figures/4_risk_bands.png): promised vs actual default rates by risk band.
 5. [Cost vs ranking](results/figures/5_cost_vs_auc.png).
 
-Post 2's charts are `post2_*.png`, post 3's are `m6_*.png` and post 4's are `post4_*.png`. Every chart also has a `-dark.png` version for the blog's dark mode.
+Post 2's charts are `post2_*.png`, post 3's are `m6_*.png` post 4's are `post4_*.png` and post 5's are `post5_*.png`. Every chart also has a `-dark.png` version for the blog's dark mode.
 
 ### Cost and speed
 
@@ -229,6 +237,10 @@ uv run python analysis/fair_fight_figures.py  # post 3's charts
 uv run python analysis/quantization.py          # results/quantization.csv
 uv run python analysis/speed_report.py          # results/speed.csv, speed_throughput.csv, speed.json
 uv run python analysis/quantization_figures.py  # post 4's charts and social card
+
+# post 5
+uv run python analysis/layouts.py          # results/layouts.csv, layouts.json
+uv run python analysis/layouts_figures.py  # post 5's charts and social card
 ```
 
 **Rebuild from the raw data:**
@@ -266,7 +278,7 @@ uv run --group runners python runners/checks/sol_false_rate.py --report
 | `baselines/` | The scorecard and gradient boosting |
 | `runners/` | One script per AI contestant, the shared harness, and `checks/` (robustness checks), plus post 4's quantizer (`quantize.py`), Kev launcher (`kev_quant_serve.py`), speed setups (`speed.py`) and `throughput.py` |
 | `training/` | Post 3: exporting the `train` customers and fine-tuning Qwen and Laya (Kev trains with its own `kev.train`) |
-| `analysis/` | Metrics, recalibration, the summary tables and the figures, plus `accuracy.py` (post 2) and `fair_fight.py`, `seeds.py` and `fair_fight_figures.py` (post 3), and `quantization.py`, `speed_report.py` and `quantization_figures.py` (post 4) |
+| `analysis/` | Metrics, recalibration, the summary tables and the figures, plus `accuracy.py` (post 2) and `fair_fight.py`, `seeds.py` and `fair_fight_figures.py` (post 3), `quantization.py`, `speed_report.py` and `quantization_figures.py` (post 4), and `layouts.py` and `layouts_figures.py` (post 5) |
 | `results/` | Predictions, raw responses, summary tables, figures, checks and the run manifests |
 | `writeup/` | Each post, its LinkedIn post and carousel, and the X post, plus the deep dive and the style brief (`STYLE.md`) |
 | `tests/` | Tests for rendering, splits, records, runners, baselines, metrics and the checks |

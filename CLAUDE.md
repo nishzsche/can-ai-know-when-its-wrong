@@ -91,4 +91,5 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
   - `uv run python data/formats.py --show ID` / `--token-report` show post 5's four formats for one customer / count tokens per format.
   - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant <prose|markdown|csv|json>` runs one format on 2,000 test customers, into `results/checks/formats/` (`--report` compares each with v2).
   - `uv run python analysis/layouts.py` scores post 5 -> `results/layouts.csv`, `.json`: the four formats plus the realigned table against v2, with paired tests (Holm over 30), the share moved 5+ points and decisions at v2's tune cut-off (about 4 minutes).
-  - `uv run python analysis/layouts_figures.py [name ...]` draws post 5's five charts (`results/figures/post5_*.png`, light and dark); names such as `moved row_pieces` redraw only those.
+  - `uv run python analysis/layouts_figures.py [name ...]` draws post 5's five charts (`results/figures/post5_*.png`, light and dark); and its social card; names such as `moved row_pieces` or `social_card` redraw only those.
+  - `uv run python writeup/build_formats_carousel.py` builds post 5's carousel (`writeup/formats_carousel.pdf`) from the `## Slides` section of `writeup/formats_linkedin.md`, drawn from `results/layouts.csv` and the predictions through `analysis/layouts_figures.py` (`--png DIR` for previews).

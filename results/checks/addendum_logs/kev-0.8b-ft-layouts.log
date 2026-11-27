@@ -1,0 +1,18 @@
+kev-0.8b-ft-bf16-markdown: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format markdown f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/kev-0.8b-ft-bf16-markdown.jsonl
+  trained: 2000 new in 140.7s | mean p 0.180 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0167
+kev-0.8b-ft-bf16-csv: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format csv f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/kev-0.8b-ft-bf16-csv.jsonl
+  trained: 2000 new in 138.0s | mean p 0.176 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0165
+kev-0.8b-ft-bf16-json: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format json f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/kev-0.8b-ft-bf16-json.jsonl
+  trained: 2000 new in 146.1s | mean p 0.197 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0175
+kev-0.8b-ft-bf16-prose: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format prose f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/kev-0.8b-ft-bf16-prose.jsonl
+  trained: 2000 new in 142.0s | mean p 0.179 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0170
+kev-0.8b-ft-bf16-aligned: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); layout aligned a1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/kev-0.8b-ft-bf16-aligned.jsonl
+  trained: 2000 new in 142.0s | mean p 0.192 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0170
+kev-0.8b-ft-bf16-again: kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); again: the original summaries, same session
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/kev-0.8b-ft-bf16-again.jsonl
+  trained: 2000 new in 139.5s | mean p 0.181 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0166

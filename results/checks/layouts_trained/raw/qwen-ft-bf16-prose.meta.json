@@ -1,0 +1,79 @@
+[
+  {
+    "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format prose f1",
+    "started": "2026-11-27T16:59:36Z",
+    "split": "test",
+    "conditions": [
+      "trained"
+    ],
+    "limit": null,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.16",
+      "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+      "gpu": "NVIDIA L4, 595.58.03",
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "adapter": "/home/runs/qwen-ft",
+    "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+    "training_config": {
+      "args": {
+        "out": "/home/runs/qwen-ft",
+        "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+        "epochs": "1",
+        "lr": "0.0001",
+        "rank": "16",
+        "alpha": "32",
+        "dropout": "0.05",
+        "accum": "16",
+        "warmup": "0.03",
+        "seed": "0",
+        "limit": "None",
+        "max_steps": "0",
+        "init_adapter": "None",
+        "device": "cuda",
+        "log_every": "25"
+      },
+      "model": "Qwen/Qwen3.5-4B",
+      "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+      "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+      "steps": 1250,
+      "customers": 20000,
+      "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+      "torch": "2.15.0+cu132",
+      "started": "2026-11-23T19:47:02Z",
+      "finished": "2026-11-23T21:47:42Z",
+      "train_minutes": 120.7,
+      "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+    },
+    "quantization": {
+      "precision": "bf16",
+      "description": "bf16 (not quantized)",
+      "library": null,
+      "version": null,
+      "settings": {},
+      "linear_layers": 249,
+      "quantized_layers": 0,
+      "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+      "memory_after_load": {
+        "allocated": 8512194560,
+        "max_allocated": 8512194560,
+        "reserved": 8514437120
+      }
+    },
+    "device": "cuda",
+    "usd_per_hour": 0.44,
+    "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+    "yes_variants": 6,
+    "no_variants": 6,
+    "check": "post 5 addendum: prose"
+  }
+]

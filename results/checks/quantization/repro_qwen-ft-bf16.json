@@ -9,7 +9,7 @@
  "max_abs_diff": 0.030966341495513916,
  "threshold_mean_abs": 0.02,
  "passed": true,
- "checked_at": "2026-11-25T16:19:30Z",
+ "checked_at": "2026-11-27T16:45:37Z",
  "rows": [
   {
    "id": "cust_00005",

@@ -219,13 +219,15 @@ def build_trained() -> list[dict]:
     return rows
 
 
-def write(rows: list[dict], out_csv: Path, out_json: Path) -> None:
+def write(rows: list[dict], out_csv: Path, out_json: Path, holm_family: int | None = None) -> None:
+    """`holm_family`: the number of tests each Holm correction covered (default: every row)."""
     with out_csv.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
+    family = len(rows) if holm_family is None else holm_family
     out_json.write_text(json.dumps({"generated": utc_now(), "loss_ratio": LOSS,
-                                    "holm_family": len(rows), "rows": rows}, indent=2) + "\n",
+                                    "holm_family": family, "rows": rows}, indent=2) + "\n",
                         encoding="utf-8")  # fmt: skip
 
 

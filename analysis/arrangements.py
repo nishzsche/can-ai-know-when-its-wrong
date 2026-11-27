@@ -111,7 +111,7 @@ def build() -> list[dict]:
 
 def main() -> None:
     rows = build()
-    write(rows, OUT_CSV, OUT_JSON)
+    write(rows, OUT_CSV, OUT_JSON, holm_family=len(rows) // len(SETTINGS))  # one family per setting
     print(f"{'setting':9}{'model':14}{'arrangement':17}{'|chg|':>7}{'seeds':>7}{'5pt+':>6}"
           f"{'AUC':>14}{'pH':>7}{'ECE':>14}{'pH':>7}{'flip':>6}  beyond seeds")  # fmt: skip
     for r in rows:

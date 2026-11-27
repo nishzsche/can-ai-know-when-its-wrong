@@ -1,0 +1,265 @@
+{
+ "contestant": "kev-0.8b-ft-bf16",
+ "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized)",
+ "reference": "kev-0.8b-ft",
+ "split": "tune",
+ "condition": "trained",
+ "n": 50,
+ "mean_abs_diff": 0.0008740000000000014,
+ "max_abs_diff": 0.0031999999999999806,
+ "threshold_mean_abs": 0.02,
+ "passed": true,
+ "checked_at": "2026-11-27T15:56:50Z",
+ "rows": [
+  {
+   "id": "cust_00005",
+   "new_path": 0.0626,
+   "reference": 0.06
+  },
+  {
+   "id": "cust_00006",
+   "new_path": 0.1236,
+   "reference": 0.1241
+  },
+  {
+   "id": "cust_00007",
+   "new_path": 0.0765,
+   "reference": 0.0757
+  },
+  {
+   "id": "cust_00038",
+   "new_path": 0.07,
+   "reference": 0.0711
+  },
+  {
+   "id": "cust_00057",
+   "new_path": 0.0356,
+   "reference": 0.0353
+  },
+  {
+   "id": "cust_00066",
+   "new_path": 0.1454,
+   "reference": 0.1458
+  },
+  {
+   "id": "cust_00074",
+   "new_path": 0.1275,
+   "reference": 0.1247
+  },
+  {
+   "id": "cust_00106",
+   "new_path": 0.0769,
+   "reference": 0.0792
+  },
+  {
+   "id": "cust_00113",
+   "new_path": 0.8706,
+   "reference": 0.8682
+  },
+  {
+   "id": "cust_00135",
+   "new_path": 0.1225,
+   "reference": 0.123
+  },
+  {
+   "id": "cust_00136",
+   "new_path": 0.1725,
+   "reference": 0.1718
+  },
+  {
+   "id": "cust_00143",
+   "new_path": 0.4183,
+   "reference": 0.4195
+  },
+  {
+   "id": "cust_00148",
+   "new_path": 0.1568,
+   "reference": 0.1564
+  },
+  {
+   "id": "cust_00155",
+   "new_path": 0.0878,
+   "reference": 0.0885
+  },
+  {
+   "id": "cust_00159",
+   "new_path": 0.8682,
+   "reference": 0.8714
+  },
+  {
+   "id": "cust_00217",
+   "new_path": 0.3082,
+   "reference": 0.3108
+  },
+  {
+   "id": "cust_00265",
+   "new_path": 0.0658,
+   "reference": 0.0669
+  },
+  {
+   "id": "cust_00291",
+   "new_path": 0.1456,
+   "reference": 0.1459
+  },
+  {
+   "id": "cust_00335",
+   "new_path": 0.1442,
+   "reference": 0.1439
+  },
+  {
+   "id": "cust_00363",
+   "new_path": 0.656,
+   "reference": 0.6552
+  },
+  {
+   "id": "cust_00368",
+   "new_path": 0.4522,
+   "reference": 0.4536
+  },
+  {
+   "id": "cust_00379",
+   "new_path": 0.0225,
+   "reference": 0.0225
+  },
+  {
+   "id": "cust_00397",
+   "new_path": 0.0425,
+   "reference": 0.0433
+  },
+  {
+   "id": "cust_00423",
+   "new_path": 0.0849,
+   "reference": 0.0855
+  },
+  {
+   "id": "cust_00424",
+   "new_path": 0.7613,
+   "reference": 0.7611
+  },
+  {
+   "id": "cust_00429",
+   "new_path": 0.1324,
+   "reference": 0.1336
+  },
+  {
+   "id": "cust_00432",
+   "new_path": 0.057,
+   "reference": 0.0569
+  },
+  {
+   "id": "cust_00438",
+   "new_path": 0.0282,
+   "reference": 0.028
+  },
+  {
+   "id": "cust_00450",
+   "new_path": 0.0853,
+   "reference": 0.0862
+  },
+  {
+   "id": "cust_00454",
+   "new_path": 0.0607,
+   "reference": 0.0616
+  },
+  {
+   "id": "cust_00470",
+   "new_path": 0.0678,
+   "reference": 0.0681
+  },
+  {
+   "id": "cust_00479",
+   "new_path": 0.2545,
+   "reference": 0.255
+  },
+  {
+   "id": "cust_00483",
+   "new_path": 0.096,
+   "reference": 0.0956
+  },
+  {
+   "id": "cust_00517",
+   "new_path": 0.1355,
+   "reference": 0.1354
+  },
+  {
+   "id": "cust_00520",
+   "new_path": 0.0235,
+   "reference": 0.0229
+  },
+  {
+   "id": "cust_00548",
+   "new_path": 0.2518,
+   "reference": 0.2496
+  },
+  {
+   "id": "cust_00565",
+   "new_path": 0.6586,
+   "reference": 0.6586
+  },
+  {
+   "id": "cust_00581",
+   "new_path": 0.293,
+   "reference": 0.2944
+  },
+  {
+   "id": "cust_00597",
+   "new_path": 0.0453,
+   "reference": 0.0449
+  },
+  {
+   "id": "cust_00601",
+   "new_path": 0.0301,
+   "reference": 0.0308
+  },
+  {
+   "id": "cust_00606",
+   "new_path": 0.5146,
+   "reference": 0.5142
+  },
+  {
+   "id": "cust_00616",
+   "new_path": 0.0308,
+   "reference": 0.0306
+  },
+  {
+   "id": "cust_00638",
+   "new_path": 0.0596,
+   "reference": 0.0597
+  },
+  {
+   "id": "cust_00647",
+   "new_path": 0.7219,
+   "reference": 0.7226
+  },
+  {
+   "id": "cust_00655",
+   "new_path": 0.1006,
+   "reference": 0.1003
+  },
+  {
+   "id": "cust_00675",
+   "new_path": 0.0249,
+   "reference": 0.0249
+  },
+  {
+   "id": "cust_00681",
+   "new_path": 0.03,
+   "reference": 0.0298
+  },
+  {
+   "id": "cust_00688",
+   "new_path": 0.0959,
+   "reference": 0.0938
+  },
+  {
+   "id": "cust_00701",
+   "new_path": 0.0994,
+   "reference": 0.1004
+  },
+  {
+   "id": "cust_00730",
+   "new_path": 0.4444,
+   "reference": 0.4452
+  }
+ ]
+}

@@ -5,11 +5,11 @@
  "split": "tune",
  "condition": "trained",
  "n": 50,
- "mean_abs_diff": 0.0009939999999999977,
- "max_abs_diff": 0.0030999999999999917,
+ "mean_abs_diff": 0.001026000000000002,
+ "max_abs_diff": 0.0040000000000000036,
  "threshold_mean_abs": 0.02,
  "passed": true,
- "checked_at": "2026-11-27T16:12:37Z",
+ "checked_at": "2026-11-25T17:50:53Z",
  "rows": [
   {
    "id": "cust_00005",
@@ -23,117 +23,117 @@
   },
   {
    "id": "cust_00007",
-   "new_path": 0.0633,
+   "new_path": 0.0631,
    "reference": 0.0631
   },
   {
    "id": "cust_00038",
-   "new_path": 0.0954,
+   "new_path": 0.0952,
    "reference": 0.0958
   },
   {
    "id": "cust_00057",
-   "new_path": 0.0609,
+   "new_path": 0.0608,
    "reference": 0.0611
   },
   {
    "id": "cust_00066",
-   "new_path": 0.1903,
+   "new_path": 0.1929,
    "reference": 0.1898
   },
   {
    "id": "cust_00074",
-   "new_path": 0.175,
+   "new_path": 0.1784,
    "reference": 0.1779
   },
   {
    "id": "cust_00106",
-   "new_path": 0.1253,
+   "new_path": 0.1262,
    "reference": 0.127
   },
   {
    "id": "cust_00113",
-   "new_path": 0.7838,
+   "new_path": 0.7866,
    "reference": 0.7852
   },
   {
    "id": "cust_00135",
-   "new_path": 0.1124,
+   "new_path": 0.112,
    "reference": 0.1127
   },
   {
    "id": "cust_00136",
-   "new_path": 0.2244,
+   "new_path": 0.2256,
    "reference": 0.2261
   },
   {
    "id": "cust_00143",
-   "new_path": 0.3819,
+   "new_path": 0.3821,
    "reference": 0.3803
   },
   {
    "id": "cust_00148",
-   "new_path": 0.1661,
+   "new_path": 0.1646,
    "reference": 0.1647
   },
   {
    "id": "cust_00155",
-   "new_path": 0.0925,
+   "new_path": 0.0929,
    "reference": 0.0916
   },
   {
    "id": "cust_00159",
-   "new_path": 0.7856,
+   "new_path": 0.787,
    "reference": 0.7837
   },
   {
    "id": "cust_00217",
-   "new_path": 0.3053,
+   "new_path": 0.3052,
    "reference": 0.3078
   },
   {
    "id": "cust_00265",
-   "new_path": 0.0824,
+   "new_path": 0.0826,
    "reference": 0.0814
   },
   {
    "id": "cust_00291",
-   "new_path": 0.1311,
+   "new_path": 0.1313,
    "reference": 0.1329
   },
   {
    "id": "cust_00335",
-   "new_path": 0.1162,
+   "new_path": 0.1158,
    "reference": 0.1161
   },
   {
    "id": "cust_00363",
-   "new_path": 0.6485,
+   "new_path": 0.6486,
    "reference": 0.6489
   },
   {
    "id": "cust_00368",
-   "new_path": 0.5096,
+   "new_path": 0.511,
    "reference": 0.5118
   },
   {
    "id": "cust_00379",
-   "new_path": 0.055,
+   "new_path": 0.0551,
    "reference": 0.0553
   },
   {
    "id": "cust_00397",
-   "new_path": 0.0722,
+   "new_path": 0.073,
    "reference": 0.0724
   },
   {
    "id": "cust_00423",
-   "new_path": 0.0885,
+   "new_path": 0.0875,
    "reference": 0.0886
   },
   {
    "id": "cust_00424",
-   "new_path": 0.6918,
+   "new_path": 0.6902,
    "reference": 0.6911
   },
   {
@@ -143,32 +143,32 @@
   },
   {
    "id": "cust_00432",
-   "new_path": 0.0617,
+   "new_path": 0.0611,
    "reference": 0.0614
   },
   {
    "id": "cust_00438",
-   "new_path": 0.0629,
+   "new_path": 0.0639,
    "reference": 0.0632
   },
   {
    "id": "cust_00450",
-   "new_path": 0.1092,
+   "new_path": 0.11,
    "reference": 0.1104
   },
   {
    "id": "cust_00454",
-   "new_path": 0.0893,
+   "new_path": 0.0894,
    "reference": 0.0891
   },
   {
    "id": "cust_00470",
-   "new_path": 0.0836,
+   "new_path": 0.0834,
    "reference": 0.0825
   },
   {
    "id": "cust_00479",
-   "new_path": 0.2148,
+   "new_path": 0.2137,
    "reference": 0.2138
   },
   {
@@ -178,7 +178,7 @@
   },
   {
    "id": "cust_00517",
-   "new_path": 0.081,
+   "new_path": 0.0805,
    "reference": 0.0801
   },
   {
@@ -193,27 +193,27 @@
   },
   {
    "id": "cust_00565",
-   "new_path": 0.6513,
+   "new_path": 0.6514,
    "reference": 0.6489
   },
   {
    "id": "cust_00581",
-   "new_path": 0.2914,
+   "new_path": 0.2891,
    "reference": 0.2931
   },
   {
    "id": "cust_00597",
-   "new_path": 0.0649,
+   "new_path": 0.0645,
    "reference": 0.064
   },
   {
    "id": "cust_00601",
-   "new_path": 0.0657,
+   "new_path": 0.067,
    "reference": 0.066
   },
   {
    "id": "cust_00606",
-   "new_path": 0.5853,
+   "new_path": 0.5867,
    "reference": 0.5837
   },
   {
@@ -223,32 +223,32 @@
   },
   {
    "id": "cust_00638",
-   "new_path": 0.0918,
+   "new_path": 0.0909,
    "reference": 0.091
   },
   {
    "id": "cust_00647",
-   "new_path": 0.7078,
+   "new_path": 0.7049,
    "reference": 0.7072
   },
   {
    "id": "cust_00655",
-   "new_path": 0.1139,
+   "new_path": 0.1158,
    "reference": 0.1144
   },
   {
    "id": "cust_00675",
-   "new_path": 0.0573,
+   "new_path": 0.0575,
    "reference": 0.0566
   },
   {
    "id": "cust_00681",
-   "new_path": 0.0582,
+   "new_path": 0.0583,
    "reference": 0.0584
   },
   {
    "id": "cust_00688",
-   "new_path": 0.0616,
+   "new_path": 0.0617,
    "reference": 0.0605
   },
   {
@@ -258,7 +258,7 @@
   },
   {
    "id": "cust_00730",
-   "new_path": 0.4263,
+   "new_path": 0.4296,
    "reference": 0.4291
   }
  ]

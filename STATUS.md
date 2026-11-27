@@ -11,7 +11,7 @@ L4_RUNBOOK.md §9 on a fresh L4. Gate passed: the author's addendum guesses are 
 - **Failures:** none. `runners/manifest.py --addendum` is complete (`results/run_manifest_addendum.json`).
 - **Reproduction:**
   - **Part A:** the in-session `original` matches M6's `trained` answers exactly for both table models (0.0 on all 4,000 tune and test answers).
-  - **Part B:** reproduction checks passed on 50 tune customers. Mean |diff|: Kev-0.8B 0.0009, Kev-4B 0.0010, Qwen 0.0020 (max 0.031). `results/checks/quantization/repro_*-bf16.json` now hold this session's checks.
+  - **Part B:** reproduction checks passed on 50 tune customers. Mean |diff|: Kev-0.8B 0.0009, Kev-4B 0.0010, Qwen 0.0020 (max 0.031). They first overwrote post 4's records in `results/checks/quantization/`, which post 4's scorer reads. The laptop restored post 4's and moved this session's to `results/checks/addendum_repro/`.
 - **Laya's smoke run:** a no-op. The laptop's committed CPU smoke records were already in `results/smoke/`, and they weren't overwritten. Its meta file logs the attempt. The full GPU run checked loading, 0/1 answers and truncation itself.
 - **Logs:** `results/checks/addendum_logs/`.
 
@@ -39,7 +39,20 @@ L4_RUNBOOK.md §9 on a fresh L4. Gate passed: the author's addendum guesses are 
   - Q2 (training makes the AI models much sturdier): ✓ for Kev and Qwen, ✗ for Laya.
   - Q3 (Laya moves most): ✓.
 
-**For the laptop:** `results/arrangements.json`'s `holm_family` field says 56. The correction itself is per setting (28 each, as specified); only the label counts all rows.
+**For the laptop (fixed):** `results/arrangements.json`'s `holm_family` field said 56. The correction itself is per setting (28 each, as specified); `analysis/layouts.write` now takes the family size, and the label says 28.
+
+**Laptop review (2026-11-27, after session L):**
+- **Reproduces:** `analysis/arrangements.py`, `analysis/layouts.py --trained` and `runners/manifest.py --addendum`, re-run on the laptop from the raw records, match the committed outputs exactly (only timestamps differ).
+- **Laya's JSON isn't cut short:** its JSON summaries are 285–320 of Laya's tokens (median 304; 4 of 2,000 at exactly 320), within its 320-token budget, as PLAN.md's token report found. They're much longer than v2's (at most 183), the layout Laya was trained on.
+- **Part B needs more care than "much sturdier":**
+  - **Per customer, yes for Kev-4B and Qwen:** 0.8–3.7 and 1.0–2.4 points trained, against 2.8–15.1 and 4.7–9.2 cold, on every layout. Kev-0.8B is sturdier on four layouts, but not the realigned table (4.4 trained, 3.8 cold).
+  - **Decisions, not always:** at each model's own tune cut-off, trained Kev and Qwen still flip 1.8–9.6% of decisions. That's more than cold on several layouts: Kev-0.8B on four of five (JSON 7.4% against 0.7%), Qwen with JSON (9.4% against 7.8%), and Kev-4B with prose (9.6% against 9.5%). The trained models' cut-offs are lower (Kev-0.8B 16%, Qwen 20%) with many customers near them, and some layouts shift the answers one way: Qwen with JSON −1.8 points on average (approval 63% → 71%), Kev-0.8B with JSON +1.6 and realigned +1.0.
+  - **Laya is mixed, not "no sturdier":** sturdier with CSV (25.7 → 1.3 points per customer), Markdown (6.4 → 4.8) and the realigned table (12.8 → 5.6). Not with prose (10.1 → 11.7) or JSON (25.8 → 26.4). With JSON its average answer jumps from 21% to 41%, and its order of customers is nearly scrambled (rank correlation with v2 0.09).
+  - **Noise:** every layout moves the trained Kev models at least 10 times as much as their same-session re-run (0.08–0.10 points); Qwen and Laya re-run identically (0).
+- **Part A as session L read it.** At the defaults, column orders move Kumo 0.30–0.36 points and TabICL 0.43–0.54, inside each model's seed noise (0.41, 0.63); rows and units move them at most 0.09. With one estimator, TabICL is deterministic (seed noise 0), so report its sizes (1.1–1.4 points for column orders, AUC within 0.004) rather than "beyond seed noise".
+- **Against the cold AI models** (post 5: 2.6–25.8 points per customer), the table models at their defaults move far less: 0.3–0.5. Post 5's line that they "don't have this problem by design" holds; no update note needed.
+- **Guesses, revised:** Q1 ✓ (defaults). Q2 ✓ per customer for Kev-4B and Qwen, mostly for Kev-0.8B; ✗ for decisions, and mixed for Laya. Q3 ✓.
+- **Still to decide (the author):** where it goes, a short follow-up post or a dated section in post 5.
 
 **GPU time:** the box was up from about 15:00 UTC to about 17:30 UTC, about 2.5 h, about $1.10 at $0.44/h. The JarvisLabs bill is the authority.
 
@@ -219,7 +232,7 @@ L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PRED
     - The review URL redirects, and post 3's closing line links to post 4.
     - The LinkedIn first comment now carries the URL.
   - **LinkedIn revision (2026-11-27, the author's call):** the post and carousel give the final speed result only. The "my first speed test was wrong" bullet is gone, and slide 7 no longer shows the first runs as hollow dots (the blog keeps that story). The wording is simpler throughout, and the post is now 2,177 characters.
-  - **Memory correction (blog PR #64, awaiting the author's merge):** the bank advice said "Shrinking cut memory by more than half every time". That holds only for the two 4B models at 4 bits: Kev-0.8B went from 1.7 to about 1.0 GB (over 40%), and 8 bits saved 29% to 42%. The post and `writeup/quantization_post.md` now say so, with an `updates:` note. The LinkedIn draft had the same slip ("the models") and now says "the two larger models". PR #64's commit message wrongly says 8 bits saved about 40% for all three (Kev-0.8B saved 29%); the PR description corrects it.
+  - **Memory correction (blog PR #64, merged 2026-11-27 22:58 IST):** the bank advice said "Shrinking cut memory by more than half every time". That holds only for the two 4B models at 4 bits: Kev-0.8B went from 1.7 to about 1.0 GB (over 40%), and 8 bits saved 29% to 42%. The post and `writeup/quantization_post.md` now say so, with an `updates:` note. The LinkedIn draft had the same slip ("the models") and now says "the two larger models". PR #64's commit message wrongly says 8 bits saved about 40% for all three (Kev-0.8B saved 29%); the PR description corrects it.
   - **Next:** the author merges PR #55, then posts on LinkedIn around 13:00 IST (as posts 2 and 3) with `writeup/quantization_carousel.pdf`. X post optional (post 3's was never written). Open rule question: exempt closing sections from the 600-word chart limit. The blog session is moving `analysis/figures.py` to the new blog design (warm paper, larger small text). Post 4's charts stay in the current look until that design launches; then redraw them and check the layouts.
 - **Still to do after the author's review:** the LinkedIn post and its carousel (`writeup/STYLE.md`: 8–10 slides, a builder script), the X post, the social card, and the README and PLAN status.
 

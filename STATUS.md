@@ -39,6 +39,8 @@ Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 **Still open:** the chart rule (the closing sections run about 1,075 words without a chart), and posting on LinkedIn (the author).
 
+**Addendum specced (2026-11-27, the author's request):** PLAN.md §12, "Post 5 addendum". Part A rearranges the table models (Kumo-Tabular, TabICL-v2): column orders, context row orders, units, with seed noise and a single-estimator diagnostic. Part B runs post 3's four trained AI models on post 5's five layouts. It's like for like, since both groups learned from the same 20,000 customers. **Next:** the author's guesses in `PREDICTIONS.md`, then the laptop build, then one L4 session (about 2–2.5 h, about $1.10).
+
 ## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:00 IST): post 4's speed runs
 
 L4_RUNBOOK.md §8 on a fresh L4. Gate passed: the speed-run guesses are in `PREDICTIONS.md` (9f415ea) before any run.

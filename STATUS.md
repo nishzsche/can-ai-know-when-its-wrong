@@ -2,6 +2,49 @@
 
 Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
+## L4 session L done (2026-11-27 20:31 → about 23:00 IST): post 5's addendum
+
+L4_RUNBOOK.md §9 on a fresh L4. Gate passed: the author's addendum guesses are in `PREDICTIONS.md` (8d3ec08) before any run. No speed libraries were installed: session A's plain setup, as §9 says.
+
+**Outcome:**
+- **Ran:** everything. Part A is 76 runs (`results/checks/arrangements/`). Part B is 4 models × 6 runs (`results/checks/layouts_trained/`).
+- **Failures:** none. `runners/manifest.py --addendum` is complete (`results/run_manifest_addendum.json`).
+- **Reproduction:**
+  - **Part A:** the in-session `original` matches M6's `trained` answers exactly for both table models (0.0 on all 4,000 tune and test answers).
+  - **Part B:** reproduction checks passed on 50 tune customers. Mean |diff|: Kev-0.8B 0.0009, Kev-4B 0.0010, Qwen 0.0020 (max 0.031). `results/checks/quantization/repro_*-bf16.json` now hold this session's checks.
+- **Laya's smoke run:** a no-op. The laptop's committed CPU smoke records were already in `results/smoke/`, and they weren't overwritten. Its meta file logs the attempt. The full GPU run checked loading, 0/1 answers and truncation itself.
+- **Logs:** `results/checks/addendum_logs/`.
+
+**First read, Part A** (`results/arrangements.csv`; test, against the in-session `original`):
+- **Defaults (the headline):**
+  - No arrangement moves either model beyond its own seed noise. Kumo's mean |change| per customer is at most 0.36 points (seeds 0.41); TabICL's is at most 0.54 (seeds 0.63).
+  - AUC and ECE are unchanged (all Holm p ≈ 1).
+  - Row order and units barely register (≤ 0.09 points).
+- **One estimator, shuffle off (diagnostic):**
+  - Kumo stays within its seed noise (≤ 0.96 vs 1.14).
+  - TabICL with one estimator gives identical answers at every seed, so its noise floor is 0. Every arrangement is therefore trivially "beyond seed noise".
+  - TabICL's real moves are small: 1.1–1.4 points per customer for column orders, at most 4.3% of customers moved 5+ points, AUC 0.795 → 0.791–0.794. The single Holm p < 0.05 is `rows-3` AUC (0.028, a change of < 0.001).
+  - The write-up should say why the noise floor is 0, not just "yes".
+
+**First read, Part B** (`results/layouts_trained.csv`; test, against each model's post 4 `-bf16` run or M6's `laya-ft`):
+- **Kev and Qwen:** trained, they move 0.8–4.4 points per customer. Cold, they moved 2.6–15.1. Kev-4B with JSON is 2.0 trained against 15.1 cold.
+  - The only AUC change beyond chance (Holm over 20) is Kev-4B with prose: 0.792 → 0.784.
+  - Same-session re-run noise is about 0.1 points for Kev and 0.0 for Qwen and Laya (deterministic).
+- **Laya:** training didn't make it sturdier.
+  - JSON moves 26.4 points per customer (cold 25.8). AUC 0.778 → 0.591, ECE 0.017 → 0.191, rank correlation 0.09, 65% of decisions changed.
+  - Prose: AUC −0.034, ECE 0.104. Markdown: AUC −0.012 (Holm p 0.034).
+- **Totals:** 4 of 20 AUC changes and 2 of 20 ECE changes are beyond chance (Holm).
+- **The author's guesses:**
+  - Q1 (no arrangement moves the table models beyond seed noise): ✓ at defaults.
+  - Q2 (training makes the AI models much sturdier): ✓ for Kev and Qwen, ✗ for Laya.
+  - Q3 (Laya moves most): ✓.
+
+**For the laptop:** `results/arrangements.json`'s `holm_family` field says 56. The correction itself is per setting (28 each, as specified); only the label counts all rows.
+
+**GPU time:** the box was up from about 15:00 UTC to about 17:30 UTC, about 2.5 h, about $1.10 at $0.44/h. The JarvisLabs bill is the authority.
+
+**Box note:** the repo's `gh` install and login (§6.0 block 1) hadn't been done. `gh` 2.105.0 was installed mid-session, and the author logged in. Part A's commit waited about an hour to be pushed.
+
 ## Post 5: published (2026-11-27 16:55 IST); LinkedIn post and carousel drafted
 
 **Draft:** `writeup/formats_post.md`, "Why AI can write code but struggle to read a table" (the title post 4 promised), about 2,700 words, five charts. No runs were needed: all six zero-shot models already had all four formats (session A and the laptop, below), and the realigned table comes from post 1's layout check.

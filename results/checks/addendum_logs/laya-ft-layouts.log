@@ -1,0 +1,18 @@
+laya-ft-markdown: laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format markdown f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/laya-ft-markdown.jsonl
+  trained: 2000 new in 34.7s | mean p 0.248 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0042
+laya-ft-csv: laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format csv f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/laya-ft-csv.jsonl
+  trained: 2000 new in 33.9s | mean p 0.217 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0041
+laya-ft-json: laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format json f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/laya-ft-json.jsonl
+  trained: 2000 new in 41.4s | mean p 0.411 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0050
+laya-ft-prose: laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format prose f1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/laya-ft-prose.jsonl
+  trained: 2000 new in 38.7s | mean p 0.320 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0047
+laya-ft-aligned: laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; layout aligned a1
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/laya-ft-aligned.jsonl
+  trained: 2000 new in 37.0s | mean p 0.258 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0045
+laya-ft-again: laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; again: the original summaries, same session
+2000 test customers x 1 condition(s); 0 records already in /home/can-ai-know-when-its-wrong/results/checks/layouts_trained/laya-ft-again.jsonl
+  trained: 2000 new in 34.1s | mean p 0.212 vs actual 0.221 | exactly 0 or 1: 0 | cost $0.0041

@@ -1,0 +1,4269 @@
+{
+  "written_at": "2026-11-27T17:18:32Z",
+  "git": {
+    "commit": "1230f17b261890d78ec002b517ff916c703177c8",
+    "dirty": true
+  },
+  "data": {
+    "source_sha256": "fc08fd639888b4f83b3d816f04c18bf943012124807cc6197e654d3b31d7851a",
+    "split_seed": 20261122,
+    "base_rate_train": 0.2212,
+    "template_version": "v2",
+    "customers": {
+      "tune": 2000,
+      "test": 2000
+    }
+  },
+  "complete": true,
+  "contestants": {
+    "kumo-tabular-original": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.012849,
+      "latency_ms_median": 26.3,
+      "first_ts": "2026-11-27T15:18:59Z",
+      "last_ts": "2026-11-27T15:19:52Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.012976,
+      "latency_ms_median": 26.5,
+      "first_ts": "2026-11-27T15:20:50Z",
+      "last_ts": "2026-11-27T15:21:43Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.013063,
+      "latency_ms_median": 26.7,
+      "first_ts": "2026-11-27T15:22:42Z",
+      "last_ts": "2026-11-27T15:23:35Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.013115,
+      "latency_ms_median": 26.8,
+      "first_ts": "2026-11-27T15:24:34Z",
+      "last_ts": "2026-11-27T15:25:27Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.013145,
+      "latency_ms_median": 26.9,
+      "first_ts": "2026-11-27T15:26:27Z",
+      "last_ts": "2026-11-27T15:27:20Z",
+      "runs": []
+    },
+    "kumo-tabular-months-reversed": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006621,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:28:19Z",
+      "last_ts": "2026-11-27T15:28:19Z",
+      "runs": []
+    },
+    "kumo-tabular-by-month": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006618,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:29:19Z",
+      "last_ts": "2026-11-27T15:29:19Z",
+      "runs": []
+    },
+    "kumo-tabular-realigned": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006618,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:30:18Z",
+      "last_ts": "2026-11-27T15:30:18Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006621,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:31:17Z",
+      "last_ts": "2026-11-27T15:31:17Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006617,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:32:16Z",
+      "last_ts": "2026-11-27T15:32:16Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006612,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:33:15Z",
+      "last_ts": "2026-11-27T15:33:15Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006611,
+      "latency_ms_median": 27.0,
+      "first_ts": "2026-11-27T15:34:14Z",
+      "last_ts": "2026-11-27T15:34:14Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-5": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006609,
+      "latency_ms_median": 27.0,
+      "first_ts": "2026-11-27T15:35:14Z",
+      "last_ts": "2026-11-27T15:35:14Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00662,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:36:13Z",
+      "last_ts": "2026-11-27T15:36:13Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006632,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:37:12Z",
+      "last_ts": "2026-11-27T15:37:12Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006634,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:38:12Z",
+      "last_ts": "2026-11-27T15:38:12Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006634,
+      "latency_ms_median": 27.1,
+      "first_ts": "2026-11-27T15:39:11Z",
+      "last_ts": "2026-11-27T15:39:11Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-5": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006648,
+      "latency_ms_median": 27.2,
+      "first_ts": "2026-11-27T15:40:10Z",
+      "last_ts": "2026-11-27T15:40:10Z",
+      "runs": []
+    },
+    "kumo-tabular-thousands": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.006641,
+      "latency_ms_median": 27.2,
+      "first_ts": "2026-11-27T15:41:10Z",
+      "last_ts": "2026-11-27T15:41:10Z",
+      "runs": []
+    },
+    "kumo-tabular-original-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001734,
+      "latency_ms_median": 3.5,
+      "first_ts": "2026-11-27T15:41:22Z",
+      "last_ts": "2026-11-27T15:41:29Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s1-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001732,
+      "latency_ms_median": 3.5,
+      "first_ts": "2026-11-27T15:41:42Z",
+      "last_ts": "2026-11-27T15:41:48Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s2-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001729,
+      "latency_ms_median": 3.5,
+      "first_ts": "2026-11-27T15:42:01Z",
+      "last_ts": "2026-11-27T15:42:08Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s3-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001727,
+      "latency_ms_median": 3.5,
+      "first_ts": "2026-11-27T15:42:20Z",
+      "last_ts": "2026-11-27T15:42:27Z",
+      "runs": []
+    },
+    "kumo-tabular-original-s4-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001726,
+      "latency_ms_median": 3.5,
+      "first_ts": "2026-11-27T15:42:39Z",
+      "last_ts": "2026-11-27T15:42:46Z",
+      "runs": []
+    },
+    "kumo-tabular-months-reversed-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000912,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:42:58Z",
+      "last_ts": "2026-11-27T15:42:58Z",
+      "runs": []
+    },
+    "kumo-tabular-by-month-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00091,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:43:11Z",
+      "last_ts": "2026-11-27T15:43:11Z",
+      "runs": []
+    },
+    "kumo-tabular-realigned-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000909,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:43:23Z",
+      "last_ts": "2026-11-27T15:43:23Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-1-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00091,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:43:36Z",
+      "last_ts": "2026-11-27T15:43:36Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-2-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000908,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:43:48Z",
+      "last_ts": "2026-11-27T15:43:48Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-3-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000907,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:44:01Z",
+      "last_ts": "2026-11-27T15:44:01Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-4-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000907,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:44:13Z",
+      "last_ts": "2026-11-27T15:44:13Z",
+      "runs": []
+    },
+    "kumo-tabular-shuffled-5-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000906,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:44:26Z",
+      "last_ts": "2026-11-27T15:44:26Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-1-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000905,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:44:38Z",
+      "last_ts": "2026-11-27T15:44:38Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-2-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000906,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:44:50Z",
+      "last_ts": "2026-11-27T15:44:50Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-3-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000906,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:45:03Z",
+      "last_ts": "2026-11-27T15:45:03Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-4-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000905,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:45:15Z",
+      "last_ts": "2026-11-27T15:45:15Z",
+      "runs": []
+    },
+    "kumo-tabular-rows-5-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000904,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:45:28Z",
+      "last_ts": "2026-11-27T15:45:28Z",
+      "runs": []
+    },
+    "kumo-tabular-thousands-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000906,
+      "latency_ms_median": 3.7,
+      "first_ts": "2026-11-27T15:45:40Z",
+      "last_ts": "2026-11-27T15:45:40Z",
+      "runs": []
+    },
+    "tabicl-v2-original": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00122,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:45:49Z",
+      "last_ts": "2026-11-27T15:45:54Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001221,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:46:03Z",
+      "last_ts": "2026-11-27T15:46:08Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001221,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:46:17Z",
+      "last_ts": "2026-11-27T15:46:22Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00122,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:46:31Z",
+      "last_ts": "2026-11-27T15:46:36Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.001222,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:46:45Z",
+      "last_ts": "2026-11-27T15:46:49Z",
+      "runs": []
+    },
+    "tabicl-v2-months-reversed": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000631,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:46:58Z",
+      "last_ts": "2026-11-27T15:46:58Z",
+      "runs": []
+    },
+    "tabicl-v2-by-month": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000623,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:47:07Z",
+      "last_ts": "2026-11-27T15:47:07Z",
+      "runs": []
+    },
+    "tabicl-v2-realigned": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00063,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:47:16Z",
+      "last_ts": "2026-11-27T15:47:16Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000632,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:47:25Z",
+      "last_ts": "2026-11-27T15:47:25Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00063,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:47:34Z",
+      "last_ts": "2026-11-27T15:47:34Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000632,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:47:43Z",
+      "last_ts": "2026-11-27T15:47:43Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000629,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:47:51Z",
+      "last_ts": "2026-11-27T15:47:51Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-5": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000636,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:48:00Z",
+      "last_ts": "2026-11-27T15:48:00Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000635,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:48:10Z",
+      "last_ts": "2026-11-27T15:48:10Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-2": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000622,
+      "latency_ms_median": 2.5,
+      "first_ts": "2026-11-27T15:48:18Z",
+      "last_ts": "2026-11-27T15:48:18Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-3": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000634,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:48:27Z",
+      "last_ts": "2026-11-27T15:48:27Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-4": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000634,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:48:36Z",
+      "last_ts": "2026-11-27T15:48:36Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-5": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000635,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:48:45Z",
+      "last_ts": "2026-11-27T15:48:45Z",
+      "runs": []
+    },
+    "tabicl-v2-thousands": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000625,
+      "latency_ms_median": 2.6,
+      "first_ts": "2026-11-27T15:48:54Z",
+      "last_ts": "2026-11-27T15:48:54Z",
+      "runs": []
+    },
+    "tabicl-v2-original-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000197,
+      "latency_ms_median": 0.4,
+      "first_ts": "2026-11-27T15:48:58Z",
+      "last_ts": "2026-11-27T15:48:59Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s1-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00019,
+      "latency_ms_median": 0.4,
+      "first_ts": "2026-11-27T15:49:04Z",
+      "last_ts": "2026-11-27T15:49:04Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s2-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000191,
+      "latency_ms_median": 0.4,
+      "first_ts": "2026-11-27T15:49:09Z",
+      "last_ts": "2026-11-27T15:49:09Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s3-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00019,
+      "latency_ms_median": 0.4,
+      "first_ts": "2026-11-27T15:49:14Z",
+      "last_ts": "2026-11-27T15:49:15Z",
+      "runs": []
+    },
+    "tabicl-v2-original-s4-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126"
+      ],
+      "records": 4000,
+      "groups": {
+        "trained/tune": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        },
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000191,
+      "latency_ms_median": 0.4,
+      "first_ts": "2026-11-27T15:49:19Z",
+      "last_ts": "2026-11-27T15:49:20Z",
+      "runs": []
+    },
+    "tabicl-v2-months-reversed-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:24Z",
+      "last_ts": "2026-11-27T15:49:24Z",
+      "runs": []
+    },
+    "tabicl-v2-by-month-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:29Z",
+      "last_ts": "2026-11-27T15:49:29Z",
+      "runs": []
+    },
+    "tabicl-v2-realigned-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000116,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:34Z",
+      "last_ts": "2026-11-27T15:49:34Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-1-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:38Z",
+      "last_ts": "2026-11-27T15:49:38Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-2-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:43Z",
+      "last_ts": "2026-11-27T15:49:43Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-3-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:47Z",
+      "last_ts": "2026-11-27T15:49:47Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-4-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000116,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:52Z",
+      "last_ts": "2026-11-27T15:49:52Z",
+      "runs": []
+    },
+    "tabicl-v2-shuffled-5-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:49:57Z",
+      "last_ts": "2026-11-27T15:49:57Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-1-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:50:01Z",
+      "last_ts": "2026-11-27T15:50:01Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-2-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:50:06Z",
+      "last_ts": "2026-11-27T15:50:06Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-3-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:50:10Z",
+      "last_ts": "2026-11-27T15:50:10Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-4-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:50:15Z",
+      "last_ts": "2026-11-27T15:50:15Z",
+      "runs": []
+    },
+    "tabicl-v2-rows-5-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000115,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:50:19Z",
+      "last_ts": "2026-11-27T15:50:19Z",
+      "runs": []
+    },
+    "tabicl-v2-thousands-e1": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.000117,
+      "latency_ms_median": 0.5,
+      "first_ts": "2026-11-27T15:50:24Z",
+      "last_ts": "2026-11-27T15:50:24Z",
+      "runs": []
+    },
+    "kev-4b-ft-bf16-markdown": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format markdown f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.03562,
+      "latency_ms_median": 144.6,
+      "first_ts": "2026-11-27T16:12:48Z",
+      "last_ts": "2026-11-27T16:17:43Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format markdown f1",
+          "started": "2026-11-27T16:12:48Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8795183104,
+              "max_allocated": 8892100608,
+              "reserved": 9024045056
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: markdown"
+        }
+      ]
+    },
+    "kev-4b-ft-bf16-csv": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format csv f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.034908,
+      "latency_ms_median": 143.6,
+      "first_ts": "2026-11-27T16:17:43Z",
+      "last_ts": "2026-11-27T16:22:31Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format csv f1",
+          "started": "2026-11-27T16:17:43Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8795183104,
+              "max_allocated": 8892100608,
+              "reserved": 9024045056
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: csv"
+        }
+      ]
+    },
+    "kev-4b-ft-bf16-json": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format json f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.041939,
+      "latency_ms_median": 173.1,
+      "first_ts": "2026-11-27T16:22:32Z",
+      "last_ts": "2026-11-27T16:28:18Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format json f1",
+          "started": "2026-11-27T16:22:31Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8795183104,
+              "max_allocated": 8892100608,
+              "reserved": 9024045056
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: json"
+        }
+      ]
+    },
+    "kev-4b-ft-bf16-prose": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format prose f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.03974,
+      "latency_ms_median": 163.2,
+      "first_ts": "2026-11-27T16:28:18Z",
+      "last_ts": "2026-11-27T16:33:46Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format prose f1",
+          "started": "2026-11-27T16:28:18Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8795183104,
+              "max_allocated": 8892100608,
+              "reserved": 9024045056
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: prose"
+        }
+      ]
+    },
+    "kev-4b-ft-bf16-aligned": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); layout aligned a1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.039614,
+      "latency_ms_median": 162.7,
+      "first_ts": "2026-11-27T16:33:46Z",
+      "last_ts": "2026-11-27T16:39:13Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); layout aligned a1",
+          "started": "2026-11-27T16:33:46Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8795183104,
+              "max_allocated": 8892100608,
+              "reserved": 9024045056
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: aligned"
+        }
+      ]
+    },
+    "kev-4b-ft-bf16-again": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); again: the original summaries, same session"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.034916,
+      "latency_ms_median": 143.7,
+      "first_ts": "2026-11-27T16:39:13Z",
+      "last_ts": "2026-11-27T16:44:02Z",
+      "runs": [
+        {
+          "model_version": "kev-4b-ft: LoRA delta from jaredpalmer/kev-4b@v1.0 (591dcb5b), trained on train; weights 660c9c78bbc5; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); again: the original summaries, same session",
+          "started": "2026-11-27T16:39:13Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-4B-Base, serving /home/runs/kev-4b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-4b-ft",
+                "base": "Qwen/Qwen3.5-4B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 248,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-4b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 8525959168,
+              "max_allocated": 8842690560,
+              "reserved": 8535408640
+            },
+            "memory_now": {
+              "allocated": 8795183104,
+              "max_allocated": 8892100608,
+              "reserved": 9024045056
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: again"
+        }
+      ]
+    },
+    "kev-0.8b-ft-bf16-markdown": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format markdown f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.016674,
+      "latency_ms_median": 67.8,
+      "first_ts": "2026-11-27T15:57:05Z",
+      "last_ts": "2026-11-27T15:59:25Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format markdown f1",
+          "started": "2026-11-27T15:57:05Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1644406784,
+              "max_allocated": 1693327360,
+              "reserved": 1786773504
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: markdown"
+        }
+      ]
+    },
+    "kev-0.8b-ft-bf16-csv": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format csv f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.016488,
+      "latency_ms_median": 67.4,
+      "first_ts": "2026-11-27T15:59:25Z",
+      "last_ts": "2026-11-27T16:01:43Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format csv f1",
+          "started": "2026-11-27T15:59:25Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1644406784,
+              "max_allocated": 1693327360,
+              "reserved": 1786773504
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: csv"
+        }
+      ]
+    },
+    "kev-0.8b-ft-bf16-json": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format json f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.0175,
+      "latency_ms_median": 71.6,
+      "first_ts": "2026-11-27T16:01:44Z",
+      "last_ts": "2026-11-27T16:04:10Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format json f1",
+          "started": "2026-11-27T16:01:43Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1644406784,
+              "max_allocated": 1693327360,
+              "reserved": 1786773504
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: json"
+        }
+      ]
+    },
+    "kev-0.8b-ft-bf16-prose": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format prose f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.017006,
+      "latency_ms_median": 69.4,
+      "first_ts": "2026-11-27T16:04:10Z",
+      "last_ts": "2026-11-27T16:06:32Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); format prose f1",
+          "started": "2026-11-27T16:04:10Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1644406784,
+              "max_allocated": 1693327360,
+              "reserved": 1786773504
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: prose"
+        }
+      ]
+    },
+    "kev-0.8b-ft-bf16-aligned": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); layout aligned a1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.017002,
+      "latency_ms_median": 69.5,
+      "first_ts": "2026-11-27T16:06:32Z",
+      "last_ts": "2026-11-27T16:08:54Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); layout aligned a1",
+          "started": "2026-11-27T16:06:32Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1644406784,
+              "max_allocated": 1693327360,
+              "reserved": 1786773504
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: aligned"
+        }
+      ]
+    },
+    "kev-0.8b-ft-bf16-again": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); again: the original summaries, same session"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.016564,
+      "latency_ms_median": 67.8,
+      "first_ts": "2026-11-27T16:08:54Z",
+      "last_ts": "2026-11-27T16:11:13Z",
+      "runs": [
+        {
+          "model_version": "kev-0.8b-ft: LoRA delta from jaredpalmer/kev-0.8b@v1.0 (788ddbdd), trained on train; weights b9f53ae46f71; T 1.0; served by runners/kev_quant_serve.py (CUDA graphs and fused kernels off); bf16 (not quantized); again: the original summaries, same session",
+          "started": "2026-11-27T16:08:54Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "server_models": {
+            "models": [
+              {
+                "name": "kev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              },
+              {
+                "name": "jev-latest",
+                "description": "Kev pointer head on Qwen/Qwen3.5-0.8B-Base, serving /home/runs/kev-0.8b-ft at temperature 1.00",
+                "release_date": "2026-11-23",
+                "run": "/home/runs/kev-0.8b-ft",
+                "base": "Qwen/Qwen3.5-0.8B-Base",
+                "lora": 16,
+                "device": "cuda",
+                "backend": "torch; precision bf16",
+                "dtype": "bfloat16",
+                "temperature": 1.0,
+                "max_state_tokens": 65536,
+                "truncate_states": false,
+                "cuda_graphs": null,
+                "prefix_cache": {
+                  "size": 4,
+                  "min_state_tokens": 0,
+                  "max_tokens": 65536,
+                  "hits": 0,
+                  "misses": 70,
+                  "cached_states": 4,
+                  "oom_retries": 0
+                },
+                "batches": {
+                  "count": 70,
+                  "requests": 70,
+                  "queued": 0
+                }
+              }
+            ]
+          },
+          "base_url": "http://127.0.0.1:8009",
+          "usd_per_hour": 0.44,
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 186,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: none",
+            "run": "/home/runs/kev-0.8b-ft",
+            "device": "cuda",
+            "torch": "2.8.0+cu128",
+            "memory_after_load": {
+              "allocated": 1540593664,
+              "max_allocated": 1634019328,
+              "reserved": 1627389952
+            },
+            "memory_now": {
+              "allocated": 1644406784,
+              "max_allocated": 1693327360,
+              "reserved": 1786773504
+            },
+            "cuda_graphs": false,
+            "fused": false
+          },
+          "check": "post 5 addendum: again"
+        }
+      ]
+    },
+    "qwen-ft-bf16-markdown": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format markdown f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.030023,
+      "latency_ms_median": 123.1,
+      "first_ts": "2026-11-27T16:45:58Z",
+      "last_ts": "2026-11-27T16:50:06Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format markdown f1",
+          "started": "2026-11-27T16:45:58Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6,
+          "check": "post 5 addendum: markdown"
+        }
+      ]
+    },
+    "qwen-ft-bf16-csv": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format csv f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.029654,
+      "latency_ms_median": 122.6,
+      "first_ts": "2026-11-27T16:50:06Z",
+      "last_ts": "2026-11-27T16:54:11Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format csv f1",
+          "started": "2026-11-27T16:50:06Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6,
+          "check": "post 5 addendum: csv"
+        }
+      ]
+    },
+    "qwen-ft-bf16-json": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format json f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.039387,
+      "latency_ms_median": 163.3,
+      "first_ts": "2026-11-27T16:54:11Z",
+      "last_ts": "2026-11-27T16:59:36Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format json f1",
+          "started": "2026-11-27T16:54:11Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6,
+          "check": "post 5 addendum: json"
+        }
+      ]
+    },
+    "qwen-ft-bf16-prose": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format prose f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.037046,
+      "latency_ms_median": 153.0,
+      "first_ts": "2026-11-27T16:59:37Z",
+      "last_ts": "2026-11-27T17:04:42Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); format prose f1",
+          "started": "2026-11-27T16:59:36Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6,
+          "check": "post 5 addendum: prose"
+        }
+      ]
+    },
+    "qwen-ft-bf16-aligned": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); layout aligned a1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.036929,
+      "latency_ms_median": 152.7,
+      "first_ts": "2026-11-27T17:04:43Z",
+      "last_ts": "2026-11-27T17:09:47Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); layout aligned a1",
+          "started": "2026-11-27T17:04:42Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6,
+          "check": "post 5 addendum: aligned"
+        }
+      ]
+    },
+    "qwen-ft-bf16-again": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); again: the original summaries, same session"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.030027,
+      "latency_ms_median": 123.9,
+      "first_ts": "2026-11-27T17:09:48Z",
+      "last_ts": "2026-11-27T17:13:56Z",
+      "runs": [
+        {
+          "model_version": "qwen-ft: LoRA r16 on Qwen/Qwen3.5-4B@851bf6e8, trained on train (data 77d9e72b2740); adapter 198613a56597; readout: first answer token, full-vocabulary logsumexp per label (in-process, bf16); merged in fp32 with one rounding to bf16 (post 4); bf16 (not quantized); again: the original summaries, same session",
+          "started": "2026-11-27T17:09:47Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "adapter": "/home/runs/qwen-ft",
+          "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4",
+          "training_config": {
+            "args": {
+              "out": "/home/runs/qwen-ft",
+              "data": "/home/can-ai-know-when-its-wrong/training/data/qwen_train.jsonl",
+              "epochs": "1",
+              "lr": "0.0001",
+              "rank": "16",
+              "alpha": "32",
+              "dropout": "0.05",
+              "accum": "16",
+              "warmup": "0.03",
+              "seed": "0",
+              "limit": "None",
+              "max_steps": "0",
+              "init_adapter": "None",
+              "device": "cuda",
+              "log_every": "25"
+            },
+            "model": "Qwen/Qwen3.5-4B",
+            "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+            "target_modules": ".*\\.(down_proj|gate_proj|in_proj_a|in_proj_b|in_proj_qkv|in_proj_z|k_proj|o_proj|out_proj|q_proj|up_proj|v_proj)",
+            "steps": 1250,
+            "customers": 20000,
+            "data_sha256": "77d9e72b2740c674d868c1cfd95a213e8bd23276f17cd5d9b0152eba2950fcfe",
+            "torch": "2.15.0+cu132",
+            "started": "2026-11-23T19:47:02Z",
+            "finished": "2026-11-23T21:47:42Z",
+            "train_minutes": 120.7,
+            "adapter_sha256": "198613a565970cf5159aea14c6c8dc4dce29aed1bde0ee08bcd9e15d5f8d31c4"
+          },
+          "quantization": {
+            "precision": "bf16",
+            "description": "bf16 (not quantized)",
+            "library": null,
+            "version": null,
+            "settings": {},
+            "linear_layers": 249,
+            "quantized_layers": 0,
+            "kept_bf16": "the readout head, the embeddings and the norms; linear layers kept: lm_head 1",
+            "memory_after_load": {
+              "allocated": 8512194560,
+              "max_allocated": 8512194560,
+              "reserved": 8514437120
+            }
+          },
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "readout": "first answer token, full-vocabulary logsumexp per label (in-process, bf16)",
+          "yes_variants": 6,
+          "no_variants": 6,
+          "check": "post 5 addendum: again"
+        }
+      ]
+    },
+    "laya-ft-markdown": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format markdown f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.00421,
+      "latency_ms_median": 17.0,
+      "first_ts": "2026-11-27T17:14:45Z",
+      "last_ts": "2026-11-27T17:15:20Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format markdown f1",
+          "started": "2026-11-27T17:14:45Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "check": "post 5 addendum: markdown"
+        }
+      ]
+    },
+    "laya-ft-csv": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format csv f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.004105,
+      "latency_ms_median": 16.8,
+      "first_ts": "2026-11-27T17:15:20Z",
+      "last_ts": "2026-11-27T17:15:54Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format csv f1",
+          "started": "2026-11-27T17:15:20Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "check": "post 5 addendum: csv"
+        }
+      ]
+    },
+    "laya-ft-json": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format json f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.005024,
+      "latency_ms_median": 20.5,
+      "first_ts": "2026-11-27T17:15:54Z",
+      "last_ts": "2026-11-27T17:16:35Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format json f1",
+          "started": "2026-11-27T17:15:54Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "check": "post 5 addendum: json"
+        }
+      ]
+    },
+    "laya-ft-prose": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format prose f1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.004692,
+      "latency_ms_median": 19.2,
+      "first_ts": "2026-11-27T17:16:35Z",
+      "last_ts": "2026-11-27T17:17:14Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; format prose f1",
+          "started": "2026-11-27T17:16:35Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "check": "post 5 addendum: prose"
+        }
+      ]
+    },
+    "laya-ft-aligned": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; layout aligned a1"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.004483,
+      "latency_ms_median": 18.4,
+      "first_ts": "2026-11-27T17:17:14Z",
+      "last_ts": "2026-11-27T17:17:51Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; layout aligned a1",
+          "started": "2026-11-27T17:17:14Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "check": "post 5 addendum: aligned"
+        }
+      ]
+    },
+    "laya-ft-again": {
+      "present": true,
+      "complete": true,
+      "model_versions": [
+        "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; again: the original summaries, same session"
+      ],
+      "records": 2000,
+      "groups": {
+        "trained/test": {
+          "records": 2000,
+          "missing": 0,
+          "unexpected": 0,
+          "complete": true
+        }
+      },
+      "cost_usd_total": 0.004144,
+      "latency_ms_median": 17.0,
+      "first_ts": "2026-11-27T17:17:51Z",
+      "last_ts": "2026-11-27T17:18:25Z",
+      "runs": [
+        {
+          "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037; again: the original summaries, same session",
+          "started": "2026-11-27T17:17:51Z",
+          "split": "test",
+          "conditions": [
+            "trained"
+          ],
+          "limit": null,
+          "workers": 1,
+          "environment": {
+            "python": "3.12.16",
+            "platform": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+            "gpu": "NVIDIA L4, 595.58.03",
+            "packages": {
+              "torch": "2.15.0",
+              "transformers": "5.24.0",
+              "laya": "0.5.2",
+              "vegaml": "0.18.0",
+              "jevper": "0.7.12",
+              "openai": "3.57.0",
+              "numpy": "2.5.5"
+            }
+          },
+          "agent_class": "Agent",
+          "laya_version": "0.5.2",
+          "device": "cuda",
+          "usd_per_hour": 0.44,
+          "check": "post 5 addendum: again"
+        }
+      ]
+    }
+  },
+  "recorded_failures": []
+}

@@ -1,0 +1,324 @@
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122 (fit 0.0s)
+kumo-tabular-original      tune  AUC 0.7943  Brier 0.1339  ECE 0.0161  mean p 0.2229 vs actual 0.2210
+kumo-tabular-original      test  AUC 0.7942  Brier 0.1306  ECE 0.0204  mean p 0.2191 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123 (fit 0.0s)
+kumo-tabular-original-s1   tune  AUC 0.7938  Brier 0.1340  ECE 0.0131  mean p 0.2226 vs actual 0.2210
+kumo-tabular-original-s1   test  AUC 0.7952  Brier 0.1304  ECE 0.0168  mean p 0.2188 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s2: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124 (fit 0.0s)
+kumo-tabular-original-s2   tune  AUC 0.7951  Brier 0.1338  ECE 0.0123  mean p 0.2229 vs actual 0.2210
+kumo-tabular-original-s2   test  AUC 0.7939  Brier 0.1306  ECE 0.0170  mean p 0.2190 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s2.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s3: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125 (fit 0.0s)
+kumo-tabular-original-s3   tune  AUC 0.7946  Brier 0.1339  ECE 0.0155  mean p 0.2226 vs actual 0.2210
+kumo-tabular-original-s3   test  AUC 0.7950  Brier 0.1305  ECE 0.0176  mean p 0.2189 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s3.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s4: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126 (fit 0.0s)
+kumo-tabular-original-s4   tune  AUC 0.7943  Brier 0.1339  ECE 0.0131  mean p 0.2227 vs actual 0.2210
+kumo-tabular-original-s4   test  AUC 0.7943  Brier 0.1305  ECE 0.0160  mean p 0.2188 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s4.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-months-reversed: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122 (fit 0.0s)
+kumo-tabular-months-reversed test  AUC 0.7942  Brier 0.1306  ECE 0.0184  mean p 0.2189 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-months-reversed.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-by-month: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122 (fit 0.0s)
+kumo-tabular-by-month      test  AUC 0.7947  Brier 0.1304  ECE 0.0176  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-by-month.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-realigned: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122 (fit 0.0s)
+kumo-tabular-realigned     test  AUC 0.7945  Brier 0.1306  ECE 0.0153  mean p 0.2192 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-realigned.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-1    test  AUC 0.7950  Brier 0.1305  ECE 0.0183  mean p 0.2195 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-2: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-2    test  AUC 0.7948  Brier 0.1305  ECE 0.0155  mean p 0.2194 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-2.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-3: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-3    test  AUC 0.7942  Brier 0.1305  ECE 0.0165  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-3.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-4: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-4    test  AUC 0.7942  Brier 0.1305  ECE 0.0183  mean p 0.2192 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-4.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-5: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-5    test  AUC 0.7941  Brier 0.1306  ECE 0.0148  mean p 0.2190 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-5.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-1        test  AUC 0.7943  Brier 0.1306  ECE 0.0207  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-2: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-2        test  AUC 0.7943  Brier 0.1306  ECE 0.0207  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-2.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-3: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-3        test  AUC 0.7943  Brier 0.1306  ECE 0.0203  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-3.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-4: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-4        test  AUC 0.7943  Brier 0.1306  ECE 0.0207  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-4.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-5: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-5        test  AUC 0.7942  Brier 0.1306  ECE 0.0203  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-5.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-thousands: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122 (fit 0.0s)
+kumo-tabular-thousands     test  AUC 0.7942  Brier 0.1306  ECE 0.0213  mean p 0.2191 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-thousands.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122 (fit 0.0s)
+kumo-tabular-original-e1   tune  AUC 0.7943  Brier 0.1339  ECE 0.0151  mean p 0.2232 vs actual 0.2210
+kumo-tabular-original-e1   test  AUC 0.7954  Brier 0.1305  ECE 0.0265  mean p 0.2197 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s1-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123 (fit 0.0s)
+kumo-tabular-original-s1-e1 tune  AUC 0.7937  Brier 0.1339  ECE 0.0110  mean p 0.2233 vs actual 0.2210
+kumo-tabular-original-s1-e1 test  AUC 0.7944  Brier 0.1306  ECE 0.0196  mean p 0.2189 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s1-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s2-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124 (fit 0.0s)
+kumo-tabular-original-s2-e1 tune  AUC 0.7948  Brier 0.1338  ECE 0.0110  mean p 0.2245 vs actual 0.2210
+kumo-tabular-original-s2-e1 test  AUC 0.7946  Brier 0.1304  ECE 0.0207  mean p 0.2213 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s2-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s3-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125 (fit 0.0s)
+kumo-tabular-original-s3-e1 tune  AUC 0.7926  Brier 0.1341  ECE 0.0138  mean p 0.2231 vs actual 0.2210
+kumo-tabular-original-s3-e1 test  AUC 0.7933  Brier 0.1309  ECE 0.0158  mean p 0.2193 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s3-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-original-s4-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126 (fit 0.0s)
+kumo-tabular-original-s4-e1 tune  AUC 0.7942  Brier 0.1337  ECE 0.0135  mean p 0.2238 vs actual 0.2210
+kumo-tabular-original-s4-e1 test  AUC 0.7961  Brier 0.1304  ECE 0.0274  mean p 0.2201 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-original-s4-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-months-reversed-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122 (fit 0.0s)
+kumo-tabular-months-reversed-e1 test  AUC 0.7951  Brier 0.1305  ECE 0.0187  mean p 0.2201 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-months-reversed-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-by-month-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122 (fit 0.0s)
+kumo-tabular-by-month-e1   test  AUC 0.7953  Brier 0.1305  ECE 0.0228  mean p 0.2200 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-by-month-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-realigned-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122 (fit 0.0s)
+kumo-tabular-realigned-e1  test  AUC 0.7942  Brier 0.1305  ECE 0.0203  mean p 0.2206 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-realigned-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-1-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-1-e1 test  AUC 0.7948  Brier 0.1306  ECE 0.0188  mean p 0.2211 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-1-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-2-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-2-e1 test  AUC 0.7952  Brier 0.1304  ECE 0.0179  mean p 0.2200 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-2-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-3-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-3-e1 test  AUC 0.7932  Brier 0.1308  ECE 0.0270  mean p 0.2201 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-3-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-4-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-4-e1 test  AUC 0.7941  Brier 0.1308  ECE 0.0187  mean p 0.2209 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-4-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-shuffled-5-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-shuffled-5-e1 test  AUC 0.7948  Brier 0.1304  ECE 0.0196  mean p 0.2207 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-shuffled-5-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-1-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-1-e1     test  AUC 0.7954  Brier 0.1305  ECE 0.0263  mean p 0.2197 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-1-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-2-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-2-e1     test  AUC 0.7954  Brier 0.1304  ECE 0.0263  mean p 0.2197 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-2-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-3-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-3-e1     test  AUC 0.7954  Brier 0.1304  ECE 0.0267  mean p 0.2197 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-3-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-4-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-4-e1     test  AUC 0.7954  Brier 0.1304  ECE 0.0255  mean p 0.2197 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-4-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-rows-5-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122 (fit 0.0s)
+kumo-tabular-rows-5-e1     test  AUC 0.7954  Brier 0.1304  ECE 0.0258  mean p 0.2197 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-rows-5-e1.jsonl
+/home/can-ai-know-when-its-wrong/.venv/lib/python3.12/site-packages/sdm/tensor/string.py:524: RuntimeWarning: Falling back to a CPU-based string sort because cuDF is not installed. Install cuDF to enable faster CUDA-based string sorting without device synchronization. This warning will be suppressed for the remainder of this process.
+  warn_once(
+kumo-tabular-thousands-e1: nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 1 estimators, column shuffle off; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122 (fit 0.0s)
+kumo-tabular-thousands-e1  test  AUC 0.7954  Brier 0.1304  ECE 0.0255  mean p 0.2197 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/kumo-tabular-thousands-e1.jsonl
+tabicl-v2-original: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122 (fit 0.9s)
+tabicl-v2-original         tune  AUC 0.7933  Brier 0.1346  ECE 0.0307  mean p 0.2094 vs actual 0.2210
+tabicl-v2-original         test  AUC 0.7938  Brier 0.1307  ECE 0.0252  mean p 0.2052 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original.jsonl
+tabicl-v2-original-s1: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123 (fit 1.1s)
+tabicl-v2-original-s1      tune  AUC 0.7917  Brier 0.1348  ECE 0.0288  mean p 0.2093 vs actual 0.2210
+tabicl-v2-original-s1      test  AUC 0.7940  Brier 0.1307  ECE 0.0239  mean p 0.2053 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s1.jsonl
+tabicl-v2-original-s2: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124 (fit 1.2s)
+tabicl-v2-original-s2      tune  AUC 0.7907  Brier 0.1348  ECE 0.0313  mean p 0.2093 vs actual 0.2210
+tabicl-v2-original-s2      test  AUC 0.7933  Brier 0.1308  ECE 0.0269  mean p 0.2054 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s2.jsonl
+tabicl-v2-original-s3: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125 (fit 1.0s)
+tabicl-v2-original-s3      tune  AUC 0.7911  Brier 0.1350  ECE 0.0295  mean p 0.2087 vs actual 0.2210
+tabicl-v2-original-s3      test  AUC 0.7928  Brier 0.1309  ECE 0.0256  mean p 0.2047 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s3.jsonl
+tabicl-v2-original-s4: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126 (fit 1.0s)
+tabicl-v2-original-s4      tune  AUC 0.7900  Brier 0.1351  ECE 0.0289  mean p 0.2083 vs actual 0.2210
+tabicl-v2-original-s4      test  AUC 0.7937  Brier 0.1307  ECE 0.0264  mean p 0.2043 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s4.jsonl
+tabicl-v2-months-reversed: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122 (fit 0.9s)
+tabicl-v2-months-reversed  test  AUC 0.7938  Brier 0.1308  ECE 0.0246  mean p 0.2050 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-months-reversed.jsonl
+tabicl-v2-by-month: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122 (fit 0.9s)
+tabicl-v2-by-month         test  AUC 0.7937  Brier 0.1308  ECE 0.0232  mean p 0.2052 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-by-month.jsonl
+tabicl-v2-realigned: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122 (fit 0.8s)
+tabicl-v2-realigned        test  AUC 0.7939  Brier 0.1307  ECE 0.0257  mean p 0.2050 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-realigned.jsonl
+tabicl-v2-shuffled-1: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122 (fit 0.9s)
+tabicl-v2-shuffled-1       test  AUC 0.7936  Brier 0.1308  ECE 0.0244  mean p 0.2054 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-1.jsonl
+tabicl-v2-shuffled-2: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122 (fit 1.2s)
+tabicl-v2-shuffled-2       test  AUC 0.7939  Brier 0.1306  ECE 0.0254  mean p 0.2054 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-2.jsonl
+tabicl-v2-shuffled-3: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122 (fit 0.9s)
+tabicl-v2-shuffled-3       test  AUC 0.7939  Brier 0.1308  ECE 0.0242  mean p 0.2053 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-3.jsonl
+tabicl-v2-shuffled-4: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122 (fit 0.9s)
+tabicl-v2-shuffled-4       test  AUC 0.7940  Brier 0.1306  ECE 0.0245  mean p 0.2046 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-4.jsonl
+tabicl-v2-shuffled-5: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122 (fit 1.0s)
+tabicl-v2-shuffled-5       test  AUC 0.7941  Brier 0.1307  ECE 0.0248  mean p 0.2051 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-5.jsonl
+tabicl-v2-rows-1: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122 (fit 1.1s)
+tabicl-v2-rows-1           test  AUC 0.7941  Brier 0.1307  ECE 0.0242  mean p 0.2053 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-1.jsonl
+tabicl-v2-rows-2: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122 (fit 0.9s)
+tabicl-v2-rows-2           test  AUC 0.7940  Brier 0.1307  ECE 0.0244  mean p 0.2053 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-2.jsonl
+tabicl-v2-rows-3: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122 (fit 0.9s)
+tabicl-v2-rows-3           test  AUC 0.7940  Brier 0.1307  ECE 0.0243  mean p 0.2055 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-3.jsonl
+tabicl-v2-rows-4: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122 (fit 0.9s)
+tabicl-v2-rows-4           test  AUC 0.7939  Brier 0.1307  ECE 0.0248  mean p 0.2053 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-4.jsonl
+tabicl-v2-rows-5: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122 (fit 1.0s)
+tabicl-v2-rows-5           test  AUC 0.7940  Brier 0.1307  ECE 0.0252  mean p 0.2053 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-5.jsonl
+tabicl-v2-thousands: tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122 (fit 1.0s)
+tabicl-v2-thousands        test  AUC 0.7939  Brier 0.1307  ECE 0.0252  mean p 0.2053 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-thousands.jsonl
+tabicl-v2-original-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261122 (fit 0.6s)
+tabicl-v2-original-e1      tune  AUC 0.7892  Brier 0.1353  ECE 0.0313  mean p 0.2086 vs actual 0.2210
+tabicl-v2-original-e1      test  AUC 0.7950  Brier 0.1306  ECE 0.0279  mean p 0.2042 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-e1.jsonl
+tabicl-v2-original-s1-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123 (fit 0.7s)
+tabicl-v2-original-s1-e1   tune  AUC 0.7892  Brier 0.1353  ECE 0.0313  mean p 0.2086 vs actual 0.2210
+tabicl-v2-original-s1-e1   test  AUC 0.7950  Brier 0.1306  ECE 0.0279  mean p 0.2042 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s1-e1.jsonl
+tabicl-v2-original-s2-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261124 (fit 0.7s)
+tabicl-v2-original-s2-e1   tune  AUC 0.7892  Brier 0.1353  ECE 0.0313  mean p 0.2086 vs actual 0.2210
+tabicl-v2-original-s2-e1   test  AUC 0.7950  Brier 0.1306  ECE 0.0279  mean p 0.2042 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s2-e1.jsonl
+tabicl-v2-original-s3-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261125 (fit 1.0s)
+tabicl-v2-original-s3-e1   tune  AUC 0.7892  Brier 0.1353  ECE 0.0313  mean p 0.2086 vs actual 0.2210
+tabicl-v2-original-s3-e1   test  AUC 0.7950  Brier 0.1306  ECE 0.0279  mean p 0.2042 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s3-e1.jsonl
+tabicl-v2-original-s4-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261126 (fit 0.6s)
+tabicl-v2-original-s4-e1   tune  AUC 0.7892  Brier 0.1353  ECE 0.0313  mean p 0.2086 vs actual 0.2210
+tabicl-v2-original-s4-e1   test  AUC 0.7950  Brier 0.1306  ECE 0.0279  mean p 0.2042 vs actual 0.2210
+wrote 4000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-original-s4-e1.jsonl
+tabicl-v2-months-reversed-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement months-reversed r1; seed 20261122 (fit 0.8s)
+tabicl-v2-months-reversed-e1 test  AUC 0.7934  Brier 0.1308  ECE 0.0272  mean p 0.2056 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-months-reversed-e1.jsonl
+tabicl-v2-by-month-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122 (fit 0.8s)
+tabicl-v2-by-month-e1      test  AUC 0.7920  Brier 0.1309  ECE 0.0249  mean p 0.2041 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-by-month-e1.jsonl
+tabicl-v2-realigned-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122 (fit 0.8s)
+tabicl-v2-realigned-e1     test  AUC 0.7935  Brier 0.1306  ECE 0.0274  mean p 0.2038 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-realigned-e1.jsonl
+tabicl-v2-shuffled-1-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122 (fit 0.7s)
+tabicl-v2-shuffled-1-e1    test  AUC 0.7908  Brier 0.1313  ECE 0.0289  mean p 0.2043 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-1-e1.jsonl
+tabicl-v2-shuffled-2-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-2 r1; seed 20261122 (fit 0.6s)
+tabicl-v2-shuffled-2-e1    test  AUC 0.7945  Brier 0.1306  ECE 0.0258  mean p 0.2051 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-2-e1.jsonl
+tabicl-v2-shuffled-3-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-3 r1; seed 20261122 (fit 0.8s)
+tabicl-v2-shuffled-3-e1    test  AUC 0.7916  Brier 0.1308  ECE 0.0277  mean p 0.2049 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-3-e1.jsonl
+tabicl-v2-shuffled-4-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-4 r1; seed 20261122 (fit 1.1s)
+tabicl-v2-shuffled-4-e1    test  AUC 0.7913  Brier 0.1311  ECE 0.0268  mean p 0.2035 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-4-e1.jsonl
+tabicl-v2-shuffled-5-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement shuffled-5 r1; seed 20261122 (fit 1.0s)
+tabicl-v2-shuffled-5-e1    test  AUC 0.7915  Brier 0.1312  ECE 0.0258  mean p 0.2050 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-shuffled-5-e1.jsonl
+tabicl-v2-rows-1-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-1 r1; seed 20261122 (fit 0.7s)
+tabicl-v2-rows-1-e1        test  AUC 0.7946  Brier 0.1307  ECE 0.0298  mean p 0.2048 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-1-e1.jsonl
+tabicl-v2-rows-2-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122 (fit 0.6s)
+tabicl-v2-rows-2-e1        test  AUC 0.7943  Brier 0.1307  ECE 0.0293  mean p 0.2039 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-2-e1.jsonl
+tabicl-v2-rows-3-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-3 r1; seed 20261122 (fit 0.7s)
+tabicl-v2-rows-3-e1        test  AUC 0.7940  Brier 0.1307  ECE 0.0280  mean p 0.2044 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-3-e1.jsonl
+tabicl-v2-rows-4-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-4 r1; seed 20261122 (fit 0.6s)
+tabicl-v2-rows-4-e1        test  AUC 0.7947  Brier 0.1307  ECE 0.0287  mean p 0.2046 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-4-e1.jsonl
+tabicl-v2-rows-5-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-5 r1; seed 20261122 (fit 0.6s)
+tabicl-v2-rows-5-e1        test  AUC 0.7942  Brier 0.1308  ECE 0.0289  mean p 0.2044 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-rows-5-e1.jsonl
+tabicl-v2-thousands-e1: tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement thousands r1; seed 20261122 (fit 0.8s)
+tabicl-v2-thousands-e1     test  AUC 0.7947  Brier 0.1307  ECE 0.0292  mean p 0.2040 vs actual 0.2210
+wrote 2000 records -> /home/can-ai-know-when-its-wrong/results/checks/arrangements/tabicl-v2-thousands-e1.jsonl

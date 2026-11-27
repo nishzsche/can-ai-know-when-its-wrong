@@ -1,0 +1,11 @@
+{
+  "model": "kumo-tabular-rows-2",
+  "model_version": "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122",
+  "fit_seconds": 0.011835649609565735,
+  "test": {
+    "seconds": 54.25974270142615,
+    "ms_per_customer": 27.129871350713074,
+    "mean_p": 0.21914084561634808,
+    "exactly_0_or_1": 0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "model": "kumo-tabular-shuffled-1",
+  "model_version": "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement shuffled-1 r1; seed 20261122",
+  "fit_seconds": 0.012008203193545341,
+  "test": {
+    "seconds": 54.172030879184604,
+    "ms_per_customer": 27.086015439592302,
+    "mean_p": 0.21949746356299146,
+    "exactly_0_or_1": 0
+  }
+}

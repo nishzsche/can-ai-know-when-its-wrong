@@ -1,0 +1,17 @@
+{
+  "model": "tabicl-v2-original-s1",
+  "model_version": "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement original r1; seed 20261123",
+  "fit_seconds": 1.0770125463604927,
+  "tune": {
+    "seconds": 5.191621037200093,
+    "ms_per_customer": 2.5958105186000466,
+    "mean_p": 0.20929318894911558,
+    "exactly_0_or_1": 0
+  },
+  "test": {
+    "seconds": 4.794677019119263,
+    "ms_per_customer": 2.3973385095596313,
+    "mean_p": 0.20526874650130048,
+    "exactly_0_or_1": 0
+  }
+}

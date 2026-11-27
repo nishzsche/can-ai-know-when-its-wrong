@@ -1,0 +1,11 @@
+{
+  "model": "tabicl-v2-by-month-e1",
+  "model_version": "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122",
+  "fit_seconds": 0.8433722332119942,
+  "test": {
+    "seconds": 0.9423512183129787,
+    "ms_per_customer": 0.4711756091564894,
+    "mean_p": 0.2041267381394282,
+    "exactly_0_or_1": 0
+  }
+}

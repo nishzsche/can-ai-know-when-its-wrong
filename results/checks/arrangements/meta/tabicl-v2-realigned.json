@@ -1,0 +1,11 @@
+{
+  "model": "tabicl-v2-realigned",
+  "model_version": "tabicl 2.2.0 TabICLClassifier() defaults; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement realigned r1; seed 20261122",
+  "fit_seconds": 0.8394901119172573,
+  "test": {
+    "seconds": 5.151576705276966,
+    "ms_per_customer": 2.575788352638483,
+    "mean_p": 0.2049906805511564,
+    "exactly_0_or_1": 0
+  }
+}

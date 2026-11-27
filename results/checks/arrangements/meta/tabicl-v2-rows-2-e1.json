@@ -1,0 +1,11 @@
+{
+  "model": "tabicl-v2-rows-2-e1",
+  "model_version": "tabicl 2.2.0 TabICLClassifier() n_estimators=1, feat_shuffle_method='none'; checkpoint tabicl-classifier-v2-20260212.ckpt; context = train a71432385d26 (20,000 rows); arrangement rows-2 r1; seed 20261122",
+  "fit_seconds": 0.6293916273862123,
+  "test": {
+    "seconds": 0.9439591448754072,
+    "ms_per_customer": 0.4719795724377036,
+    "mean_p": 0.20386826473427935,
+    "exactly_0_or_1": 0
+  }
+}

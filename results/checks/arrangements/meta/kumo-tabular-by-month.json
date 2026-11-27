@@ -1,0 +1,11 @@
+{
+  "model": "kumo-tabular-by-month",
+  "model_version": "nvidia/Kumo-Tabular large v1.0.1 via structured-data-models 0.3.0; 8 estimators; context = train a71432385d26 (20,000 rows); arrangement by-month r1; seed 20261122",
+  "fit_seconds": 0.011936383321881294,
+  "test": {
+    "seconds": 54.147223111242056,
+    "ms_per_customer": 27.073611555621028,
+    "mean_p": 0.2191286916639656,
+    "exactly_0_or_1": 0
+  }
+}

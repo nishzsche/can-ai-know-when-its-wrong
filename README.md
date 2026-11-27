@@ -9,8 +9,9 @@ It's the experiment behind a blog series. Every post uses the same customers, th
 | 1 | [Can AI know when it's wrong?](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/) (23 November 2026) | When an AI model says "30% chance of default", is it right? Six AI models answer cold, against two models trained on 20,000 customers | [`writeup/blog.md`](writeup/blog.md); [results below](#post-1s-results); the method and every check in [the deep dive](writeup/deep_dive.md) |
 | 2 | [Why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/) (24 November 2026) | Would judging the same models by accuracy have picked the right one for a lender? | [`writeup/accuracy_post.md`](writeup/accuracy_post.md); `analysis/accuracy.py` → `results/accuracy.json` |
 | 3 | [I gave AI the same data as a bank's model. It caught up.](https://nishzsche.github.io/2026/11/25/fair-fight/) (25 November 2026) | What happens when the AI models learn from the same 20,000 customers the trained models did | [`writeup/fair_fight_post.md`](writeup/fair_fight_post.md); `analysis/fair_fight.py` → `results/fair_fight.csv`; trained weights in the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights) |
+| 4 | [I shrank AI models. It saved memory, not time.](https://nishzsche.github.io/2026/11/27/shrinking-ai-models/) (27 November 2026) | Do post 3's trained models stay honest when shrunk to 8, 4, 3 and 2 bits, and are they cheaper to run? | [`writeup/quantization_post.md`](writeup/quantization_post.md); `analysis/quantization.py` → `results/quantization.csv`; `analysis/speed_report.py` → `results/speed.csv`, `results/speed_throughput.csv` |
 
-Next in this repo: whether shrinking a model makes it less honest, why AI struggles to read a table, and teaching a small model to say "I don't know". All three reuse these customers. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
+Next in this repo: why AI struggles to read a table, and teaching a small model to say "I don't know". Both reuse these customers. Posts that need other data will get their own repos and link back here. The full plan is in [PLAN.md](PLAN.md).
 
 ![Promised vs actual default rate for each AI model, with the scorecard for reference](results/figures/1_promised_vs_actual.png)
 
@@ -44,6 +45,15 @@ Next in this repo: whether shrinking a model makes it less honest, why AI strugg
 - **Twenty examples aren't enough.** Sol (0.762) only matches simply averaging the outcomes of its 20 look-alikes (0.764), and Jev ranks worse (0.743). Sol costs about 10 dollars per 1,000 decisions.
 - **A ceiling:** eight very different models land within 0.02 of each other, and a scorecard trained on 2,000 customers reaches 0.758.
 - The only tuning in the contest went to gradient boosting: its number of rounds was chosen by cross-validation within `train`.
+
+**Post 4: shrinking the trained models.** Post 3's fine-tuned Kev-4B, Kev-0.8B and Qwen3.5-4B, quantized with bitsandbytes (8-bit LLM.int8, 4-bit NF4) and HQQ (4, 3 and 2 bits). Neither method uses any data, and each shrunk version is compared only with its own full-size run.
+
+- **Ranking held down to 4 bits.** With either method, all three stayed within 0.005 of their full-size AUC. At 3 bits only Kev-4B dropped detectably (0.792 → 0.776). At 2 bits all three collapsed: 0.60, 0.45 and 0.43.
+- **Honesty held above 2 bits.** The only change in ECE bigger than chance (paired bootstrap, Holm over 15 comparisons) was an improvement: Kev-0.8B at 4-bit HQQ, 4.4 → 2.3 points, a side effect of rounding. At 2 bits, 15 to 46 points off.
+- **The summary scores hid the customers moving.** At 3 bits, 62% of Kev-0.8B's customers moved 5 points or more, while its AUC (0.786) and ECE (3.1 points) looked as good as full size. Its calibration slope went from 0.86 to 1.31.
+- **Lending decisions changed.** At the full-size model's cut-off, 8 bits changed 0.9–3.3% of approve/decline decisions, 4-bit NF4 1.5–3.4% and 3 bits 10–20%. Running the same full-size model again through the new code changed 0.2–1.5%.
+- **It saved memory, not time.** At 4 bits the 4B models needed 3.5–3.9 GB at peak instead of 8.7–8.9. On a tuned GPU, only Kev-4B on GemLite answered faster than full size (83 ms against 93); tuning the setup made full size up to 3 times faster. FP8 matched full size for Qwen and gave no answers on either Kev model. Failures are recorded in `results/checks/quant_failures.json`.
+- As in post 3, all three models learned from the same 20,000 `train` customers as the scorecard.
 
 ## Post 1's results
 
@@ -85,7 +95,7 @@ Test set: 2,000 customers, 22.1% of whom defaulted. **The baselines learned from
 4. [What a bank would see](results/figures/4_risk_bands.png): promised vs actual default rates by risk band.
 5. [Cost vs ranking](results/figures/5_cost_vs_auc.png).
 
-Post 2's charts are `post2_*.png` and post 3's are `m6_*.png`. Every chart also has a `-dark.png` version for the blog's dark mode.
+Post 2's charts are `post2_*.png`, post 3's are `m6_*.png` and post 4's are `post4_*.png`. Every chart also has a `-dark.png` version for the blog's dark mode.
 
 ### Cost and speed
 
@@ -214,6 +224,11 @@ uv run python analysis/accuracy.py    # results/accuracy.json and post 2's chart
 uv run python analysis/fair_fight.py          # results/fair_fight.csv, fair_fight.json
 uv run python analysis/seeds.py               # results/seeds.json (the re-run check)
 uv run python analysis/fair_fight_figures.py  # post 3's charts
+
+# post 4
+uv run python analysis/quantization.py          # results/quantization.csv
+uv run python analysis/speed_report.py          # results/speed.csv, speed_throughput.csv, speed.json
+uv run python analysis/quantization_figures.py  # post 4's charts and social card
 ```
 
 **Rebuild from the raw data:**
@@ -241,19 +256,21 @@ uv run --group runners python runners/checks/sol_false_rate.py --report
 
 **Retrain post 3's models.** This needs an L4 GPU; the steps are in [`L4_RUNBOOK.md`](L4_RUNBOOK.md) §6. To score without retraining, use the weights from the [`m6-weights` release](https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/tag/m6-weights).
 
+**Shrink post 4's models.** This needs an L4 GPU and the pinned libraries in pyproject's `quant` group; the steps are in [`L4_RUNBOOK.md`](L4_RUNBOOK.md) §7, and the speed re-runs in §8.
+
 ## Repository layout
 
 | Path | What's there |
 |---|---|
 | `data/` | Loading, splits, the text template (`render.py`), memorization tests, `contamination.md` |
 | `baselines/` | The scorecard and gradient boosting |
-| `runners/` | One script per AI contestant, the shared harness, and `checks/` (robustness checks) |
+| `runners/` | One script per AI contestant, the shared harness, and `checks/` (robustness checks), plus post 4's quantizer (`quantize.py`), Kev launcher (`kev_quant_serve.py`), speed setups (`speed.py`) and `throughput.py` |
 | `training/` | Post 3: exporting the `train` customers and fine-tuning Qwen and Laya (Kev trains with its own `kev.train`) |
-| `analysis/` | Metrics, recalibration, the summary tables and the figures, plus `accuracy.py` (post 2) and `fair_fight.py`, `seeds.py` and `fair_fight_figures.py` (post 3) |
+| `analysis/` | Metrics, recalibration, the summary tables and the figures, plus `accuracy.py` (post 2) and `fair_fight.py`, `seeds.py` and `fair_fight_figures.py` (post 3), and `quantization.py`, `speed_report.py` and `quantization_figures.py` (post 4) |
 | `results/` | Predictions, raw responses, summary tables, figures, checks and the run manifests |
 | `writeup/` | Each post, its LinkedIn post and carousel, and the X post, plus the deep dive and the style brief (`STYLE.md`) |
 | `tests/` | Tests for rendering, splits, records, runners, baselines, metrics and the checks |
-| `PREDICTIONS.md` | The author's guesses, committed before any run: for post 1, and for post 3 before its training runs |
+| `PREDICTIONS.md` | The author's guesses, committed before any run: for post 1, for post 3 before its training runs, and for posts 4 and 5 before theirs |
 
 ## Licence
 

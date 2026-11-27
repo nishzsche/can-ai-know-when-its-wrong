@@ -208,9 +208,9 @@ Numbers are the series' post numbers. Titles lead with the question, per `writeu
 | # | Working title | What it answers | New compute | Status |
 |---|---|---|---|---|
 | 2 | **Why 99% accuracy can still be a disaster** (Notion #2) | Accuracy vs ranking vs honesty vs what each mistake costs a bank | None | Published 2026-11-24 |
-| 3 | **I gave AI the same data as a bank's model. It caught up.** (Notion #3) | M6, the fair fight (§11) | Done | Draft in review |
-| 4 | **Does shrinking an AI model make it less honest?** (Notion #7, "Why cheaper AI doesn't always mean cheaper bills") | Post 3's closing promise. The fine-tuned Kev-0.8B, Kev-4B and Qwen at 8, 4, 3 and 2 bits. Does ranking hold while the percentages drift, and does the smaller model actually cost less? | Done (session A) | Draft in review (`writeup/quantization_post.md`) |
-| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | L4 session A, plus about $8 of API | Spec below |
+| 3 | **I gave AI the same data as a bank's model. It caught up.** (Notion #3) | M6, the fair fight (§11) | Done | Published 2026-11-25 |
+| 4 | **I shrank AI models. It saved memory, not time.** (working title "Does shrinking an AI model make it less honest?"; Notion #7, "Why cheaper AI doesn't always mean cheaper bills") | Post 3's closing promise. The fine-tuned Kev-0.8B, Kev-4B and Qwen at 8, 4, 3 and 2 bits. Does ranking hold while the percentages drift, and does the smaller model actually cost less? | Done (session A, then the speed re-runs) | Published 2026-11-27 (`writeup/quantization_post.md`) |
+| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | Done: L4 session A, plus $7.77 of API (Jev $0.18, Sol $7.59) | Runs done 2026-11-26; draft in progress (`writeup/formats_post.md`) |
 | 6 | **Teaching a small model to say "I don't know"** (Notion #9) | Promised in posts 1 and 3. Posts 1 and 3 already asked whether its 30% is honest. This one asks whether it flags the customers unlike anyone it learned from | L4 session B | Design to settle (spec below) |
 | 7 | **Does retrieval make AI more honest, or just more confident?** (documents arc, 1 of 3) | RAG on one public document set: no retrieval, good retrieval, noisy retrieval, conflicting passages, and the whole document in context. Accuracy, honesty, "I don't know" rate and cost | API runs on public documents; a small L4 session for the open models | Choose the dataset now: it has the longest lead time |
 | 8 | **Can a PDF trick an AI into making a bad decision?** (Notion #4; documents arc, 2 of 3) | Hidden instructions in the same pipeline's documents (indirect prompt injection): how often they change the answer or the confidence, and which defences hold | Same set-up as post 7, plus crafted documents | |
@@ -369,6 +369,8 @@ The reference is template v2 (a pipe-separated table without the separator row),
 **Done when:** every contestant has every format that fits its context, `disguise.py --report` writes `results/checks/formats_summary.json`, and the charts follow the budget.
 
 **Built on the laptop (2026-11-25):** `data/formats.py`, the four variants and the formats report in `runners/checks/disguise.py`, and the tests. The disguise check's published summary is unchanged by the refactor.
+
+**Runs done (2026-11-26):** the four open models in L4 session A, Jev and Sol on the laptop. All six have all four formats on the 2,000 test customers, and `results/checks/formats_summary.json` covers them. What's left is the charts and the draft.
 
 ### Post 6 spec: teaching a small model to say "I don't know" (redesigned 2026-11-25; settle before session B)
 

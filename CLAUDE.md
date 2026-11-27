@@ -90,3 +90,5 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
     - `uv run python analysis/speed_report.py` -> `results/speed.csv`, `results/speed_throughput.csv`, `results/speed.json`.
   - `uv run python data/formats.py --show ID` / `--token-report` show post 5's four formats for one customer / count tokens per format.
   - `uv run --group runners python runners/checks/disguise.py --contestant <c> --variant <prose|markdown|csv|json>` runs one format on 2,000 test customers, into `results/checks/formats/` (`--report` compares each with v2).
+  - `uv run python analysis/layouts.py` scores post 5 -> `results/layouts.csv`, `.json`: the four formats plus the realigned table against v2, with paired tests (Holm over 30), the share moved 5+ points and decisions at v2's tune cut-off (about 4 minutes).
+  - `uv run python analysis/layouts_figures.py [name ...]` draws post 5's five charts (`results/figures/post5_*.png`, light and dark); names such as `moved row_pieces` redraw only those.

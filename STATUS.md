@@ -1,6 +1,33 @@
 # Status and handoff
 
-Last updated 2026-11-26. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
+
+## Post 5: first draft (2026-11-27), not yet reviewed
+
+**Draft:** `writeup/formats_post.md`, "Why AI can write code but struggle to read a table" (the title post 4 promised), about 2,700 words, five charts. No runs were needed: all six zero-shot models already had all four formats (session A and the laptop, below), and the realigned table comes from post 1's layout check.
+
+**New code (laptop, CPU):**
+- `analysis/layouts.py` scores the four formats plus the realigned table against v2, per model, on test, and writes `results/layouts.csv` and `.json`. It takes about 4 minutes, mostly bootstraps.
+  - **Measures added while writing (the draft says so):** paired AUC and ECE tests (Holm over 30: six models × five layouts), the share of customers moving 5+ points, and decisions changed at v2's tune cut-off (post 2's lender, 4:1).
+  - **Noise:** v2 against the disguise check's 200-customer control.
+  - `formats_summary.json` is unchanged.
+- `analysis/layouts_figures.py` draws five charts, light and dark: `post5_ranking`, `post5_moved`, `post5_customers`, `post5_promised` and `post5_pieces`. The last one tokenizes one row with Kev's and Laya's tokenizers.
+- `tests/test_layouts.py`. The full suite passes (217).
+
+**First read (test, zero-shot, against v2):**
+- **Laya:** AUC ranges from 0.716 (sentences) to 0.478 (JSON). Answers moved 26 points per customer with CSV and JSON; rank correlation for JSON is 0.08.
+- **Kev-4B:** 0.594 → 0.729 with JSON.
+- **Kev-0.8B and Sol:** no ranking change beyond chance. Sol's per-customer move (2.6–2.9 points) is about its own re-run noise (2.5). Sol's caveat applies.
+- **Totals:** 11 of 30 AUC changes and 17 of 30 ECE changes are beyond chance (Holm).
+- **Decisions at v2's cut-off:** up to 63% change (Laya with JSON, which approves nobody). Kev-0.8B with CSV changes 25% although its ranking holds.
+- **The author's guesses (`PREDICTIONS.md`):** prose moves most ✗ (JSON did); no ranking change as big as the layout check ✗; a small open model most sensitive: half right (Laya).
+
+**For the author to decide:**
+1. **The title:** keep the promised one, or use a result title in post 3's and 4's style (e.g. "I reformatted a table. AI changed its answers.").
+2. **The chart rule:** the closing sections run about 1,075 words without a chart. This is the open rule question from post 4.
+3. **Whether to put up a review copy,** as for post 4.
+
+**Then:** the LinkedIn post and carousel, the social card and the publishing PR, as for post 4.
 
 ## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:00 IST): post 4's speed runs
 

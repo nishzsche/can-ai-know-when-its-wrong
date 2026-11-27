@@ -43,7 +43,7 @@ The six models are the same as in the first post: Jev, a commercial model built 
 
 ## The same numbers, a different ranking
 
-Ranking is measured as in every post: pick one customer who defaulted and one who paid, and ask how often the model rates the defaulter as riskier ([AUC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve); 0.5 is a coin flip). To tell a real change from luck, I compared each layout with the original table on the same customers, allowing for 30 comparisons (six models, five layouts).
+Ranking is measured as in every post (the [methods page](https://nishzsche.github.io/methods/) explains each measure): pick one customer who defaulted and one who paid, and ask how often the model rates the defaulter as riskier ([AUC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve); 0.5 is a coin flip). To tell a real change from luck, I compared each layout with the original table on the same customers, allowing for 30 comparisons (six models, five layouts).
 
 - **Laya's ranking depended on the layout more than on anything else I've tried.** With sentences it ranked at 0.716, its best in the series without training. With JSON it fell to 0.478: worse than a coin flip, so it would have done better with its answers reversed. Its range across layouts, 0.24, is bigger than the gap between the best and worst of the six models with the original table (0.16).
 - **Kev-4B went the other way.** It ranked worst of the six in the first post, at 0.594. Every layout except Markdown did better, and JSON took it to 0.729, a little ahead of the realigned table (0.720). One sentence telling it the default rate did even more in the first post (0.757).
@@ -146,7 +146,8 @@ Before any of these runs, I [wrote down](https://github.com/nishzsche/can-ai-kno
 - **No best layout.** These are test customers, so picking each model's best layout from these results would be tuning on the test set.
 - **I didn't test why.** The clues above are clues.
 - **These test customers have now been used in five posts.** 6,000 customers that no model has seen are kept aside for one final replication.
-- **"Default" is the dataset's label:** missing next month's payment, not the 90-days-overdue definition banks use for capital.
+
+The caveats every part of the series shares, from the dataset's age to what "default" means, are on the [methods page](https://nishzsche.github.io/methods/).
 
 ## How I ran it
 
@@ -158,4 +159,4 @@ The four open models ran on a rented NVIDIA L4 GPU in the same session as the la
 
 Every number, the code and every prediction are on [GitHub](https://github.com/nishzsche/can-ai-know-when-its-wrong). This series started with [whether AI can know when it's wrong](https://nishzsche.github.io/2026/11/23/can-ai-know-when-its-wrong/), then [why 99% accuracy can still be a disaster](https://nishzsche.github.io/2026/11/24/why-99-percent-accuracy/), [giving AI the same data as a bank's model](https://nishzsche.github.io/2026/11/25/fair-fight/) and [shrinking the models](https://nishzsche.github.io/2026/11/27/shrinking-ai-models/).
 
-Next, the sequel I promised in the first post: teaching a small model to say "I don't know", and checking whether it says it about the right customers.
+**Change the layout and you've changed the model. Test it like one.**

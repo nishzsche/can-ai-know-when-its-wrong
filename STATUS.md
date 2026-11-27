@@ -2,7 +2,7 @@
 
 Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` before starting work.
 
-## Post 5: first draft (2026-11-27), not yet reviewed
+## Post 5: first draft (2026-11-27), review copy up
 
 **Draft:** `writeup/formats_post.md`, "Why AI can write code but struggle to read a table" (the title post 4 promised), about 2,700 words, five charts. No runs were needed: all six zero-shot models already had all four formats (session A and the laptop, below), and the realigned table comes from post 1's layout check.
 
@@ -22,10 +22,14 @@ Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` befor
 - **Decisions at v2's cut-off:** up to 63% change (Laya with JSON, which approves nobody). Kev-0.8B with CSV changes 25% although its ranking holds.
 - **The author's guesses (`PREDICTIONS.md`):** prose moves most ✗ (JSON did); no ranking change as big as the layout check ✗; a small open model most sensitive: half right (Laya).
 
+**Draft brought into the blog's Experiment format** (the blog's WRITING.md, design phase 4): a link to the methods page beside the ranking measure; the shared "default" caveat replaced by a pointer to the methods page; the promise of post 6 removed (the blog links a next part only once it's published); and a bold last line, "Change the layout and you've changed the model. Test it like one."
+
+**Review copy:** https://nishzsche.github.io/review/reading-tables/ (unlisted, noindex), once blog PR #61 is merged. It's `review/reading-tables.md` on its own branch, `review-post5`, from `main`, so it doesn't touch the blog session's uncommitted design work in the `dev` working copy. The charts are in `public/images/reading-tables/`, embedded with `chart.html`, and their sizes are in `_data/charts.yml`. It was built locally with Jekyll and checked: five charts, both tables, and it isn't in the home page, feed or sitemap. It's generated from the draft (headline removed, links made relative, a one-sentence alt plus "Chart in words" per chart), so draft edits need regenerating into it. The review note asks about the title, the moved-but-ranking-held section, the bank advice, and where readers got lost.
+
 **For the author to decide:**
-1. **The title:** keep the promised one, or use a result title in post 3's and 4's style (e.g. "I reformatted a table. AI changed its answers.").
+1. **The title:** keep the promised one, or use a result title like posts 1, 3 and 4 (e.g. "I reformatted a table. AI changed its answers."). The review note asks readers.
 2. **The chart rule:** the closing sections run about 1,075 words without a chart. This is the open rule question from post 4.
-3. **Whether to put up a review copy,** as for post 4.
+3. **The drawing** (`icon:`, `icon_caption:`) for publishing.
 
 **Then:** the LinkedIn post and carousel, the social card and the publishing PR, as for post 4.
 

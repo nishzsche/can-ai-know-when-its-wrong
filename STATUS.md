@@ -569,7 +569,9 @@ All runners share `runners/harness.py`. It:
 
 **Only `/home` survives a pause.** Anything installed elsewhere is gone after a resume: system packages, `~/.cache`, a `gh` login. So keep the repo, uv, its Python builds and every model cache under `/home`.
 
-### First-time setup
+### First-time setup (M1, kept for the record: don't use it)
+
+**Don't run this on a new instance.** It has no dependency groups, so tests that need `torch` or `jevper` fail. Use the setup in the newest L4_RUNBOOK.md section (§9.0 for post 5's addendum), or §6.0.
 
 ```bash
 cat > /home/env.sh <<'EOF'

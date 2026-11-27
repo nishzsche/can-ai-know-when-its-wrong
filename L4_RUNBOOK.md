@@ -127,7 +127,7 @@ git commit -m "M3: GPU contestants' tune and test predictions" && git push
 **Layout check (added 2026-11-23, after the review panel):** template v2 shows each payment beside the same month's bill, but payments usually settle the *previous* month's bill (README, data quirk 3). `--variant aligned --split tune` re-asks the 2,000 tune customers with each bill shown next to the payment made the following month. Every number is unchanged and the test set isn't touched. Jev and Sol run it on the laptop; Kev, Qwen and Laya run it here. At ~0.1–0.15 s per request, that's a few minutes per model. Output goes to `results/checks/disguise/`. Every command resumes if interrupted.
 
 **Setup (new instance):**
-1. **Base setup:** `STATUS.md` → "The L4 instance" → "First-time setup": env.sh, uv, `gh auth login`, clone. Then `uv sync --group runners`. No API key is needed.
+1. **Base setup:** §6.0 blocks 1 and 2 (for a new session, use the newest section's setup, e.g. §9.0). Then `uv sync --group runners`. No API key is needed.
 2. **Kev server environment:** step 1 above. The first Kev start downloads the base models into `/home/hf-cache`.
 3. **vLLM venv for Qwen:** `uv venv /home/vllm-env --python 3.12 && VIRTUAL_ENV=/home/vllm-env uv pip install vllm`. Pin vLLM 0.34.0 if a newer one fails.
 4. **Logs folder:** `mkdir -p /home/logs`.
@@ -739,14 +739,58 @@ uv run --group runners python runners/manifest.py --record-failure tabicl-v2-row
 
 ### 9.0 Setup (a fresh instance, about 30 billed minutes)
 
-1. §7.0 steps 1, 2 and 4, with the `tabular` group added: `uv sync --group runners --group laya --group training --group quant --group tabular`, and the same groups for `pytest`.
-2. The trained Laya, which §7.0 doesn't fetch (1.5 GB):
-   ```bash
-   cd /home/runs
-   curl -sLO https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/download/m6-weights/laya-ft.tar.gz
-   tar xzf laya-ft.tar.gz && rm laya-ft.tar.gz && ls /home/runs/laya-ft/model.safetensors
-   mkdir -p /home/logs
-   ```
+Everything for this session, in one place. Don't use the "First-time setup" in STATUS.md: it's the M1 version, without the dependency groups, so its tests fail on missing `torch` and `jevper`. JarvisLabs, PyTorch template, one L4. Only `/home` survives a pause.
+
+**1. Base tools**
+```bash
+cat > /home/env.sh <<'EOF'
+export HF_HOME=/home/hf-cache
+export UV_CACHE_DIR=/home/uv-cache
+export UV_PYTHON_INSTALL_DIR=/home/uv-python
+export GH_CONFIG_DIR=/home/gh-config
+export PATH=/home/bin:$PATH
+EOF
+source /home/env.sh
+mkdir -p /home/bin /home/runs /home/logs
+curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/home/bin sh
+curl -sL https://github.com/cli/cli/releases/download/v2.105.0/gh_2.105.0_linux_amd64.tar.gz | tar xz -C /tmp   && cp /tmp/gh_2.105.0_linux_amd64/bin/gh /home/bin/
+gh auth login -h github.com -p https -w      # only needed to push results back
+tmux new -s l4                                # runs survive a dropped connection
+```
+
+**2. The project, with every group the session uses** (inside tmux)
+```bash
+source /home/env.sh
+cd /home && git clone https://github.com/nishzsche/can-ai-know-when-its-wrong.git
+cd can-ai-know-when-its-wrong && gh auth setup-git
+G="--group runners --group laya --group training --group quant --group tabular"
+uv sync $G
+uv run $G pytest -q          # no failures (a few skips are fine); 317 tests on 2026-11-27
+```
+Already cloned with the old setup? Add the `GH_CONFIG_DIR` line to `/home/env.sh`, `source` it, `git pull`, then run the two `uv` lines.
+
+**3. Kev's environment, as session A had it** (Part B's reference is session A's `-bf16` runs)
+```bash
+git clone https://github.com/jaredpalmer/kev.git /home/kev
+cd /home/kev && git checkout 65b1e763943ace53fd3a4aae00d8d08dbd849772
+uv sync --extra serve
+uv pip install bitsandbytes==0.50.2 hqq==0.2.8.post1    # runners/quantize.py refuses other versions
+```
+Don't install flash-linear-attention, torchao, GemLite or `causal-conv1d` here or in the project: those are post 4's speed setup, not session A's.
+
+**4. The four trained models** (the public `m6-weights` release; Laya's archive is 1.5 GB)
+```bash
+cd /home/runs
+for r in kev-0.8b-ft kev-4b-ft qwen-ft laya-ft; do
+  curl -sLO https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/download/m6-weights/$r.tar.gz
+  tar xzf $r.tar.gz && rm $r.tar.gz
+done
+ls /home/runs/kev-0.8b-ft/head.pt /home/runs/kev-4b-ft/head.pt    /home/runs/qwen-ft/adapter_model.safetensors /home/runs/laya-ft/model.safetensors
+```
+
+**After a resume or in a new shell:** `source /home/env.sh`, then `cd /home/can-ai-know-when-its-wrong && git pull`.
+
+**Then** start Claude Code inside tmux and give it the prompt above, or run §9.1 onwards by hand.
 
 ### 9.1 Part A: the table models rearranged (~30–45 min)
 

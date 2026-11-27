@@ -10,23 +10,22 @@ A document post (a swipeable PDF carousel, like posts 1–3): nine square slides
 
 > Saving a photo at lower quality works for a while. Then it turns into blocks. AI models get shrunk the same way to save money, so I tested how far that goes before a bank should worry.
 >
-> In my last post I trained three AI models on 20,000 real credit-card customers. This time I squeezed each one from 16 bits per number down to 8, 4, 3 and 2, and asked the same 2,000 test customers the same question: how likely is this customer to miss next month's payment?
+> In my last post I trained three AI models on 20,000 real credit-card customers. This time I shrank each one. Every number inside a model normally takes 16 bits; I cut that to 8, 4, 3 and 2. Then I asked every version about the same 2,000 test customers: how likely is this person to miss next month's payment?
 >
-> What happened:
+> What I found:
 >
-> → Ranking held down to 4 bits. All three stayed within 0.005 of their full size. At 2 bits, two of them ranked customers worse than a coin flip.
-> → Honesty held too. Above 2 bits, the only change bigger than chance was an improvement, and nobody chose it: it's a side effect of rounding.
-> → But the summary scores hid the customers moving. At 3 bits, 6 in 10 of one model's customers moved by 5 points or more, while its ranking and honesty looked as good as full size.
-> → That changes lending decisions. Swap in a 3-bit model and keep the old cut-off, and 10 to 20 in 100 approve-or-decline decisions flip. Even 8 bits changed more than running the same model twice.
-> → It saved memory, not time. At 4 bits the models needed less than half the memory. But on a properly tuned GPU, only one of nine shrunk versions answered faster than its full size, by 11%.
-> → My first speed test was wrong. It said shrunk models were up to 4 times slower. A review of my draft found my setup held every version back, so I re-ran it properly. Tuning the setup made full size up to 3 times faster, more than any shrinking did.
+> → Down to 4 bits, all three models sorted risky customers from safe ones as well as at full size. At 2 bits, two of them did worse than a coin flip.
+> → Their risk numbers stayed as honest as at full size down to 3 bits. At 2 bits, that broke too.
+> → But those summary scores hid a lot of movement. At 3 bits, one model changed 6 in 10 customers' risk by 5 points or more (say, from 20% to 25%), and its summary scores still looked as good as at full size.
+> → That changes lending decisions. If a bank swapped in a 3-bit model and kept its old cut-off, 10 to 20 in every 100 approve-or-decline decisions would flip. Even 8 bits changed more decisions than running the same model twice.
+> → It saved memory, not time. At 4 bits, the two larger models used less than half the memory. But even with the GPU set up for speed, only one of nine shrunk versions answered faster than its full size, by 11%.
 >
 > What I'd tell a bank:
-> → Treat shrinking as a model change, not an IT change. Agree how many decisions may change before you test.
-> → Compare each customer's number before and after, not just the summary scores. It needs no outcomes, so it can be done on day one.
-> → Price the saving on your own setup. It's memory, so it only pays if you can use a smaller or shared GPU.
+> → Treat shrinking a model as changing the model, not as an IT upgrade. Decide up front how many decisions are allowed to change.
+> → Compare each customer's score before and after, not just the summary scores. You don't need to wait for outcomes, so you can do it on day one.
+> → Work out the saving on your own hardware. Shrinking saves memory, so it only pays if it lets you use a smaller or shared GPU.
 >
-> The fine print: one bank, Taiwan, 2005. Three models, one GPU, and only shrinking methods that need no data. All three models learned from the same 20,000 customers as the scorecard I compare them with.
+> The fine print: one bank's customers, Taiwan, 2005. Three models, one GPU, and only shrinking methods that need no extra data. All three models learned from the same 20,000 customers as the traditional scorecard I compare them with.
 >
 > Next: why AI can write code but struggle to read a table.
 >
@@ -67,13 +66,13 @@ Nine square slides (1080 × 1080). One idea per slide, big type, a chart where t
 
 **Headline:** Honesty held until 2 bits
 
-**Body:** The average gap between the risk a model promised and what happened. Above 2 bits, the only change bigger than chance was an improvement.
+**Body:** Honesty: the average gap between the risk a model promised and what really happened. Down to 3 bits, none got measurably less honest.
 
 ### 5. The customers moved
 
 **Headline:** The scores held while the customers moved
 
-**Body:** Each dot is one customer: Kev-0.8B at full size against shrunk. At 3 bits, 6 in 10 moved by 5 points or more, yet its ranking and honesty looked as good as full size.
+**Body:** Each dot is one customer's risk from Kev-0.8B, full size against shrunk. At 3 bits, 6 in 10 moved by 5 points or more, yet its summary scores held.
 
 ### 6. Lending decisions
 
@@ -85,17 +84,17 @@ Nine square slides (1080 × 1080). One idea per slide, big type, a chart where t
 
 **Headline:** It saved memory, not time
 
-**Body:** Time per answer on a tuned GPU, one customer at a time. Only Kev-4B on GemLite beat its full size, by 11%. Tuning the setup mattered more than shrinking.
+**Body:** At 4 bits, the two larger models used less than half the memory. But even on a GPU set up for speed, only Kev-4B on GemLite beat its full size, by 11%.
 
 ### 8. What I'd tell a bank
 
 **Headline:** What I'd tell a bank
 
 **Body:**
-- Treat shrinking as a model change, not an IT change. Agree how many decisions may change before you test.
-- Compare each customer's number before and after, not just the summary scores. It needs no outcomes, so do it on day one.
+- Treat shrinking as changing the model, not as an IT upgrade. Decide up front how many decisions may change.
+- Compare each customer's score before and after, not just the summary scores. It needs no outcomes, so do it on day one.
 - 8 bits and the common 4-bit format passed here. That's where to start testing, not a reason to skip it.
-- Price the saving on your own setup: it's memory, so it only pays if you can use a smaller or shared GPU.
+- Work out the saving on your own hardware: it's memory, so it only pays if you can use a smaller or shared GPU.
 
 **Footer:** The scores can hold while the customers move.
 
@@ -104,9 +103,9 @@ Nine square slides (1080 × 1080). One idea per slide, big type, a chart where t
 **Headline:** What this can't tell you
 
 **Body:**
-- One bank, Taiwan, 2005. Three models, one GPU.
-- Only shrinking methods that need no data. Methods that learn from sample data may do better at 3 and 4 bits.
-- Speed depends on the whole setup: a bigger GPU or a serving engine could change which version is fastest.
+- One bank's customers, Taiwan, 2005. Three models, one GPU.
+- Only shrinking methods that need no extra data. Methods that learn from sample data may do better at 3 and 4 bits.
+- Speed depends on the hardware and software: a bigger GPU or other serving software could change which version is fastest.
 - Fair lending isn't tested: at 3 bits, 10 to 20 in 100 decisions changed, and I haven't checked whose.
 
 **Footer:** Next: why AI can write code but struggle to read a table.

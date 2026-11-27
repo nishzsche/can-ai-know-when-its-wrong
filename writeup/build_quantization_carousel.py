@@ -268,27 +268,19 @@ def slide_decisions(fig, s, n, total):
 
 
 def slide_speed(fig, s, n, total):
-    """Time per answer on the tuned setup (the speed addendum), first runs as hollow dots."""
+    """Time per answer on the tuned setup (the speed addendum). The first, untuned runs are in the
+    blog's chart, not here: LinkedIn gets the final result only."""
     y = C.frame(fig, n, total, s)
-    first = F.plt.Line2D([], [], marker="o", ls="none", ms=9, mfc="none", mec=F.INK_2, mew=1.8,
-                         label="first runs")  # fmt: skip
-    handles = [*model_handles(), first]
-    y = legend_row(fig, y - 0.01, handles)
+    y = legend_row(fig, y - 0.01, model_handles())
     ms = QF.speed_ms()
     ax = fig.add_axes([M + 0.235, 0.255, 1 - 2 * M - 0.235, y - 0.3])
     for model, key, _name in QF.MODELS:
         col = F.COLOR[key]
-        for i, (tag, base, _label) in enumerate(QF.SPEED_ROWS):
+        for i, (tag, _base, _label) in enumerate(QF.SPEED_ROWS):
             yy = i + QF.COST_DY[model] * 1.2
             t = ms.get(f"{model}-{tag}")
             if t is not None:
                 ax.plot(t, yy, "o", ms=11, color=col, mec=F.SURFACE, mew=1.4, zorder=3)
-            if tag in ("bf16-tuned", "bnb-nf4-tuned"):
-                t0 = QF.value(model, base, "latency_ms_median")
-                ax.plot(t0, yy, "o", ms=10, mfc="none", mec=col, mew=1.8, zorder=3)
-                ax.annotate("", (t, yy), xytext=(t0, yy), zorder=2,
-                            arrowprops={"arrowstyle": "-|>", "color": col, "lw": 1.3,
-                                        "alpha": 0.6, "shrinkA": 5, "shrinkB": 6})  # fmt: skip
     ax.text(52, 3 + QF.COST_DY["qwen-ft"] * 1.2, "Qwen3.5-4B: wouldn't load", fontsize=12,
             color=F.INK_2, va="center")  # fmt: skip
     ax.text(5, 4 - 0.12, "Both Kev models: no answers", fontsize=12, color=F.INK_2,
@@ -303,8 +295,8 @@ def slide_speed(fig, s, n, total):
     ax.grid(axis="y", visible=False)
     ax.set_xlim(0, 260)
     ax.set_xlabel("Milliseconds per answer", fontsize=12)
-    text_block(fig, 0.155, "Tuned: fast kernels, Kev's shortcut on, Qwen compiled. At $0.44 per "
-               "GPU hour, 100 ms per answer is about 1.2 cents per 1,000.", 11.5,
+    text_block(fig, 0.155, "One NVIDIA L4 GPU, one customer at a time. At $0.44 per GPU hour, "
+               "100 ms per answer costs about 1.2 cents per 1,000 customers.", 11.5,
                color=F.INK_2)  # fmt: skip
     note(fig, FAIR)
 

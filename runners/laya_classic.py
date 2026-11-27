@@ -19,6 +19,7 @@ import time
 from pathlib import Path
 
 from harness import L4_USD_PER_HOUR, TRAINED, Prediction, build_parser, gpu_cost, resolve_args, run
+from layout import add_layout_arg, check_layout_args, layouts_to_run, with_layout
 
 REPO = "convaiinnovations/laya"
 REVISION = "fd4f9dbcf4fde222fd43174bdd4c3b08b789e4e1"
@@ -85,13 +86,19 @@ def main() -> None:
         "--usd-per-hour", type=float, default=None,
         help=f"compute price for cost_usd (default: {L4_USD_PER_HOUR} on cuda, 0 on cpu)",
     )  # fmt: skip
+    add_layout_arg(ap)
     args = ap.parse_args()
     if args.checkpoint is not None:
         args.condition = TRAINED
+    if args.layout and args.checkpoint is None:
+        ap.error("--layout is for the trained Laya: add --checkpoint")
+    check_layout_args(ap, args)
     args = resolve_args(args)
     if args.usd_per_hour is None:
         args.usd_per_hour = L4_USD_PER_HOUR if args.device == "cuda" else 0.0
-    run(LayaPredictor(args.device, args.usd_per_hour, args.checkpoint), args)
+    predictor = LayaPredictor(args.device, args.usd_per_hour, args.checkpoint)
+    for layout in layouts_to_run(args.layout):
+        run(with_layout(predictor, layout), args)
 
 
 if __name__ == "__main__":

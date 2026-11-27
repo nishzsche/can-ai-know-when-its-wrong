@@ -52,6 +52,7 @@ from harness import (
     resolve_args,
     run,
 )
+from layout import add_layout_arg, check_layout_args, layouts_to_run, with_layout
 from quantize import PRECISIONS, contestant_name
 from speed import SPEED_TAGS, speed_name
 
@@ -195,6 +196,7 @@ def main() -> None:
     ap.add_argument("--reproduce-check", type=int, metavar="N",
                     help="bf16: compare N tune customers with M6; bf16-tuned / bnb-nf4-tuned: "
                          "with post 4's bf16 / bnb-nf4 run; then stop")  # fmt: skip
+    add_layout_arg(ap)
     args = ap.parse_args()
     if args.precision and args.finetuned is None:
         ap.error("--precision needs --finetuned")
@@ -203,6 +205,9 @@ def main() -> None:
         ap.error("--reproduce-check runs with --precision bf16, bf16-tuned or bnb-nf4-tuned")
     if args.finetuned is not None:
         args.condition = TRAINED
+    if args.layout and args.precision != "bf16":
+        ap.error("--layout runs at --precision bf16: post 4's full-size path, its reference")
+    check_layout_args(ap, args)
     args = resolve_args(args)
     predictor = KevPredictor(
         args.size,
@@ -215,7 +220,8 @@ def main() -> None:
     if args.reproduce_check:
         reproduction_check(predictor, reference, args.reproduce_check)
         return
-    run(predictor, args)
+    for layout in layouts_to_run(args.layout):
+        run(with_layout(predictor, layout), args)
 
 
 def reproduce_reference(model: str, precision: str | None) -> str | None:

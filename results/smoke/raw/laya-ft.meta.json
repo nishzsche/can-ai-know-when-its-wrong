@@ -1,0 +1,30 @@
+[
+  {
+    "model_version": "laya-ft: convaiinnovations/laya@fd4f9dbc fine-tuned on train (laya.train defaults); weights c284138fb037",
+    "started": "2026-11-27T14:17:52Z",
+    "split": "tune",
+    "conditions": [
+      "trained"
+    ],
+    "limit": 20,
+    "workers": 1,
+    "environment": {
+      "python": "3.12.10",
+      "platform": "Windows-11-10.0.26340-SP0",
+      "gpu": null,
+      "packages": {
+        "torch": "2.15.0",
+        "transformers": "5.24.0",
+        "laya": "0.5.2",
+        "vegaml": "0.18.0",
+        "jevper": "0.7.12",
+        "openai": "3.57.0",
+        "numpy": "2.5.5"
+      }
+    },
+    "agent_class": "Agent",
+    "laya_version": "0.5.2",
+    "device": "cpu",
+    "usd_per_hour": 0.0
+  }
+]

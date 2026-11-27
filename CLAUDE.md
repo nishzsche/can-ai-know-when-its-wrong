@@ -93,3 +93,8 @@ PREDICTIONS.md   my guesses, written BEFORE any runs
   - `uv run python analysis/layouts.py` scores post 5 -> `results/layouts.csv`, `.json`: the four formats plus the realigned table against v2, with paired tests (Holm over 30), the share moved 5+ points and decisions at v2's tune cut-off (about 4 minutes).
   - `uv run python analysis/layouts_figures.py [name ...]` draws post 5's five charts (`results/figures/post5_*.png`, light and dark); and its social card; names such as `moved row_pieces` or `social_card` redraw only those.
   - `uv run python writeup/build_formats_carousel.py` builds post 5's carousel (`writeup/formats_carousel.pdf`) from the `## Slides` section of `writeup/formats_linkedin.md`, drawn from `results/layouts.csv` and the predictions through `analysis/layouts_figures.py` (`--png DIR` for previews).
+  - **Post 5 addendum (PLAN.md §12; the GPU commands are in L4_RUNBOOK.md §9):**
+    - `uv run python data/arrange.py` prints the table models' 15 arrangements; `baselines/tabular_fm.py --model M --arrangement A [-s K] [--estimators 1]` runs one into `results/checks/arrangements/` (`--estimators 1` = one estimator, column shuffle off).
+    - `runners/kev.py --finetuned` and `runners/qwen_ft.py` (both at `--precision bf16`) and `runners/laya_classic.py --checkpoint` take `--layout <markdown|csv|json|prose|aligned|again|all>`: the trained model on post 5's layouts, test only, into `results/checks/layouts_trained/`.
+    - `uv run --group runners python runners/manifest.py --addendum` checks coverage; `--record-failure NAME --stage S --error TEXT` records a run that couldn't run.
+    - `uv run python analysis/arrangements.py` -> `results/arrangements.csv`; `uv run python analysis/layouts.py --trained` -> `results/layouts_trained.csv`.

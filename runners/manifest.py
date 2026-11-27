@@ -4,6 +4,7 @@
     uv run python runners/manifest.py --allow-incomplete  # write it anyway (e.g. on the L4)
     uv run python runners/manifest.py --m6                # M6 contestants -> run_manifest_m6.json
     uv run python runners/manifest.py --quant             # post 4 -> run_manifest_quant.json
+    uv run python runners/manifest.py --addendum          # post 5 addendum -> ..._addendum.json
 
 For every contestant: are exactly the expected customers there for each (condition, split)?
 Does each file come from a single model version? Also recorded: total cost, median latency, run
@@ -20,9 +21,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-from harness import RUN_CONDITIONS, load_requests
-from quantize import all_contestants
-from records import PREDICTIONS_DIR, TEST_ONLY_CONDITIONS, read_records, utc_now
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "data"))  # arrange
+
+from arrange import ARRANGE_DIR, ARRANGEMENTS, run_name  # noqa: E402
+from harness import RUN_CONDITIONS, load_requests  # noqa: E402
+from layout import AGAIN, LAYOUT_DIR, LAYOUTS  # noqa: E402
+from quantize import all_contestants  # noqa: E402
+from records import PREDICTIONS_DIR, TEST_ONLY_CONDITIONS, read_records, utc_now  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "results" / "run_manifest.json"
@@ -48,6 +53,22 @@ QUANT_GROUPS = {
     c: [("trained", "tune"), ("trained", "test"), ("trained_calibrated", "test")]
     for c in all_contestants()
 }
+# Post 5 addendum (PLAN.md §12). Part A: every table-model run (original answers tune too).
+MANIFEST_ADDENDUM = ROOT / "results" / "run_manifest_addendum.json"
+ADDENDUM_FAILURES = ROOT / "results" / "checks" / "addendum_failures.json"
+ARRANGE_GROUPS = {
+    run_name(model, arrangement, k, est): [("trained", "tune"), ("trained", "test")]
+    if arrangement == "original" else [("trained", "test")]
+    for model in ("kumo-tabular", "tabicl-v2") for est in (None, 1)
+    for arrangement in ARRANGEMENTS
+    for k in ((0, 1, 2, 3, 4) if arrangement == "original" else (0,))
+}  # fmt: skip
+# Part B: the trained models in each layout and the original asked again, test only.
+LAYOUT_GROUPS = {
+    f"{ref}-{layout}": [("trained", "test")]
+    for ref in ("kev-4b-ft-bf16", "kev-0.8b-ft-bf16", "qwen-ft-bf16", "laya-ft")
+    for layout in (*LAYOUTS, AGAIN)
+}  # fmt: skip
 
 
 def expected_ids() -> dict[str, list[str]]:
@@ -111,6 +132,30 @@ def recorded_failures(path: Path = QUANT_FAILURES) -> dict:
     return json.loads(path.read_text("utf-8")) if path.exists() else {}
 
 
+def record_addendum_failure(name: str, stage: str, error: str,
+                            path: Path = ADDENDUM_FAILURES) -> dict:  # fmt: skip
+    """Record that one addendum run couldn't run. It is reported, never replaced."""
+    if name not in ARRANGE_GROUPS and name not in LAYOUT_GROUPS:
+        raise SystemExit(f"{name!r} isn't an addendum run name")
+    failures = recorded_failures(path)
+    failures[name] = {"stage": stage, "error": error, "recorded_at": utc_now()}
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(failures, indent=2) + "\n", "utf-8")
+    return failures[name]
+
+
+def build_addendum(failures: dict | None = None) -> dict:
+    """Both parts' coverage, each from its own directory."""
+    failures = recorded_failures(ADDENDUM_FAILURES) if failures is None else failures
+    a = build_manifest(ARRANGE_DIR, ARRANGE_GROUPS, failures)
+    b = build_manifest(LAYOUT_DIR, LAYOUT_GROUPS, failures)
+    out = {k: v for k, v in a.items() if k not in ("contestants", "recorded_failures", "complete")}
+    out.update({"complete": a["complete"] and b["complete"],
+                "contestants": {**a["contestants"], **b["contestants"]},
+                "recorded_failures": a["recorded_failures"] + b["recorded_failures"]})  # fmt: skip
+    return out
+
+
 def build_manifest(directory: Path = PREDICTIONS_DIR, groups: dict | None = None,
                    failures: dict | None = None) -> dict:  # fmt: skip
     expected = expected_ids()
@@ -152,10 +197,21 @@ def main() -> None:
     ap.add_argument("--predictions-dir", type=Path, default=PREDICTIONS_DIR)
     ap.add_argument("--m6", action="store_true", help="the M6 contestants (PLAN.md §11)")
     ap.add_argument("--quant", action="store_true", help="post 4's precisions (PLAN.md §12)")
+    ap.add_argument("--addendum", action="store_true",
+                    help="post 5's addendum, both parts (PLAN.md §12)")  # fmt: skip
+    ap.add_argument("--record-failure", metavar="NAME",
+                    help="addendum: record a run that couldn't run (--stage, --error)")  # fmt: skip
+    ap.add_argument("--stage", default="run")
+    ap.add_argument("--error", default="")
     args = ap.parse_args()
-    if args.m6 and args.quant:
-        ap.error("pick one of --m6 and --quant")
-    if args.quant:
+    if args.record_failure:
+        print(record_addendum_failure(args.record_failure, args.stage, args.error))
+        return
+    if sum((args.m6, args.quant, args.addendum)) > 1:
+        ap.error("pick one of --m6, --quant and --addendum")
+    if args.addendum:
+        manifest, target = build_addendum(), MANIFEST_ADDENDUM
+    elif args.quant:
         manifest = build_manifest(args.predictions_dir, QUANT_GROUPS, recorded_failures())
         target = MANIFEST_QUANT
     else:

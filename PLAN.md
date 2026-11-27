@@ -210,7 +210,7 @@ Numbers are the series' post numbers. Titles lead with the question, per `writeu
 | 2 | **Why 99% accuracy can still be a disaster** (Notion #2) | Accuracy vs ranking vs honesty vs what each mistake costs a bank | None | Published 2026-11-24 |
 | 3 | **I gave AI the same data as a bank's model. It caught up.** (Notion #3) | M6, the fair fight (§11) | Done | Published 2026-11-25 |
 | 4 | **I shrank AI models. It saved memory, not time.** (working title "Does shrinking an AI model make it less honest?"; Notion #7, "Why cheaper AI doesn't always mean cheaper bills") | Post 3's closing promise. The fine-tuned Kev-0.8B, Kev-4B and Qwen at 8, 4, 3 and 2 bits. Does ranking hold while the percentages drift, and does the smaller model actually cost less? | Done (session A, then the speed re-runs) | Published 2026-11-27 (`writeup/quantization_post.md`) |
-| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | Done: L4 session A, plus $7.77 of API (Jev $0.18, Sol $7.59) | Published 2026-11-27 (`writeup/formats_post.md`). Addendum specced 2026-11-27: the table models rearranged, and the trained models in the five layouts (spec below); waiting on the author's guesses |
+| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | Done: L4 session A, plus $7.77 of API (Jev $0.18, Sol $7.59) | Published 2026-11-27 (`writeup/formats_post.md`). Addendum specced 2026-11-27: the table models rearranged, and the trained models in the five layouts (spec below). Guesses in, built on the laptop; waiting on L4 session L (L4_RUNBOOK.md §9) |
 | 6 | **Teaching a small model to say "I don't know"** (Notion #9) | Promised in posts 1 and 3. Posts 1 and 3 already asked whether its 30% is honest. This one asks whether it flags the customers unlike anyone it learned from | L4 session B | Design to settle (spec below) |
 | 7 | **Does retrieval make AI more honest, or just more confident?** (documents arc, 1 of 3) | RAG on one public document set: no retrieval, good retrieval, noisy retrieval, conflicting passages, and the whole document in context. Accuracy, honesty, "I don't know" rate and cost | API runs on public documents; a small L4 session for the open models | Choose the dataset now: it has the longest lead time |
 | 8 | **Can a PDF trick an AI into making a bad decision?** (Notion #4; documents arc, 2 of 3) | Hidden instructions in the same pipeline's documents (indirect prompt injection): how often they change the answer or the confidence, and which defences hold | Same set-up as post 7, plus crafted documents | |
@@ -394,13 +394,13 @@ The reference is template v2 (a pipe-separated table without the separator row),
 
 - **Same setting as M6** (choice 1, the makers' defaults): Kumo-Tabular with 8 estimators, TabICL-v2 with `TabICLClassifier()` defaults, all 20,000 `train` customers in context, M6's seed.
 - **Run-to-run noise:** `original` again with four other seeds. Both models are ensembles that use randomness, so without this, seed noise could pass for sensitivity to the arrangement.
-- **Single-estimator diagnostic:** every arrangement and seed again with one estimator (Kumo's `num_estimators=1`; TabICL's `n_estimators=1` if the class takes it, checked on the laptop). If the defaults average over shuffled column orders, these runs show what that hides. The headline is the defaults, which is what a user gets and what post 3 reported. Reporting only one of the two would tilt the answer.
+- **Single-estimator diagnostic:** every arrangement and seed again with one estimator and the makers' column shuffle off (Kumo: `num_estimators=1` and its default recipe without `ShuffleColumns`; TabICL: `n_estimators=1, feat_shuffle_method='none'`). The laptop build found that both defaults do shuffle: each of the 8 estimators sees the columns in a different order (Latin squares), and the answers are averaged. One estimator would still apply one shuffle of its own, so the shuffle has to be off for the bare model to see the arrangement's order. These runs show what the averaging hides. The headline is the defaults, which is what a user gets and what post 3 reported. Reporting only one of the two would tilt the answer.
 - **Splits:** `original` on `tune` and `test` (it must reproduce M6's predictions: identical, or within 0.002 on average if the GPU's fp16 isn't bit-exact; if not, the in-session `original` is the reference and the gap is reported). Every other run on `test` only.
-- **Laptop check:** whether either model reads column names. If one does, record it, because then an arrangement also moves the names' positions (they stay attached to their columns either way).
+- **Laptop check, done:** neither model reads column names. TabICL gets a bare array, and Kumo's answers didn't change at all when all 19 names were replaced (small model, CPU, 100 customers, difference exactly 0). So an arrangement changes the order and nothing else.
 
 **Part B: the trained AI models, in post 5's layouts.** Post 3's fine-tuned Kev-4B, Kev-0.8B, Qwen3.5-4B and Laya on post 5's five layouts (`markdown`, `csv`, `json`, `prose`, `aligned`), out of the box, on the 2,000 `test` customers, with the values copied character for character as in post 5 (`data/formats.py`, `disguise.align`).
 - **Kev-4B, Kev-0.8B and Qwen** run on the L4 through post 4's full-size path (`--precision bf16`). Their reference is post 4's `<model>-bf16` run (`tune` and `test`, same code path). A reproduction check on 50 `tune` customers comes first, as in post 4.
-- **Laya** runs on the laptop's CPU (`runners/laya_classic.py --checkpoint`), against M6's `laya-ft`. Its 512-token limit holds: the longest summary in any layout is 320 of Laya's tokens, and the runner stops if any summary is cut short.
+- **Laya** runs on the L4 (`runners/laya_classic.py --checkpoint --device cuda`), against M6's `laya-ft`, which was scored on the L4 too. (The first plan said the laptop's CPU, but it takes 1.9 s per customer there, about 6 hours for six runs; the L4 takes about 20 ms.) Its 512-token limit holds: the longest summary in any layout is 320 of Laya's tokens, and the runner stops if any summary is cut short.
 - **Run-to-run noise:** the original table again on all 2,000 `test` customers in the same session, against the reference. That's post 5's "asked again", on all 2,000 customers rather than 200.
 - **Fairness:** each model learned from the original layout only, so every other layout is new to it. That's the question, not a handicap: the headline results stay on the original layout, and nothing is retrained.
 - **Out of scope:** Jev and Sol with 20 examples (post 3's in-context condition). Their examples would also have to be rewritten in each layout, and Sol with 20 examples costs about 20 times post 5's zero-shot run per layout. They could be added later.
@@ -421,15 +421,27 @@ The reference is template v2 (a pipe-separated table without the separator row),
 **To build on the laptop:**
 - `data/arrange.py`: the arrangements, with the round-trip test.
 - `baselines/tabular_fm.py`: `--arrangement`, `--seed` and `--estimators`, writing to `results/checks/arrangements/` as `<model>-<arrangement>` (plus `-s<seed>` and `-e1`).
-- `runners/kev.py --finetuned`, `runners/qwen_ft.py` and `runners/laya_classic.py --checkpoint`: a `--layout` option that swaps in post 5's rendering, writing to `results/checks/layouts_trained/` as `<model>-<layout>` (and `<model>-again`).
+- `runners/kev.py --finetuned`, `runners/qwen_ft.py` and `runners/laya_classic.py --checkpoint`: a `--layout` option that swaps in post 5's rendering, writing to `results/checks/layouts_trained/` as `<reference>-<layout>` (e.g. `kev-4b-ft-bf16-json`, `laya-ft-again`).
 - `analysis/arrangements.py` (Part A) and `analysis/layouts.py --trained` (Part B), with tests; a coverage check in `runners/manifest.py`.
 - L4_RUNBOOK.md §9, with the prompt for Claude Code on the L4.
 
-**Session (one L4, about 2–2.5 hours with setup, about $1.10):**
+**Session (one L4, about 2.5 hours with setup, about $1.10; L4_RUNBOOK.md §9):**
 - Setup takes 20–30 minutes.
 - Part A takes about 30 minutes: Kumo needs about a minute per run of 2,000 customers at defaults, and TabICL seconds.
-- Part B takes about 1–1.25 hours: six runs of 2,000 per model, at about 4, 2 and 4 minutes per run for Kev-4B, Kev-0.8B and Qwen, plus the reproduction checks and switching environments.
-- Laya runs on the laptop, free.
+- Part B takes about 1.25–1.5 hours: six runs of 2,000 per model, at about 4, 2 and 4 minutes per run for Kev-4B, Kev-0.8B and Qwen and seconds for Laya, plus the reproduction checks and switching environments.
+
+**Built on the laptop (2026-11-27):**
+- `data/arrange.py` and its round-trip test.
+- `baselines/tabular_fm.py --arrangement / -s / --estimators`.
+- `runners/layout.py`, the `--layout` option (with `all`: the five layouts, then `again`, in one process).
+- `analysis/arrangements.py`, `analysis/layouts.py --trained` (post 5's own output is unchanged by the refactor, checked byte for byte).
+- `runners/manifest.py --addendum` and `--record-failure`.
+- L4_RUNBOOK.md §9.
+- **Checked on the laptop:**
+  - **TabICL:** both settings on CPU.
+  - **Kumo:** the small model on CPU, including the recipe without its shuffle.
+  - **Trained Laya:** a smoke run on 20 tune customers. The release weights match M6's (hash `c284138fb037`), and the CPU reproduced M6's answers to within 0.0007 on average.
+- **Not testable here:** Kumo-Tabular large, Kev's server and Qwen; §9 checks them on the L4.
 
 **Where it goes:** decided once the results are in. A short follow-up post, or a dated update to post 5. Post 5's line that table models "don't have this problem by design" gets an update note if Part A finds otherwise.
 

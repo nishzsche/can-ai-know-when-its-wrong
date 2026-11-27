@@ -52,6 +52,7 @@ from harness import (
     resolve_args,
     run,
 )
+from layout import add_layout_arg, check_layout_args, layouts_to_run, with_layout
 from quantize import PRECISIONS, after_load, contestant_name, quantize_linears
 from speed import REPRODUCE, SPEED_TAGS, speed_name
 from speed import apply as speed_apply
@@ -235,6 +236,7 @@ def main() -> None:
                     help="tune, then test, in one process (the model loads once)")  # fmt: skip
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--usd-per-hour", type=float, default=L4_USD_PER_HOUR)
+    add_layout_arg(ap)
     args = ap.parse_args()
     if args.zero_shot_check:
         zero_shot_check(args.zero_shot_check, args.device)
@@ -245,6 +247,10 @@ def main() -> None:
     if args.reproduce_check and reference is None:
         ap.error("--reproduce-check runs with --precision bf16, bf16-tuned or bnb-nf4-tuned")
     args.condition = TRAINED
+    if args.layout and (args.precision != "bf16" or args.both_splits):
+        ap.error("--layout runs at --precision bf16 (post 4's full-size path, its reference), "
+                 "on test only")  # fmt: skip
+    check_layout_args(ap, args)
     args = resolve_args(args)
     predictor = QwenFTPredictor(args.adapter, args.device, args.usd_per_hour, args.precision,
                                 compile_model=not args.no_compile)  # fmt: skip
@@ -253,7 +259,8 @@ def main() -> None:
         return
     for split in ("tune", "test") if args.both_splits else (args.split,):
         args.split = split
-        run(predictor, args)
+        for layout in layouts_to_run(args.layout):
+            run(with_layout(predictor, layout), args)
 
 
 if __name__ == "__main__":

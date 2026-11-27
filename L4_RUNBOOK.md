@@ -685,3 +685,150 @@ git push
 ```
 
 Then delete the instance, and revoke the GitHub token. The predictions, throughput files and logs are in git, and the weights are in the `m6-weights` release.
+
+## 9. Session L: post 5's addendum, the table models and the trained models (added 2026-11-27)
+
+PLAN.md §12, "Post 5 addendum". One short session, nothing tuned on `test`, no API key:
+
+- **Part A (§9.1):** Kumo-Tabular and TabICL-v2 with the same 19 fields laid out 14 other ways (`data/arrange.py`). Each runs at the makers' defaults and again as a single estimator with the column shuffle off. The original runs again at four other seeds, for the noise floor. Records go to `results/checks/arrangements/`.
+- **Part B (§9.2–9.4):** post 3's trained Kev-0.8B, Kev-4B, Qwen and Laya on post 5's five layouts, plus the original layout asked again, on the 2,000 test customers. Kev and Qwen use post 4's full-size path (`--precision bf16`), whose session A records are the reference. Records go to `results/checks/layouts_trained/`.
+
+**Gate:** `PREDICTIONS.md` has the author's "Post 5 addendum" guesses, committed before any run. That includes smoke runs and reproduction checks, because all of them print numbers.
+
+**Same setup as session A, on purpose.** Part B's references are session A's `-bf16` runs, so don't install post 4's speed libraries (torchao, GemLite, the fast kernels). The reproduction check confirms the path matches.
+
+**Order and time** (estimates; check them in each run's first minutes):
+- Setup: about 30 minutes.
+- Part A: about 30–45 minutes. There are 38 runs per model, each a model load plus about a minute of Kumo or seconds of TabICL.
+- Kev-0.8B: about 15 minutes.
+- Kev-4B: about 30 minutes.
+- Qwen: about 30 minutes.
+- Laya: about 10 minutes.
+
+That's about 2.5 hours in all, about $1.10.
+
+**Running Claude Code here:** after §9.0 step 1, give it this prompt:
+
+```text
+You're on a fresh JarvisLabs L4 (24 GB) for can-ai-know-when-its-wrong: session L, post 5's
+addendum (PLAN.md §12, "Post 5 addendum"). GPU time is billed per minute: follow the runbook and
+avoid detours.
+
+1. Read CLAUDE.md, the top of STATUS.md and PLAN.md §12's post 5 spec and its addendum. The design
+   is fixed: ask me before changing any choice.
+2. Gate: PREDICTIONS.md must already have my "Post 5 addendum" guesses committed. If it doesn't,
+   stop and tell me.
+3. Run L4_RUNBOOK.md §9 in order, one command at a time:
+   - Don't install post 4's speed libraries: Part B's reference is session A's plain setup.
+   - Kev and Qwen: run the reproduction check first. If it fails, stop and report.
+   - If a run won't load, errors, runs out of memory, or its smoke answers are all exactly 0 or
+     1, record it with `runners/manifest.py --record-failure`, skip it and tell me. Never cut
+     the 20,000 context rows, and never swap in another model, setting or layout.
+   - Before each part, tell me its ETA in IST (the box's clock is UTC). If any single run's ETA
+     is over 1 hour, stop and ask.
+   - Keep only one model on the GPU at a time.
+4. After each part, commit and push its records and logs: no keys, no .env and no weights. At the
+   end, run §9.5 and report what ran, what failed, the GPU hours, the cost and the finish time in
+   IST. Then tell me it's safe to delete the instance, and remind me to revoke the GitHub token.
+```
+
+**A run that fails** is recorded, then you go on to the next one:
+```bash
+uv run --group runners python runners/manifest.py --record-failure tabicl-v2-rows-3-e1 --stage run --error "<the error line>"
+```
+
+### 9.0 Setup (a fresh instance, about 30 billed minutes)
+
+1. §7.0 steps 1, 2 and 4, with the `tabular` group added: `uv sync --group runners --group laya --group training --group quant --group tabular`, and the same groups for `pytest`.
+2. The trained Laya, which §7.0 doesn't fetch (1.5 GB):
+   ```bash
+   cd /home/runs
+   curl -sLO https://github.com/nishzsche/can-ai-know-when-its-wrong/releases/download/m6-weights/laya-ft.tar.gz
+   tar xzf laya-ft.tar.gz && rm laya-ft.tar.gz && ls /home/runs/laya-ft/model.safetensors
+   mkdir -p /home/logs
+   ```
+
+### 9.1 Part A: the table models rearranged (~30–45 min)
+
+Each command loads the model, puts all 20,000 `train` customers in context and answers. `original` answers tune and test, and every other arrangement answers test only.
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+T="uv run --group tabular python baselines/tabular_fm.py"
+$T --model kumo-tabular --arrangement original --smoke     # prints only
+$T --model tabicl-v2 --arrangement original --smoke
+for M in kumo-tabular tabicl-v2; do
+  for E in "" "--estimators 1"; do                         # the makers' defaults, then the diagnostic
+    $T --model $M --arrangement original $E
+    for K in 1 2 3 4; do $T --model $M --arrangement original -s $K $E; done
+    for A in months-reversed by-month realigned shuffled-1 shuffled-2 shuffled-3 shuffled-4 \
+             shuffled-5 rows-1 rows-2 rows-3 rows-4 rows-5 thousands; do
+      $T --model $M --arrangement $A $E
+    done
+  done
+done 2>&1 | tee /home/logs/arrangements.log
+uv run python analysis/arrangements.py                     # -> results/arrangements.csv; read the repro columns
+```
+
+- **Reproduction:** `analysis/arrangements.py` reports how far this session's `original` is from M6's run (`repro_*` columns). Within 0.002 on average is expected. A larger gap isn't a stop: the in-session `original` is the reference, and the gap goes in STATUS.
+- **Out of GPU memory with 20,000 context rows:** stop and tell the author. Don't cut the context.
+
+Commit and push `results/checks/arrangements/`, `results/arrangements.*` and the log.
+
+### 9.2 Part B: Kev-0.8B and Kev-4B (~45 min)
+
+Kev's launcher at bf16 exactly as in §7.2, one model at a time.
+
+```bash
+# window 1, Kev's environment
+cd /home/kev
+KEV_TEMPERATURE=1.0 uv run --extra serve python /home/can-ai-know-when-its-wrong/runners/kev_quant_serve.py \
+  --precision bf16 --run /home/runs/kev-0.8b-ft --port 8009 2>&1 | tee /home/logs/kev-0.8b-ft-layouts-serve.log
+```
+
+```bash
+# window 2, this repo
+cd /home/can-ai-know-when-its-wrong
+until curl -sf 127.0.0.1:8009/v1/quantization > /dev/null; do sleep 5; done
+R="uv run --group runners python runners/kev.py --size 0.8b --finetuned /home/runs/kev-0.8b-ft --precision bf16"
+$R --reproduce-check 50                  # if it fails, stop
+$R --smoke --layout json                 # 20 tune customers -> results/smoke/
+$R --split test --layout all 2>&1 | tee /home/logs/kev-0.8b-ft-layouts.log   # five layouts, then again
+```
+
+Then `pkill -f kev_quant_serve` on its own line. Kev-4B is the same with `--run /home/runs/kev-4b-ft`, `--size 4b`, `--finetuned /home/runs/kev-4b-ft` and `kev-4b-ft` in the log names.
+
+### 9.3 Part B: Qwen (~30 min)
+
+In-process. With `--layout all` the model loads once and answers the five layouts, then the original again.
+
+```bash
+R="uv run --group runners python runners/qwen_ft.py --adapter /home/runs/qwen-ft --precision bf16"
+$R --reproduce-check 50                  # if it fails, stop
+$R --split test --layout all 2>&1 | tee /home/logs/qwen-ft-layouts.log
+```
+
+### 9.4 Part B: Laya (~10 min)
+
+In-process on the GPU, as in M6 and post 5. The runner stops if Laya ever reports truncating a summary.
+
+```bash
+L="uv run --group runners --group laya python runners/laya_classic.py --checkpoint /home/runs/laya-ft --device cuda"
+$L --smoke --layout json
+$L --split test --layout all 2>&1 | tee /home/logs/laya-ft-layouts.log
+```
+
+### 9.5 Wrap up
+
+```bash
+cd /home/can-ai-know-when-its-wrong
+uv run --group runners python runners/manifest.py --addendum      # -> results/run_manifest_addendum.json
+uv run python analysis/layouts.py --trained                      # -> results/layouts_trained.csv
+uv run python analysis/arrangements.py
+mkdir -p results/checks/addendum_logs && cp /home/logs/arrangements.log /home/logs/*-layouts*.log results/checks/addendum_logs/
+git add results/checks results/smoke results/arrangements.* results/layouts_trained.* results/run_manifest_addendum.json STATUS.md
+git commit -m "Post 5 addendum: table models rearranged; trained models in five layouts"
+git push
+```
+
+Then delete the instance, and revoke the GitHub token. The records and logs are in git, and the weights are in the `m6-weights` release.

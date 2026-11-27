@@ -39,7 +39,20 @@ Last updated 2026-11-27. Read this together with `PLAN.md` and `CLAUDE.md` befor
 
 **Still open:** the chart rule (the closing sections run about 1,075 words without a chart), and posting on LinkedIn (the author).
 
-**Addendum specced (2026-11-27, the author's request):** PLAN.md §12, "Post 5 addendum". Part A rearranges the table models (Kumo-Tabular, TabICL-v2): column orders, context row orders, units, with seed noise and a single-estimator diagnostic. Part B runs post 3's four trained AI models on post 5's five layouts. It's like for like, since both groups learned from the same 20,000 customers. **Next:** the author's guesses in `PREDICTIONS.md`, then the laptop build, then one L4 session (about 2–2.5 h, about $1.10).
+**Post 5 addendum (2026-11-27, the author's request):** PLAN.md §12, "Post 5 addendum".
+- **Part A:** the table models (Kumo-Tabular, TabICL-v2) rearranged: column orders, context row orders and units, with seed noise and a single-estimator diagnostic.
+- **Part B:** post 3's four trained AI models on post 5's five layouts. This is like for like, since both groups learned from the same 20,000 customers.
+- **Guesses:** recorded verbatim in `PREDICTIONS.md` from a Q&A, before any code ran. They were not in the file when the author said they were.
+  - Q1: no arrangement moves the table models beyond seed noise.
+  - Q2: training makes the AI models much sturdier.
+  - Q3: Laya moves most.
+  - **Commit them before session L.** The laptop checks below printed numbers on tune customers after the guesses were written, but before they were committed; the guesses weren't changed.
+- **Built on the laptop** (PLAN.md has the list; 317 tests pass). Findings that changed the plan:
+  - Both table models' defaults shuffle the column order across their 8 estimators and average. The diagnostic is therefore one estimator with the shuffle off.
+  - Kumo doesn't read column names; TabICL gets a bare array.
+  - Laya moves to the L4: 1.9 s per customer on the laptop's CPU, about 20 ms on the L4.
+- **Laya's weights** are unpacked at `C:/Users/nisha/runs/laya-ft` on the laptop (outside the repo). They match M6's (hash `c284138fb037`), and a 20-customer smoke run reproduced M6's answers to within 0.0007 on average.
+- **Next:** L4 session L (`L4_RUNBOOK.md` §9, about 2.5 h, about $1.10).
 
 ## L4 session S done (2026-11-26 20:39 → 2026-11-27 00:00 IST): post 4's speed runs
 

@@ -1,11 +1,12 @@
-"""Post 5: the same customers in other layouts (PLAN.md §12, post 5 spec).
+"""Post 5: the same customers in other layouts (PLAN.md §12, post 5 spec and addendum).
 
 Each zero-shot AI contestant's `out_of_box` answers on the 2,000 test customers in the four formats
 (results/checks/formats/) and in the layout check's realigned table (results/checks/disguise/,
 `aligned`), each against its own template v2 run (results/predictions/). A diagnostic, not a
 contestant condition: nothing is tuned on test, and the headline results stay on v2.
 
-    uv run python analysis/layouts.py    # -> results/layouts.csv and .json
+    uv run python analysis/layouts.py            # -> results/layouts.csv and .json
+    uv run python analysis/layouts.py --trained  # addendum part B -> results/layouts_trained.*
 
 Per model and layout. The spec's measures are the mean shift, AUC, ECE and the change per customer;
 the paired tests, the 5-point share and the decisions were added while writing, after the runs:
@@ -20,10 +21,19 @@ the paired tests, the 5-point share and the decisions were added while writing, 
 - decisions (post 2's lender, loss ratio 4:1): the cut-off chosen on v2's tune answers, applied to
   v2 and to the layout on test; the share of approve/decline decisions that differ, approval and
   profit. The same between v2 and the control gives the noise.
+
+`--trained` (the addendum's part B, measures fixed before its runs): post 3's four trained models
+on the same five layouts (results/checks/layouts_trained/, runners/layout.py), each against its
+own reference on the original layout: post 4's full-size `<model>-bf16` run for Kev-4B, Kev-0.8B
+and Qwen, M6's `laya-ft` for Laya. The cut-off comes from the reference's tune answers. The noise
+is the original layout asked again in the same session, on all 2,000 test customers. Holm over 20.
+Each row also carries the same model's cold (post 5) movement in that layout, for the comparison
+the addendum asks about; the cold models had no training, so that's a comparison of conditions.
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import sys
@@ -55,13 +65,21 @@ LAYOUTS = {  # tag -> (where its records are, file suffix, label)
     "aligned": (CHECK_DIR, "aligned", "Table, bills realigned"),
 }
 
+# The addendum's part B: reference run -> the same model answering cold in post 5.
+TRAINED_DIR = ROOT / "results" / "checks" / "layouts_trained"  # = runners/layout.py LAYOUT_DIR
+TRAINED_REFS = {"kev-4b-ft-bf16": "kev-4b", "kev-0.8b-ft-bf16": "kev-0.8b",
+                "qwen-ft-bf16": "qwen-logprobs", "laya-ft": "laya"}  # fmt: skip
+OUT_TRAINED_CSV = ROOT / "results" / "layouts_trained.csv"
+OUT_TRAINED_JSON = ROOT / "results" / "layouts_trained.json"
 
-def answers(name: str, directory: Path, split: str = "test") -> dict[str, tuple[int, float]]:
-    """{id: (label, p_default)} for one record file's `out_of_box` answers on one split."""
+
+def answers(name: str, directory: Path, split: str = "test",
+            condition: str = "out_of_box") -> dict[str, tuple[int, float]]:  # fmt: skip
+    """{id: (label, p_default)} for one record file's answers in one condition and split."""
     if not (directory / f"{name}.jsonl").exists():
         return {}
     return {r["id"]: (r["label"], r["p_default"]) for r in read_records(name, directory)
-            if r["split"] == split and r["condition"] == "out_of_box"}  # fmt: skip
+            if r["split"] == split and r["condition"] == condition}  # fmt: skip
 
 
 def arrays(ref: dict, other: dict, ids: list[str]) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -80,23 +98,51 @@ def moved(p_ref: np.ndarray, p: np.ndarray) -> dict:
             "spearman": float(spearmanr(p_ref, p)[0])}  # fmt: skip
 
 
-def cutoff(model: str) -> float:
-    """v2's approval cut-off for post 2's lender, chosen on the model's tune answers."""
-    tune = answers(model, PREDICTIONS_DIR, "tune")
-    assert len(tune) == N_TEST, f"{model}: {len(tune)} tune answers"
+def cutoff(name: str, directory: Path = PREDICTIONS_DIR, condition: str = "out_of_box") -> float:
+    """The reference's approval cut-off for post 2's lender, chosen on its own tune answers."""
+    tune = answers(name, directory, "tune", condition)
+    assert len(tune) == N_TEST, f"{name}: {len(tune)} tune answers"
     y, p = (np.array(v, float) for v in zip(*tune.values(), strict=True))
     return tune_cutoff(y, p, LOSS)
 
 
-def noise(model: str, cut: float) -> dict:
-    """v2 against the same summaries asked again (the disguise check's 200-customer control)."""
-    ref, ctrl = answers(model, PREDICTIONS_DIR), answers(f"{model}-control", CHECK_DIR)
-    ids = sorted(set(ref) & set(ctrl))
-    _, p0, p1 = arrays(ref, ctrl, ids)
+def noise_between(ref: dict, again: dict, cut: float) -> dict:
+    """Run-to-run noise: the reference against the same summaries asked again."""
+    ids = sorted(set(ref) & set(again))
+    _, p0, p1 = arrays(ref, again, ids)
     out = {f"noise_{k}": v for k, v in moved(p0, p1).items() if k != "spearman"}
     out.update({"noise_n": len(ids),
                 "noise_decisions_changed": float(((p0 <= cut) != (p1 <= cut)).mean())})  # fmt: skip
     return out
+
+
+def noise(model: str, cut: float) -> dict:
+    """v2 against the same summaries asked again (the disguise check's 200-customer control)."""
+    return noise_between(answers(model, PREDICTIONS_DIR), answers(f"{model}-control", CHECK_DIR),
+                         cut)  # fmt: skip
+
+
+def compare(y: np.ndarray, p0: np.ndarray, p1: np.ndarray, cut: float, ref: str = "v2") -> dict:
+    """Every measure of a run (p1) against its reference (p0) on the same customers. Keys for the
+    reference's own values end in `_<ref>`."""
+    row = {"observed_rate": float(y.mean()), f"mean_{ref}": float(p0.mean()),
+           "mean": float(p1.mean())}  # fmt: skip
+    row.update(moved(p0, p1))
+    d = paired_auc(y, p0, p1)  # reference minus run; stored the other way round
+    lo, hi = sorted((-d["lo"], -d["hi"]))
+    row.update({f"auc_{ref}": m.auc(y, p0), "auc": m.auc(y, p1), f"auc_vs_{ref}": -d["difference"],
+                f"auc_vs_{ref}_lo": lo, f"auc_vs_{ref}_hi": hi,
+                f"auc_vs_{ref}_p": d["p_value"]})  # fmt: skip
+    e = paired_ece(y, p0, p1)
+    row.update({f"ece_{ref}": m.ece(y, p0), "ece": m.ece(y, p1),
+                "ece_noise_p95": ece_noise_floor(p1)["p95"]})  # fmt: skip
+    row.update({k.replace("bf16", ref): v for k, v in e.items()})
+    a0, a1 = p0 <= cut, p1 <= cut
+    row.update({f"tune_cutoff_{ref}": cut, f"approve_{ref}": float(a0.mean()),
+                "approve": float(a1.mean()), f"profit_{ref}": profit(y, a0, LOSS),
+                "profit": profit(y, a1, LOSS),
+                "decisions_changed": float((a0 != a1).mean())})  # fmt: skip
+    return row
 
 
 def score(model: str, layout: str, cut: float) -> dict:
@@ -105,24 +151,19 @@ def score(model: str, layout: str, cut: float) -> dict:
     ids = sorted(ref)
     assert len(ids) == N_TEST and sorted(other) == ids, f"{model}-{suffix}: incomplete"
     y, p0, p1 = arrays(ref, other, ids)
-    row = {"model": model, "layout": layout, "label": label,
-           "model_version": read_records(f"{model}-{suffix}", directory)[0]["model_version"],
-           "observed_rate": float(y.mean()),
-           "mean_v2": float(p0.mean()), "mean": float(p1.mean())}  # fmt: skip
-    row.update(moved(p0, p1))
-    d = paired_auc(y, p0, p1)  # v2 minus layout; stored the other way round
-    lo, hi = sorted((-d["lo"], -d["hi"]))
-    row.update({"auc_v2": m.auc(y, p0), "auc": m.auc(y, p1), "auc_vs_v2": -d["difference"],
-                "auc_vs_v2_lo": lo, "auc_vs_v2_hi": hi, "auc_vs_v2_p": d["p_value"]})  # fmt: skip
-    e = paired_ece(y, p0, p1)
-    row.update({"ece_v2": m.ece(y, p0), "ece": m.ece(y, p1),
-                "ece_noise_p95": ece_noise_floor(p1)["p95"]})  # fmt: skip
-    row.update({k.replace("bf16", "v2"): v for k, v in e.items()})
-    a0, a1 = p0 <= cut, p1 <= cut
-    row.update({"tune_cutoff_v2": cut, "approve_v2": float(a0.mean()), "approve": float(a1.mean()),
-                "profit_v2": profit(y, a0, LOSS), "profit": profit(y, a1, LOSS),
-                "decisions_changed": float((a0 != a1).mean())})  # fmt: skip
+    version = read_records(f"{model}-{suffix}", directory)[0]["model_version"]
+    row = {"model": model, "layout": layout, "label": label, "model_version": version}
+    row.update(compare(y, p0, p1, cut))
     return row
+
+
+def add_holm(rows: list[dict], key: str, tests: tuple[str, ...] = ("auc", "ece"),
+             ref: str = "v2") -> None:  # fmt: skip
+    """Holm-adjusted p for each paired test, over all `rows` as one family."""
+    for test in tests:
+        adj = holm({r[key]: r[f"{test}_vs_{ref}_p"] for r in rows})
+        for r in rows:
+            r[f"{test}_vs_{ref}_p_holm"] = adj[r[key]]
 
 
 def build() -> list[dict]:
@@ -131,34 +172,85 @@ def build() -> list[dict]:
         cut = cutoff(model)
         base = noise(model, cut)
         rows += [score(model, layout, cut) | base for layout in LAYOUTS]
-    for test in ("auc", "ece"):
-        adj = holm({f"{r['model']}/{r['layout']}": r[f"{test}_vs_v2_p"] for r in rows})
-        for r in rows:
-            r[f"{test}_vs_v2_p_holm"] = adj[f"{r['model']}/{r['layout']}"]
+    for r in rows:
+        r["_key"] = f"{r['model']}/{r['layout']}"
+    add_holm(rows, "_key")
+    for r in rows:
+        del r["_key"]
     return rows
 
 
-def main() -> None:
-    rows = build()
-    with OUT_CSV.open("w", newline="", encoding="utf-8") as f:
+def cold() -> dict[tuple[str, str], dict]:
+    """Post 5's published rows, for the trained models' cold comparison."""
+    with OUT_CSV.open(encoding="utf-8") as f:
+        return {(r["model"], r["layout"]): r for r in csv.DictReader(f)}
+
+
+def build_trained() -> list[dict]:
+    """The addendum's part B: post 3's trained models in post 5's layouts."""
+    rows, published = [], cold()
+    for ref_name, cold_name in TRAINED_REFS.items():
+        cut = cutoff(ref_name, PREDICTIONS_DIR, "trained")
+        ref = answers(ref_name, PREDICTIONS_DIR, "test", "trained")
+        ids = sorted(ref)
+        assert len(ids) == N_TEST, f"{ref_name}: {len(ids)} test answers"
+        again = answers(f"{ref_name}-again", TRAINED_DIR, "test", "trained")
+        assert sorted(again) == ids, f"{ref_name}-again: incomplete"
+        base = noise_between(ref, again, cut)
+        for layout in LAYOUTS:
+            name = f"{ref_name}-{layout}"
+            other = answers(name, TRAINED_DIR, "test", "trained")
+            assert sorted(other) == ids, f"{name}: incomplete"
+            y, p0, p1 = arrays(ref, other, ids)
+            c = published[cold_name, layout]
+            row = {"model": ref_name, "layout": layout, "label": LAYOUTS[layout][2],
+                   "model_version": read_records(name, TRAINED_DIR)[0]["model_version"],
+                   **compare(y, p0, p1, cut), **base,
+                   "cold_model": cold_name,
+                   "cold_mean_abs_change": float(c["mean_abs_change"]),
+                   "cold_decisions_changed": float(c["decisions_changed"]),
+                   "cold_auc_vs_v2": float(c["auc_vs_v2"])}  # fmt: skip
+            rows.append(row)
+    for r in rows:
+        r["_key"] = f"{r['model']}/{r['layout']}"
+    add_holm(rows, "_key")
+    for r in rows:
+        del r["_key"]
+    return rows
+
+
+def write(rows: list[dict], out_csv: Path, out_json: Path) -> None:
+    with out_csv.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    OUT_JSON.write_text(json.dumps({"generated": utc_now(), "loss_ratio": LOSS,
+    out_json.write_text(json.dumps({"generated": utc_now(), "loss_ratio": LOSS,
                                     "holm_family": len(rows), "rows": rows}, indent=2) + "\n",
                         encoding="utf-8")  # fmt: skip
-    print(f"{'model':16}{'layout':10}{'mean':>14}{'|chg|':>7}{'5pt+':>6}{'rho':>6}{'AUC':>14}"
-          f"{'dAUC [95%]':>22}{'pH':>6}{'ECE':>14}{'pH':>6}{'flip':>6}{'noise':>12}")  # fmt: skip
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)  # fmt: skip
+    ap.add_argument("--trained", action="store_true", help="the addendum's part B")
+    trained = ap.parse_args().trained
+    rows = build_trained() if trained else build()
+    out_csv, out_json = (OUT_TRAINED_CSV, OUT_TRAINED_JSON) if trained else (OUT_CSV, OUT_JSON)
+    write(rows, out_csv, out_json)
+    print(f"{'model':18}{'layout':10}{'mean':>14}{'|chg|':>7}{'5pt+':>6}{'rho':>6}{'AUC':>14}"
+          f"{'dAUC [95%]':>22}{'pH':>6}{'ECE':>14}{'pH':>6}{'flip':>6}{'noise':>12}"
+          + ("  cold |chg|" if trained else ""))  # fmt: skip
     for r in rows:
-        print(f"{r['model']:16}{r['layout']:10}{r['mean_v2']:6.3f}>{r['mean']:6.3f}"
+        print(f"{r['model']:18}{r['layout']:10}{r['mean_v2']:6.3f}>{r['mean']:6.3f}"
               f"{100 * r['mean_abs_change']:7.1f}{100 * r['moved_5pts_share']:6.0f}"
               f"{r['spearman']:6.2f}{r['auc_v2']:6.3f}>{r['auc']:6.3f}"
               f"{r['auc_vs_v2']:+8.3f} [{r['auc_vs_v2_lo']:+.3f},{r['auc_vs_v2_hi']:+.3f}]"
               f"{r['auc_vs_v2_p_holm']:6.3f}{r['ece_v2']:6.3f}>{r['ece']:6.3f}"
               f"{r['ece_vs_v2_p_holm']:6.3f}{100 * r['decisions_changed']:6.1f}"
               f"{100 * r['noise_mean_abs_change']:6.1f}/"
-              f"{100 * r['noise_decisions_changed']:4.1f}")  # fmt: skip
-    print(f"Saved -> {OUT_CSV}, {OUT_JSON}")
+              f"{100 * r['noise_decisions_changed']:4.1f}"
+              + (f"{100 * r['cold_mean_abs_change']:9.1f}" if trained else ""))  # fmt: skip
+    print(f"Saved -> {out_csv}, {out_json}")
 
 
 if __name__ == "__main__":

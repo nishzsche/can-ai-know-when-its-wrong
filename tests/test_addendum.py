@@ -121,6 +121,13 @@ def test_trained_scorer_end_to_end(tmp_path, monkeypatch, rng):
     first = next(r for r in rows if r["layout"] == "markdown")
     last = next(r for r in rows if r["layout"] == "aligned" and r["model"] == first["model"])
     assert first["noise_n"] == N and last["mean_abs_change"] > first["mean_abs_change"]
+    late = ["cutoff_distance_median", "near_cutoff_share_1", "near_cutoff_share_2",
+            "near_cutoff_share_5", "near_cutoff_shift_5", "flips_to_decline",
+            "flips_to_approve"]  # fmt: skip
+    assert list(first)[-7:] == late  # post 5b's, last
+    for r in rows:
+        flips = r["flips_to_decline"] + r["flips_to_approve"]
+        assert flips == pytest.approx(r["decisions_changed"])
 
 
 def test_arrangements_scorer_end_to_end(tmp_path, monkeypatch, rng):

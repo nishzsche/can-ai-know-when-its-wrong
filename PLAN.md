@@ -479,10 +479,11 @@ The reference is template v2 (a pipe-separated table without the separator row),
 4. **But it didn't steady the lending decisions.**
    - Trained Kev and Qwen still flip 1.8–9.6% of decisions. That's more than cold in several cases: Kev-0.8B on four of five layouts (JSON 7.4% against 0.7%), Qwen with JSON (9.4% against 7.8%), and Kev-4B with prose (9.6% against 9.5%).
    - The profit change at post 2's lender goes with it.
-5. **Why: a sharper model keeps more customers near its cut-off.**
-   - Training lowered the cut-offs (Kev-0.8B 16%, Qwen 20%) and crowded customers around them, so small moves cross the line.
-   - Some layouts also push every answer one way. Qwen with JSON moves −1.8 points on average, and approval goes from 63% to 71%.
-   - This uses the new label-free measures below.
+5. **Why: the layout nudges the customers near the cut-off one way.** (Revised 2026-11-28 once the measures below were in: the first version, "a sharper model keeps more customers near its cut-off", held clearly only for Kev-4B.)
+   - The average hides it. Kev-4B with prose moves +0.1 points on average, but the customers within 5 points of its cut-off rise 1.8 points, because the layout squeezes its answers toward the middle. So 9.5% of its decisions flip to decline and 0.1% to approve.
+   - Most of the big flips go one way: five of the seven trained Kev and Qwen runs that flip 5% or more. Qwen with JSON flips 8.6% to approve and 0.8% to decline; its customers near the cut-off drop 4.1 points, against 1.8 on average, and approval goes from 63% to 71%. Random wobble would flip both ways about equally.
+   - Crowding adds to it for Kev-4B: training lowered its cut-off to 12% and put 44% of its customers within 5 points of it, against 19% cold. It isn't general, and the post says so: Kev-0.8B and Qwen are more crowded only within 1–2 points, and Laya is less crowded trained than cold.
+   - This uses the measures added after the results (below).
 6. **Laya: training helped with some layouts and broke on another.**
    - CSV went from 25.7 points per customer cold to 1.3 trained. Markdown and the realigned table improved too, and prose didn't.
    - JSON broke it: 26.4 points, an average answer of 41% instead of 21%, rank correlation 0.09, AUC 0.778 to 0.591.
@@ -492,7 +493,7 @@ Then come the guesses against the results, what I'd tell a bank, what this can't
 - **Guesses:** Q1 right; Q2 right for each customer's number but wrong for decisions, and mixed for Laya; Q3 right.
 - **The bank advice is about the input format.**
   - Fix the format in the model's documentation, and treat any change to it as a model change.
-  - Watch decisions flipped and customers moved, not just AUC.
+  - Watch decisions flipped and customers moved, not just AUC, and look at the customers near the cut-off: the average can hide a move there.
   - Keep a table model's default ensemble: the single estimator is the order-sensitive one.
 
 **Fairness and comparisons (say each one where it's made):**
@@ -508,6 +509,7 @@ Then come the guesses against the results, what I'd tell a bank, what this can't
 - **The columns:**
   - `cutoff_distance_median`: the median distance between the reference's `test` answers and its `tune` cut-off.
   - `near_cutoff_share_1`, `_2`, `_5`: the share of `test` customers within 1, 2 and 5 points of that cut-off. Three windows, so no single one carries the claim.
+  - `near_cutoff_shift_5`: the mean shift of the customers within 5 points of that cut-off (added with the finding 5 revision).
   - `flips_to_decline` and `flips_to_approve`: `decisions_changed` split by direction.
 - **Already in the tables:** profit at post 2's lender (`profit_v2` to `profit`).
 
@@ -515,7 +517,7 @@ Then come the guesses against the results, what I'd tell a bank, what this can't
 1. `overview`: mean |change| per customer, one dot per layout or arrangement. The groups are the table models at their defaults, the trained AI models and the cold AI models, with each group's noise marked.
 2. `answers`: cold to trained per model and layout, as dumbbells.
 3. `decisions`: decisions flipped, cold to trained, in the same layout as chart 2.
-4. `cutoff`: answers around the cut-off, cold against trained, one small multiple per model.
+4. `nudge`: each customer's change against their original answer, with the cut-off marked, for Kev-4B with prose and Qwen with JSON: the move near the line that the average hides.
 5. `laya`: Laya's answers, original against CSV and JSON, one dot per customer.
 
 The closing sections may run past 600 words without a chart, as in posts 4 and 5. That rule question is still open.

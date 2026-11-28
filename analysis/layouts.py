@@ -29,6 +29,11 @@ and Qwen, M6's `laya-ft` for Laya. The cut-off comes from the reference's tune a
 is the original layout asked again in the same session, on all 2,000 test customers. Holm over 20.
 Each row also carries the same model's cold (post 5) movement in that layout, for the comparison
 the addendum asks about; the cold models had no training, so that's a comparison of conditions.
+
+Added after the addendum's results, for post 5b (PLAN.md §12), in both modes and at the end of each
+row so the earlier columns are unchanged: how close the reference's test answers sit to its tune
+cut-off (the median distance, and the share within 1, 2 and 5 points), the mean shift of the
+customers within 5 points of it, and the changed decisions split by direction. Label-free.
 """
 
 from __future__ import annotations
@@ -71,6 +76,7 @@ TRAINED_REFS = {"kev-4b-ft-bf16": "kev-4b", "kev-0.8b-ft-bf16": "kev-0.8b",
                 "qwen-ft-bf16": "qwen-logprobs", "laya-ft": "laya"}  # fmt: skip
 OUT_TRAINED_CSV = ROOT / "results" / "layouts_trained.csv"
 OUT_TRAINED_JSON = ROOT / "results" / "layouts_trained.json"
+NEAR_CUTOFF = (0.01, 0.02, 0.05)  # post 5b's windows around the cut-off: 1, 2 and 5 points
 
 
 def answers(name: str, directory: Path, split: str = "test",
@@ -145,6 +151,22 @@ def compare(y: np.ndarray, p0: np.ndarray, p1: np.ndarray, cut: float, ref: str 
     return row
 
 
+def near_cutoff(p0: np.ndarray, p1: np.ndarray, cut: float) -> dict:
+    """Post 5b: how close the reference's answers (p0) sit to its cut-off, how far the run (p1)
+    moved the customers within 5 points of it on average, and which way the decisions that changed
+    went (approve when p <= cut, as in compare). No outcomes needed."""
+    dist = np.abs(p0 - cut)
+    a0, a1 = p0 <= cut, p1 <= cut
+    near = dist <= 0.05 + 1e-9
+    out = {"cutoff_distance_median": float(np.median(dist))}
+    out.update({f"near_cutoff_share_{round(100 * w)}": float((dist <= w + 1e-9).mean())
+                for w in NEAR_CUTOFF})  # fmt: skip
+    out["near_cutoff_shift_5"] = float((p1 - p0)[near].mean()) if near.any() else float("nan")
+    out.update({"flips_to_decline": float((a0 & ~a1).mean()),
+                "flips_to_approve": float((~a0 & a1).mean())})  # fmt: skip
+    return out
+
+
 def score(model: str, layout: str, cut: float) -> dict:
     directory, suffix, label = LAYOUTS[layout]
     ref, other = answers(model, PREDICTIONS_DIR), answers(f"{model}-{suffix}", directory)
@@ -154,6 +176,7 @@ def score(model: str, layout: str, cut: float) -> dict:
     version = read_records(f"{model}-{suffix}", directory)[0]["model_version"]
     row = {"model": model, "layout": layout, "label": label, "model_version": version}
     row.update(compare(y, p0, p1, cut))
+    row["_late"] = near_cutoff(p0, p1, cut)
     return row
 
 
@@ -166,18 +189,25 @@ def add_holm(rows: list[dict], key: str, tests: tuple[str, ...] = ("auc", "ece")
             r[f"{test}_vs_{ref}_p_holm"] = adj[r[key]]
 
 
+def finish(rows: list[dict]) -> list[dict]:
+    """Holm over all rows, then post 5b's measures (`_late`) last, so earlier columns keep their
+    places."""
+    for r in rows:
+        r["_key"] = f"{r['model']}/{r['layout']}"
+    add_holm(rows, "_key")
+    for r in rows:
+        del r["_key"]
+        r.update(r.pop("_late"))
+    return rows
+
+
 def build() -> list[dict]:
     rows = []
     for model in MODELS:
         cut = cutoff(model)
         base = noise(model, cut)
         rows += [score(model, layout, cut) | base for layout in LAYOUTS]
-    for r in rows:
-        r["_key"] = f"{r['model']}/{r['layout']}"
-    add_holm(rows, "_key")
-    for r in rows:
-        del r["_key"]
-    return rows
+    return finish(rows)
 
 
 def cold() -> dict[tuple[str, str], dict]:
@@ -209,14 +239,10 @@ def build_trained() -> list[dict]:
                    "cold_model": cold_name,
                    "cold_mean_abs_change": float(c["mean_abs_change"]),
                    "cold_decisions_changed": float(c["decisions_changed"]),
-                   "cold_auc_vs_v2": float(c["auc_vs_v2"])}  # fmt: skip
+                   "cold_auc_vs_v2": float(c["auc_vs_v2"]),
+                   "_late": near_cutoff(p0, p1, cut)}  # fmt: skip
             rows.append(row)
-    for r in rows:
-        r["_key"] = f"{r['model']}/{r['layout']}"
-    add_holm(rows, "_key")
-    for r in rows:
-        del r["_key"]
-    return rows
+    return finish(rows)
 
 
 def write(rows: list[dict], out_csv: Path, out_json: Path, holm_family: int | None = None) -> None:

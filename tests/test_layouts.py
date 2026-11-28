@@ -26,6 +26,20 @@ def test_moved_counts_exactly_five_points_as_moved():
     assert out["moved_5pts_share"] == 1.0
 
 
+def test_near_cutoff_measures_distance_and_flip_direction():
+    cut = 0.20
+    p0 = np.array([0.19, 0.22, 0.25, 0.10, 0.40])  # 1, 2, 5, 10 and 20 points from the cut-off
+    p1 = np.array([0.21, 0.18, 0.25, 0.10, 0.40])  # the first is now declined, the second approved
+    out = L.near_cutoff(p0, p1, cut)
+    assert out["cutoff_distance_median"] == pytest.approx(0.05)
+    assert out["near_cutoff_share_1"] == pytest.approx(0.2)  # exactly 1 point counts as near
+    assert out["near_cutoff_share_2"] == pytest.approx(0.4)
+    assert out["near_cutoff_share_5"] == pytest.approx(0.6)
+    assert out["near_cutoff_shift_5"] == pytest.approx((0.02 - 0.04 + 0) / 3)  # the first three
+    assert out["flips_to_decline"] == pytest.approx(0.2)
+    assert out["flips_to_approve"] == pytest.approx(0.2)
+
+
 def test_arrays_refuses_runs_with_different_labels():
     ref, other = {"a": (1, 0.3), "b": (0, 0.2)}, {"a": (0, 0.3), "b": (0, 0.2)}
     with pytest.raises(AssertionError):

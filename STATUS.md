@@ -52,7 +52,7 @@ L4_RUNBOOK.md §9 on a fresh L4. Gate passed: the author's addendum guesses are 
 - **Part A as session L read it.** At the defaults, column orders move Kumo 0.30–0.36 points and TabICL 0.43–0.54, inside each model's seed noise (0.41, 0.63); rows and units move them at most 0.09. With one estimator, TabICL is deterministic (seed noise 0), so report its sizes (1.1–1.4 points for column orders, AUC within 0.004) rather than "beyond seed noise".
 - **Against the cold AI models** (post 5: 2.6–25.8 points per customer), the table models at their defaults move far less: 0.3–0.5. Post 5's line that they "don't have this problem by design" holds; no update note needed.
 - **Guesses, revised:** Q1 ✓ (defaults). Q2 ✓ per customer for Kev-4B and Qwen, mostly for Kev-0.8B; ✗ for decisions, and mixed for Laya. Q3 ✓.
-- **Still to decide (the author):** where it goes, a short follow-up post or a dated section in post 5.
+- **Where it goes (decided 2026-11-28):** a short follow-up post, post 5b. Its spec is in PLAN.md §12, with the working title "Training steadied the AI's answers, not its decisions". It needs no new runs: next come the new label-free columns in `analysis/layouts.py`, the five charts and the draft.
 
 **GPU time:** the box was up from about 15:00 UTC to about 17:30 UTC, about 2.5 h, about $1.10 at $0.44/h. The JarvisLabs bill is the authority.
 

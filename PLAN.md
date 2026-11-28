@@ -210,7 +210,8 @@ Numbers are the series' post numbers. Titles lead with the question, per `writeu
 | 2 | **Why 99% accuracy can still be a disaster** (Notion #2) | Accuracy vs ranking vs honesty vs what each mistake costs a bank | None | Published 2026-11-24 |
 | 3 | **I gave AI the same data as a bank's model. It caught up.** (Notion #3) | M6, the fair fight (§11) | Done | Published 2026-11-25 |
 | 4 | **I shrank AI models. It saved memory, not time.** (working title "Does shrinking an AI model make it less honest?"; Notion #7, "Why cheaper AI doesn't always mean cheaper bills") | Post 3's closing promise. The fine-tuned Kev-0.8B, Kev-4B and Qwen at 8, 4, 3 and 2 bits. Does ranking hold while the percentages drift, and does the smaller model actually cost less? | Done (session A, then the speed re-runs) | Published 2026-11-27 (`writeup/quantization_post.md`) |
-| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | Done: L4 session A, plus $7.77 of API (Jev $0.18, Sol $7.59) | Published 2026-11-27 (`writeup/formats_post.md`). Addendum specced 2026-11-27: the table models rearranged, and the trained models in the five layouts (spec below). Guesses in, built on the laptop; waiting on L4 session L (L4_RUNBOOK.md §9) |
+| 5 | **Why AI can write code but struggle to read a table** (Notion #5) | The series already has evidence. Moving each bill beside the next month's payment took zero-shot Kev-4B's AUC from 0.594 to 0.720, and Laya's from 0.666 down to 0.569. The table models read the raw numbers and reach 0.794 with no training run. One new check: the same customers as sentences, a markdown table, CSV and JSON | Done: L4 session A, plus $7.77 of API (Jev $0.18, Sol $7.59) | Published 2026-11-27 (`writeup/formats_post.md`). Addendum: the table models rearranged, and the trained models in the five layouts (spec below). Ran in L4 session L on 2026-11-27 and reviewed on the laptop; it becomes post 5b |
+| 5b | **Training steadied the AI's answers, not its decisions** (working title) | Post 5's addendum: the table models rearranged, and post 3's trained models in post 5's layouts. Training steadies each customer's number but not every lending decision, and the table models stay inside their seed noise | Done: L4 session L (about 2.5 h, about $1.10) | Specced 2026-11-28 (spec below) |
 | 6 | **Teaching a small model to say "I don't know"** (Notion #9) | Promised in posts 1 and 3. Posts 1 and 3 already asked whether its 30% is honest. This one asks whether it flags the customers unlike anyone it learned from | L4 session B | Design to settle (spec below) |
 | 7 | **Does retrieval make AI more honest, or just more confident?** (documents arc, 1 of 3) | RAG on one public document set: no retrieval, good retrieval, noisy retrieval, conflicting passages, and the whole document in context. Accuracy, honesty, "I don't know" rate and cost | API runs on public documents; a small L4 session for the open models | Choose the dataset now: it has the longest lead time |
 | 8 | **Can a PDF trick an AI into making a bad decision?** (Notion #4; documents arc, 2 of 3) | Hidden instructions in the same pipeline's documents (indirect prompt injection): how often they change the answer or the confidence, and which defences hold | Same set-up as post 7, plus crafted documents | |
@@ -443,12 +444,98 @@ The reference is template v2 (a pipe-separated table without the separator row),
   - **Trained Laya:** a smoke run on 20 tune customers. The release weights match M6's (hash `c284138fb037`), and the CPU reproduced M6's answers to within 0.0007 on average.
 - **Not testable here:** Kumo-Tabular large, Kev's server and Qwen; §9 checks them on the L4.
 
-**Where it goes:** decided once the results are in. A short follow-up post, or a dated update to post 5. Post 5's line that table models "don't have this problem by design" gets an update note if Part A finds otherwise.
+**Where it goes:** decided 2026-11-28: a short follow-up post, post 5b (spec below). Part A found the table models inside their seed noise, so post 5's line that they "don't have this problem by design" stands, with no update note.
 
 **Done when:**
 - Every run has its records or a recorded failure, and the manifest check passes.
 - Both scorers write their tables.
 - The author has chosen where the results go.
+
+### Post 5b spec: does training teach an AI to read a table? (added 2026-11-28, the author's decision)
+
+**What it is:** a short follow-up to post 5 in the blog's Experiment format (WRITING.md), built from the post 5 addendum's results (spec above; L4 session L, then the laptop review in STATUS.md). No new runs: everything comes from `results/arrangements.*`, `results/layouts_trained.*` and post 5's cold runs. About 1,800–2,200 words with five charts.
+
+**Working title:** "Training steadied the AI's answers, not its decisions" (53 characters, within LinkedIn's 58). It's a claim, like posts 3 and 4. Alternatives: "Does training teach AI to read a table?" (39) and "I trained AI on a table. Then I changed the layout." (51). The author chooses.
+
+**Numbering:** "5b", so post 6 keeps its number and its promise from posts 1 and 3.
+
+**The question:** post 5 showed that AI models answering cold change their answers when the same numbers are laid out differently. The obvious fix is training. Given the same 20,000 labelled customers, does an AI model trained on the table keep its answers when the layout changes? And do the models built for tables really not care, as post 5 said?
+
+**Findings, one `###` each, with the heading as a claim** (numbers from the laptop review; the draft re-reads them from the tables):
+1. **Hook and headline chart.**
+   - The hook is one customer: the same numbers in the original table and in JSON, with cold and trained Kev-4B's answers to each.
+   - The customer is chosen by a stated rule: the median of cold Kev-4B's change with JSON. That makes them typical, not the most dramatic.
+   - The headline chart shows how far answers move per customer for each group: the table models at their defaults, the trained AI models and the cold AI models.
+2. **The table models don't care about column order.**
+   - At the defaults, column orders move Kumo by 0.30–0.36 points and TabICL by 0.43–0.54. That's inside each model's own seed noise (0.41 and 0.63).
+   - Row order and units move them at most 0.09.
+   - They're sturdy by construction: each of the 8 estimators sees the columns in a different order, and the answers are averaged.
+   - With one estimator and the shuffle off, TabICL moves 1.1–1.4 points for column orders, with AUC within 0.004. That's a diagnostic, one paragraph.
+   - Post 5's "by design" line holds.
+3. **Training steadied each customer's number.**
+   - Trained, Kev-4B moves 0.8–3.7 points per customer, against 2.8–15.1 cold. Qwen moves 1.0–2.4, against 4.7–9.2.
+   - Kev-0.8B is steadier on four of five layouts. The realigned table is the exception: 4.4 trained, 3.8 cold.
+   - Ranking and honesty held for these three. The only AUC change beyond chance is Kev-4B with prose, 0.792 to 0.784.
+4. **But it didn't steady the lending decisions.**
+   - Trained Kev and Qwen still flip 1.8–9.6% of decisions. That's more than cold in several cases: Kev-0.8B on four of five layouts (JSON 7.4% against 0.7%), Qwen with JSON (9.4% against 7.8%), and Kev-4B with prose (9.6% against 9.5%).
+   - The profit change at post 2's lender goes with it.
+5. **Why: a sharper model keeps more customers near its cut-off.**
+   - Training lowered the cut-offs (Kev-0.8B 16%, Qwen 20%) and crowded customers around them, so small moves cross the line.
+   - Some layouts also push every answer one way. Qwen with JSON moves −1.8 points on average, and approval goes from 63% to 71%.
+   - This uses the new label-free measures below.
+6. **Laya: training helped with some layouts and broke on another.**
+   - CSV went from 25.7 points per customer cold to 1.3 trained. Markdown and the realigned table improved too, and prose didn't.
+   - JSON broke it: 26.4 points, an average answer of 41% instead of 21%, rank correlation 0.09, AUC 0.778 to 0.591.
+   - Its JSON summaries are nearly twice the length of the layout it trained on (median 304 tokens, against at most 183) and still within its limit. Why it breaks isn't tested, and the post says so.
+
+Then come the guesses against the results, what I'd tell a bank, what this can't tell you, how I ran it, what's next, and one bold last line.
+- **Guesses:** Q1 right; Q2 right for each customer's number but wrong for decisions, and mixed for Laya; Q3 right.
+- **The bank advice is about the input format.**
+  - Fix the format in the model's documentation, and treat any change to it as a model change.
+  - Watch decisions flipped and customers moved, not just AUC.
+  - Keep a table model's default ensemble: the single estimator is the order-sensitive one.
+
+**Fairness and comparisons (say each one where it's made):**
+- **Like for like:** the table models and the trained AI models all learned from the same 20,000 `train` customers.
+- **Cold against trained:** this compares post 5's zero-shot runs with these. Each run is measured against its own reference: M3's v2 `out_of_box` for cold; post 4's `-bf16` runs and M6's `laya-ft` for trained.
+- **Two kinds of layout:** the table models never see text. Their "layout" is column order and units, while the AI models get text formats. The headline chart puts the groups side by side and labels the difference. The post doesn't rank one against the other as if it were one test.
+- **One layout learned:** each AI model learned from the original layout only. Training on several layouts wasn't tried. It's a limit and the obvious next experiment.
+- **The cut-off isn't re-chosen:** the layout runs are `test` only, because nothing is tuned on `test`. So decisions mean "swap in the new layout and keep the cut-off", as in post 4.
+- **The single-estimator runs are a diagnostic;** the headline is the defaults. TabICL with one estimator is deterministic (seed noise 0), so the post gives its sizes rather than "beyond seed noise".
+
+**Measures added after seeing the results (the post says so):**
+- **What they are:** label-free, from the existing predictions, computed for the cold and the trained runs alike. They go in `analysis/layouts.py`; the existing columns stay unchanged, and post 5's existing output is checked unchanged.
+- **The columns:**
+  - `cutoff_distance_median`: the median distance between the reference's `test` answers and its `tune` cut-off.
+  - `near_cutoff_share_1`, `_2`, `_5`: the share of `test` customers within 1, 2 and 5 points of that cut-off. Three windows, so no single one carries the claim.
+  - `flips_to_decline` and `flips_to_approve`: `decisions_changed` split by direction.
+- **Already in the tables:** profit at post 2's lender (`profit_v2` to `profit`).
+
+**Charts** (`analysis/trained_layouts_figures.py` → `results/figures/post5b_*.png`, light and dark, plus `post5b_social_card.png`; STYLE.md's budget):
+1. `overview`: mean |change| per customer, one dot per layout or arrangement. The groups are the table models at their defaults, the trained AI models and the cold AI models, with each group's noise marked.
+2. `answers`: cold to trained per model and layout, as dumbbells.
+3. `decisions`: decisions flipped, cold to trained, in the same layout as chart 2.
+4. `cutoff`: answers around the cut-off, cold against trained, one small multiple per model.
+5. `laya`: Laya's answers, original against CSV and JSON, one dot per customer.
+
+The closing sections may run past 600 words without a chart, as in posts 4 and 5. That rule question is still open.
+
+**Deliverables:**
+- **The draft:** `writeup/trained_layouts_post.md`, then a review copy (`review/`, noindex), the author's review, and `_posts/` by PR.
+- **LinkedIn:** `writeup/trained_layouts_linkedin.md` (the post text, the first comment and `## Slides`), and `writeup/build_trained_layouts_carousel.py` → `writeup/trained_layouts_carousel.pdf` (8–10 slides, every one checked as a PNG).
+- **After publishing:** an `updates:` note on post 5 linking to 5b, since 5b answers post 5's "zero-shot only" limitation. Also this table's row, STATUS.md and CLAUDE.md's commands.
+
+**Not in this post:**
+- Jev and Sol with 20 examples, out of the addendum's scope.
+- Training on mixed layouts.
+- A test of why Laya breaks on JSON.
+
+**Done when:**
+- The new columns are in, with post 5's existing output unchanged.
+- The five charts are drawn and checked in both themes.
+- The draft passes STYLE.md's checklist.
+- The author has reviewed the review copy.
+- The LinkedIn post and carousel are built and checked.
 
 ### Post 6 spec: teaching a small model to say "I don't know" (redesigned 2026-11-25; settle before session B)
 
